@@ -1,7 +1,7 @@
 /**
  * @version 2016-08-22
  * @author Anthony Galczak
- *
+ * Lab 1
  */
 
 public class AsciiArt {
