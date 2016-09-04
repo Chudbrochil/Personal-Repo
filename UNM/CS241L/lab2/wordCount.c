@@ -12,8 +12,9 @@ int main(void)
 	int newLines, newWords, newChars, c, c2, state, charsPerLine, wordsPerLine;
 	int lineMostChars, lineMostWords, howManyCharsMost, howManyWordsMost;
 	int lineNum;	
-	newLines = newWords = newChars = c = c2 = state = charsPerLine = wordsPerLine = 0;
-	lineMostChars = lineMostWords = howManyCharsMost = howManyWordsMost = 0;
+	newLines = newWords = newChars = c = c2 = state = 0;
+	charsPerLine = wordsPerLine = lineMostChars = lineMostWords = 0;
+	howManyCharsMost = howManyWordsMost = 0;
 	lineNum = 1;
 	
 	while ((c = getchar()) != EOF)
