@@ -36,8 +36,7 @@ int main(void)
 			{
 				printf("[%d;%d]", wordsPerLine, charsPerLine, lineNum++);
 			}
-
-			/*printf("[%d;%d]\n%d.", wordsPerLine, charsPerLine, lineNum++);*/
+			
 			++newLines;
 			wordsPerLine = charsPerLine = 0;
 		}
@@ -76,9 +75,9 @@ int main(void)
 	/* Printing summary to user */
 	printf("\n%d lines, %d words, %d characters\n", 
 	newLines, newWords, newChars);	
-	printf("With %d, line %d has the most characters.\n", 
+	printf("With %d, line %d has the most characters\n", 
 	howManyCharsMost, lineMostChars);
-	printf("With %d, line %d has the most words.\n",
+	printf("With %d, line %d has the most words\n",
 	howManyWordsMost, lineMostWords);
 	return 0;
 
