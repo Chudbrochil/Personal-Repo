@@ -1,8 +1,9 @@
-/**********************/
-/* Anthony Galczak    */
-/* 09-08-16           */
-/* CS-241 Section 001 */
-/**********************/
+/*******************************/
+/* Anthony Galczak             */
+/* 09-08-16                    */
+/* CS-241 Section 001          */
+/* Reads bits from a given int */
+/*******************************/
 
 #include <stdio.h>
 #include <stdlib.h>
