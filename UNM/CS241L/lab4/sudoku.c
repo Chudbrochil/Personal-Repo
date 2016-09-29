@@ -6,13 +6,96 @@
 /********************************/
 
 #include <stdio.h>
+
+/* for memset */
 #include <string.h>
-#include <stdlib.h>
+
+int checkGrid(char twoD[9][9], int i, int j);
+int checkRowAndCol(char twoD[9][9], int row, int col);
+/*int checkCol(char twoD[9][9], int col, int value);*/
+void processArray(char *oneD);
+
+
+int checkGrid(char twoD[9][9], int i, int j){
+	int rowOffset, columnOffset, equalCount, valid, k;
+	
+	equalCount = rowOffset = columnOffset = k = 0;
+	valid = 1;
+	rowOffset = (i / 3) * 3;
+	columnOffset = (j / 3) * 3;
+
+	for(k = rowOffset; k < 3 + rowOffset; ++k)
+	{
+		if(twoD[i][j] != '.')
+		{
+			/* 3 if statements for checking 3 columns */
+			if(twoD[k][columnOffset] == twoD[i][j])
+			{
+				equalCount++;
+			}
+			if(twoD[k][columnOffset + 1] == twoD[i][j])
+			{
+				equalCount++;
+			}
+			if(twoD[k][columnOffset + 2] == twoD[i][j])
+			{
+				equalCount++;
+			}
+		}
+				
+		/* Because I'm checking every cell in 3x3, allowing one equal
+		space before throwing an error */
+		if(equalCount > 1)
+		{
+			valid = 0;
+		}
+
+	}
+
+	return valid;
+
+}
+
+
+int checkRowAndCol(char twoD[9][9], int row, int col){
+	int i, j, equalCountRow, equalCountCol, valid;
+
+	equalCountRow = equalCountCol = 0;
+	valid = 1;
+	
+	/* Checking row */
+	for(i = 0; i < 9; ++i)
+	{
+		if(twoD[row][i] == twoD[row][col])
+		{
+			equalCountRow++;
+		}
+	}
+
+	/* Checking col */
+	for(i = 0; i < 9; ++i)
+	{
+		if(twoD[i][col] == twoD[row][col])
+		{
+			equalCountCol++;
+		}
+	}
+
+	if(equalCountRow > 1 || equalCountCol > 1)
+	{
+		valid = 0;
+	}
+
+	return valid;
+}
 
 
 void processArray(char *oneD){
 	char twoD[9][9];
-	int i, j, k, errored;
+	int i, j, k, errored, isValid, tmp;
+
+	int check1, check2;
+	errored = isValid = tmp = 0;
 	
 	/* Assigning 1D array to 2D array */	
 	for (i = 0; i < 9; ++i)
@@ -24,8 +107,7 @@ void processArray(char *oneD){
 		
 	}
 
-	/* Checking for problems with array, nums in same column or row */
-	errored = 0;
+	/* Checking for problems with array, nums in same column or row and 3x3 */
 	for(i = 0; i < 9; ++i)
 	{
 		for(j = 0; j < 9; ++j)
@@ -51,32 +133,72 @@ void processArray(char *oneD){
 				
 				}
 
-				/* 3x3 check */
-				/* TODO: CHECK 3x3 DUPLICATES */
-				/* Let's say i is row and j is column and i is 2 and column is 2,
-				this puts i, j in quadrant 1 but it needs to search 2 to left
-				and 2 up based on i % 3 and j % 3 */
-
 			}
+
+			/* Checking 3x3 grid */
+			isValid = checkGrid(twoD, i, j);
+			if(isValid == 0)
+			{
+				errored = 2;
+			}
+
 		}
 
 	}
-
 	
 
 	if(errored == 1)
 	{
-		printf("Error - Dupicate row or column #");
+		printf("Error - Column or Row");
+	}
+	else if(errored == 2)
+	{
+		printf("Error - 3x3");
 	}
 	else
 	{	
-		/* Solve the sudoku puzzle */
-		for(i = 0; i < 81; i++)
+		
+		/* Row i */
+		for(i = 0; i < 9; ++i)
 		{
-			printf("%c", oneD[i]);
+			/* Column j */
+			for(j = 0; j < 9; ++j)
+			{
+				if(twoD[i][j] == '.')
+				{
+					check1 = check2 = 0;
+					/* 49 is 1, 57 is 9 */
+					for(k = 49; k < 58; ++k)
+					{
+						/* Replacing value in grid with k, if k is invalid due
+						to row, col, 3x3 then switch it back */
+						tmp = twoD[i][j];
+						twoD[i][j] = k;
+						check1 = checkGrid(twoD, i, j);
+						check2 = checkRowAndCol(twoD, i, j);
+						if(!check1 || !check2)
+						{
+							twoD[i][j] = tmp;
+						}
+					}
+
+				}
+					
+			}
 		}
+
+		/* Printing solved puzzle */		
+		for(i = 0; i < 9; ++i)
+		{
+			for(j = 0; j < 9; ++j)
+			{
+				printf("%c", twoD[i][j]);
+			}
+		}
+
 	}
 }
+
 
 
 
@@ -86,10 +208,11 @@ int main(void){
 	/* Character array for holding the 81 elements from the input */
 	char initial[81];
 	
-	int c, errored, i, j, charsPerLine, eof;
+	int c, errored, charsPerLine, eof;
 
-	errored = i = j = charsPerLine = eof = 0;
+	c = errored = charsPerLine = eof = 0;
 
+	/* Reading the whole file line by line*/
 	while(eof == 0)
 	{
 		/* Processing characters */
@@ -124,8 +247,7 @@ int main(void){
 
 		}
 
-		/* If end of file was hit, then exit program */		
-		/* TODO: Get rid of this line */
+		/* If end of file was hit, then exit program */
 		if (c == EOF)
 		{
 			eof = 1;
@@ -140,7 +262,7 @@ int main(void){
 		
 		if(errored == 1)
 		{
-			printf("\nError - Line length or char types\n\n");
+			printf("\nError - Line or Char Type\n\n");
 		}
 		else
 		{
@@ -149,11 +271,6 @@ int main(void){
 			printf("\n\n");
 		}
 		
-		if(c == EOF)
-		{
-			eof = 1;
-		}
-
 		/* Resetting variables to continue onto the next line */
 		charsPerLine = 0;
 		errored = 0;
@@ -169,4 +286,26 @@ int main(void){
 
 
 
+
+/*int checkCol(char twoD[9][9], int col, int value){
+	int i, j, equalCount, valid;
+
+	equalCount = 0;
+	valid = 1;
+
+	for(i = 0; i < 9; ++i)
+	{
+		if(twoD[i][col] == value)
+		{
+			equalCount++;
+		}
+	}
+
+	if(equalCount > 1)
+	{
+		valid = 0;
+	}
+
+	return valid;
+}*/
 
