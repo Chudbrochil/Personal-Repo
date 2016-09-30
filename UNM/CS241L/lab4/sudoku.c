@@ -155,6 +155,7 @@ void processArray(char *oneD){
 	{
 		printf("Error - 3x3");
 	}
+	/* Solving the sudoku puzzle after exceptions have been caught */
 	else
 	{	
 		
