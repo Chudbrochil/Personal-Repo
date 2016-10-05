@@ -12,8 +12,11 @@
 
 int checkGrid(char twoD[9][9], int i, int j);
 int checkRowAndCol(char twoD[9][9], int row, int col);
-/*int checkCol(char twoD[9][9], int col, int value);*/
 void processArray(char *oneD);
+int solve_puzzle(char twoD[9][9], int row, int col);
+int numIsGood(char twoD[9][9], int row, int col);
+
+
 
 
 int checkGrid(char twoD[9][9], int i, int j){
@@ -24,34 +27,36 @@ int checkGrid(char twoD[9][9], int i, int j){
 	rowOffset = (i / 3) * 3;
 	columnOffset = (j / 3) * 3;
 
+
 	for(k = rowOffset; k < 3 + rowOffset; ++k)
 	{
-		if(twoD[i][j] != '.')
+		
+		/* 3 if statements for checking 3 columns */
+		if(twoD[k][columnOffset] == twoD[i][j])
 		{
-			/* 3 if statements for checking 3 columns */
-			if(twoD[k][columnOffset] == twoD[i][j])
-			{
-				equalCount++;
-			}
-			if(twoD[k][columnOffset + 1] == twoD[i][j])
-			{
-				equalCount++;
-			}
-			if(twoD[k][columnOffset + 2] == twoD[i][j])
-			{
-				equalCount++;
-			}
+			equalCount++;
 		}
-				
-		/* Because I'm checking every cell in 3x3, allowing one equal
-		space before throwing an error */
-		if(equalCount > 1)
+		if(twoD[k][columnOffset + 1] == twoD[i][j])
 		{
-			valid = 0;
+			equalCount++;
 		}
-
+		if(twoD[k][columnOffset + 2] == twoD[i][j])
+		{
+			equalCount++;
+		}
+			
+		
 	}
 
+
+	/* Because I'm checking every cell in 3x3, allowing one equal
+	space before throwing an error */
+	if(equalCount > 1)
+	{
+		valid = 0;
+	}
+
+	/* 0 is not valid, 1 is valid */
 	return valid;
 
 }
@@ -86,6 +91,7 @@ int checkRowAndCol(char twoD[9][9], int row, int col){
 		valid = 0;
 	}
 
+	/* 0 is not valid, 1 is valid */
 	return valid;
 }
 
@@ -136,7 +142,10 @@ void processArray(char *oneD){
 			}
 
 			/* Checking 3x3 grid */
-			isValid = checkGrid(twoD, i, j);
+			if(twoD[i][j] != '.')
+			{
+				isValid = checkGrid(twoD, i, j);
+			}
 			if(isValid == 0)
 			{
 				errored = 2;
@@ -158,49 +167,119 @@ void processArray(char *oneD){
 	/* Solving the sudoku puzzle after exceptions have been caught */
 	else
 	{	
-		
-		/* Row i */
-		for(i = 0; i < 9; ++i)
+		if(solve_puzzle(twoD, 0, 0) == 1)
 		{
-			/* Column j */
-			for(j = 0; j < 9; ++j)
+			
+			/* Printing solved puzzle */		
+			for(i = 0; i < 9; ++i)
 			{
-				if(twoD[i][j] == '.')
+				for(j = 0; j < 9; ++j)
 				{
-					check1 = check2 = 0;
-					/* 49 is 1, 57 is 9 */
-					for(k = 49; k < 58; ++k)
-					{
-						/* Replacing value in grid with k, if k is invalid due
-						to row, col, 3x3 then switch it back */
-						tmp = twoD[i][j];
-						twoD[i][j] = k;
-						check1 = checkGrid(twoD, i, j);
-						check2 = checkRowAndCol(twoD, i, j);
-						if(!check1 || !check2)
-						{
-							twoD[i][j] = tmp;
-						}
-					}
-
+					printf("%c", twoD[i][j]);
 				}
-					
 			}
 		}
-
-		/* Printing solved puzzle */		
-		for(i = 0; i < 9; ++i)
+		else
 		{
-			for(j = 0; j < 9; ++j)
-			{
-				printf("%c", twoD[i][j]);
-			}
+			printf("No solution");
 		}
+		
+
 
 	}
 }
 
+int solve_puzzle(char twoD[9][9], int row, int col){
+	int i, tmp;
 
+	/* If the 9th row has been hit then we solved the puzzle */
+	if(row == 9)
+	{
+		return 1;
+	}
+	
+	if(twoD[row][col]  == '.'){
+				
+		for(i = '1'; i <= '9'; ++i)
+		{
+			twoD[row][col] = i;
+
+			if(numIsGood(twoD, row, col) == 1)
+			{		
+					
+
+				/* If on the 8th column then iterate down rows */
+				if (col == 8)
+				{
+					if (solve_puzzle(twoD, row + 1, 0) == 1)
+					{
+						return 1;
+					}
+				}
+				else
+				{
+					if(solve_puzzle(twoD, row, col + 1) == 1)
+					{
+						return 1;
+					}
+				}
+				
+			}
+
+		}
+
+		/* If this loop leaves the recursion then reassign a blank value, i.e. . */
+		twoD[row][col] = '.';
+	}
+
+	/* Value is not . */
+	else{
+			
+			/* If on the 8th column then iterate down rows */
+			if (col == 8)
+			{
+				if (solve_puzzle(twoD, row + 1, 0) == 1)
+				{
+					return 1;
+				}
+			}
+			else
+			{
+				if(solve_puzzle(twoD, row, col + 1) == 1)
+				{
+					return 1;
+				}
+			}
+
+		
+	}
+
+
+	/* No solution */
+	return 0;
+
+
+}
+
+
+int numIsGood( char twoD[9][9], int row, int col){
+	int check1, check2;
+
+	check1 = checkGrid(twoD, row, col);
+	check2 = checkRowAndCol(twoD, row, col);
+
+	/* If both checks are valid then return true */
+	if(check1 && check2)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+
+	/* 0 is not valid, 1 is valid */
+}
 
 
 
@@ -309,4 +388,45 @@ int main(void){
 
 	return valid;
 }*/
+
+
+
+
+
+		/* Row i */
+//		for(i = 0; i < 9; ++i)
+//		{
+//			/* Column j */
+//			for(j = 0; j < 9; ++j)
+//			{
+//				if(twoD[i][j] == '.')
+//				{
+//					check1 = check2 = 0;
+//					/* 49 is 1, 57 is 9 */
+//					for(k = 49; k < 58; ++k)
+//					{
+//						/* Replacing value in grid with k, if k is invalid due
+//						to row, col, 3x3 then switch it back */
+//						tmp = twoD[i][j];
+//						twoD[i][j] = k;
+//						check1 = checkGrid(twoD, i, j);
+//						check2 = checkRowAndCol(twoD, i, j);
+//						if(!check1 || !check2)
+//						{
+//							twoD[i][j] = tmp;
+//						}
+//
+//						// TODO: Use recursion...
+//						// If no match is found, then backtrack
+//						if((k == 57) && (!check || !check2)
+//						/*{
+//								
+//						}*/
+//					}
+//
+//				}
+//					
+//			}
+//		}
+
 
