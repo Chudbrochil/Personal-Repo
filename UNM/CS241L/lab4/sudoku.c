@@ -17,8 +17,6 @@ int solve_puzzle(char twoD[9][9], int row, int col);
 int numIsGood(char twoD[9][9], int row, int col);
 
 
-
-
 int checkGrid(char twoD[9][9], int i, int j){
 	int rowOffset, columnOffset, equalCount, valid, k;
 	
@@ -48,7 +46,6 @@ int checkGrid(char twoD[9][9], int i, int j){
 		
 	}
 
-
 	/* Because I'm checking every cell in 3x3, allowing one equal
 	space before throwing an error */
 	if(equalCount > 1)
@@ -63,7 +60,7 @@ int checkGrid(char twoD[9][9], int i, int j){
 
 
 int checkRowAndCol(char twoD[9][9], int row, int col){
-	int i, j, equalCountRow, equalCountCol, valid;
+	int i, equalCountRow, equalCountCol, valid;
 
 	equalCountRow = equalCountCol = 0;
 	valid = 1;
@@ -99,9 +96,8 @@ int checkRowAndCol(char twoD[9][9], int row, int col){
 void processArray(char *oneD){
 	char twoD[9][9];
 	int i, j, k, errored, isValid, tmp;
-
-	int check1, check2;
-	errored = isValid = tmp = 0;
+	errored = tmp = 0;
+	isValid = 1;
 	
 	/* Assigning 1D array to 2D array */	
 	for (i = 0; i < 9; ++i)
@@ -144,7 +140,10 @@ void processArray(char *oneD){
 			/* Checking 3x3 grid */
 			if(twoD[i][j] != '.')
 			{
-				isValid = checkGrid(twoD, i, j);
+				if(checkGrid(twoD, i, j) == 0)
+				{
+					errored = 2;
+				}
 			}
 			if(isValid == 0)
 			{
@@ -158,15 +157,18 @@ void processArray(char *oneD){
 
 	if(errored == 1)
 	{
-		printf("Error - Column or Row");
+		printf("Error");
+		/*printf("Error - Column or Row");*/
 	}
 	else if(errored == 2)
 	{
-		printf("Error - 3x3");
+		printf("Error");
+		/*printf("Error - 3x3");*/
 	}
+
 	/* Solving the sudoku puzzle after exceptions have been caught */
 	else
-	{	
+	{
 		if(solve_puzzle(twoD, 0, 0) == 1)
 		{
 			
@@ -185,12 +187,12 @@ void processArray(char *oneD){
 		}
 		
 
-
 	}
+	
 }
 
 int solve_puzzle(char twoD[9][9], int row, int col){
-	int i, tmp;
+	int i;
 
 	/* If the 9th row has been hit then we solved the puzzle */
 	if(row == 9)
@@ -342,7 +344,8 @@ int main(void){
 		
 		if(errored == 1)
 		{
-			printf("\nError - Line or Char Type\n\n");
+			/*printf("\nError - Line or Char Type\n\n");*/
+			printf("\nError\n\n");
 		}
 		else
 		{
@@ -362,71 +365,5 @@ int main(void){
 
 	return 0;
 }
-
-
-
-
-
-/*int checkCol(char twoD[9][9], int col, int value){
-	int i, j, equalCount, valid;
-
-	equalCount = 0;
-	valid = 1;
-
-	for(i = 0; i < 9; ++i)
-	{
-		if(twoD[i][col] == value)
-		{
-			equalCount++;
-		}
-	}
-
-	if(equalCount > 1)
-	{
-		valid = 0;
-	}
-
-	return valid;
-}*/
-
-
-
-
-
-		/* Row i */
-//		for(i = 0; i < 9; ++i)
-//		{
-//			/* Column j */
-//			for(j = 0; j < 9; ++j)
-//			{
-//				if(twoD[i][j] == '.')
-//				{
-//					check1 = check2 = 0;
-//					/* 49 is 1, 57 is 9 */
-//					for(k = 49; k < 58; ++k)
-//					{
-//						/* Replacing value in grid with k, if k is invalid due
-//						to row, col, 3x3 then switch it back */
-//						tmp = twoD[i][j];
-//						twoD[i][j] = k;
-//						check1 = checkGrid(twoD, i, j);
-//						check2 = checkRowAndCol(twoD, i, j);
-//						if(!check1 || !check2)
-//						{
-//							twoD[i][j] = tmp;
-//						}
-//
-//						// TODO: Use recursion...
-//						// If no match is found, then backtrack
-//						if((k == 57) && (!check || !check2)
-//						/*{
-//								
-//						}*/
-//					}
-//
-//				}
-//					
-//			}
-//		}
 
 
