@@ -251,7 +251,7 @@ void binaryToDecimal(char* charNum, int charLen)
 	decimalNum = strtoul(charNum, &charNum, 2);
 	
 	/* Storing the unsigned long decimalNum into a char array */
-	sprintf(returnString, "%u", decimalNum);
+	sprintf(returnString, "%lu", decimalNum);
 	
 	/* If there is more than 3 digits, add some commas */
 	if(strlen(returnString) > 3)
