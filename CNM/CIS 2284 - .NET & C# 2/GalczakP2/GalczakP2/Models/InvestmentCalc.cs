@@ -40,9 +40,8 @@ namespace GalczakP2.Models
             get { return cmpPerYr; }
             set
             {
-                //TODO: -5 set value then call calc. RJG
-                Calc();
                 cmpPerYr = value;
+                Calc();
             }
         }
 
@@ -54,9 +53,8 @@ namespace GalczakP2.Models
             get { return interest; }
             set
             {
-                //TODO: set value then call calc. RJG
-                Calc();
                 interest = value;
+                Calc();
             }
         }
 
