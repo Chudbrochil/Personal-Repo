@@ -1,0 +1,24 @@
+﻿<Window x:Class="GalczakLittleAllenGP2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cowboys and Aliens" Height="550" Width="700">
+    <Grid Background="#FF189E02">
+        <Label Content="Location Description:" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top"/>
+        <Label Content="Select an item to search or take:" HorizontalAlignment="Left" Margin="50,159,0,0" VerticalAlignment="Top"/>
+        <Label Content="Click on an option to travel in that direction:" HorizontalAlignment="Left" Margin="50,287,0,0" VerticalAlignment="Top"/>
+        <Label Content="Game Status:" HorizontalAlignment="Left" Margin="50,387,0,0" VerticalAlignment="Top"/>
+        <Label Content="Health:" HorizontalAlignment="Left" Margin="50,19,0,0" VerticalAlignment="Top"/>
+        <Label Content="Inventory: Select item to drop" HorizontalAlignment="Left" Margin="450,187,0,0" VerticalAlignment="Top"/>
+        <ListBox x:Name="lbSearchorTake" HorizontalAlignment="Left" Height="92" Margin="50,190,0,0" VerticalAlignment="Top" Width="250" MouseDoubleClick="lbSearchorTake_MouseDoubleClick"/>
+        <ListBox x:Name="lbTravelOption" HorizontalAlignment="Left" Height="64" Margin="50,318,0,0" VerticalAlignment="Top" Width="250" MouseDoubleClick="lbTravelOption_MouseDoubleClick"/>
+        <ListBox x:Name="lbInventory" HorizontalAlignment="Left" Height="164" Margin="450,218,0,0" VerticalAlignment="Top" Width="200" MouseDoubleClick="lbInventory_MouseDoubleClick"/>
+        <TextBox x:Name="txbStatus" HorizontalAlignment="Left" Height="91" Margin="50,418,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="600" IsReadOnly="True"/>
+        <TextBox x:Name="txbLocation" HorizontalAlignment="Left" Height="79" Margin="50,75,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="600" IsReadOnly="True"/>
+        <TextBox x:Name="txbHealth" HorizontalAlignment="Left" Height="23" Margin="102,22,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="69" IsReadOnly="True"/>
+        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="330,195,0,0" VerticalAlignment="Top" Width="80" Click="btnSearch_Click" Height="35" FontSize="18"/>
+        <Button x:Name="btnTake" Content="Take" HorizontalAlignment="Left" Margin="330,247,0,0" VerticalAlignment="Top" Width="80" Click="btnTake_Click" Height="35" FontSize="18"/>
+        <Button x:Name="btnDrop" Content="Drop" HorizontalAlignment="Left" Margin="330,295,0,0" VerticalAlignment="Top" Width="80" Click="btnDrop_Click" Height="35" FontSize="18"/>
+        <Button x:Name="btnWait" Content="Wait" HorizontalAlignment="Left" Margin="330,347,0,0" VerticalAlignment="Top" Width="80" Click="btnWait_Click" Height="35" FontSize="18"/>
+
+    </Grid>
+</Window>

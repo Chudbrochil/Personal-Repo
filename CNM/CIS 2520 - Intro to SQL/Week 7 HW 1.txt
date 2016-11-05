@@ -1,0 +1,157 @@
+Aggregates and Group By
+1.
+select MIN(salary), TRUNC(AVG(salary), 2), MAX(salary), COUNT(*), JOB_ID
+from employees
+GROUP BY JOB_ID;
+
+2.
+select MIN(salary), TRUNC(AVG(salary), 2), MAX(salary), COUNT(*), JOB_ID
+from employees
+WHERE JOB_ID NOT IN('AD_VP','AD_PRES')
+GROUP BY JOB_ID;
+
+3.
+select MIN(salary), TRUNC(AVG(salary), 2), MAX(salary), COUNT(*), JOB_ID
+from employees
+WHERE JOB_ID NOT IN('AD_VP','AD_PRES')
+GROUP BY JOB_ID
+HAVING MAX(SALARY) > 10000;
+
+4.
+select min(salary), trunc(avg(salary), 2), max(salary), count(*), department_id
+from employees
+group by department_id;
+
+5.
+select min(salary), trunc(avg(salary), 2), max(salary), count(*), department_id
+from employees
+where department_id not in(90)
+group by department_id;
+
+6.
+select min(salary), trunc(avg(salary), 2), max(salary), count(*), department_id, job_id
+from employees
+group by department_id, job_id;
+
+7.
+select min(salary), trunc(avg(salary), 2), max(salary), count(*), department_id, job_id
+from employees
+where department_id not in(50,90)
+group by department_id, job_id;
+
+8.
+select min(salary), trunc(avg(salary), 2), max(salary), count(*), department_id, job_id
+from employees
+where department_id not in(50,90)
+group by department_id, job_id
+having avg(salary) > 6000;
+
+9a.
+select trunc((avg(salary)), 2), count(*), department_id
+from employees
+group by department_id;
+
+9b.
+select trunc(max(avg(salary)), 2), trunc(min(avg(salary)), 2), count(*)
+from employees
+group by department_id;
+
+10.
+select trunc(avg(max(salary)),2), count(*)
+from employees
+group by department_id;
+
+11.
+select department_id, job_id, SUM(salary)
+from employees
+group by rollup (department_id, job_id);
+
+
+Subqueries
+1.
+select *
+from d_songs
+where type_code =
+(SELECT CODE
+FROM D_TYPES
+WHERE DESCRIPTION = 'Pop');
+
+2.
+select *
+from d_events
+where theme_code =
+(SELECT CODE 
+FROM D_THEMES 
+WHERE DESCRIPTION LIKE 'Tro%');
+
+3.
+select first_name, last_name
+from employees
+where department_id =
+(SELECT department_id
+FROM departments
+WHERE department_name = 'IT');
+
+4.
+select employee_id, last_name, job_id, salary
+from employees
+where salary >
+(select avg(salary)
+from employees);
+
+5.
+select employee_id, first_name, last_name, salary
+from employees
+where salary >
+(select salary
+from employees
+where last_name = 'Lorentz')
+and department_id =
+(select department_id
+from employees
+where last_name = 'Abel');
+
+6.
+SELECT department_id, MIN(salary)
+from employees
+group by department_id
+having min(salary) >
+(select min(salary)
+from employees
+where department_id not in(50));
+
+7.
+select id, title, duration, artist
+from d_songs
+where type_code =
+(SELECT CODE
+FROM D_TYPES
+WHERE DESCRIPTION = 'Pop')
+or type_code =
+(select code
+from d_types
+where description = 'Jazz');
+
+8.
+select last_name
+from employees
+where salary =
+(select min(salary)
+from employees
+where department_id in(60));
+
+9.
+select employee_id, last_name, department_id, job_id, salary
+from employees
+where salary =
+(select max(salary)
+from employees
+where department_id not in(90));
+
+10.
+select employee_id, last_name, department_id, job_id, salary
+from employees
+where salary =
+(select min(salary)
+from employees
+where department_id not in(90));

@@ -1,0 +1,94 @@
+﻿<!--Anthony Galczak
+    Program 1
+    Ellipse Generator-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Response</title>
+    <link href="StyleSheet.css" rel="stylesheet" />
+    <style type="text/css">
+        section {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <form action="GetForm.html" method="get">
+        <header>
+            <h1>Result - Ellipse</h1>
+        </header>
+        <nav>
+            <ol>
+                <li><a href="Index.html">Home Page</a></li>
+                <li><a href="GetForm.html">Ellipse Builder</a></li>
+            </ol>
+        </nav>
+        <div id="mainContent">
+            <section>
+                Major Axis: <span id="majorAxis"></span><br />
+                Minor Axis: <span id="minorAxis"></span><br />
+                <input type="submit" value="New Ellipse" />
+            </section>
+            <canvas id="canvas" width="410" height="410"></canvas>
+        </div>
+        <aside>
+            <h2 style="font-size: 20px">Earth!</h2>
+            <img alt="Earth!" src="/Images/earth.jpg" height="150" width="200" />
+        </aside>
+        <footer>
+            Footer: <a href="http:\\www.cnm.edu">Central New Mexico Community College</a>
+        </footer>
+        <script>
+
+            //Outputting variables to section tags for viewing
+            document.getElementById("majorAxis").innerHTML = getParameterByName("MajorAxis");
+            document.getElementById("minorAxis").innerHTML = getParameterByName("MinorAxis");
+
+            // Function for grabbing query string
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+
+
+            var major = parseInt(getParameterByName("MajorAxis"));
+            var minor = parseInt(getParameterByName("MinorAxis"));
+
+            // Drawing the canvas
+            // http://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
+            var canvas = document.getElementById("canvas");
+
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                drawEllipse(ctx, 10, 10, major, minor);    
+            }
+
+            function drawEllipse(ctx, x, y, w, h) {
+                var kappa = .5522848,
+                    ox = (w / 2) * kappa, // control point offset horizontal
+                    oy = (h / 2) * kappa, // control point offset vertical
+                    xe = x + w,           // x-end
+                    ye = y + h,           // y-end
+                    xm = x + w / 2,       // x-middle
+                    ym = y + h / 2;       // y-middle
+
+                ctx.beginPath();
+                ctx.moveTo(x, ym);
+                ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
+                ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym);
+                ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+                ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
+                ctx.stroke();
+            }
+
+            ctx.save();
+
+        </script>
+    </form>
+</body>
+</html>

@@ -1,0 +1,45 @@
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\FightDialog.baml
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\MainWindow.baml
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\FightDialog.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\MainWindow.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2_MarkupCompile.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.g.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.Properties.Resources.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.csproj.GenerateResource.Cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.exe.config
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\FightDialog.baml
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\MainWindow.baml
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\FightDialog.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\MainWindow.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2_MarkupCompile.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.g.resources
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.Properties.Resources.resources
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.csproj.GenerateResource.Cache
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.exe.config
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.exe
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.pdb
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.exe
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\bin\Debug\GalczakLittleAllenGP2.pdb
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.csprojResolveAssemblyReference.cache
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\FightDialog.baml
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\MainWindow.baml
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\FightDialog.g.cs
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\MainWindow.g.cs
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\App.g.cs
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2_MarkupCompile.cache
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.g.resources
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.Properties.Resources.resources
+C:\Users\anthony\Documents\~Docs\Git\Personal-Repo\CNM\CIS 1280 - .NET & C# 1\GalczakLittleAllenGP2\GalczakLittleAllenGP2\obj\Debug\GalczakLittleAllenGP2.csproj.GenerateResource.Cache

@@ -1,0 +1,9 @@
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakP2\Csharp GalczakP2\bin\Debug\Csharp GalczakP2.exe.config
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakP2\Csharp GalczakP2\obj\Debug\Csharp GalczakP2.csprojResolveAssemblyReference.cache
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakP2\Csharp GalczakP2\bin\Debug\Csharp GalczakP2.exe
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakP2\Csharp GalczakP2\bin\Debug\Csharp GalczakP2.pdb
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakP2\Csharp GalczakP2\obj\Debug\Csharp GalczakP2.exe
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakP2\Csharp GalczakP2\obj\Debug\Csharp GalczakP2.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakP2\Csharp GalczakP2\bin\Debug\Csharp GalczakP2.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakP2\Csharp GalczakP2\obj\Debug\Csharp GalczakP2.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakP2\Csharp GalczakP2\obj\Debug\Csharp GalczakP2.pdb

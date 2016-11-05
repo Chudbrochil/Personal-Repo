@@ -1,0 +1,14 @@
+﻿<Window x:Class="GalczakE6.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="450" Width="550">
+    <Grid>
+        <Label x:Name="lblTitle" Content="Welcome to the C# Zoo!&#xD;&#xA;It is feeding time and you are invited to observe&#xD;&#xA;some of our most interesting residents.&#xD;&#xA;Please choose an animal to watch." HorizontalAlignment="Center" Margin="96,10,27,0" VerticalAlignment="Top" Height="105" Width="419" FontSize="18"/>
+        <RadioButton x:Name="radHoneyBadger" Content="Honey Badger" HorizontalAlignment="Left" Margin="69,170,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radPorpoise" Content="Porpoise" HorizontalAlignment="Left" Margin="69,201,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="radDodo" Content="Dodo" HorizontalAlignment="Left" Margin="69,231,0,0" VerticalAlignment="Top"/>
+        <Button Content="Observe!" HorizontalAlignment="Left" Margin="239,140,0,0" VerticalAlignment="Top" Width="213" Height="111" FontSize="36" Click="Button_Click"/>
+        <TextBox x:Name="txbResults" HorizontalAlignment="Left" Height="94" Margin="69,315,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="383"/>
+
+    </Grid>
+</Window>

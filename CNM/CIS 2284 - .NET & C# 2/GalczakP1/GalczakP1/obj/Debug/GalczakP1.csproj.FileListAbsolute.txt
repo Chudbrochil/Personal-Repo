@@ -1,0 +1,40 @@
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\csc.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\vbc.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\VBCSCompiler.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\GalczakP1.dll.config
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\GalczakP1.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\GalczakP1.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\obj\Debug\GalczakP1.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\obj\Debug\GalczakP1.dll
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 2284\GalczakP1\GalczakP1\obj\Debug\GalczakP1.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\csc.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\vbc.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\VBCSCompiler.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\GalczakP1.dll.config
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\GalczakP1.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\GalczakP1.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\obj\Debug\GalczakP1.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\obj\Debug\GalczakP1.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\GalczakP1\GalczakP1\obj\Debug\GalczakP1.csprojResolveAssemblyReference.cache

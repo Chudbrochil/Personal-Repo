@@ -1,0 +1,37 @@
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\ClientDataDemo.dll.config
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\ClientDataDemo.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\ClientDataDemo.pdb
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Helpers.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Mvc.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Razor.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Webpages.Deployment.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Webpages.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Webpages.Razor.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Razor.xml
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Webpages.xml
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Webpages.Deployment.xml
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Webpages.Razor.xml
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Helpers.xml
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\bin\System.Web.Mvc.xml
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\obj\Debug\ClientDataDemo.csprojResolveAssemblyReference.cache
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\obj\Debug\ClientDataDemo.dll
+C:\Users\rob82_000\Dropbox\STEMULUSCourse\DotNet\Chapters\Ch42MVC\Demos\D3SubmittingDataFromClient\ClientDataDemo\ClientDataDemo\obj\Debug\ClientDataDemo.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\ClientDataDemo.dll.config
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\ClientDataDemo.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\ClientDataDemo.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Helpers.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Mvc.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Razor.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Webpages.Deployment.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Webpages.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Webpages.Razor.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Razor.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Webpages.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Webpages.Deployment.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Webpages.Razor.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Helpers.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\bin\System.Web.Mvc.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\obj\Debug\ClientDataDemo.csprojResolveAssemblyReference.cache
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\obj\Debug\ClientDataDemo.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\MVC HTML Helpers\ClientDataDemo\obj\Debug\ClientDataDemo.pdb

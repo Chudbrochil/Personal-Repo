@@ -1,0 +1,58 @@
+1.
+select distinct job_id
+from employees;
+
+2.
+select distinct department_id, job_id
+from employees
+order by department_id;
+
+3.
+select last_name, job_id, hire_date
+from employees
+where last_name IN('Matos', 'Taylor')
+order by hire_date asc;
+
+4.
+select last_name, department_id
+from employees
+where department_id in(20, 50)
+order by last_name asc;
+
+5.
+select last_name as Employee, salary as "Monthly Salary", department_id
+from employees
+where salary between 5000 and 12000
+and department_id in(20, 50);
+
+6.
+select last_name, hire_date
+from employees
+where hire_date like '%94';
+
+7a.
+select last_name, job_id, commission_pct
+from employees
+where commission_pct is null;
+
+7b.
+select last_name, job_id, commission_pct
+from employees
+where commission_pct is not null;
+
+8.
+select last_name
+from employees
+where last_name like '__a%';
+
+9.
+select last_name
+from employees
+where last_name like '%e%'
+and last_name like '%a%';
+
+10.
+select last_name, job_id, salary
+from employees
+where job_id like '%REP%'
+and salary not in(2500, 3500, 7000);

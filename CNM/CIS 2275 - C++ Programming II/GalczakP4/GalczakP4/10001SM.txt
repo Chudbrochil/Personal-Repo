@@ -1,0 +1,8 @@
+Welcome to the C++ Spa and Resort: Today's Date: October 28, 2015
+Guest: john smith  Confirmation Number: 10001SM
+Arrival: January 1, 2015  Departure: January 6, 2015
+Number of Nights: 5  Number of Guests: 1
+Room Cost (with 15% discount): 786.25
+Lodging Tax: 96.9446
+Total Cost: 883.195
+We look forward to seeing you in January

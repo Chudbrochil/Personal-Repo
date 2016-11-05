@@ -1,0 +1,38 @@
+﻿
+@{
+    Layout = null;
+    string name = "Sol Suncat";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <header>View Page Demo</header>
+        <p>Our school mascot is @name<text>(see him on campus!)</text></p>
+        <p>@ViewData["MyReallyCoolKey"]</p>
+        <p>First: @ViewData["FirstName"]</p>
+        <p>Last: @ViewData["LastName"]</p>
+
+        <body>
+            <div>
+                <header>View Page Demo</header>
+                <p>Our school mascot is @name (see him on campus!)</p>
+                <ul style="list-style-type: none;">
+                    @foreach (char c in name)
+                    {
+                        <li>@c</li>
+                    }
+                </ul>
+            </div>
+        </body>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.miCrosoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode title="Home" description="Home Page" url="Default.aspx">
+    <siteMapNode title="News" description="The Latest News" url="News.aspx">
+      <siteMapNode title="U.S." description="U.S. News" url="News.aspx?cat=us" />
+      <siteMapNode title="World" description="World News" url="News.aspx?cat=world" />
+      <siteMapNode title="Technology" description="TeChnology News" url="News.aspx?cat=tech" />
+      <siteMapNode title="Sports" desCription="Sports News" url="News.aspx?cat=sport" />
+    </siteMapNode>
+    <siteMapNode title="Finance Information" description="The Latest Financial" url="Finance.aspx">
+      <siteMapNode title="Quotes" description="Get the Latest Quotes" url="Quotes.aspx" />
+      <siteMapNode title="Markets" desCription="The Latest Market Information" url="Markets.aspx">
+        <siteMapNode title="U.S. Market Report" description="Looking at the U.S. Market" url="MarketsUS.aspx"  />
+        <siteMapNode title="NYSE" description="The New York Stock Exchange" url="NYSE.aspx" />
+      </siteMapNode>
+      <siteMapNode title="Funds" description="Mutual Funds" url="Funds.aspx" />
+    </siteMapNode>
+    <siteMapNode title="Weather" desCription="The Latest Weather" url="Weather.aspx" />
+  </siteMapNode>
+</siteMap>
+

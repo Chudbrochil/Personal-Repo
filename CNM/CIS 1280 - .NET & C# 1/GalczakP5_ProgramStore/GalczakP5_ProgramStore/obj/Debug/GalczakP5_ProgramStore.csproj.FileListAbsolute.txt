@@ -1,0 +1,45 @@
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore_MarkupCompile.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.g.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.Properties.Resources.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.csproj.GenerateResource.Cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\ComputerOrderForm.baml
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\StoreCheckoutForm.baml
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\ComputerOrderForm.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\StoreCheckoutForm.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.exe.config
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\ComputerOrderForm.baml
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\StoreCheckoutForm.baml
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\ComputerOrderForm.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\StoreCheckoutForm.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore_MarkupCompile.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.g.resources
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.Properties.Resources.resources
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.csproj.GenerateResource.Cache
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.exe.config
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\bin\Debug\GalczakP5_ProgramStore.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.csprojResolveAssemblyReference.cache
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\ComputerOrderForm.baml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\StoreCheckoutForm.baml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\ComputerOrderForm.g.cs
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\StoreCheckoutForm.g.cs
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\App.g.cs
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore_MarkupCompile.cache
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.g.resources
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.Properties.Resources.resources
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 1280\GalczakP5_ProgramStore\GalczakP5_ProgramStore\obj\Debug\GalczakP5_ProgramStore.csproj.GenerateResource.Cache

@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@ViewBag.Info
+@using (Html.BeginForm("SubmitData", "Helper", "post"))
+{
+    @Html.ValidationSummary(true)
+    <legend> Menu </legend>
+    <p>@Html.Label("Id", new { id = "lblId" })</p>
+    <p>@Html.Editor("id")</p>
+    <p>@Html.Label("Text", new { id = "lblText" })</p>
+    <p>@Html.Editor("text")</p>
+    <p>@Html.Label("Price", new { id = "lblPrice" })</p>
+    <p>@Html.Editor("price")</p>
+    <p>@Html.Label("Category", new { id = "lblCategory" })</p>
+    <p>@Html.Editor("category")</p>
+    <div> </div>
+    <button type="submit">Submit</button>
+}

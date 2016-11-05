@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="galczakp8.FXMLDocumentController">
+   <children>
+      <Label alignment="CENTER" layoutX="13.0" layoutY="31.0" prefHeight="54.0" prefWidth="625.0" text="Welcome to the Enigma Encoding and Decoding Machine!">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="85.0" prefHeight="80.0" prefWidth="300.0" text="To Encode, enter your message in the Text Box below&#10;Select Enter a Key or Enigma-Generated Key&#10;then press the Encode button below.&#10;Select File &gt; Save File to save your message to a file." />
+      <Label alignment="CENTER_RIGHT" layoutX="337.0" layoutY="85.0" prefHeight="80.0" prefWidth="300.0" text="To Decode, Select File &gt; Open File&#10;then browse to your file to read the&#10;coded message.&#10;Press the Decode button below." textAlignment="RIGHT" />
+      <RadioButton fx:id="radEnigmaKey" layoutX="14.0" layoutY="172.0" mnemonicParsing="false" text="Use an Enigma-Generated Key">
+         <toggleGroup>
+            <ToggleGroup fx:id="radioGroup1" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="radEnterKey" layoutX="14.0" layoutY="205.0" mnemonicParsing="false" text="Enter a Key, 1-50" toggleGroup="$radioGroup1" />
+      <TextField fx:id="txtEnterKey" layoutX="133.0" layoutY="201.0" prefHeight="25.0" prefWidth="79.0" />
+      <Button fx:id="btnEncode" layoutX="251.0" layoutY="168.0" mnemonicParsing="false" onAction="#encodeButtonClick" prefHeight="54.0" prefWidth="120.0" text="ENCODE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnDecode" layoutX="384.0" layoutY="168.0" mnemonicParsing="false" onAction="#decodeButtonClick" prefHeight="54.0" prefWidth="120.0" text="DECODE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnClear" layoutX="516.0" layoutY="168.0" mnemonicParsing="false" onAction="#clearButtonClick" prefHeight="54.0" prefWidth="120.0" text="CLEAR">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" layoutX="14.0" layoutY="242.0" prefHeight="33.0" prefWidth="625.0" text="Secret Message Summary">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtMessage" layoutX="133.0" layoutY="275.0" prefHeight="25.0" prefWidth="505.0" />
+      <TextField fx:id="txtCodedMessage" layoutX="133.0" layoutY="310.0" prefHeight="25.0" prefWidth="505.0" />
+      <TextField fx:id="txtKeyOutput" editable="false" layoutX="133.0" layoutY="343.0" prefHeight="25.0" prefWidth="505.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="279.0" prefHeight="17.0" prefWidth="111.0" text="Message:" />
+      <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="314.0" prefHeight="17.0" prefWidth="111.0" text="Coded Message:" />
+      <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="347.0" prefHeight="17.0" prefWidth="111.0" text="Key:" />
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="653.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="dlgSaveFile" mnemonicParsing="false" onAction="#saveFileClick" text="Save File" />
+                  <MenuItem fx:id="dlgOpenFile" mnemonicParsing="false" onAction="#openFileClick" text="Open File" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="About" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>

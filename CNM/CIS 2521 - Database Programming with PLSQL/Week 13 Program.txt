@@ -1,0 +1,132 @@
+COLLEGE_PKG SPEC FILE
+
+
+
+
+create or replace 
+PACKAGE college_pkg AS
+procedure get_student
+(
+v_student_id IN student.student_id%type,
+v_first_name OUT student.first_name%type, 
+v_last_name OUT student.last_name%type,  
+v_employer OUT student.employer%type);
+
+procedure get_instructor
+(
+v_instructor_id IN instructor.instructor_id%type,
+v_first_name OUT instructor.first_name%type,  
+v_last_name OUT instructor.last_name%type);
+
+PROCEDURE get_grades
+(p_student_id IN number,
+p_section_id IN number,
+p_grade_type_code IN varchar2,
+p_avg OUT number);
+
+FUNCTION get_grades_func(
+p_student_id IN NUMBER, 
+p_section_id IN NUMBER, 
+p_grade_type IN VARCHAR2) 
+  RETURN NUMBER;
+  
+END college_pkg;
+
+
+
+
+
+COLLEGE_PKG BODY FILE
+
+
+
+
+CREATE OR REPLACE
+PACKAGE BODY COLLEGE_PKG AS
+
+  procedure get_student
+(
+v_student_id IN student.student_id%type,
+v_first_name OUT student.first_name%type, 
+v_last_name OUT student.last_name%type,  
+v_employer OUT student.employer%type) AS
+  BEGIN
+select first_name, last_name, employer
+into v_first_name, v_last_name, v_employer
+from student
+where student_id = v_student_id;
+dbms_output.put_line('The first name is: ' || v_first_name || chr(10) || 
+'The last name is: ' || v_last_name || chr(10) || 
+'The employer is: ' || v_employer); 
+  END get_student;
+
+  procedure get_instructor
+(
+v_instructor_id IN instructor.instructor_id%type,
+v_first_name OUT instructor.first_name%type,  
+v_last_name OUT instructor.last_name%type) AS
+  BEGIN
+select first_name, last_name
+into v_first_name, v_last_name
+from instructor
+where instructor_id = v_instructor_id;
+
+dbms_output.put_line('The first name is: ' || v_first_name || chr(10) || 
+'The last name is: ' || v_last_name); 
+    NULL;
+  END get_instructor;
+
+  PROCEDURE get_grades
+(p_student_id IN number,
+p_section_id IN number,
+p_grade_type_code IN varchar2,
+p_avg OUT number) AS
+  BEGIN
+  SELECT AVG(numeric_grade)
+  INTO p_avg
+  FROM grade
+  WHERE student_id = p_student_id
+  AND section_id = p_section_id
+  AND grade_type_code = UPPER(p_grade_type_code)
+ -- AND GRADE_CODE_OCCURRENCE = 1 --TESTING
+ GROUP BY student_id, section_id, grade_type_code;
+
+DBMS_OUTPUT.PUT_LINE ('Student '||  p_student_id || ' has an average grade of ' || p_avg || ' for section ' || p_section_id 
+  || ' on grade code of '  || p_grade_type_code);
+  
+EXCEPTION
+	WHEN others then
+	dbms_output.put_line('Student ID ' || p_student_id || ' is NOT FOUND!  Please try Again.');
+    NULL;
+  END get_grades;
+
+  FUNCTION get_grades_func(
+p_student_id IN NUMBER, 
+p_section_id IN NUMBER, 
+p_grade_type IN VARCHAR2) 
+  RETURN NUMBER AS
+  v_avg NUMBER := 0;
+  BEGIN
+  SELECT  AVG(numeric_grade)
+  INTO    v_avg
+  FROM    grade
+  WHERE   student_id = p_student_id
+  AND     section_id = p_section_id
+  AND     grade_type_code = p_grade_type
+  GROUP BY student_id, section_id, grade_type_code;
+  RETURN  (v_avg);
+exception
+when others  then
+  
+ dbms_output.put_line('ERROR ERROR ' || sqlerrm);
+return 0;
+    RETURN NULL;
+  END get_grades_func;
+
+END COLLEGE_PKG;
+
+
+
+COLLEGE_PKG GET_GRADES PROCEDURE TEST
+
+Student 111 has an average grade of 83.25 for section 133 on grade code of PA

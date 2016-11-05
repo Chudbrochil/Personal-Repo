@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="335.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="galczakp7.FXMLDocumentController">
+    <children>
+      <TextField fx:id="jtfName" layoutX="14.0" layoutY="86.0" prefHeight="25.0" prefWidth="180.0" promptText="Name" />
+      <TextField fx:id="jtfAccountNum" layoutX="226.0" layoutY="86.0" prefHeight="25.0" prefWidth="180.0" promptText="Account Number" />
+      <Button fx:id="jbtSetInfo" layoutX="417.0" layoutY="86.0" mnemonicParsing="false" onAction="#setInfoClick" prefHeight="25.0" prefWidth="142.0" text="Set Personal Info" />
+      <Button fx:id="jbtDeposit" layoutX="166.0" layoutY="130.0" mnemonicParsing="false" onAction="#depositClick" prefHeight="25.0" prefWidth="100.0" text="Deposit" />
+      <Button fx:id="jbtWithdrawal" layoutX="308.0" layoutY="130.0" mnemonicParsing="false" onAction="#withdrawalClick" prefHeight="25.0" prefWidth="100.0" text="Withdrawal" />
+      <Button fx:id="jbtBalance" layoutX="461.0" layoutY="130.0" mnemonicParsing="false" onAction="#balanceClick" prefHeight="25.0" prefWidth="100.0" text="Balance Inquiry" />
+      <TextField fx:id="jtfAmount" layoutX="14.0" layoutY="130.0" prefHeight="25.0" prefWidth="123.0" promptText="Enter the $ Amount" />
+      <Label layoutX="13.0" layoutY="252.0" prefHeight="17.0" prefWidth="277.0" text="To Enable Locking: Enter a PIN and Press Set Key:" />
+      <Label layoutX="13.0" layoutY="298.0" prefHeight="17.0" prefWidth="300.0" text="To Lock/Unlock: Enter Key, then Press Lock or Unlock:" />
+      <TextField fx:id="jtfLockKey" layoutX="281.0" layoutY="248.0" prefHeight="25.0" prefWidth="77.0" />
+      <Button fx:id="jbtSetKey" layoutX="369.0" layoutY="248.0" mnemonicParsing="false" onAction="#setKeyClick" text="Set Key" />
+      <Button fx:id="jbtUnlock" layoutX="435.0" layoutY="248.0" mnemonicParsing="false" onAction="#setUnlockClick" text="Unlock" />
+      <Button fx:id="jbtLock" layoutX="499.0" layoutY="248.0" mnemonicParsing="false" onAction="#setLockClick" text="Lock" />
+      <TextArea editable="false" layoutX="14.0" layoutY="11.0" prefHeight="68.0" prefWidth="558.0" text="Anthony Galczak Program 7 - Welcome to the Java Bank&#10;Enter your information and select an Operation.&#10;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <TextArea fx:id="jtaResults" editable="false" layoutX="13.0" layoutY="174.0" prefHeight="68.0" prefWidth="558.0" />
+      <Label fx:id="lblLockStatus" layoutX="372.0" layoutY="289.0" prefHeight="32.0" prefWidth="180.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

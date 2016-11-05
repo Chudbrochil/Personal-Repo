@@ -1,0 +1,12 @@
+﻿<Window x:Class="GalczakE7.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="450" Width="525">
+    <Grid>
+        <Label x:Name="lblHeader" Content="Housing Information" HorizontalAlignment="Left" Margin="169,41,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox x:Name="txbResults" HorizontalAlignment="Left" Height="293" Margin="169,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="338"/>
+        <RadioButton x:Name="radMulti" Content="Multi-Unit" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top" Checked="radMulti_Checked"/>
+        <RadioButton x:Name="radSingle" Content="Single-Family" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Checked="radSingle_Checked"/>
+
+    </Grid>
+</Window>

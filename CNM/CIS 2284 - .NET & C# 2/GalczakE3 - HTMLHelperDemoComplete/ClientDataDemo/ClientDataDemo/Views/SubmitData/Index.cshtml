@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ClientDataDemo.Models.Menu>
+
+@{ 
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.ActionLink("Add menu Item", "CreateMenu", "SubmitData")
+<p>
+    @ViewBag.Info
+</p>
+
+
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Text)</th>
+        <th>@Html.DisplayNameFor(model => model.Price)</th>
+        <th>@Html.DisplayNameFor(model => model.Date)</th>
+        <th>@Html.DisplayNameFor(model => model.Category)</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Text)</td>
+            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+            <td>@Html.DisplayFor(modelItem => item.Category)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+
+        </tr>
+    }
+</table>
+

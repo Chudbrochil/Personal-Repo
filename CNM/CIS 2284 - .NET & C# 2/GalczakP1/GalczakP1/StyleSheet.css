@@ -1,0 +1,58 @@
+﻿/*Anthony Galczak
+  Program 1
+  Ellipse Generator*/
+/*
+    Colors from http://palettegenerator.com/
+    Darkest Brown: #372326
+    Dark Brown: #6D3E2E
+    Brown: #9E633C
+    Light Brown: #BE986C
+    Light Grey: #C2C1BE
+    Dark Grey: #797D86
+*/
+
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial;
+    font-size:20px;
+}
+header{
+    font-family: 'Agency FB';
+    font-size: 20px;
+    text-align: center;
+    color: #C2C1BE;
+    background-image: url("/Images/NGC2070.jpg");
+}
+#mainContent{
+    text-align: center;
+    background-color: #402627;
+    height: 500px;
+    color: #C2C1BE;
+}
+nav{
+    float: left;
+    height: 500px;
+    width: 200px;
+    vertical-align: top;
+    background-color: #6D3E2E;
+}
+aside{
+    float:right;
+    height: 200px;
+    width: 200px;
+    background-color: #6D3E2E;
+    color: #C2C1BE;
+}
+footer{
+    color: #797D86;
+    background-color: #BE986C;
+}
+header, maincontent, nav, aside, footer{
+    padding: 5px;
+}
+a{
+    color: #C2C1BE;
+}

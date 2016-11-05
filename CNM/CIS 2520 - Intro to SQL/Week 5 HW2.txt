@@ -1,0 +1,52 @@
+1.
+Select  * 
+From departments d
+JOIN employees e
+ON d.department_id = e.department_id;
+
+2.
+select e.title, e.artist, d.description
+from d_songs e
+join d_types d
+on e.type_code = d.code;
+
+3.
+select e.title, e.artist, d.description
+from d_songs e
+join d_types d
+on e.type_code = d.code
+where e.id in(47,48);
+
+4.
+select *
+from d_clients e
+join d_events f
+on e.client_number = f.client_number
+join d_job_assignments g
+on f.id = g.event_id;
+
+5.
+select e.id, f.order_number
+from f_customers e LEFT OUTER JOIN f_orders f
+on e.id = f.cust_id;
+
+6.
+select e.last_name, f.department_id, f.department_name
+from employees e LEFT OUTER JOIN departments f
+on e.department_id = f.department_id;
+
+7.
+select e.last_name, f.department_id, f.department_name
+from employees e RIGHT OUTER JOIN departments f
+on e.department_id = f.department_id;
+
+8.
+select e2.last_name AS employee, e2.employee_id AS EMP#, e1.last_name as manager, e1.employee_id as mgr#
+from employees e1 RIGHT OUTER JOIN employees e2
+on e1.employee_id = e2.manager_id;
+
+9.
+select e2.last_name AS employee, e2.employee_id AS EMP#, e1.last_name as manager, e1.employee_id as mgr#
+from employees e1 RIGHT OUTER JOIN employees e2
+on e1.employee_id = e2.manager_id
+order by e2.last_name;

@@ -1,0 +1,7 @@
+4, 9, 21, Building B12
+29, -13, 6, Building A39
+90, 6, -18, Building C22
+42, 19, 22, Building A21
+109, 55, 92, Building B19
+81, 144, 121, Building A51
+5, 20, -12, Building B14

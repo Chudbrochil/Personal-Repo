@@ -1,0 +1,13 @@
+﻿@model ClientDataDemo.Models.Menu
+@{
+    ViewBag.Title = "StronglyTypedMenu";
+    Layout = null;
+}
+
+<h2>StronglyTypedMenu</h2>
+
+@Html.DisplayNameFor(m => m.Text)
+<br/>
+@Html.DisplayFor(m => m.Text)
+<br/>
+@Html.TextBoxFor(m => m.Text)

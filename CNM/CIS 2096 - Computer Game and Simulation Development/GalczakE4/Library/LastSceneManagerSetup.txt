@@ -1,0 +1,4 @@
+sceneSetups:
+- path: C:/Users/Anthony/Documents/~Docs/Unity/GalczakE5/Assets/Scene1.unity
+  isLoaded: 1
+  isActive: 1

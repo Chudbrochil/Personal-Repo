@@ -1,0 +1,24 @@
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\CodeFirstDemo.exe.config
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\CodeFirstDemo.exe
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\CodeFirstDemo.pdb
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\EntityFramework.dll
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\EntityFramework.xml
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\obj\Debug\CodeFirstDemo.csprojResolveAssemblyReference.cache
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\obj\Debug\CodeFirstDemo.exe
+C:\Users\rob82_000\Dropbox\CNM\2016Fall\2015FallCIS2284\Demos\Day8EntityFramework\CodeFirst\CodeFirstDemo\CodeFirstDemo\obj\Debug\CodeFirstDemo.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\CodeFirstDemo.exe.config
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\CodeFirstDemo.exe
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\CodeFirstDemo.pdb
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\EntityFramework.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\EntityFramework.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.csprojResolveAssemblyReference.cache
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.Migrations.InitialCreate.resources
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.csproj.GenerateResource.Cache
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.Migrations.AddHireDate.resources
+C:\Users\anthony\Documents\~Docs\ws\VS2015\Projects\CIS 2284\CodeFirstDemo2\CodeFirstDemo\obj\Debug\CodeFirstDemo.Migrations.AddProductTable.resources

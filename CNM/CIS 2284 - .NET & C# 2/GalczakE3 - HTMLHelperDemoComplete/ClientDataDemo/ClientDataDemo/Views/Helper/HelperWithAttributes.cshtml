@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "HelperWithAttributes";
+    Layout = null;
+}
+
+<h2>HelperWithAttributes</h2>
+
+@Html.TextBox("text1", "input text here",
+    new { required = "required", maxlength = 15, @class = "CSSDemo"});
+

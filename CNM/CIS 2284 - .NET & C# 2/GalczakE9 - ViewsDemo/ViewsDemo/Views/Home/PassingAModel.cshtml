@@ -1,0 +1,41 @@
+﻿@using ViewsDemo.Models
+@model IEnumerable<Contact>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PassingAModel</title>
+</head>
+<body>
+    <div>
+        <ul>
+            @foreach (var contact in Model)
+            {
+                <li>@contact.Name - @contact.Email - @contact.Phone</li>
+            }
+        </ul>
+    </div>
+</body>
+</html>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PassingAModel</title>
+</head>
+<body>
+    <div> 
+    </div>
+</body>
+</html>

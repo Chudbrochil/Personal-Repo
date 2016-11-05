@@ -1,0 +1,31 @@
+CREATE OR REPLACE PROCEDURE get_grades
+(p_student_id IN number,
+p_section_id IN number,
+p_grade_type_code IN varchar2,
+p_avg OUT number) IS
+  
+BEGIN
+  SELECT AVG(numeric_grade)
+  INTO p_avg
+  FROM grade
+  WHERE student_id = p_student_id
+  AND section_id = p_section_id
+  AND grade_type_code = UPPER(p_grade_type_code)
+ -- AND GRADE_CODE_OCCURRENCE = 1 --TESTING
+ GROUP BY student_id, section_id, grade_type_code;
+
+DBMS_OUTPUT.PUT_LINE ('Student '||  p_student_id || ' has an average grade of ' || p_avg || ' for section ' || p_section_id 
+  || ' on grade code of '  || p_grade_type_code);
+  
+EXCEPTION
+	WHEN others then
+	dbms_output.put_line('Student ID ' || p_student_id || ' is NOT FOUND!  Please try Again.');
+
+END get_grades;
+
+
+OUTPUT:
+Connecting to the database GALCZAK_2521_08.
+Student 102 has an average grade of 88.25 for section 86 on grade code of HM
+Process exited.
+Disconnecting from the database GALCZAK_2521_08.

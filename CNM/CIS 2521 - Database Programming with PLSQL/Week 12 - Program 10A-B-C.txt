@@ -1,0 +1,304 @@
+1.
+CREATE OR REPLACE FUNCTION get_job(p_jobid  IN  varchar2) 
+  RETURN VARCHAR2
+IS
+  v_jobtitle jobs.job_title%TYPE;
+BEGIN
+  SELECT  job_title
+  INTO    v_jobtitle
+  FROM    jobs
+  WHERE   job_id = p_jobid;
+  RETURN  (v_jobtitle);    --  this is how you return a value from a FUNCTION  
+exception
+when others  then
+  
+ dbms_output.put_line('ERROR ERROR ' || sqlerrm);
+return('No JOB ');  --  notice even if you get an error in the FUNCTION you must still RETURN a value.
+
+END get_job;
+
+Calling program:  Anonymous CODE I just copied it out of the GREEN RUN that creates the code for you: 
+set serveroutput on
+DECLARE
+  P_JOBID jobs.job_id%type;
+  v_Return VARCHAR2(200);
+BEGIN
+  P_JOBID := 'IT_PROG';
+
+  v_Return := GET_JOB(P_JOBID);
+DBMS_OUTPUT.PUT_LINE('Job Title is =  ' || v_Return);
+END;
+
+-----------------------------------------------------
+
+DECLARE
+  P_JOBID VARCHAR2(200);
+  v_Return VARCHAR2(200);
+BEGIN
+  P_JOBID := 'IT_PROG';
+
+  v_Return := GET_JOB(
+    P_JOBID => P_JOBID
+  );
+
+DBMS_OUTPUT.PUT_LINE('v_Return = ' || v_Return);
+
+  :v_Return := v_Return;
+END;
+
+-----------------------------------------------------
+
+select last_name, salary, get_sal(employee_id) as annual, job_id, get_job(job_id) as job_title
+from employees;
+
+-----------------------------------------------------
+
+King	26400	316800	AD_PRES	President
+Kochhar	18700	224400	AD_VP	Administration Vice President
+De Haan	18700	224400	AD_VP	Administration Vice President
+Hunold	9900	118800	IT_PROG	Programmer
+Ernst	6600	79200	IT_PROG	Programmer
+Austin	5280	63360	IT_PROG	Programmer
+Pataballa	5280	63360	IT_PROG	Programmer
+Lorentz	4620	55440	IT_PROG	Programmer
+Greenberg	13200	158400	FI_MGR	Finance Manager
+Faviet	9900	118800	FI_ACCOUNT	Accountant
+Chen	9020	108240	FI_ACCOUNT	Accountant
+Sciarra	8470	101640	FI_ACCOUNT	Accountant
+Urman	8580	102960	FI_ACCOUNT	Accountant
+Popp	7590	91080	FI_ACCOUNT	Accountant
+Raphaely	12100	145200	PU_MAN	Purchasing Manager
+Khoo	3410	40920	PU_CLERK	Purchasing Clerk
+Baida	3190	38280	PU_CLERK	Purchasing Clerk
+Tobias	3080	36960	PU_CLERK	Purchasing Clerk
+Himuro	2860	34320	PU_CLERK	Purchasing Clerk
+Colmenares	2750	33000	PU_CLERK	Purchasing Clerk
+Weiss	8800	105600	ST_MAN	Stock Manager
+Fripp	9020	108240	ST_MAN	Stock Manager
+Kaufling	8690	104280	ST_MAN	Stock Manager
+Vollman	7150	85800	ST_MAN	Stock Manager
+Mourgos	6380	76560	ST_MAN	Stock Manager
+Nayer	3520	42240	ST_CLERK	Stock Clerk
+Mikkilineni	2970	35640	ST_CLERK	Stock Clerk
+Landry	2640	31680	ST_CLERK	Stock Clerk
+Markle	2420	29040	ST_CLERK	Stock Clerk
+Bissot	3630	43560	ST_CLERK	Stock Clerk
+Atkinson	3080	36960	ST_CLERK	Stock Clerk
+Marlow	2750	33000	ST_CLERK	Stock Clerk
+Olson	5075.07	60900.84	ST_CLERK	Stock Clerk
+Mallin	3630	43560	ST_CLERK	Stock Clerk
+Rogers	3190	38280	ST_CLERK	Stock Clerk
+Gee	2640	31680	ST_CLERK	Stock Clerk
+Philtanker	2420	29040	ST_CLERK	Stock Clerk
+Ladwig	3960	47520	ST_CLERK	Stock Clerk
+Stiles	3520	42240	ST_CLERK	Stock Clerk
+Seo	2970	35640	ST_CLERK	Stock Clerk
+Patel	2750	33000	ST_CLERK	Stock Clerk
+Rajs	3850	46200	ST_CLERK	Stock Clerk
+Davies	3410	40920	ST_CLERK	Stock Clerk
+Matos	2860	34320	ST_CLERK	Stock Clerk
+Vargas	2750	33000	ST_CLERK	Stock Clerk
+Russell	15400	184800	SA_MAN	Sales Manager
+Partners	14850	178200	SA_MAN	Sales Manager
+Errazuriz	13200	158400	SA_MAN	Sales Manager
+Cambrault	12100	145200	SA_MAN	Sales Manager
+Zlotkey	11550	138600	SA_MAN	Sales Manager
+Tucker	11000	132000	SA_REP	Sales Representative
+Bernstein	10450	125400	SA_REP	Sales Representative
+Hall	9900	118800	SA_REP	Sales Representative
+Olsen	8800	105600	SA_REP	Sales Representative
+Cambrault	8250	99000	SA_REP	Sales Representative
+Tuvault	7700	92400	SA_REP	Sales Representative
+King	11000	132000	SA_REP	Sales Representative
+Sully	10450	125400	SA_REP	Sales Representative
+McEwen	9900	118800	SA_REP	Sales Representative
+Smith	8800	105600	SA_REP	Sales Representative
+Doran	8250	99000	SA_REP	Sales Representative
+Sewall	7700	92400	SA_REP	Sales Representative
+Vishney	11550	138600	SA_REP	Sales Representative
+Greene	10450	125400	SA_REP	Sales Representative
+Marvins	7920	95040	SA_REP	Sales Representative
+Lee	7480	89760	SA_REP	Sales Representative
+Ande	7040	84480	SA_REP	Sales Representative
+Banda	6820	81840	SA_REP	Sales Representative
+Ozer	12650	151800	SA_REP	Sales Representative
+Bloom	11000	132000	SA_REP	Sales Representative
+Fox	10560	126720	SA_REP	Sales Representative
+Smith	8140	97680	SA_REP	Sales Representative
+Bates	8030	96360	SA_REP	Sales Representative
+Kumar	6710	80520	SA_REP	Sales Representative
+Abel	12100	145200	SA_REP	Sales Representative
+Hutton	9680	116160	SA_REP	Sales Representative
+Taylor	9460	113520	SA_REP	Sales Representative
+Livingston	9240	110880	SA_REP	Sales Representative
+Grant	7700	92400	SA_REP	Sales Representative
+Johnson	6820	81840	SA_REP	Sales Representative
+Taylor	3520	42240	SH_CLERK	Shipping Clerk
+Fleaur	3410	40920	SH_CLERK	Shipping Clerk
+Sullivan	2750	33000	SH_CLERK	Shipping Clerk
+Geoni	3080	36960	SH_CLERK	Shipping Clerk
+Sarchand	4620	55440	SH_CLERK	Shipping Clerk
+Bull	4510	54120	SH_CLERK	Shipping Clerk
+Dellinger	3740	44880	SH_CLERK	Shipping Clerk
+Cabrio	3300	39600	SH_CLERK	Shipping Clerk
+Chung	4180	50160	SH_CLERK	Shipping Clerk
+Dilly	3960	47520	SH_CLERK	Shipping Clerk
+Gates	3190	38280	SH_CLERK	Shipping Clerk
+Perkins	2750	33000	SH_CLERK	Shipping Clerk
+Bell	4400	52800	SH_CLERK	Shipping Clerk
+Everett	4290	51480	SH_CLERK	Shipping Clerk
+McCain	3520	42240	SH_CLERK	Shipping Clerk
+Jones	3080	36960	SH_CLERK	Shipping Clerk
+Walsh	3410	40920	SH_CLERK	Shipping Clerk
+Feeney	3300	39600	SH_CLERK	Shipping Clerk
+OConnell	2860	34320	SH_CLERK	Shipping Clerk
+Grant	2860	34320	SH_CLERK	Shipping Clerk
+Whalen	4840	58080	AD_ASST	Administration Assistant
+Hartstein	14300	171600	MK_MAN	Marketing Manager
+Fay	6600	79200	MK_REP	Marketing Representative
+Mavris	7150	85800	HR_REP	Human Resources Representative
+Baer	11000	132000	PR_REP	Public Relations Representative
+Higgins	13200	158400	AC_MGR	Accounting Manager
+Gietz	9130	109560	AC_ACCOUNT	Public Accountant
+
+
+
+
+
+
+
+
+2.
+CREATE OR REPLACE FUNCTION get_dept(p_deptid  IN NUMBER) 
+  RETURN VARCHAR2
+IS
+  v_deptname departments.department_name%TYPE;
+BEGIN
+  SELECT  department_name
+  INTO    v_deptname
+  FROM    departments
+  WHERE   department_id = p_deptid;
+  RETURN  (v_deptname);
+exception
+when others  then
+  
+ dbms_output.put_line('ERROR ERROR ' || sqlerrm);
+return('No Department');
+
+END get_dept;
+
+-----------------------------------------------------
+
+DECLARE
+  P_DEPTID NUMBER;
+  v_Return VARCHAR2(200);
+BEGIN
+  P_DEPTID := 60;
+
+  v_Return := GET_DEPT(
+    P_DEPTID => P_DEPTID
+  );
+  /* Legacy output: 
+DBMS_OUTPUT.PUT_LINE('v_Return = ' || v_Return);
+*/ 
+  :v_Return := v_Return;
+END;
+
+-----------------------------------------------------
+
+select department_id, get_dept(department_id) as Department_Title
+from departments;
+
+-----------------------------------------------------
+
+10	Administration
+20	Marketing
+30	Purchasing
+40	Human Resources
+50	Shipping
+60	IT
+70	Public Relations
+80	Sales
+90	Executive
+100	Finance
+110	Accounting
+120	Treasury
+130	Corporate Tax
+140	Control And Credit
+150	Shareholder Services
+160	Benefits
+170	Manufacturing
+180	Construction
+190	Contracting
+200	Operations
+210	IT Support
+220	NOC
+230	IT Helpdesk
+240	Government Sales
+250	Retail Sales
+260	Recruiting
+270	Payroll
+
+3.
+
+CREATE OR REPLACE FUNCTION get_grades_func(
+p_student_id IN NUMBER, 
+p_section_id IN NUMBER, 
+p_grade_type IN VARCHAR2) 
+  RETURN NUMBER
+IS
+  v_avg NUMBER := 0;
+  
+BEGIN
+  SELECT  AVG(numeric_grade)
+  INTO    v_avg
+  FROM    grade
+  WHERE   student_id = p_student_id
+  AND     section_id = p_section_id
+  AND     grade_type_code = p_grade_type
+  GROUP BY student_id, section_id, grade_type_code;
+  RETURN  (v_avg);
+exception
+when others  then
+  
+ dbms_output.put_line('ERROR ERROR ' || sqlerrm);
+return 0;
+
+END get_grades_func;
+
+-----------------------------------------------------
+
+DECLARE
+  P_STUDENT_ID NUMBER;
+  P_SECTION_ID NUMBER;
+  P_GRADE_TYPE VARCHAR2(200);
+  v_Return NUMBER;
+BEGIN
+  P_STUDENT_ID := 102;
+  P_SECTION_ID := 86;
+  P_GRADE_TYPE := 'QZ';
+
+  v_Return := GET_GRADES_FUNC(
+    P_STUDENT_ID => P_STUDENT_ID,
+    P_SECTION_ID => P_SECTION_ID,
+    P_GRADE_TYPE => P_GRADE_TYPE
+  );
+  /* Legacy output: 
+DBMS_OUTPUT.PUT_LINE('v_Return = ' || v_Return);
+*/ 
+  :v_Return := v_Return;
+END;
+
+-----------------------------------------------------
+
+select student_id, section_id, grade_type_code,
+get_grades_func(student_id, section_id, grade_type_code) as AVG_GRADE
+from grade
+where student_id = 102
+and section_id = 86
+and grade_type_code = 'QZ'
+group by student_id, section_id, grade_type_code;
+
+-----------------------------------------------------
+
+102	86	QZ	92

@@ -1,0 +1,34 @@
+﻿<!--Alexander Little - Anthony Galczak - Vaughn Allen
+    CIS 1280 Rob Garner - Cowboys & Aliens -->
+    <Window x:Class="GalczakLittleAllenGP1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cowbooys &amp; Aliens" Height="500" Width="750">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFFFF300" Offset="0"/>
+                <GradientStop Color="#FFFF4813" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <ListBox x:Name="lbDirection" HorizontalAlignment="Left" Height="200" Margin="69,232,0,0" VerticalAlignment="Top" Width="600" MouseDoubleClick="lbDirection_MouseDoubleClick">
+            <ListBox.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="#FFFFF871" Offset="1"/>
+                </LinearGradientBrush>
+            </ListBox.Background>
+        </ListBox>
+        <Label Content="Click on an option to travel in that direction:" HorizontalAlignment="Left" Margin="69,196,0,0" VerticalAlignment="Top" Width="414" FontSize="16"/>
+        <Label Content="Location Description:" HorizontalAlignment="Left" Margin="69,46,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="txtLocation" HorizontalAlignment="Left" Height="111" Margin="69,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="600" IsReadOnly="True">
+            <TextBox.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFFFD495" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.Background>
+        </TextBox>
+
+    </Grid>
+</Window>

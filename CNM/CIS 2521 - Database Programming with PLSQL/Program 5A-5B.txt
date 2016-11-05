@@ -1,0 +1,62 @@
+5A.
+
+set serveroutput on
+
+DECLARE
+v_ins_id    instructor.instructor_id%TYPE := &PLEASE_ENTER_INSTRUCTOR_ID;
+v_instructor  instructor%ROWTYPE;
+BEGIN
+SELECT *
+INTO v_instructor
+FROM instructor
+where instructor_id = v_ins_id;
+
+dbms_output.put_line('Instructor ID: ' || v_ins_id || 's name is: ' || v_instructor.first_name || ' ' || 
+v_instructor.last_name || ' Their contact phone number is ' || v_instructor.phone);
+END;
+
+anonymous block completed
+Instructor ID: 101s name is: Fernand Hanks Their contact phone number is 2125551212
+
+anonymous block completed
+Instructor ID: 104s name is: Gary Pertez Their contact phone number is 2125551212
+
+anonymous block completed
+Instructor ID: 105s name is: Anita Morris Their contact phone number is 2125551212
+
+
+
+5B.
+
+set serveroutput on
+
+DECLARE
+TYPE ins_table_type 
+IS TABLE OF instructor%ROWTYPE 
+INDEX BY PLS_INTEGER;
+ins ins_table_type;
+
+BEGIN
+SELECT * BULK COLLECT 
+INTO ins
+FROM instructor;
+
+FOR i IN ins.FIRST..ins.LAST
+LOOP
+dbms_output.put_line('Instructor ID: ' || ins(i).instructor_id || ' is: ' || ins(i).first_name || ' ' || 
+ins(i).last_name);
+END LOOP;
+END;
+
+
+anonymous block completed
+Instructor ID: 101 is: Fernand Hanks
+Instructor ID: 102 is: Tom Wojick
+Instructor ID: 103 is: Nina Schorin
+Instructor ID: 104 is: Gary Pertez
+Instructor ID: 105 is: Anita Morris
+Instructor ID: 106 is: Todd Smythe
+Instructor ID: 107 is: Marilyn Frantzen
+Instructor ID: 108 is: Charles Lowry
+Instructor ID: 109 is: Rick Chow
+Instructor ID: 110 is: Irene Willig

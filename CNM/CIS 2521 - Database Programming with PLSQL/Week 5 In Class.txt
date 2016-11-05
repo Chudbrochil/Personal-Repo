@@ -1,0 +1,80 @@
+CIS 2521  PLSQL 
+--week 5  Program 4A, 4B
+Program 4A practice loops
+
+Program 4a.  In class
+
+Create a Messages Table and insert several rows into it:
+A.
+To create the messages table use the Create table code below.  
+CREATE TABLE messages (results NUMBER(2));
+
+
+/*B.
+Write a PL/SQL block to insert numbers into the messages table. 
+Insert the numbers 1 through 10, excluding 6 and 8.
+Use IF statements and Insert command inside the LOOP:
+Use an INSERT command in the loop when you are checking
+if it's not a 6 and 8.*/
+
+
+set serveroutput on
+declare
+v_counter number :=1;
+begin 
+LOOP
+if v_counter not in(6,8) then
+insert into messages
+values(v_counter);
+dbms_output.put_line(v_counter);
+end if;
+v_counter := v_counter + 1;
+exit when v_counter > 10;
+end loop;
+end;
+
+4B 
+1.  Use a for loop and produce the id, last name for
+the first 5 records in employees table.  (refer to lecture examples)
+
+
+set serveroutput on
+declare
+v_recount number := 5;  
+v_id employees.employee_id%type;
+v_last employees.last_name%type;
+begin
+for i in 1..v_recount
+loop
+select employee_id, last_name
+into v_id, v_last
+from employees
+where employee_id = 99 + i;
+dbms_output.put_line('Employee ID: ' || v_id || ' Employee Name: ' || v_last);
+end loop;
+end;
+
+2.  Now revise your program to use a select count stmt
+to know how many records there are.  Then use that
+value in the for loop for the ending value.  
+
+
+set serveroutput on
+declare
+v_recount number := 0;  
+v_id employees.employee_id%type;
+v_last employees.last_name%type;
+begin
+select count(*)
+into v_recount
+from employees;
+
+for i in 1..v_recount
+loop
+select employee_id, last_name
+into v_id, v_last
+from employees
+where employee_id = 99 + i;
+dbms_output.put_line('Employee ID: ' || v_id || ' Employee Name: ' || v_last);
+end loop;
+end;

@@ -1,0 +1,110 @@
+1.
+INSERT INTO D_CDS(CD_NUMBER, TITLE, PRODUCER, YEAR)
+VALUES(100, 'Celebrate the Day', 'R' || '&' || 'B', '2003');
+
+INSERT INTO D_CDS(CD_NUMBER, TITLE, PRODUCER, YEAR)
+VALUES(101, 'Holiday Tunes for All Ages', 'Tunes are Us', '2004');
+
+INSERT INTO D_CDS(CD_NUMBER, TITLE, PRODUCER, YEAR)
+VALUES(102, 'Party Music', 'Old Town Records', '2004');
+
+INSERT INTO D_CDS(CD_NUMBER, TITLE, PRODUCER, YEAR)
+VALUES(103, 'Best of Rock and Roll', 'Old Town Records', '2004');
+
+select *
+from d_cds;
+
+2.
+INSERT INTO D_SONGS
+VALUES(52, 'Surfing Summer', NULL, NULL, 12);
+
+INSERT INTO D_SONGS
+VALUES(53, 'Victory Victory', '5 min', NULL, 12);
+
+3.
+INSERT INTO D_CLIENTS(CLIENT_NUMBER, FIRST_NAME, LAST_NAME, PHONE, EMAIL)
+VALUES(6655, 'Ayako', 'Dahish', 3608859030, 'danisha@harbor.net');
+
+INSERT INTO D_CLIENTS(CLIENT_NUMBER, FIRST_NAME, LAST_NAME, PHONE, EMAIL)
+VALUES(6689, 'Nick', 'Neuville', 9048953049, 'nnicky@charter.net');
+
+4.
+INSERT INTO d_events(id, name, event_date, description, cost, venue_id,
+package_code, theme_code, client_number)
+VALUES(110, 'Ayako Anniversary', '07-JUL-04', 'Party for 50, sixties dress,
+decorations', 0, 95, 79, 240, 6655);
+
+INSERT INTO d_events(id, name, event_date, description, cost, venue_id,
+package_code, theme_code, client_number)
+VALUES(115, 'Neuville Sports Banquet', '09-SEP-04', 'Barbecue at residence,
+college alumni, 100 people', 0, 100, 87, 340, 6689);
+
+5.
+INSERT INTO REP_EMAIL(id, first_name, last_name, job_id, email_address)
+SELECT employee_id, first_name, last_name, job_id, email
+from employees
+where job_id LIKE '%REP%';
+
+
+6.
+update f_food_items
+set price = 3.75
+where description = 'Strawberry Shake';
+
+update f_food_items
+set price = 2.2
+where description = 'Fries';
+
+7.
+update f_staffs
+set overtime_rate = nvl(overtime_rate, 0);
+
+update f_staffs
+set overtime_rate = overtime_rate + .75;
+
+8.
+INSERT INTO f_customers(id, first_name, last_name, address, city, state, zip, phone_number)
+values(145, 'Katie', 'Hernandez', '92 Chico Way', 'Los Angeles', 'CA', 98008, 8586667641);
+
+INSERT INTO f_customers(id, first_name, last_name, address, city, state, zip, phone_number)
+values(225, 'Daniel', 'Spode', '1923 Silverado', 'Denver', 'CO', 80219, 7193343523);
+
+INSERT INTO f_customers(id, first_name, last_name, address, city, state, zip, phone_number)
+values(230, 'Adam', 'Zurn', '5 Admiral Way', 'Seattle', 'WA', 0, 4258879009);
+
+9.
+INSERT INTO f_orders(order_number, order_date, order_total, cust_id, staff_id)
+values(5682, '12-JUN-04', 159.78, 145, 9);
+
+INSERT INTO f_orders(order_number, order_date, order_total, cust_id, staff_id)
+values(5691, '23-SEP-04', 145.98, 225, 12);
+
+INSERT INTO f_orders(order_number, order_date, order_total, cust_id, staff_id)
+values(5701, '04-JUL-04', 229.31, 230, 12);
+
+10.
+update f_staffs
+set salary =
+(select salary
+from f_staffs
+where last_name = 'Miller')
+where last_name = 'Doe';
+
+11.
+INSERT INTO f_staffs(id, first_name, last_name, birthdate, salary, overtime_rate, training, staff_type, manager_id, manager_budget, manager_target)
+values(25, 'Kai', 'Kim', '3-NOV-88', 6.75, null, null, 'Order Taker', null, null, null);
+
+12. When attempging to delete department 60 from departments it is noting that there is a foreign table that is using these values. In order to delete this department we would also have to delete the employees table.
+
+13.
+DELETE from f_staffs
+where id = 25;
+
+14.
+update employees
+set salary = salary * 1.1
+where JOB_ID = 'IT_PROG';
+
+
+
+

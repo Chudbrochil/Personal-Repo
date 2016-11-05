@@ -1,0 +1,9 @@
+Money in the Bank:
+Dollars: 20 - Quarters: 20 - Dimes: 20 - Nickels: 20
+Change Tendered: 0
+State of the Bank:
+Cash left in the bank: 28
+Dollars: 20 - Quarters: 20 - Dimes: 20 - Nickels: 20
+Your change is:
+Dollar coins: 1 - Quarters: 0
+Dimes: 0 - Nickels: 1

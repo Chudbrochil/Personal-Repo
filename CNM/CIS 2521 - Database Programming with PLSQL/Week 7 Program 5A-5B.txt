@@ -1,0 +1,80 @@
+5A.
+set serveroutput on
+
+DECLARE
+v_loc_id    locations.location_id%TYPE := &PLEASE_ENTER_LOCATION_ID;
+v_location  locations%ROWTYPE;
+BEGIN
+SELECT *
+INTO v_location
+FROM locations
+where location_id = v_loc_id;
+
+dbms_output.put_line('Display Information:' || chr(10) || 'Location ID: ' || v_location.location_id || chr(10) || 
+'City: ' || v_location.city || chr(10) || 'State Province: ' || v_location.state_province);
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Error - Data not found! ' || chr(10) || 'Location ID entered: ' || v_loc_id);
+END;
+
+
+
+5B.
+set serveroutput on
+
+DECLARE
+TYPE loc_table_type 
+IS TABLE OF locations%ROWTYPE 
+INDEX BY PLS_INTEGER;
+loc loc_table_type;
+
+BEGIN
+SELECT * BULK COLLECT 
+INTO loc
+FROM locations;
+
+FOR i IN loc.FIRST..loc.LAST
+LOOP
+if loc(i).city = 'Stretford' then 
+dbms_output.put_line('Display Information:' || chr(10) || 'Location ID: ' || loc(i).location_id || chr(10) || 
+'City: ' || loc(i).city || chr(10) || 'State Province: ' || loc(i).state_province);
+elsif loc(i).city = 'Toronto' then
+dbms_output.put_line('Display Information:' || chr(10) || 'Location ID: ' || loc(i).location_id || chr(10) || 
+'City: ' || loc(i).city || chr(10) || 'State Province: ' || loc(i).state_province);
+else dbms_output.put_line('Not the country I''m looking for today'); 
+end if;
+
+END LOOP;
+END;
+
+
+anonymous block completed
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Display Information:
+Location ID: 1800
+City: Toronto
+State Province: Ontario
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Display Information:
+Location ID: 2600
+City: Stretford
+State Province: Manchester
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today
+Not the country I'm looking for today

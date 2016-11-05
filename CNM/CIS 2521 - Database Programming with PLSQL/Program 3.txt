@@ -1,0 +1,36 @@
+Program 4.
+
+SET SERVEROUTPUT ON
+DECLARE
+v_stud        grade.student_id%TYPE := &PLEASE_ENTER_STUDENT_ID;
+v_section     grade.section_id%TYPE := &PLEASE_ENTER_SECTION;
+v_grade_type  grade.grade_type_code%TYPE := upper('&PLEASE_ENTER_GRADE_TYPE_CODE');
+v_avg number;
+
+BEGIN
+SELECT avg(numeric_grade), student_id, section_id, grade_type_code
+INTO v_avg, v_stud, v_section, v_grade_type
+FROM grade
+WHERE student_id = v_stud
+AND grade_type_code = v_grade_type
+AND section_id = v_section
+GROUP BY STUDENT_ID, SECTION_ID, GRADE_TYPE_CODE;
+DBMS_OUTPUT.PUT_LINE('Student ID: ' || v_stud || ' has an Average Grade of: ' || v_avg || 
+' for section ' || v_section || ' on Grade code of ' || v_grade_type);
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Error - Data not found!! ' || 'Student ID entered is: ' || v_stud ||
+' - Section entered: ' || v_section || ' - Grade Type Code entered: ' || v_grade_type);
+END;
+
+
+anonymous block completed
+Student ID: 102 has an Average Grade of: 92 for section 86 on Grade code of QZ
+
+
+anonymous block completed
+Student ID: 102 has an Average Grade of: 88.25 for section 86 on Grade code of HM
+
+
+anonymous block completed
+Error - Data not found!! Student ID entered is: 1002 - Section entered: 86 - Grade Type Code entered: QG

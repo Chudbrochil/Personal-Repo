@@ -1,0 +1,26 @@
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\bin\Debug\GalczakP4.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\MainWindow.baml
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\MainWindow.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4_MarkupCompile.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4.g.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4.Properties.Resources.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4.csproj.GenerateResource.Cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\bin\Debug\GalczakP4.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\bin\Debug\GalczakP4.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakP4\GalczakP4\obj\Debug\GalczakP4.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\bin\Debug\GalczakP4.exe.config
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\bin\Debug\GalczakP4.exe
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\bin\Debug\GalczakP4.pdb
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\MainWindow.baml
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\MainWindow.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4_MarkupCompile.cache
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4.g.resources
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4.Properties.Resources.resources
+C:\Users\Anthony\Documents\~Docs\CNM Classes Summer 2014 to Fall 2016\CIS 1280\GalczakP4\GalczakP4\obj\Debug\GalczakP4.csproj.GenerateResource.Cache

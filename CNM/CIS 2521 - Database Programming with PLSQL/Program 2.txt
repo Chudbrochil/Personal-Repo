@@ -1,0 +1,73 @@
+PROGRAM 2A
+
+SET SERVEROUTPUT ON
+DECLARE
+v_lname employees.last_name%TYPE;
+v_jobid employees.job_id%TYPE;
+v_deptid employees.department_id%TYPE;
+v_salary employees.salary%TYPE;
+
+BEGIN
+SELECT last_name, job_id, department_id, salary
+INTO v_lname, v_jobid, v_deptid, v_salary
+FROM employees
+WHERE salary = (
+select min(salary)
+from employees
+where department_id not in(90));
+DBMS_OUTPUT.PUT_LINE('Last Name: ' || v_lname || chr(10) || 'Job ID: ' || v_jobid || chr(10) || 
+'Department_ID: ' || v_deptid || chr(10) || 'Makes Lowest Salary: ' || to_char(v_salary, '$999,999.99'));
+END;
+
+
+
+anonymous block completed
+Last Name: Olson
+Job ID: ST_CLERK
+Department_ID: 50
+Makes Lowest Salary:    $2,100.00
+
+
+
+PROGRAM 2B
+
+SET SERVEROUTPUT ON
+DECLARE
+
+v_stud        STUDENT.STUDENT_ID%TYPE := &PLEASE_ENTER_YOUR_STUDENT_ID;
+v_fname       STUDENT.FIRST_NAME%TYPE;
+v_lname       STUDENT.LAST_NAME%TYPE;
+v_emp         STUDENT.EMPLOYER%TYPE;
+
+BEGIN
+SELECT first_name, last_name, employer, student_id
+INTO v_fname, v_lname, v_emp, v_stud
+FROM student
+WHERE student_id = v_stud;
+DBMS_OUTPUT.PUT_LINE('Student ' || v_stud || ' is ' || v_fname || ' ' ||
+v_lname || ' and works for ' || v_emp);
+END;
+
+anonymous block completed
+Student 107 is Catherine Mierzwa and works for Amer.Contract Desgn.
+
+
+
+PROGRAM 2C
+
+SET SERVEROUTPUT ON
+DECLARE
+v_deptno      DEPARTMENTS.DEPARTMENT_ID%TYPE := &please_enter_a_department_id;
+v_location_id DEPARTMENTS.LOCATION_ID%TYPE;
+
+BEGIN
+SELECT department_id, location_id
+INTO v_deptno, v_location_id
+FROM departments
+WHERE department_id = v_deptno;
+DBMS_OUTPUT.PUT_LINE('Department ID: ' || v_deptno || chr(10) || 'Location ID: ' || v_location_id);
+END;
+
+anonymous block completed
+Department ID: 50
+Location ID: 1500

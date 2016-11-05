@@ -1,0 +1,64 @@
+Program 4A.
+
+SET SERVEROUTPUT ON
+DECLARE
+v_stud        grade.student_id%TYPE := &PLEASE_ENTER_STUDENT_ID;
+v_section     grade.section_id%TYPE := &PLEASE_ENTER_SECTION;
+v_grade_type  grade.grade_type_code%TYPE := upper('&PLEASE_ENTER_GRADE_TYPE_CODE');
+v_avg number;
+v_letter_grade varchar(5);
+v_desc grade_type.description%TYPE;
+
+BEGIN
+SELECT avg(g.numeric_grade), g.student_id, g.section_id, g.grade_type_code, t.description
+INTO v_avg, v_stud, v_section, v_grade_type, v_desc
+FROM grade g, grade_type t
+WHERE g.grade_type_code = t.grade_type_code
+AND g.student_id = v_stud
+AND g.grade_type_code = v_grade_type
+AND g.section_id = v_section
+GROUP BY g.STUDENT_ID, g.SECTION_ID, g.GRADE_TYPE_CODE, t.description;
+ IF          v_avg >= 90  THEN    v_letter_grade := 'A';
+   ELSIF v_avg >= 80  THEN    v_letter_grade := 'B';
+   ELSIF v_avg >= 70  THEN    v_letter_grade := 'C';
+   ELSIF v_avg >= 60  THEN    v_letter_grade := 'D';
+   ELSE  v_letter_grade := 'F';
+   END IF;
+DBMS_OUTPUT.PUT_LINE('Student ID: ' || v_stud || ' has an Average Grade of: ' || v_avg || 
+' for their ' || v_desc || ' grade for section ' || v_section || ' Letter grade = ' || v_letter_grade);
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Error - Data not found!! ' || 'Student ID entered is: ' || v_stud ||
+' - Section entered: ' || v_section || ' - Grade Type Code entered: ' || v_grade_type);
+END;
+
+Student ID: 102 has an Average Grade of: 92 for their Quiz grade for section 86 Letter grade = A
+
+
+Program 4B.
+
+
+SET SERVEROUTPUT ON
+DECLARE
+v_emp        employees.employee_id%TYPE := &PLEASE_ENTER_EMPLOYEE_ID;
+v_salary     employees.salary%TYPE;
+v_lname      employees.last_name%TYPE;
+v_job        employees.job_id%TYPE;
+v_newSal number;
+v_raise number;
+
+BEGIN
+SELECT employee_id, salary, last_name, job_id
+INTO v_emp, v_salary, v_lname, v_job
+FROM employees
+WHERE employee_id = v_emp;
+IF v_job = 'SA_REP' THEN v_raise := v_salary * .03;
+    ELSIF v_job = 'ST_CLERK' THEN v_raise := v_salary * .045;
+    ELSIF v_job = 'IT_PROG' THEN v_raise := v_salary * .065;
+    END IF;
+v_newSal := v_salary + v_raise;
+DBMS_OUTPUT.PUT_LINE('Employee #: ' || v_emp || ' Last Name: ' || v_lname || ' New salary would be' ||
+ to_char(v_newSal, '$99,999.99') || ' old salary' || to_char(v_salary, '$99,999.99') || ' the new monthly raise is ' || 
+ to_char(v_raise, '$999.99') || ' job classification 
+is ' || v_job);
+END;

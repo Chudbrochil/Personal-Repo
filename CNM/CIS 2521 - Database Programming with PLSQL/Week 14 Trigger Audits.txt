@@ -1,0 +1,93 @@
+create or replace   TRIGGER audit_jobs
+AFTER INSERT OR UPDATE OR DELETE ON jobs
+FOR EACH ROW
+
+BEGIN
+
+  IF INSERTING THEN
+    INSERT INTO	audit_jobs
+		(USER_NAME,
+		TIMESTAMP,
+		DML_OPERATION,
+		NEW_JOB_ID,
+		NEW_TITLE,
+		NEW_MIN_SALARY,
+		NEW_MAX_SALARY
+		)
+	 VALUES	(
+		USER,
+		SYSDATE,
+		'I',
+		:NEW.JOB_ID,
+		:NEW.JOB_TITLE,
+		:NEW.MIN_SALARY,
+		:NEW.MAX_SALARY
+		);
+  ELSIF UPDATING THEN
+    INSERT INTO	audit_jobs
+		(
+		USER_NAME,
+		TIMESTAMP,
+		DML_OPERATION,
+		OLD_JOB_ID,
+		NEW_JOB_ID,
+		OLD_TITLE,
+		NEW_TITLE,
+		OLD_MIN_SALARY,
+		NEW_MIN_SALARY,
+		OLD_MAX_SALARY,
+		NEW_MAX_SALARY
+		)
+         VALUES	(
+		USER,
+		SYSDATE,
+		'U',
+		:OLD.JOB_ID,
+		:NEW.JOB_ID,
+		:OLD.JOB_TITLE,
+		:NEW.JOB_TITLE,
+		:OLD.MIN_SALARY,
+		:NEW.MIN_SALARY,
+		:OLD.MAX_SALARY,
+		:NEW.MAX_SALARY
+		);
+ELSIF DELETING THEN
+    INSERT INTO	audit_jobs
+		(
+		USER_NAME,
+		TIMESTAMP,
+		DML_OPERATION,
+		OLD_JOB_ID,
+		OLD_TITLE,
+		OLD_MIN_SALARY,
+		OLD_MAX_SALARY
+		)
+         VALUES	(
+		USER,
+		SYSDATE,
+		'D',
+		:OLD.JOB_ID,
+		:OLD.JOB_TITLE,
+		:OLD.MIN_SALARY,
+		:OLD.MAX_SALARY
+		);
+  END IF;
+END audit_jobs;
+
+
+
+
+
+
+INSERT INTO JOBS(job_id, job_title, min_salary, max_salary)
+VALUES('SUPER_PROG', 'Super Programmer', 9000, 12000);
+
+INSERT INTO JOBS(job_id, job_title, min_salary, max_salary)
+VALUES('AD_DOG', 'Mascot', 500, 800);
+
+UPDATE JOBS
+SET job_title='Programmer Analyst'
+WHERE job_id='IT_PROG';
+
+DELETE FROM JOBS
+WHERE job_id='AD_DOG';

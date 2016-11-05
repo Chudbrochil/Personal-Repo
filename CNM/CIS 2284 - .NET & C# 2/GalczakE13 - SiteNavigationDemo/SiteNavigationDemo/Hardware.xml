@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Hardware>
+  <Item Category="Motherboards">
+    <Option Choice="ASUS" />
+    <Option Choice="MSI" />
+  </Item>
+  <Item Category="Memory">
+    <Option Choice="2048mb" />
+    <Option Choice="4096mb" />
+    <Option Choice="8192mb" />
+  </Item>
+  <Item Category="HardDrives">
+    <Option Choice="250GB" />
+    <Option Choice="500GB" />
+    <Option Choice="750GB" />
+  </Item>
+  <Item Category="Drives">
+    <Option Choice="DVD Burner" />
+    <Option ChoiCe="Blu-ray" />
+    <Option Choice="Blu-ray Burner" />
+  </Item>
+</Hardware>

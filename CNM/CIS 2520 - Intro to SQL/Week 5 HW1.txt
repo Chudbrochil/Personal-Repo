@@ -1,0 +1,68 @@
+1.
+select *
+from jobs, employees;
+
+2.
+select *
+from jobs j, employees e
+where j.job_id = e.job_id;
+
+3.
+select id, title, artist, description
+from d_songs s, d_types t
+where s.type_code = t.code;
+
+4.
+select id, title, artist, description
+from d_songs s, d_types t
+where s.type_code = t.code
+and s.id in(47,48);
+
+5.
+select *
+from d_clients c, d_events e, d_job_assignments j
+where c.client_number = e.client_number
+and e.id = j.event_id;
+
+6.
+select *
+from d_events e, d_venues v
+where e.id = v.id;
+
+7.
+select e.last_name, e.salary, jg.lowest_sal, jg.highest_sal
+from employees e, job_grades jg
+where e.salary
+between jg.lowest_sal and jg.highest_sal;
+
+
+8.
+select *
+from f_customers c, f_orders o
+where c.id = o.cust_id(+);
+
+9.
+select last_name, d.department_id, department_name
+from departments d, employees e
+where d.department_id(+) = e.department_id;
+
+10.
+select last_name, d.department_id, department_name
+from departments d, employees e
+where d.department_id = e.department_id(+);
+
+11.
+select *
+from d_cds c, d_track_listings t
+where c.cd_number = t.cd_number(+);
+
+12.
+select e2.last_name AS Employee, e2.employee_id AS Emp#, e1.last_name AS manager, e1.employee_id AS mgr# 
+from employees e1, employees e2
+where e1.employee_id(+) = e2.manager_id;
+
+13.
+select e2.last_name AS Employee, e2.employee_id AS Emp#, e1.last_name AS manager, e1.employee_id AS mgr# 
+from employees e1, employees e2
+where e1.employee_id(+) = e2.manager_id
+order by e2.last_name;

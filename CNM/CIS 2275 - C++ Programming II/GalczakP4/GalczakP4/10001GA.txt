@@ -1,0 +1,22 @@
+Welcome to the C++ Spa and Resort: Today's Date: October 28, 2015
+Guest: anthony galczak  Confirmation Number: 10001GA
+Arrival: January 1, 2015  Departure: January 7, 2015
+Number of Nights: 6  Number of Guests: 1
+Room Cost (with 15% discount): $943.5
+Lodging Tax: $116.334
+Total Cost: $1059.83
+We look forward to seeing you in JanuaryWelcome to the C++ Spa and Resort: Today's Date: November 7, 2015
+Guest: Anthony Galczak  Confirmation Number: 10001GA
+Arrival: December 1, 2015  Departure: December 15, 2015
+Number of Nights: 14  Number of Guests: 2
+Room Cost (with 15% discount): $2201.5
+Lodging Tax: $271.445
+Total Cost: $2472.94
+We look forward to seeing you in DecemberWelcome to the C++ Spa and Resort: Today's Date: November 14, 2015
+Guest: anthony galczak  Confirmation Number: 10001GA
+Arrival: January 1, 2015  Departure: January 9, 2015
+Number of Nights: 8  Number of Guests: 2
+Room Cost (with 15% discount): $1258
+Lodging Tax: $155.111
+Total Cost: $1413.11
+We look forward to seeing you in January

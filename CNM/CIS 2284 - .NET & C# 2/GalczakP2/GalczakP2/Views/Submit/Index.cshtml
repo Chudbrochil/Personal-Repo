@@ -1,0 +1,23 @@
+﻿@{ 
+    //TODO: Add a strongly typed model directive here. RJG
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Investment Calculator</h2>
+<form action="/Home/Index" method="post">
+    <fieldset>
+        @{ 
+            //TODO: use Model.Principal, Model.Years etc. here. RJG
+        }
+        <div>@ViewBag.Principal</div>
+        <div>@ViewBag.Years</div>
+        <div>@ViewBag.Interest</div>
+        <div>@ViewBag.CmpPerYr</div>
+        <div>@ViewBag.FutureValue</div>
+        <div>@ViewBag.Info</div>
+        <button type="submit">Click here to Calculate a new Investment</button>
+    </fieldset>
+</form>
+

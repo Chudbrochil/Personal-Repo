@@ -1,0 +1,16 @@
+Anthony Galczak
+This data shows the emissions for each country for the production of energy
+from years 2008-2012. I will show you which country has improved the most
+from 2008 to 2012, the average emissions for each country in 2012 and the
+5 highest countries in emissions for 2012.
+This data is readily available at the Energy Information Administration
+http://www.eia.gov/cfapps/ipdbproject/iedindex3.cfm?tid=90&pid=44&aid=8
+
+Most improved country for 2008-2012 is 165.83% decrease in emissions by Antarctica.
+The average CO2 emissions per country for 2012 is 148.08 million metric tons.
+The highest 5 countries for emissions in 2012 is:
+China with 8106.43 million metric tons of CO2
+United States with 5270.42 million metric tons of CO2
+India with 1830.94 million metric tons of CO2
+Russia with 1781.72 million metric tons of CO2
+Japan with 1259.06 million metric tons of CO2

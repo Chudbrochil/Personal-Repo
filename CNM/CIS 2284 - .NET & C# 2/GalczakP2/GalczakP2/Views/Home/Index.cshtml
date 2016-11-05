@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<h2>Investment Calculator</h2>
+<form action="/Submit/SubmitInvestment" method="post">
+    <fieldset>
+        <legend> Calculator</legend>
+        <div> Principal (Enter a number 0.01 or greater) </div>
+        <input name="principal" />
+        <div> Interest (Enter a decimal 0.01 - 1.00) </div>
+        <input name="interest" />
+        <div> Years (Enter a number 1 - 500) </div>
+        <input name="years" />
+        <div> Compounds Per Year (Enter a number 1 - 365)</div>
+        <input name="cmpperyr" />
+        <div></div>
+        <button type="submit">Submit</button>
+    </fieldset>
+</form>
+
+
+
+

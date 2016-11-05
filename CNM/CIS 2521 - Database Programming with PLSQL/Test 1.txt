@@ -1,0 +1,63 @@
+set serveroutput on
+DECLARE
+v_course_num      course.course_no%TYPE := &PLEASE_ENTER_COURSE_NUMBER;
+v_desc            course.description%TYPE;        
+v_preq            course.prerequisite%TYPE;
+v_cost            course.cost%TYPE;
+v_increase_cost   number;
+v_new_cost        number;
+
+-- Select statement to grab data from COURSE
+BEGIN
+SELECT course_no, description, prerequisite, cost
+INTO v_course_num, v_desc, v_preq, v_cost
+FROM course
+where course_no = v_course_num;
+
+v_increase_cost := 0;
+
+-- If statement to calculate 5% extra cost for course# 135, 3% extra cost for the other courses
+if v_course_num = 135 then v_increase_cost := v_cost * .05;
+  elsif v_course_num != 135 then v_increase_cost := v_cost *.03;
+  end if;
+
+-- Calculating the new cost of the class
+v_new_cost := v_cost + v_increase_cost;
+
+-- Output to user
+DBMS_OUTPUT.PUT_LINE('The description of the class is: ' || v_desc || chr(10) || 
+'Prequisite for the class is: ' || v_preq || chr(10) ||
+'The original cost of the class is: ' || to_char(v_cost, '$9,999.99') || chr(10) ||
+'The increase in cost is: ' || to_char(v_increase_cost, '$9,999.99') || chr(10) ||
+'The new cost of the class is: ' || to_char(v_new_cost, '$9,999.99'));
+
+-- Exception for if there is an unexpected course number entered
+EXCEPTION
+WHEN NO_DATA_FOUND THEN
+DBMS_OUTPUT.PUT_LINE('Error - Data not found! ' || chr(10) || 'Course number entered: ' || v_course_num);
+END;
+
+
+
+
+outputs
+
+anonymous block completed
+The description of the class is: Unix Tips and Techniques
+Prequisite for the class is: 134
+The original cost of the class is:  $1,095.00
+The increase in cost is:     $54.75
+The new cost of the class is:  $1,149.75
+
+
+anonymous block completed
+The description of the class is: Database Design
+Prequisite for the class is: 420
+The original cost of the class is:  $1,195.00
+The increase in cost is:     $35.85
+The new cost of the class is:  $1,230.85
+
+
+anonymous block completed
+Error - Data not found! 
+Course number entered: 999

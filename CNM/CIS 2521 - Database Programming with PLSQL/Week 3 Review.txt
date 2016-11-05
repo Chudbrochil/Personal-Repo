@@ -1,0 +1,55 @@
+1.
+select JOB_ID, min(salary), avg(salary), max(salary), sum(salary), count(*)
+from employees
+group by JOB_ID
+order by JOB_ID;
+
+2.
+select j.job_title, min(e.salary), trunc(avg(e.salary),2), max(e.salary), sum(e.salary), count(*)
+from employees e, jobs j
+where e.job_id = j.job_id
+group by j.job_title
+order by j.job_title;
+
+3.
+select job_id, max(salary), count(*)
+from employees
+group by job_id
+having max(salary) < 10000
+order by job_id;
+
+4.
+select department_id, min(salary), trunc(avg(salary), 2), max(salary), sum(salary), count(*)
+from employees
+group by department_id
+order by department_id;
+
+5.
+select d.department_name, min(e.salary), trunc(avg(e.salary), 2), max(e.salary), sum(e.salary), count(*)
+from employees e, departments d
+where e.department_id = d.department_id
+group by d.department_name
+order by d.department_name;
+
+6.
+select d.department_name, min(e.salary), trunc(avg(e.salary), 2), max(e.salary), sum(e.salary), count(*)
+from employees e, departments d
+where e.department_id = d.department_id
+group by d.department_name
+having count(*) > 2
+order by d.department_name;
+
+7.
+select last_name, first_name, job_id, salary
+from employees
+where salary = (
+select min(salary) 
+from employees);
+
+8.
+select last_name, first_name, job_id, salary
+from employees
+where salary = (
+select max(salary) 
+from employees
+where department_ID not in(90));

@@ -1,0 +1,12 @@
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakE3\Csharp GalczakE3\bin\Debug\Csharp GalczakE3.exe.config
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakE3\Csharp GalczakE3\bin\Debug\Csharp GalczakE3.exe
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakE3\Csharp GalczakE3\bin\Debug\Csharp GalczakE3.pdb
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakE3\Csharp GalczakE3\obj\Debug\Csharp GalczakE3.csprojResolveAssemblyReference.cache
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakE3\Csharp GalczakE3\obj\Debug\Csharp GalczakE3.exe
+c:\users\anthony\documents\visual studio 2013\Projects\Csharp GalczakE3\Csharp GalczakE3\obj\Debug\Csharp GalczakE3.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakE3\Csharp GalczakE3\bin\Debug\Csharp GalczakE3.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakE3\Csharp GalczakE3\obj\Debug\Csharp GalczakE3.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakE3\Csharp GalczakE3\obj\Debug\Csharp GalczakE3.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakE3\Csharp GalczakE3\obj\Debug\Csharp GalczakE3.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakE3\Csharp GalczakE3\bin\Debug\Csharp GalczakE3.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\Csharp GalczakE3\Csharp GalczakE3\bin\Debug\Csharp GalczakE3.pdb

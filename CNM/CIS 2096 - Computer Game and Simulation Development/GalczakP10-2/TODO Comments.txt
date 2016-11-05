@@ -1,0 +1,38 @@
+TODO Comments:
+
+AudioManager
+1. Fix bug where music is affected by the sound effects slider
+
+InventoryManager
+1. Inventory manager can be revised heavily, the usage of getitemlist is somewhat unnecessary and can all
+be transitioned to using the dictionary.
+
+PlayerManager
+1. Health can be utilized within the game and easily be made into a GUI display on screen and a game mechanic
+
+FPSController
+1. FPSController and RelativeMovement can be modularized to have jump, speed and other movement criteria
+separated from the actual movement
+
+GameEvent
+1. This is a robust system that can be utilized to send a lot more messages throughout the classes
+
+PopupController
+1. This class can be separated significantly into various modular OOP classes
+2. dropItem and useItem are a bit gimmicky and could be their own classes that interface with the
+inventory system better
+3. Bug where shiftPerspective will sometimes not operate as expected
+4. Disable crosshair upon entering third-person mode
+
+RayShooter
+1. Implement game mechanic into the character stopping in place. Perhaps start dialog/steal bones, etc.
+
+WanderingAI
+1. AI could be improved, make it more intelligent and less random in it's pathing.
+2. Adding an IEnumerator to make the AI wait .1-.5s before rotating would be quality of life improvement.
+
+
+
+
+
+

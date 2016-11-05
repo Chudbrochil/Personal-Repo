@@ -1,0 +1,14 @@
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\C++\GalczakE7\GalczakE7\bin\Debug\GalczakE7.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\bin\Debug\GalczakE7.exe.config
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\MainWindow.baml
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\MainWindow.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\App.g.cs
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7_MarkupCompile.cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7.g.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7.Properties.Resources.resources
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7.csproj.GenerateResource.Cache
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\bin\Debug\GalczakE7.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\bin\Debug\GalczakE7.pdb
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7.exe
+C:\Users\Anthony\Documents\Visual Studio 2013\Projects\CSharp\GalczakE7\GalczakE7\obj\Debug\GalczakE7.pdb

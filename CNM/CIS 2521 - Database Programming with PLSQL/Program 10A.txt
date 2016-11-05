@@ -1,0 +1,28 @@
+1.)
+set serveroutput on
+DECLARE
+V_COUNTER NUMBER := 0;
+CURSOR c_dep IS
+SELECT * FROM DEPARTMENTS;
+CURSOR c_emp (deptno NUMBER) IS
+SELECT *
+FROM employees
+where department_id = deptno
+order by department_id;
+BEGIN
+for v_deprec in c_dep
+LOOP
+DBMS_OUTPUT.PUT_LINE('Department is: ' || v_deprec.department_id || ' ' || v_deprec.department_name);
+  FOR v_emprec in c_emp (v_deprec.department_id)
+    LOOP
+      V_COUNTER := c_emp%ROWCOUNT;
+      DBMS_OUTPUT.PUT_LINE(v_emprec.first_name || ' ' || v_emprec.last_name);
+    END LOOP;
+    IF v_counter <> 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Total Employees is: ' || v_counter);
+    V_COUNTER := 0;
+    END IF;
+  END LOOP;
+END;
+
+
