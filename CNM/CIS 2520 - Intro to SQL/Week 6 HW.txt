@@ -1,0 +1,79 @@
+1.
+select trunc(avg(order_total), 2) AS Order_Avg
+from f_orders
+where order_date between '01-JAN-02' and '21-DEC-02';
+
+2.
+select min(salary), avg(salary), max(salary), sum(salary), count(salary)
+from employees;
+
+3.
+select min(salary), max(salary), avg(salary), sum(salary), count(salary)
+from employees
+where department_id between 30 and 60;
+
+4.
+select min(hire_date), max(hire_date)
+from employees;
+
+5.
+select count(id)
+from d_songs;
+
+6.
+select count(distinct type_code)
+from d_songs;
+
+7.
+select count(distinct loc_type)
+from d_venues;
+
+8.
+select count(*)
+from employees
+where job_id is not null;
+
+9.
+select count(distinct job_id)
+from employees;
+
+10.
+select count(commission_pct)
+from employees;
+
+11.
+select *
+from employees e, jobs j
+where e.job_id = j.job_id;
+107 ROWS
+
+12.
+select *
+from employees e, jobs j, departments d
+where e.job_id = j.job_id
+and d.department_id = e.department_id;
+106 ROWS
+
+13.
+select *
+from countries c, locations l
+where c.country_id = l.country_id;
+23 ROWS
+
+14.select *
+from employees e, jobs j, departments d, countries c, locations l
+where e.job_id = j.job_id
+and d.department_id = e.department_id
+and d.location_id = l.location_id
+and c.country_id = l.country_id;
+106 ROWS
+
+15.
+select *
+from employees e, jobs j, departments d, countries c, locations l
+where e.job_id = j.job_id
+and d.department_id = e.department_id
+and d.location_id = l.location_id
+and c.country_id = l.country_id
+and d.department_id IN(30,60,100);
+17 ROWS

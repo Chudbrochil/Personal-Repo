@@ -1,0 +1,43 @@
+1. 
+select last_name, job_id, salary, department_id
+from employees_sql
+where department_id in(20, 50, 60)
+order by department_id DESC, last_name;
+
+2.
+select employee_id as id, last_name, salary, commission_pct as comm
+from employees_sql
+where commission_pct is null;
+
+3.
+select *
+from departments
+where budget_amt between 1000 and 7000;
+
+4.
+select *
+from jobs
+where job_id like '%PROG%';
+
+5.
+select employee_id as ID, last_name as NAME, job_id as JOB, salary
+from employees_sql
+where job_id = 'SA_REP' AND salary >= 9500
+order by job_id, salary;
+
+6.
+select last_name, job_id, salary, department_id
+from employees_sql
+where department_id not in(20, 50, 60)
+order by department_id desc, last_name;
+
+7.
+select employee_id, last_name, job_id, salary, department_id
+from employees_sql
+where salary between 3000 and 9000
+order by salary desc;
+
+8.
+select department_id, first_name || ' ' || last_name as NAME
+from employees_sql
+order by department_id desc, last_name;

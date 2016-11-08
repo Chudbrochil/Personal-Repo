@@ -1,0 +1,82 @@
+All my code is correct in the submission, but I was previously using Word as my editor.  Sorry, I will now use Notepad or the included SQL text editor.
+
+1.
+C
+
+2.
+SELECT id, first_name, last_name, birthdate
+FROM f_staffs
+ORDER BY birthdate;
+
+SELECT first_name || ' ' || last_name AS "DJs on Demand Clients"
+FROM d_clients
+ORDER BY last_name;
+
+SELECT food_item_number, order_number
+FROM f_order_lines
+ORDER BY food_item_number;
+
+3.
+SELECT last_name AS "EMPLOYEE LAST NAME", salary AS "CURRENT SALARY", salary *
+1.05 AS "NEW SALARY 5% RAISE"
+FROM employees;
+
+4.
+SELECT first_name || ' ' || last_name AS "Name", salary * 12 AS "ANNUAL SALARY"
+FROM employees;
+
+5.
+SELECT producer, title
+FROM d_cds
+WHERE title = "Carpe Diem"
+ORDER BY title DESC;
+
+6.
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary BETWEEN 6000 AND 10000;
+
+7.
+SELECT *
+FROM d_venues
+WHERE loc_type LIKE "Private Home";
+
+8.
+SELECT first_name, last_name, salary
+FROM employees
+WHERE salary BETWEEN 2000 AND 6000;
+
+NO 9
+
+10.
+SELECT *
+FROM employees
+WHERE last_name LIKE "_e%";
+
+11.
+SELECT *
+FROM employees
+WHERE last_name LIKE "D%a%e%" OR last_name LIKE "D%e%a%"
+ORDER BY last_name DESC;
+
+12.
+SELECT *
+FROM employees
+WHERE commission_pct IS NOT NULL;
+
+13.
+SELECT *
+FROM d_songs
+WHERE type_code IN (77, 12, 1);
+
+14.
+SELECT *
+FROM employees
+WHERE department_id NOT IN (80, 90);
+
+15.
+On the “AND” statement there is only one result given because it is a combination of where the code
+is greater than 200 and the description is Tropical or Carnival. On the “OR” statement there is 6
+results because it is listing where the code is greater than 200 AND where the description is Tropical
+or Carnival.
+One is OR, one is AND.

@@ -1,0 +1,76 @@
+2.
+Create Table   Emp_Clubs
+(
+Club_id number(4,0),
+Club_Name varchar2(10) constraint empclub_name_nn not null, 
+Location varchar2(15) constraint empclub_loc_NN Not Null,
+Contact number(10) constraint empclub_contact_NN Not Null,
+Constraint Empclub_id_PK Primary Key(club_id)
+);
+
+3.
+alter table   Emp_Clubs
+add days varchar2(4);
+
+4.
+alter table   Emp_Clubs
+modify club_name varchar2(20);
+
+5.
+alter table   Emp_Clubs
+add constraint emp_club_emp_fk foreign key(contact_emp)
+references employees(employee_id);
+
+6.
+INSERT INTO EMP_CLUBS(CLUB_ID, CLUB_NAME, LOCATION, CONTACT_EMP, DAYS)
+VALUES(500, 'IT Club', 'E101', 101, 'TUE');
+
+INSERT INTO EMP_CLUBS(CLUB_ID, CLUB_NAME, LOCATION, CONTACT_EMP, DAYS)
+VALUES(505, 'Gamers', 'E103', 105, 'THU');
+
+INSERT INTO EMP_CLUBS(CLUB_ID, CLUB_NAME, LOCATION, CONTACT_EMP, DAYS)
+VALUES(510, 'Hackers', 'E103', 105, 'FRI');
+
+7.
+update emp_clubs
+set days='WED'
+where club_id = '500';
+
+8.
+delete from emp_clubs
+where club_id = '510' and club_name = 'Hackers';
+commit;
+
+9.
+create view emp_annsal60_view
+as
+select e.employee_id as ID, e.first_name || e.last_name AS Name, 
+j.job_title AS JOB, d.department_name AS DEPARTMENT, 
+to_char((salary*12), '$999,999.99') AS Annual_Salary
+from employees e, departments d, jobs j
+where e.department_id = d.department_id
+and e.job_id = j.job_id
+and d.department_id = '60'
+with read only;
+
+10.
+create synonym EClub
+for emp_clubs;
+
+select *
+from EClub;
+
+11.
+create sequence empclub_id_seq
+increment by 5
+start with 550
+maxvalue 5000
+nocycle
+nocache;
+
+12.
+insert into emp_clubs(club_id, club_name, location, contact_emp, days)
+values(empclub_id_seq.nextval, 'Football', 'E101', 105, 'MON');
+
+insert into emp_clubs(club_id, club_name, location, contact_emp, days)
+values(empclub_id_seq.nextval, 'Music', 'E103', 107, 'TUE');
