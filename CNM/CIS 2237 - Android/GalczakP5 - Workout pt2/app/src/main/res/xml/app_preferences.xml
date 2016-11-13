@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:title="Limb Loosener"
+        android:fragment = "com.cis2237.galczakp4.workout.SettingActivity$WorkoutProgressFragment1"
+        android:summary="Great for Flexibility">
+        <extras
+            android:name="header"
+            android:value="one"/>
+
+    </header>
+
+    <header
+        android:title="Core Agony"
+        android:fragment = "com.cis2237.galczakp4.workout.SettingActivity$WorkoutProgressFragment2"
+        android:summary="Great for your Core">
+        <extras
+            android:name="header"
+            android:value="two"/>
+
+    </header>
+
+    <header
+        android:title="The Wimp Special"
+        android:fragment = "com.cis2237.galczakp4.workout.SettingActivity$WorkoutProgressFragment3"
+        android:summary="Great for Wimps">
+        <extras
+            android:name="header"
+            android:value="three"/>
+
+    </header>
+
+    <header
+        android:title="Strength and Length"
+        android:fragment = "com.cis2237.galczakp4.workout.SettingActivity$WorkoutProgressFragment4"
+        android:summary="Great for conditioning and strength">
+        <extras
+            android:name="header"
+            android:value="four"/>
+
+    </header>
+
+
+
+
+</preference-headers>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue ="None"
+        android:key="handstand-pushups"
+        android:summary="How many Handstand Pushups?"
+        android:title="Handstand Pushups" />
+
+    <EditTextPreference
+        android:defaultValue ="None"
+        android:key="one-legged-squats"
+        android:summary="How many one-legged squats?"
+        android:title="One-legged Squats" />
+
+    <EditTextPreference
+        android:defaultValue ="None"
+        android:key="pull-ups-1"
+        android:summary="How many pull-ups?"
+        android:title="Pull-Ups" />
+
+
+
+</PreferenceScreen>
