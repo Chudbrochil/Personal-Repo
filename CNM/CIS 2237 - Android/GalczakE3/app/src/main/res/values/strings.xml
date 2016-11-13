@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MenusDemo</string>
+    <string name="three_menu_examples">Three Menu Examples</string>
+    <string name="touch_here_to_see_the_popup_menu">Touch here to see the POPUP menu</string>
+</resources>

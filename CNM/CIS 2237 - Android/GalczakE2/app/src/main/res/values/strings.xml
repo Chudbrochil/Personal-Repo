@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GalczakE2</string>
+    <string name="classical_music">Classical Music</string>
+    <string name="play_classical">Play Classical!</string>
+    <string name="electronica_music">Electronica Music</string>
+    <string name="play_electronica">Play Electronica!</string>
+</resources>

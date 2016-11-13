@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GalczakP2</string>
+    <string name="galczakp2_mobile_tipster">GalczakP2 Mobile Tipster</string>
+    <string name="amount_of_bill">Amount of Bill:</string>
+    <string name="number_of_diners">Number of Diners:</string>
+    <string name="tip_amount">Tip Amount:</string>
+    <string name="total_with_tip">Total with Tip:</string>
+    <string name="each_diner_share">Each Diner Share:</string>
+</resources>

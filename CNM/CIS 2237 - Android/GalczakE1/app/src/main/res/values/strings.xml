@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Android Terminology App</string>
+    <string name="firstString">Widget Definition: \nWidget is a generic term for a bit of self-contained code that displays a program, or a piece of a program, that is also a shortcut to a larger application.</string>
+    <string name="secondString">Android Manifest Definition: \nThe manifest file provides essential information about your app to the Android system including Java package name, describing components of the app and more.</string>
+    <string name="thirdString">Resource Definition: \nA resource is an externalized piece of data. This is often used for strings and images so that you are able to call a resource (could be thought of as a variable) instead of hardcoding a path or string.</string>
+</resources>
