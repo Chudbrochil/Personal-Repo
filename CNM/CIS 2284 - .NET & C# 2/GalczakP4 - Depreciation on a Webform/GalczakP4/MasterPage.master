@@ -1,0 +1,41 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="GalczakP4.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table>
+            <tr style="background: blue" >
+                    
+                <td>
+                    <div>
+                        <asp:Image ImageUrl="~/logo.png" runat="server" Height="50" Width="50" />
+                        <asp:HyperLink ID="Home" NavigateUrl="~/Home.aspx" Text="Home" Font-Size="X-Large" runat="server"></asp:HyperLink>
+                        <asp:HyperLink ID="Depreciation" NavigateUrl="~/Depreciation.aspx" Text="Depreciation" Font-Size="X-Large" runat="server"></asp:HyperLink>
+                        <asp:HyperLink ID="Chat" NavigateUrl="~/Chat.aspx" Text="Chat" Font-Size="X-Large" runat="server"></asp:HyperLink>
+                    </div>
+                </td>
+
+                
+            </tr>
+            <tr>
+
+                <td>
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Copyright 2016 - Anthony Galczak </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+
