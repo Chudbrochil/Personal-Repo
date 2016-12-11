@@ -1,0 +1,127 @@
+﻿@model SportsStatistics3.Models.Team
+
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" type="text/css" href="~/League.css" />
+
+
+@if (Model.UserName == "Nobody")
+{
+    <h2>@Model.UserName</h2>
+
+    @Html.ActionLink("Create New Team", "Create", "Teams")
+}
+else
+{
+
+    <h2>@Model.UserName</h2>
+
+    <body style="background-image:url(http://bloximages.chicago2.vip.townnews.com/cumberlink.com/content/tncms/assets/v3/editorial/a/24/a244cba0-1a6d-11e2-a2d7-001a4bcf887a/508226cf12d8c.image.jpg);align-items:center; background-repeat:no-repeat;
+ background-size:cover;">
+        <form style="color: white; font-weight: bold;font-size:30px; background-color:darkgoldenrod;">
+            <marquee style=”behavior:scroll; direction:left; padding:3px;“>Your team goes on this page. This is where you can set your roster each time you visit.</marquee>
+        </form>
+        @*<table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Win Percentage</th>
+                    </tr>
+                </thead>
+                <tbody class="row" draggable="true">
+                    <tr>
+                        <td>Your Team</td>
+                        <td>Your Wins</td>
+                        <td>Your Losses</td>
+                        <td>Your WinPercent</td>
+                    </tr>
+                    <tr>
+                        <td>Your Team</td>
+                        <td>Your Wins</td>
+                        <td>Your Losses</td>
+                        <td>Your WinPercent</td>
+                    </tr>
+                    <tr>
+                        <td>Your Team</td>
+                        <td>Your Wins</td>
+                        <td>Your Losses</td>
+                        <td>Your WinPercent</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>*@
+        <table>
+            <tr>
+                <td>
+                    <b>Team Name</b>
+                </td>
+                <td>
+                    <b>Wins</b>
+                </td>
+                <td>
+                    <b>Losses</b>
+                </td>
+                <td>
+                    <b>Win Perc.</b>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.TeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Wins)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Losses)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.WinPct)
+                </td>
+            </tr>
+        </table>
+    </body>
+}
+
+
+
+
+@*Tried to make drag and drop box. I hoped to use this to give the teams drag and drop capability*@
+
+<@*head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Draggable - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <style>
+        #draggable {
+            width: 150px;
+            height: 150px;
+            padding: 0.5em;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+            $(function () {
+                $("#draggable").draggable();
+            });
+    </script>
+</head>
+
+<body>
+
+    <div id="draggable" class="ui-widget-content">
+        <p>Drag me around</p>
+    </div>*@
+
+

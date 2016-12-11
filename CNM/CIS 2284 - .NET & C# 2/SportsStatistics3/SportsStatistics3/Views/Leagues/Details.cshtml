@@ -1,0 +1,58 @@
+﻿@model SportsStatistics3.Models.League
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>League</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InitialFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CommissionerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CommissionerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rules)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rules)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumTeams)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumTeams)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxTeams)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxTeams)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LeagueID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,48 @@
+﻿body {
+    background-image: url("http://scottwoodphotography.com/wp-content/gallery/ir-photography/IRFootballField.jpg");
+    background-attachment: fixed;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+}
+table{
+        list-style:none;
+    text-align: center;
+    background-color: #C09F80;
+    border-radius: 25px;
+    color: #565656;
+}
+b{
+    font-size: large;
+    padding:40px;
+}
+td{
+    padding-right: 40px;
+    padding-bottom: 10px;
+}
+
+.navbar {
+    background-color: #76323f;
+    color: #565656;
+}
+div{
+    color:white;
+    text-align:left;
+}
+.roster {
+    list-style:none;
+    text-align: center;
+    background-color: #C09F80;
+    border-radius: 25px;
+    color: #565656;
+}
+input{
+    text-align-last:auto;
+
+}
+
+.navbar-header {
+    color: white;
+}

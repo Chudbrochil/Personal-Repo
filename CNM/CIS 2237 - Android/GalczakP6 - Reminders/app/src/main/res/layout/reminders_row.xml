@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="48dp"
+        android:layout_width="match_parent" >
+
+        <android.view.View
+            android:id="@+id/row_tab"
+            android:background="@color/blue"
+            android:layout_width="10dp"
+            android:layout_height="100dp"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/blue"
+            android:text="reminders_row"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:id="@+id/txt_row"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+</LinearLayout>

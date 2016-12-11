@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SportsStatistics3.Models.League>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InitialFee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CommissionerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rules)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumTeams)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaxTeams)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InitialFee)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CommissionerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rules)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumTeams)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxTeams)
+        </td>
+        <td>
+            @if (Request.IsAuthenticated && User.IsInRole("Administrator"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.LeagueID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.LeagueID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.LeagueID })
+            }
+        </td>
+    </tr>
+}
+
+</table>

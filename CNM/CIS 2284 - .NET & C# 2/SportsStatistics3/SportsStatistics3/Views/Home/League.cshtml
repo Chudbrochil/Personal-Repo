@@ -1,0 +1,60 @@
+﻿@model SportsStatistics3.Models.League
+
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" type="text/css" href="~/League.css" />
+
+<h2>League</h2>
+<div>
+    
+    @if (Model.LeagueID == 2)
+    {
+        <h3>Fees: $@Model.InitialFee   per Person</h3>
+        <h3>Commissioner: @Model.CommissionerName</h3>
+        <h3>Rules: @Model.Rules</h3>
+    }
+    
+    <table>
+        <tr>
+            <td>
+                <b>Real Name</b>
+            </td>
+            <td>
+                <b>Team Name</b>
+            </td>
+            <td>
+                <b>Email</b>
+            </td>
+            <td>
+                <b>Commish</b>
+            </td>
+        </tr>
+        @foreach (var team in Model.Teams)
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => team.RealName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => team.TeamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem=>team.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => team.IsCommissioner)
+                    </td>
+                </tr>
+        }
+
+    </table>
+    @if (Request.IsAuthenticated && User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Update League", "Edit", "Leagues")
+    }
+</div>
+@if (Model.NumTeams < 12)
+{
+    @Html.ActionLink("Create Team", "Create", "Teams")
+}
