@@ -1,0 +1,62 @@
+﻿
+<h1>Resume</h1>
+
+<ul>
+    @{
+
+    }
+    Updated Nov. 17, 2016
+
+    <h3>Preamble</h3>
+    <li>
+        @Model.Preamble
+    </li>
+
+
+    <h3>Experience</h3>
+    @foreach (var item in Model.ExperienceItems)
+    {
+        <li>
+            <b>Employer:</b> @item.Description<br />
+            <b>Title:</b> @item.Title<br />
+            <b>Start:</b> @item.Start.ToShortDateString() <br />
+            <b>End:</b> @item.End.ToShortDateString() 
+        </li>
+    }
+    @if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Edit", "Index", "Experiences")
+    }
+
+
+    <h3>Education</h3>
+    @foreach (var item in Model.EducationItems)
+    {
+        <li>
+            <b>School:</b> @item.School<br />
+            <b>Degree:</b> @item.Degree<br />
+            <b>Program GPA:</b> @item.ProgramGpa.ToString("0.00")<br />
+            <b>Cumulative GPA:</b> @item.CumulGpa.ToString("0.00")<br />
+            <b>Graduation Date:</b> @item.End.ToShortDateString()
+        </li>
+    }
+    @if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Edit", "Index", "Educations")
+    }
+
+
+    <h3>Skills</h3>
+    @foreach (var item in Model.SkillItems)
+    {
+        <li>
+            @item.Title - @item.Description
+        </li>
+    }
+    @if (User.IsInRole("Administrator"))
+    {
+        @Html.ActionLink("Edit", "Index", "Skills")
+    }
+
+
+</ul>

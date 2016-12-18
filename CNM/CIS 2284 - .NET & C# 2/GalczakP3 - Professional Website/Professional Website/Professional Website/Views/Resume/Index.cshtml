@@ -1,0 +1,35 @@
+﻿
+<h2>Resume</h2>
+
+<ul>
+
+    <h3>Preamble</h3>
+    <li>
+        @Model.Preamble
+    </li>
+
+    <h3>Skills</h3>
+    @foreach(var item in Model.SkillItems)
+    {
+        <li>
+            @item.Title - @item.Description
+        </li>
+    }
+
+    <h3>Experience</h3>
+    @foreach(var item in Model.ExperienceItems)
+    {
+        <li>
+            @item.Title - @item.Description
+        </li>
+    }
+
+    <h3>Education</h3>
+    @foreach(var item in Model.EducationItems)
+    {
+        <li>
+            @item.School - @item.Degree
+        </li>
+    }
+</ul>
+

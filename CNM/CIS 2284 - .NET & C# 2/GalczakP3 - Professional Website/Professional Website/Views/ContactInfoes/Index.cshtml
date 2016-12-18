@@ -1,0 +1,42 @@
+﻿@model Professional_Website.Models.ContactInfo
+
+<h2>Contact</h2>
+
+@using (Html.BeginForm("Contact", "ContactInfoes", FormMethod.Post))
+{
+        <div class="row">
+            @Html.LabelFor(model => model.FirstName, "First Name")
+            @Html.EditorFor(model => model.FirstName)
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.LastName, "Last Name")
+            @Html.EditorFor(model => model.LastName)
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Email, "Email Address")
+            @Html.EditorFor(model => model.Email)
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.Comments, "Comments")
+            @Html.TextAreaFor(model => model.Comments)
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.IsPhoneApp, "Mobile App")
+            @Html.CheckBoxFor(model => model.IsPhoneApp)
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.IsWebApp, "Web App")
+            @Html.CheckBoxFor(model => model.IsWebApp)
+        </div>
+        <div class="row">
+            @Html.LabelFor(model => model.IsWindowsApp, "Windows App")
+            @Html.CheckBoxFor(model => model.IsWindowsApp)
+        </div>
+
+        <div class="row">
+            <input type="submit" value="submit" />
+            <input type="reset" value="reset" />
+        </div>
+
+
+}

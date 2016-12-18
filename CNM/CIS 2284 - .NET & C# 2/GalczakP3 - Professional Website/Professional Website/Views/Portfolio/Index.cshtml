@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Portfolio</h1>
+
+Here is my CNM portfolio from my Fall 2016 Capstone project!
+
+<object data="<%= Url.Action("GetPDF") %>
+    <a href="~/Portfolio.pdf">View My Portfolio</a></object>
+
+<div>
+    Sample of my code in action: <br />
+    <img src="~/Clock.jpg" alt="Unity Clock" height="300" width="500" /> <br />
+    @*<img src="~/Clock-Code.jpg" alt="Clock Code" height="300" width="500" />*@
+</div>
+
