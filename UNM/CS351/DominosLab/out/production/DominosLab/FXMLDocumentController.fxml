@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+ Dominos Game - Lab 1 CS 351
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #427549;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <VBox maxHeight="600.0" maxWidth="300.0">
+         <children>
+            <Label style="-fx-font-size: 16;" text="Selected Domino" />
+            <ImageView fx:id="imgSelectedDomino" fitHeight="75.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin></ImageView>
+             <Button fx:id="btnPlaceLeft" mnemonicParsing="false" onAction="#btnPlaceLeft" text="Place Left" />
+             <Button fx:id="btnPlaceRight" mnemonicParsing="false" onAction="#btnPlaceRight" text="Place Right" />
+             <Button fx:id="btnDraw" mnemonicParsing="false" onAction="#btnDraw" text="Draw From Boneyard" />
+            <Button fx:id="btnRotate" mnemonicParsing="false" onAction="#btnRotate" text="Rotate Domino" />
+            <Label fx:id="lblBoneyard" style="-fx-font-size: 16;" text="Boneyard: " />
+            <Label fx:id="lblComputerDominos" style="-fx-font-size: 16;" text="Computer Dominos:" />
+         </children>
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <VBox maxHeight="600.0" maxWidth="820.0" prefHeight="600.0" prefWidth="820.0">
+         <children>
+            <Label style="-fx-font-size: 16;" text="Player 1:" />
+            <GridPane fx:id="gridPlayer">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+                  <RowConstraints minHeight="50.0" prefHeight="50.0" vgrow="NEVER" />
+              </rowConstraints>
+               <VBox.margin>
+                  <Insets bottom="100.0" left="25.0" />
+               </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </GridPane>
+            <Label style="-fx-font-size: 16;" text="Board" />
+            <Canvas fx:id="canvasBoard" height="163.0" width="770.0" />
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets left="50.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>
