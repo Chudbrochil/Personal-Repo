@@ -16,8 +16,6 @@ public class BoardSetup
         rand = new Random();
     }
 
-    // Making a brand new board
-
     /**
      * generateNewBoard()
      * Forward facing method of this class.
@@ -53,8 +51,6 @@ public class BoardSetup
         }
 
     }
-
-    // Method to create a valid board, has a recursive helper method for forcing a valid letter
 
     /**
      * generateValidRandomBoard()
@@ -128,8 +124,6 @@ public class BoardSetup
         }
 
     }
-
-    // Recursive method to make sure we get a valid character
 
     /**
      * validRandomBoardHelper()

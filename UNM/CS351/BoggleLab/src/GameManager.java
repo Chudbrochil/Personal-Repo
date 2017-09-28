@@ -1,12 +1,16 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -22,6 +26,8 @@ public class GameManager
     private BoardSetup boardSetup;
     private int currentScore;
     private BogglePiece lastPiecePlayed;
+    private BoggleTimer gameTimer;
+    private MutableBoolean gameOver;
 
     public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice)
     {
@@ -33,6 +39,8 @@ public class GameManager
         badWords = new HashMap<>();
         goodWords = new HashMap<>();
         boardSetup = new BoardSetup(board, gcCanvas);
+        gameOver = new MutableBoolean(false);
+        gameTimer = new BoggleTimer(3*60, gameOver);
 
         openFile();
 
@@ -76,29 +84,32 @@ public class GameManager
 
         // Checks if the word isn't already in the list of good/bad words and isn't empty (eliminates duplicates)
         if(goodWords.containsValue(builtWord) == false && badWords.containsValue(builtWord) == false &&
-                builtWord.isEmpty() == false)
+                builtWord.isEmpty() == false && gameOver.get() == false)
         {
             if(words.contains(builtWord.toLowerCase()))
             {
                 lblWordValid.setText(buildingWord.toString() + " found!");
                 goodWords.put(goodWords.size(), builtWord);
-                // TODO: Why doesn't this work? Why isthis different then when I get the dictionary?
-                // File soundFile = new File(getClass().getResource("Word_Success.mp3").toURI());
-//                try { playSound(getClass().getResource("Word_Success.mp3").toURI().toString()); }
-//                catch(URISyntaxException e) { }
+                try { playSound(getClass().getResource("Word_Success.mp3").toURI()); }
+                catch(URISyntaxException e) { }
 
             }
             else
             {
                 lblWordValid.setText(buildingWord.toString() + " not found!");
                 badWords.put(badWords.size(), builtWord);
-//                try { playSound(getClass().getResource("Word_Failure.mp3").toURI().toString()); }
-//                catch(URISyntaxException e) { }
+                try { playSound(getClass().getResource("Word_Failure.mp3").toURI()); }
+                catch(URISyntaxException e) { }
             }
         }
 
         updateLabels(lblGoodWords, lblBadWords, lblScore);
         resetBoardAfterCheck();
+    }
+
+    public void startTimer(Label lblTimer)
+    {
+        gameTimer.startTime(lblTimer);
     }
 
     /**
@@ -143,7 +154,6 @@ public class GameManager
     {
         buildingWord = new StringBuilder();
 
-        // TODO: Game Variant that gives you a brand new board and deducts 1 minute of time ?
         // Resetting the board pieces back to "normal", i.e. not highlighted
         for(int i = 0; i < board.size(); ++i)
         {
@@ -170,7 +180,7 @@ public class GameManager
         {
             // If the click matches a piece and it isn't already highlighted...
             if(board.get(i).isInBounds(x, y) == true &&
-                    board.get(i).getIsHighlighted() == false)
+                    board.get(i).getIsHighlighted() == false && gameOver.get() == false)
             {
                 // Now that we've selected the piece the player selected, we have to find out if it's a neighbor
                 BogglePiece selectedPiece = board.get(i);
@@ -190,9 +200,13 @@ public class GameManager
         }
     }
 
-    private void playSound(String filePath)
+    /**
+     * playSound()
+     * Plays a given sound.
+     * @param filePath Path of the sound you're trying to play
+     */
+    private void playSound(URI filePath)
     {
-        System.out.println("Tried to play: " + filePath);
         File soundFile = new File(filePath);
         if(soundFile.isFile())
         {

@@ -49,6 +49,7 @@ public class Controller
         int gridSize = askGameType();
         boolean realDice = askLetterType();
         gm = new GameManager(gcCanvas, gridSize, realDice);
+        gm.startTimer(lblTime);
     }
 
     // Showing a dialog to ask user what game size they want to play
@@ -69,6 +70,9 @@ public class Controller
         // TODO: Not sure how to create a dialog with 2 choicedialog's in it
 //        Dialog<Pair<ChoiceDialog, ChoiceDialog>> parentDialog = new Dialog<>();
 //        DialogPane
+
+
+        Dialog<Pair<ChoiceDialog, ChoiceDialog>> myBigDialog = new Dialog<>();
 
         ChoiceDialog dialog = new ChoiceDialog(gameTypes.get(0), gameTypes);
         dialog.setTitle("Boggle!");
