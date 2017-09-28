@@ -14,6 +14,12 @@ public class BoggleTimer
     Label lblTime;
     MutableBoolean gameOver;
 
+    /**
+     * BoggleTimer()
+     * This is BoggleTimer's constructor.
+     * @param timeInSeconds How many seconds we want the timer for
+     * @param gameOver Boolean to set whether the game has ended via time
+     */
     public BoggleTimer(int timeInSeconds, MutableBoolean gameOver)
     {
         this.timeInSeconds = timeInSeconds;

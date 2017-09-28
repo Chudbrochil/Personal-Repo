@@ -5,8 +5,6 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -39,8 +37,16 @@ public class Controller
 
     private GraphicsContext gcCanvas;
 
+    /**
+     * Controller()
+     * This is Controller's constructor
+     */
     public Controller() { }
 
+    /**
+     * initialize()
+     * Initializes the UI
+     */
     @FXML
     private void initialize()
     {
@@ -51,8 +57,6 @@ public class Controller
         gm = new GameManager(gcCanvas, gridSize, realDice);
         gm.startTimer(lblTime);
     }
-
-    // Showing a dialog to ask user what game size they want to play
 
     /**
      * askGameType()

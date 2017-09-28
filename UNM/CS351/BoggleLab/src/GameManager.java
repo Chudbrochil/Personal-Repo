@@ -1,11 +1,7 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -29,6 +25,13 @@ public class GameManager
     private BoggleTimer gameTimer;
     private MutableBoolean gameOver;
 
+    /**
+     * GameManager()
+     * This is GameManager's constructor.
+     * @param gcCanvas GraphicsContext to paint onto
+     * @param gridSize How big we want our grid. 4 for Boggle, 5 for BB, 6 for SBB
+     * @param realDice Whether or not we want to "roll" Boggle dice or get random pieces
+     */
     public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice)
     {
         this.gcCanvas = gcCanvas;
@@ -107,6 +110,11 @@ public class GameManager
         resetBoardAfterCheck();
     }
 
+    /**
+     * startTimer()
+     * Starts the game timer
+     * @param lblTimer The label we will update with the game time
+     */
     public void startTimer(Label lblTimer)
     {
         gameTimer.startTime(lblTimer);

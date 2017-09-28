@@ -9,6 +9,12 @@ public class BoardSetup
     private ArrayList<BogglePiece> board;
     private GraphicsContext gcCanvas;
 
+    /**
+     * BoardSetup()
+     * This is BoardSetup's constructor.
+     * @param board Board we will setup with BogglePiece's
+     * @param gcCanvas GraphicsContext we will paint our pieces onto
+     */
     public BoardSetup(ArrayList<BogglePiece> board, GraphicsContext gcCanvas)
     {
         this.board = board;

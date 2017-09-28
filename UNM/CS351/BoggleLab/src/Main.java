@@ -24,7 +24,7 @@ public class Main extends Application {
     /**
      * main()
      * Main thread that launchs the javafx scene
-     * @param args
+     * @param args Run arguments
      */
     public static void main(String[] args) {
         launch(args);
