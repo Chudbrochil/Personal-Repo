@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Boggle_Anthony_Galczak">
+    <output-path>$PROJECT_DIR$/out/artifacts/Boggle_Anthony_Galczak</output-path>
+    <root id="archive" name="Boggle_Anthony_Galczak.jar">
+      <element id="module-output" name="BoggleLab" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
+      <element id="dir-copy" path="$PROJECT_DIR$/res" />
+      <element id="dir-copy" path="$PROJECT_DIR$/doc" />
+      <element id="file-copy" path="$PROJECT_DIR$/res/dictionary.txt" />
+      <element id="file-copy" path="$PROJECT_DIR$/res/Word_Failure.mp3" />
+      <element id="file-copy" path="$PROJECT_DIR$/res/Word_Success.mp3" />
+    </root>
+  </artifact>
+</component>
