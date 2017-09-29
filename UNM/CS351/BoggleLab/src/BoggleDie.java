@@ -5,6 +5,11 @@ public class BoggleDie
 {
     private ArrayList<String> die;
 
+    /**
+     * BoggleDie()
+     * This is BoggleDie's constructor.
+     * @param dieString The string representing a given die with 6 die-faces.
+     */
     public BoggleDie(String dieString)
     {
         die = new ArrayList<>();

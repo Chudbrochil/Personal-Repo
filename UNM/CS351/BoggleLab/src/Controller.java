@@ -148,8 +148,10 @@ public class Controller
         String rulesString =
                 "Rules of Boggle:\nTry to form as many words as possible in the alotted time.\n" +
                         "Letters are valid if:\n-At least 3-letters long\n" +
-                        "-Are visible on the tray via adjacent letters\n" +
-                        "-Are listed in the standard dictionary\n" +
+                        "-Are visible on the tray via adjacent letters without using the same piece\n" +
+                        "-Are not capitalized or foreign words." +
+                        "-Are listed in the standard dictionary\n\n" +
+                        "Score is calculated as such: word length - 2, so \"mouse\" is 3 points\n" +
                         "There is no penalty for short words or words not in dictionary.";
         openMenuItem("Rules", rulesString);
     }
@@ -194,7 +196,7 @@ public class Controller
         generalAlert.setHeaderText(null);
         generalAlert.setContentText(info);
         generalAlert.showAndWait();
-        gameTimer.restartTime();
+        gameTimer.restartTimer();
     }
 
 }

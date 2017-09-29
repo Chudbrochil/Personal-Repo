@@ -86,14 +86,6 @@ public class BogglePiece
         else { return letterAsString; }
     }
 
-    // In case I want to in-place replace the letter and re-draw the piece
-    // TODO: METHOD NOT CURRENTLY USED
-    public void setLetter(char letter, GraphicsContext gcCanvas)
-    {
-        this.letter = letter;
-        draw(gcCanvas);
-    }
-
     /**
      * getIsHighlighted()
      * @return A boolean representing whether or not this piece is highlighted. True if highlighted. False if not.

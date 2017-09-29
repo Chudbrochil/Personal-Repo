@@ -97,10 +97,10 @@ public class BoggleTimer
     }
 
     /**
-     * restartTime()
+     * restartTimer()
      * Plays the clock in case user somehow paused the timer.
      */
-    public void restartTime()
+    public void restartTimer()
     {
         timeline.play();
     }
