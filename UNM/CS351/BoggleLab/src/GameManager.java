@@ -2,10 +2,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -57,13 +60,12 @@ public class GameManager
     {
         try
         {
-            File file = new File(getClass().getResource("dictionary.txt").toURI());
-            reader = new BufferedReader(new FileReader(file));
+            InputStream inputFile = getClass().getResourceAsStream("dictionary.txt");
+            reader = new BufferedReader(new InputStreamReader(inputFile, "UTF-8"));
             String line;
             while((line = reader.readLine()) != null) { words.add(line); }
         }
         catch (IOException e) {}
-        catch(URISyntaxException e) {}
     }
 
     /**
