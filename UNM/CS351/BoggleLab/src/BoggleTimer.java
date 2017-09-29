@@ -9,10 +9,10 @@ import java.util.concurrent.TimeUnit;
 public class BoggleTimer
 {
 
-    Timeline timeline;
-    int timeInSeconds;
-    Label lblTime;
-    MutableBoolean gameOver;
+    private Timeline timeline;
+    private int timeInSeconds;
+    private Label lblTime;
+    private MutableBoolean gameOver;
 
     /**
      * BoggleTimer()
@@ -30,8 +30,8 @@ public class BoggleTimer
 
     /**
      * startTime()
-     * Starts the timer to start playing the game
-     * @param lblTime
+     * Starts the timer to start playing the game.
+     * @param lblTime Label that holds the game time that we want to update.
      */
     public void startTime(Label lblTime)
     {
@@ -94,6 +94,24 @@ public class BoggleTimer
     {
         String timeString = String.format("%02d:%02d", TimeUnit.SECONDS.toMinutes(timeInSeconds), TimeUnit.SECONDS.toSeconds(timeInSeconds % 60));
         lblTime.setText("Time: " + timeString);
+    }
+
+    /**
+     * restartTime()
+     * Plays the clock in case user somehow paused the timer.
+     */
+    public void restartTime()
+    {
+        timeline.play();
+    }
+
+    /**
+     * pauseTimer()
+     * Pauses the timer in case user somehow pauses the timer (Menus?)
+     */
+    public void pauseTimer()
+    {
+        timeline.pause();
     }
 
 

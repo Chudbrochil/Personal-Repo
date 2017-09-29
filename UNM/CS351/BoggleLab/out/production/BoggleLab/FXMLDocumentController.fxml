@@ -3,6 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -31,6 +34,17 @@
             <Label fx:id="lblWordValid" text="Word is in dictionary ?" GridPane.rowIndex="2" />
             <Label fx:id="lblScore" text="Score: " GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblTime" text="Time: " GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <MenuBar prefHeight="25.0" prefWidth="66.0" GridPane.columnIndex="2">
+              <menus>
+                <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem fx:id="menuItemRules" mnemonicParsing="false" onAction="#rulesClicked" text="Rules" />
+                        <MenuItem fx:id="menuItemControls" mnemonicParsing="false" onAction="#controlsClicked" text="Controls" />
+                        <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#aboutClicked" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
          </children>
       </GridPane>
       <HBox prefHeight="610.0" prefWidth="1000.0">

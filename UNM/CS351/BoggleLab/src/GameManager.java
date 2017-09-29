@@ -22,7 +22,6 @@ public class GameManager
     private BoardSetup boardSetup;
     private int currentScore;
     private BogglePiece lastPiecePlayed;
-    private BoggleTimer gameTimer;
     private MutableBoolean gameOver;
 
     /**
@@ -32,9 +31,10 @@ public class GameManager
      * @param gridSize How big we want our grid. 4 for Boggle, 5 for BB, 6 for SBB
      * @param realDice Whether or not we want to "roll" Boggle dice or get random pieces
      */
-    public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice)
+    public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice, MutableBoolean gameOver)
     {
         this.gcCanvas = gcCanvas;
+        this.gameOver = gameOver;
 
         board = new ArrayList<>();
         words = new LinkedHashSet<>();
@@ -42,8 +42,6 @@ public class GameManager
         badWords = new HashMap<>();
         goodWords = new HashMap<>();
         boardSetup = new BoardSetup(board, gcCanvas);
-        gameOver = new MutableBoolean(false);
-        gameTimer = new BoggleTimer(3*60, gameOver);
 
         openFile();
 
@@ -89,7 +87,8 @@ public class GameManager
         if(goodWords.containsValue(builtWord) == false && badWords.containsValue(builtWord) == false &&
                 builtWord.isEmpty() == false && gameOver.get() == false)
         {
-            if(words.contains(builtWord.toLowerCase()))
+            // This will make sure if even a valid word is placed, but under 3 characters, it's still bad
+            if(words.contains(builtWord.toLowerCase()) && builtWord.length() > 2)
             {
                 lblWordValid.setText(buildingWord.toString() + " found!");
                 goodWords.put(goodWords.size(), builtWord);
@@ -108,16 +107,6 @@ public class GameManager
 
         updateLabels(lblGoodWords, lblBadWords, lblScore);
         resetBoardAfterCheck();
-    }
-
-    /**
-     * startTimer()
-     * Starts the game timer
-     * @param lblTimer The label we will update with the game time
-     */
-    public void startTimer(Label lblTimer)
-    {
-        gameTimer.startTime(lblTimer);
     }
 
     /**

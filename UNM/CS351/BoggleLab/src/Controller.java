@@ -1,11 +1,8 @@
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Pair;
 
 import java.util.*;
 
@@ -33,6 +30,13 @@ public class Controller
     @FXML
     private Canvas canvasBoard;
 
+    @FXML
+    private Menu menuHelp;
+
+    private BoggleTimer gameTimer;
+
+    private MutableBoolean gameOver;
+
     private GameManager gm;
 
     private GraphicsContext gcCanvas;
@@ -50,12 +54,13 @@ public class Controller
     @FXML
     private void initialize()
     {
-
         gcCanvas = canvasBoard.getGraphicsContext2D();
         int gridSize = askGameType();
         boolean realDice = askLetterType();
-        gm = new GameManager(gcCanvas, gridSize, realDice);
-        gm.startTimer(lblTime);
+        gameOver = new MutableBoolean(false);
+        gameTimer = new BoggleTimer(3*60, gameOver);
+        gm = new GameManager(gcCanvas, gridSize, realDice, gameOver);
+        gameTimer.startTime(lblTime);
     }
 
     /**
@@ -69,14 +74,6 @@ public class Controller
         gameTypes.add("Boggle (4x4)");
         gameTypes.add("Big Boggle (5x5)");
         gameTypes.add("Super Big Boggle (6x6)");
-
-
-        // TODO: Not sure how to create a dialog with 2 choicedialog's in it
-//        Dialog<Pair<ChoiceDialog, ChoiceDialog>> parentDialog = new Dialog<>();
-//        DialogPane
-
-
-        Dialog<Pair<ChoiceDialog, ChoiceDialog>> myBigDialog = new Dialog<>();
 
         ChoiceDialog dialog = new ChoiceDialog(gameTypes.get(0), gameTypes);
         dialog.setTitle("Boggle!");
@@ -139,6 +136,65 @@ public class Controller
         {
             gm.checkWord(lblWordValid, lblGoodWords, lblBadWords, lblScore);
         }
+    }
+
+    /**
+     * rulesClicked()
+     * This will open an information alert telling the user the rules of the game.
+     */
+    @FXML
+    private void rulesClicked()
+    {
+        String rulesString =
+                "Rules of Boggle:\nTry to form as many words as possible in the alotted time.\n" +
+                        "Letters are valid if:\n-At least 3-letters long\n" +
+                        "-Are visible on the tray via adjacent letters\n" +
+                        "-Are listed in the standard dictionary\n" +
+                        "There is no penalty for short words or words not in dictionary.";
+        openMenuItem("Rules", rulesString);
+    }
+
+    /**
+     * aboutClicked()
+     * This will open an information alert giving the user some general information about the program.
+     */
+    @FXML
+    private void aboutClicked()
+    {
+        String aboutString =
+                "Game of Boggle - CS 351 Lab 2\nAnthony Galczak\nWGalczak@gmail.com - agalczak@unm.edu";
+        openMenuItem("About", aboutString);
+    }
+
+    /**
+     * controlsClicked()
+     * This will open an information alert giving the user information about the game controls.
+     */
+    @FXML
+    private void controlsClicked()
+    {
+        String controlsString =
+                "Left click to select a game piece.\nKeep in mind you must select an adjacent piece" +
+                        " horizontally, vertically, or diagonally.\nRight-click to try to check the" +
+                        " current built word.";
+        openMenuItem("Controls", controlsString);
+    }
+
+    /**
+     * openMenuItem()
+     * Generalized method for opening an alert for a given menu item being clicked.
+     * @param title The title bar to be displayed on the alert.
+     * @param info The text to be displayed inside of the alert.
+     */
+    private void openMenuItem(String title, String info)
+    {
+        gameTimer.pauseTimer();
+        Alert generalAlert = new Alert(Alert.AlertType.INFORMATION);
+        generalAlert.setTitle(title);
+        generalAlert.setHeaderText(null);
+        generalAlert.setContentText(info);
+        generalAlert.showAndWait();
+        gameTimer.restartTime();
     }
 
 }
