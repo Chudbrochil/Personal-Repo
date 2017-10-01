@@ -94,16 +94,14 @@ public class GameManager
             {
                 lblWordValid.setText(buildingWord.toString() + " found!");
                 goodWords.put(goodWords.size(), builtWord);
-                try { playSound(getClass().getResource("Word_Success.mp3").toURI()); }
-                catch(URISyntaxException e) { }
+                playSound("Word_Success.wav");
 
             }
             else
             {
                 lblWordValid.setText(buildingWord.toString() + " not found!");
                 badWords.put(badWords.size(), builtWord);
-                try { playSound(getClass().getResource("Word_Failure.mp3").toURI()); }
-                catch(URISyntaxException e) { }
+                playSound("Word_Failure.wav");
             }
         }
 
@@ -204,15 +202,15 @@ public class GameManager
      * Plays a given sound.
      * @param filePath Path of the sound you're trying to play
      */
-    private void playSound(URI filePath)
+    private void playSound(String filePath)
     {
-        File soundFile = new File(filePath);
-        if(soundFile.isFile())
-        {
-            Media media = new Media(soundFile.toURI().toString());
-            MediaPlayer player = new MediaPlayer(media);
-            player.play();
+        try{
+            InputStream is = getClass().getResourceAsStream(filePath);
+            AudioStream audioStream = new AudioStream(is);
+            AudioPlayer.player.start(audioStream);
         }
+        catch(IOException e) { System.out.println(e.getMessage()); }
+
     }
 
 }
