@@ -3,7 +3,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-
 import java.util.*;
 
 public class Controller
@@ -29,7 +28,7 @@ public class Controller
 
     /**
      * initialize()
-     * Initializes the UI
+     * This method sets up the UI
      */
     @FXML
     private void initialize()
@@ -37,7 +36,7 @@ public class Controller
         gcCanvas = canvasBoard.getGraphicsContext2D();
         int gridSize = askGameType();
         boolean realDice = askLetterType();
-        gameTimer = new BoggleTimer(4);//3*60);
+        gameTimer = new BoggleTimer(3*60);
         gm = new GameManager(gcCanvas, gridSize, realDice, gameTimer);
         gameTimer.startTime(lblTime);
     }

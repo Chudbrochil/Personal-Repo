@@ -1,6 +1,3 @@
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -21,7 +18,6 @@ public class GameManager
     private BoardSetup boardSetup;
     private int currentScore;
     private BogglePiece lastPiecePlayed;
-    private BoggleTimer gameTimer;
     private boolean gameOver;
 
     /**
@@ -34,10 +30,7 @@ public class GameManager
     public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice, BoggleTimer gameTimer)
     {
         this.gcCanvas = gcCanvas;
-        this.gameTimer = gameTimer;
-
         gameOver = false;
-
         board = new ArrayList<>();
         words = new LinkedHashSet<>();
         buildingWord = new StringBuilder();
