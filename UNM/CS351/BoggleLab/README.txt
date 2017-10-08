@@ -7,7 +7,7 @@ Java and JavaFX.
 
 Rules:
 
-Try to form as many words as possible in the alotted time.
+Try to form as many words as possible in the allotted time.
 -Letters are valid if:
 -At least 3-letters long
 -Are not capitalized or foreign words.
@@ -60,6 +60,6 @@ features to add.
     I analyzed many different ways to do this and even started on it a bit.
     This is a pretty difficult problem considering the huge amount of
     possible words in a 6x6 board.
-- Possibly a button to start the timer/game at the beginning. This would beginning
-    very, very easy to do, but I'm not sure it adds anything to the functionality.
+- Possibly a button to start the timer/game at the beginning. This would be
+    very easy to do, but I'm not sure it adds anything to the functionality.
     It forces a user to just press another button to get going.
