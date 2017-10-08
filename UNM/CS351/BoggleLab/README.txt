@@ -44,15 +44,13 @@ List of extra features:
     a die. This makes the layout of the characters 100% realistic.
 -Sounds for placing a legitimate word or a bad word.
 -Help MenuBar including Rules, Controls and About
+-End game screen
 
 Possible future features and optimizations:
 Eventually, this project needed to stop being developed as I've spent a 
 ton of time on it and I do have other classes. However, here is a list of possible
 features to add.
 
-- End game score screen
-    My design is very conducive to this as the GameManager has a boolean
-    telling it when the game ends.
 - Dice being rolled one by one for effect for the "real dice" game type
 - Combining the ChoiceDialog's at the beginning of the game into one
     This seemed to involve creating your own custom dialog. I spent some

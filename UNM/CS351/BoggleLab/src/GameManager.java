@@ -1,16 +1,12 @@
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 
 public class GameManager
@@ -25,19 +21,22 @@ public class GameManager
     private BoardSetup boardSetup;
     private int currentScore;
     private BogglePiece lastPiecePlayed;
-    private MutableBoolean gameOver;
+    private BoggleTimer gameTimer;
+    private boolean gameOver;
 
     /**
      * GameManager()
-     * This is GameManager's constructor.
+     * Constructor for GameManager that starts the logic of the game.
      * @param gcCanvas GraphicsContext to paint onto
      * @param gridSize How big we want our grid. 4 for Boggle, 5 for BB, 6 for SBB
      * @param realDice Whether or not we want to "roll" Boggle dice or get random pieces
      */
-    public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice, MutableBoolean gameOver)
+    public GameManager(GraphicsContext gcCanvas, int gridSize, boolean realDice, BoggleTimer gameTimer)
     {
         this.gcCanvas = gcCanvas;
-        this.gameOver = gameOver;
+        this.gameTimer = gameTimer;
+
+        gameOver = false;
 
         board = new ArrayList<>();
         words = new LinkedHashSet<>();
@@ -45,6 +44,9 @@ public class GameManager
         badWords = new HashMap<>();
         goodWords = new HashMap<>();
         boardSetup = new BoardSetup(board, gcCanvas);
+
+        // Lambda syntax for setting a new event handler that calls a method
+        gameTimer.setGameOverEvent(e -> displayEndScreen());
 
         openFile();
 
@@ -87,7 +89,7 @@ public class GameManager
 
         // Checks if the word isn't already in the list of good/bad words and isn't empty (eliminates duplicates)
         if(goodWords.containsValue(builtWord) == false && badWords.containsValue(builtWord) == false &&
-                builtWord.isEmpty() == false && gameOver.get() == false)
+                builtWord.isEmpty() == false && gameOver == false)
         {
             // This will make sure if even a valid word is placed, but under 3 characters, it's still bad
             if(words.contains(builtWord.toLowerCase()) && builtWord.length() > 2)
@@ -95,7 +97,6 @@ public class GameManager
                 lblWordValid.setText(buildingWord.toString() + " found!");
                 goodWords.put(goodWords.size(), builtWord);
                 playSound("Word_Success.wav");
-
             }
             else
             {
@@ -177,7 +178,7 @@ public class GameManager
         {
             // If the click matches a piece and it isn't already highlighted...
             if(board.get(i).isInBounds(x, y) == true &&
-                    board.get(i).getIsHighlighted() == false && gameOver.get() == false)
+                    board.get(i).getIsHighlighted() == false && gameOver == false)
             {
                 // Now that we've selected the piece the player selected, we have to find out if it's a neighbor
                 BogglePiece selectedPiece = board.get(i);
@@ -210,7 +211,33 @@ public class GameManager
             AudioPlayer.player.start(audioStream);
         }
         catch(IOException e) { System.out.println(e.getMessage()); }
+    }
 
+    /**
+     * displayEndScreen()
+     * This will get called by the onFinished attribute of the timer to show the user some stats about the game
+     * and close the game after closing the alert.
+     */
+    private void displayEndScreen()
+    {
+        gameOver = true;
+        playSound("Times_Up.wav");
+        Alert gameAlert = new Alert(Alert.AlertType.INFORMATION);
+        gameAlert.setTitle("Time\'s up!");
+        gameAlert.setHeaderText(null);
+        String contentText = "The game is over. The time has expired.\nYou made " + goodWords.size() + " word(s) and scored " +
+                currentScore + " point(s).";
+        gameAlert.setContentText(contentText);
+
+        // There is an interesting java bug that does not allow an alert's showAndWait inside an animation timer.
+        // BoggleTimer uses a timeline (an animation timer) to tick and eventually finish the game.
+        // Bug details are found here: https://bugs.openjdk.java.net/browse/JDK-8095631
+
+        // This workaround allows the alert to call system exit after closing the alert box.
+        gameAlert.showingProperty().addListener((observable,oldValue,newValue)->{
+            if(!newValue){ System.exit(0); }
+        });
+        gameAlert.show();
     }
 
 }

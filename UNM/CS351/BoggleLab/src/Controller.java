@@ -10,32 +10,12 @@ public class Controller
 {
 
     @FXML
-    private Label lblWordValid;
-
-    @FXML
-    private Label lblCurrentWord;
-
-    @FXML
-    private Label lblGoodWords;
-
-    @FXML
-    private Label lblBadWords;
-
-    @FXML
-    private Label lblScore;
-
-    @FXML
-    private Label lblTime;
+    private Label lblWordValid, lblCurrentWord, lblGoodWords, lblBadWords, lblScore, lblTime;
 
     @FXML
     private Canvas canvasBoard;
 
-    @FXML
-    private Menu menuHelp;
-
     private BoggleTimer gameTimer;
-
-    private MutableBoolean gameOver;
 
     private GameManager gm;
 
@@ -57,9 +37,8 @@ public class Controller
         gcCanvas = canvasBoard.getGraphicsContext2D();
         int gridSize = askGameType();
         boolean realDice = askLetterType();
-        gameOver = new MutableBoolean(false);
-        gameTimer = new BoggleTimer(3*60, gameOver);
-        gm = new GameManager(gcCanvas, gridSize, realDice, gameOver);
+        gameTimer = new BoggleTimer(4);//3*60);
+        gm = new GameManager(gcCanvas, gridSize, realDice, gameTimer);
         gameTimer.startTime(lblTime);
     }
 
@@ -110,7 +89,6 @@ public class Controller
             if(result.get() == letterTypes.get(1)) { return true; }
         }
         return false;
-
     }
 
     /**
