@@ -5,6 +5,10 @@ public class BoggleDieSet
 {
     private ArrayList<BoggleDie> boggleDieSet;
 
+    /**
+     * This is BoggleDieSet's constructor
+     * @param gridSize This is the size of the grid we're going to create, 4x4, 5x5, 6x6
+     */
     public BoggleDieSet(int gridSize)
     {
         boggleDieSet = new ArrayList<>();

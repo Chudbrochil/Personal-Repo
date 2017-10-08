@@ -25,7 +25,7 @@ public class BoggleDie
     private void addDieFaces(String dieString)
     {
         // Adder is needed as we will potentially have more than 6 characters in the string we are checking.
-        // Imagine the die's with only faces with 2, that string will be 12 characters long
+        // Imagine the die's with only faces with 2 letters, that string will be 12 characters long
         int adder = 0;
         StringBuilder possibleTwoChar = new StringBuilder();
 
@@ -44,7 +44,6 @@ public class BoggleDie
             {
                 die.add(String.valueOf(dieString.charAt(adder + i)));
             }
-
         }
     }
 
