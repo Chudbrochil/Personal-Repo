@@ -5,7 +5,4 @@ Project 3: SmartRail
 
 
 
-I'm adding something to the readme
-
-
 
