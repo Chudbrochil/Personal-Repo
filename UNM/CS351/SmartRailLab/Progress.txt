@@ -3,9 +3,43 @@ This is where we log our progress
 
 
 Anthony:
+Make a train out of some objects in a canvas
+Make the train move left to right
+Make train tracks, find some elements online?
 
 
 Anna:
+Look into multi-threading and how to use it?
+	Notes from Anthony:
+	- Look into new Thread(Runnable()), JavaFX multi-threading is different than "Java" multi-threading
+	- Use JavaFX multi-threading
+	- Atomic data types
+	- Thread Pools?
 
+
+
+Classes to implement:
+
+
+Train 
+	- This is a big class, might even need some children or even helper classes
+	- Each train needs to be a thread
+
+Track
+	- method for securing a route
+	- aware of trains on it
+	- aware of neighbor tracks
+
+TrackSegment
+
+Switch
+
+Light
+
+Station
+
+Controller (For UI)
+
+RailSetup
 
 
