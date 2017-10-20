@@ -7,8 +7,6 @@
       <element id="dir-copy" path="$PROJECT_DIR$/res" />
       <element id="dir-copy" path="$PROJECT_DIR$/doc" />
       <element id="file-copy" path="$PROJECT_DIR$/res/dictionary.txt" />
-      <element id="file-copy" path="$PROJECT_DIR$/res/Word_Failure.mp3" />
-      <element id="file-copy" path="$PROJECT_DIR$/res/Word_Success.mp3" />
     </root>
   </artifact>
 </component>
