@@ -1,3 +1,6 @@
+// Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+// CS351 Threads of Fibonacci Lab
+
 public class Fibonacci extends Thread
 {
     private static FibWorker fibWorker1;
