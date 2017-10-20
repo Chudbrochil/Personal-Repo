@@ -1,4 +1,4 @@
-public class Train implements IMessagable, IDrawable
+public class Train //implements IMessagable, IDrawable
 {
     public void draw(int x, int y)
     {

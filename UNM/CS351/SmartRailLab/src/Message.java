@@ -8,7 +8,7 @@ public class Message
 {
   public final String TRAIN;    //Train who originated this message--either pointer to or identifier/name.
   private IMessagable mostRecentSender;   //Most recent sender of the message (pointer to or name of left or right neighbor)
-  //todo: Gonna need to make this a list if we want to retrace our steps.
+  //todo: will need to make mostRecentSender into a list if we want to retrace our steps.
   public final MessageType TYPE;  //String of message.
   
   

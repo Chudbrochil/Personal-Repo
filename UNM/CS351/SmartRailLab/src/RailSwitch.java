@@ -1,4 +1,4 @@
-public class RailSwitch implements IMessagable, IDrawable
+public class RailSwitch //implements IMessagable, IDrawable
 {
     public void draw(int x, int y)
     {

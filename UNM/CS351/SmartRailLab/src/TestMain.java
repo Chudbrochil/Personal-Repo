@@ -17,6 +17,12 @@ public class TestMain
         trackb.setRightNeighbor(trackc);
         trackc.setLeftNeighbor(trackb);
         
+        tracka.sendTestMessage();
+        
+        //If there were threads, this would run on its own. But we have to pretend to be multiple threads for now.
+        tracka.run(); //this should do nothing
+        trackb.run(); //this should read and send the message
+        trackc.run(); //this should read and send the message and report the end of the line.
         
     }
 }

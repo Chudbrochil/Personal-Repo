@@ -1,4 +1,4 @@
-public class Station implements IMessagable, IDrawable
+public class Station //implements IMessagable, IDrawable
 {
 
     /**

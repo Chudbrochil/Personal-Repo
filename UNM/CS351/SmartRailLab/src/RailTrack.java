@@ -70,7 +70,7 @@ public class RailTrack implements IMessagable, IDrawable {
         {
             m.setMostRecentSender(this);
             if(rightNeighbor!=null) sendMessage(m, rightNeighbor);
-            else if(DEBUG) System.out.println("End of the line reached at"+this.toString());
+            else if(DEBUG) System.out.println("End of the line reached at "+this.toString());
         }
     }
     
@@ -85,15 +85,24 @@ public class RailTrack implements IMessagable, IDrawable {
 
     }
     
+    /**
+     * This method sends a MessageType.HELLOTEST down the line.
+     */
+    public void sendTestMessage()
+    {
+        sendMessage(new Message("TestTrain", this, MessageType.HELLOTEST), rightNeighbor);
+    }
+    
+    //todo: I feel like this should maybe be a private method.
     public void sendMessage(Message message, IMessagable neighbor)
     {
+        if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
         neighbor.recvMessage(message);
-        if(DEBUG) System.out.println("Sending message to "+neighbor.toString()+". Message is:"+message.toString());
     }
     public void recvMessage(Message message)
     {
+        if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
-        if(DEBUG) System.out.println("Message received. Message is:"+message.toString());
     }
 
 
