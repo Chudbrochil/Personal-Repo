@@ -11,8 +11,8 @@ public class Station implements IMessagable, IDrawable
     {
 
     }
-
-    public void sendMessage(){}
-    public void recvMessage(){}
+    
+    public void sendMessage(Message message){}
+    public void recvMessage(Message message){}
 
 }

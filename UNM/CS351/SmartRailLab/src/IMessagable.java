@@ -1,5 +1,5 @@
 public interface IMessagable
 {
-    void sendMessage();
-    void recvMessage();
+    void sendMessage(Message message, IMessagable neighbor);
+    void recvMessage(Message message);
 }
