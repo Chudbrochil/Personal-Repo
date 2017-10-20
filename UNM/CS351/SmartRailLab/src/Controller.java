@@ -1,23 +1,21 @@
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Controller
 {
 
-    private Canvas railCanvas;
+    @FXML
+    private Canvas canvasRail;
 
     @FXML
     private void initialize()
     {
-        railCanvas = new Canvas();
-
-
-
+        GraphicsContext gcDraw = canvasRail.getGraphicsContext2D();
+        gcDraw.setFill(Color.BLACK);
+        gcDraw.fillRect(50, 50, 100, 100); // Drawing a rectangle for effect
     }
-
-
 
     public Controller() { }
 
