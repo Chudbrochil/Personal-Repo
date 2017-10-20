@@ -36,9 +36,7 @@ TrackSegment
 	- variable for which train is currently on it (null if no train)
 	- reserved/free boolean (A little harder than the others. Should there be a boolean that says which way the train that reserved the track is coming from? Do we need that?)
 
-Track (if TrackSement is an interface) <--concrete implementation of TrackSegment.
-
-Switch (Extends or implements TrackSegment)
+Switch
 	- references to three neighbors
 	- knowledge of whether it is a left or right switch
 	- closed or open state
@@ -54,16 +52,10 @@ Light
 Station
 	- reference to one neighbor
 	- name of station. Has ability to answer the question 'are you X station?' from train's request.
-	- 	- variable for which train is currently on it (null if no train)--or extends TrackSegment? 
+	- 
 
 Controller (For UI)
-	- **If we give the objects references as to where they should be drawn, they should be able to draw themselves according to the booleans that are set (reserved or not, which way the light is shining, etc.)
-	- User interface to place the train and set a destination.
 
 RailSetup
-	-
-
-XML Interpreter (implements LoadRail, for example.)
-	- Encapuslated. Used to read XML file and put it into a format the RailSetup can use. Then passes this to the RailSetup. That way we can go back and easily make this random if we desire.
 
 
