@@ -1,16 +1,20 @@
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Controller
 {
+
+    private Canvas railCanvas;
+
     @FXML
     private void initialize()
     {
-        // Example of atomic variables
-        AtomicInteger ai = new AtomicInteger(0);
+        railCanvas = new Canvas();
 
-        System.out.println(ai);
+
+
     }
 
 

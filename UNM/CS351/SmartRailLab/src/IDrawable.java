@@ -1,12 +1,10 @@
-package track;
-
 /**
  * Anna Carey 10/18/17
  *
  * Any class that implements this method has a draw() method, which
  *   draws itself on a canvas according to its current state.
  */
-public interface Drawable
+public interface IDrawable
 {
   /**
    * @param x x location to begin drawing on the canvas
