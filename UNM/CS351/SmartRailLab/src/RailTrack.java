@@ -18,9 +18,15 @@ public class RailTrack implements IMessagable, IDrawable {
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();  //list of all messages, held in order of receiving them, to be acknowledged.
     private boolean DEBUG = true;                     //turn this flag on to print out a message log.
     private Color drawColor = Color.BLUE;             //blue if unreserved; green if reserved.
+    private static int trackIncrement = 0;            // ID number for a given track piece
+    private String NAME;                              // Formal name of the train, useful for trace
     //current train var?
-    
-    //todo: Above data structure is used as "First In First Out." Is there a better data structure?
+
+    public RailTrack()
+    {
+        NAME = "Track" + trackIncrement;
+        trackIncrement++;
+    }
     
     /**
      * todo: Should these be combined? I left them separate for clarity.
@@ -59,6 +65,8 @@ public class RailTrack implements IMessagable, IDrawable {
         {
             readMessage(pendingMessages.poll());
         }
+
+        //TODO: wait(), this will eventually come alive with a notify() later in the receive message
     }
     
     /**
@@ -137,6 +145,12 @@ public class RailTrack implements IMessagable, IDrawable {
     {
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
+    }
+
+    @Override
+    public String toString()
+    {
+        return NAME;
     }
 
 
