@@ -1,5 +1,4 @@
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -9,17 +8,23 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Station implements IMessagable, IDrawable
 {
-    public String NAME;
-    private boolean DEBUG = true;
+    public String NAME;             //Default name of "Station#" given, or a name can be specified
+    private static int stationIncrement = 1;   //Static int that gives the stations their ID's.
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable neighbor; //track piece the Station is connected to.
+    private boolean DEBUG = true;   //Debug flag
     
+    public Station()
+    {
+        NAME = "Station+" + stationIncrement;
+        stationIncrement++;
+    }
     public Station(String name)
     {
         NAME = name;
     }
     
-    //TODO: Do we want a left/right neighbor? Does it matter? And, do we want the station to be 'on' a track or 'next to' a track?
+    //TODO: Do we want a left/right neighbor? Does it matter?
     //(Can the train sit on it? My vote is yes.)
     public void setNeighbor(IMessagable n)
     {
@@ -73,6 +78,7 @@ public class Station implements IMessagable, IDrawable
     {
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
+        //this.notify();
     }
 
 }

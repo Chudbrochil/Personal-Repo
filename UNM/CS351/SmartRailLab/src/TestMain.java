@@ -32,20 +32,24 @@ public class TestMain
     
     private static void testSearchRoute()
     {
+        Train t = new Train();
         RailTrack tracka = new RailTrack();
         RailTrack trackb = new RailTrack();
         RailTrack trackc = new RailTrack();
+        Station station = new Station(); //named "Station0"
         
+        t.setCurrentTrack(tracka);
         tracka.setRightNeighbor(trackb);
         trackb.setLeftNeighbor(tracka);
         trackb.setRightNeighbor(trackc);
         trackc.setLeftNeighbor(trackb);
         
-        tracka.sendTestMessage();
+        t.requestRoute("Station0");
         
         //If there were threads, this would run on its own. But we have to pretend to be multiple threads for now.
-        tracka.run(); //this should do nothing
+        tracka.run(); //this should read and send the message
         trackb.run(); //this should read and send the message
-        trackc.run(); //this should read and send the message and report the end of the line.
+        trackc.run(); //this should read and send the message
+        station.run();
     }
 }

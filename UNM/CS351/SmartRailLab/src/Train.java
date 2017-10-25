@@ -1,3 +1,6 @@
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * Class that represents a 'train' in the SmartRail simulation. Trains can request routes and receive routes back,
  *   then (todo: still to implement) travel along routes.
@@ -8,9 +11,17 @@
 public class Train implements IMessagable, IDrawable
 {
     public final String NAME;
+    private static int trainIncrement = 1;
+    private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable currentTrack;
-    //todo: list of stations you can visit?
+    private boolean DEBUG = true;
     
+    //todo: list of stations you can visit?
+    public Train()
+    {
+        NAME = "Train" + trainIncrement;
+        trainIncrement++;
+    }
     public Train(String n)
     {
         NAME = n;
@@ -30,18 +41,30 @@ public class Train implements IMessagable, IDrawable
 
     }
     
-    public void sendMessage(Message message, IMessagable neighbor){}
-    public void recvMessage(Message message){}
+    //todo: I feel like this should maybe be a private method.
+    public void sendMessage(Message message, IMessagable neighbor)
+    {
+        if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
+        neighbor.recvMessage(message);
+    }
+    public void recvMessage(Message message)
+    {
+        if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
+        pendingMessages.add(message);
+    }
     
     //todo: make private?
     
     /**
-     * @param station Station to which the Train wishes to travel. Messages will be passed to search for a route.
+     * @param station: NAME of the station to which the Train wishes to travel.
+     *   input
+     *   Any String. For a station to be found, it must match a Station's NAME field.
+     *   Messages will be passed to search for a route.
      * Searches for a route. If a route is found, a message indicating this will be received.
      */
-    public void requestRoute(Station station)
+    public void requestRoute(String station)
     {
-        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station.NAME);
+        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station);
         sendMessage(message, currentTrack);
     }
     

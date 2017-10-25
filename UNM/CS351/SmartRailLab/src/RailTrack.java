@@ -13,13 +13,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class RailTrack implements IMessagable, IDrawable {
     
+    private String NAME;                              // Formal name of the train, useful for trace
+    private static int trackIncrement = 1;            // ID number for a given track piece
+    private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();  //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable leftNeighbor = null;           //left neighbor 'this' can send and receive messages from
     private IMessagable rightNeighbor = null;          //left neighbor 'this' can send and receive messages from
-    private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();  //list of all messages, held in order of receiving them, to be acknowledged.
-    private boolean DEBUG = true;                     //turn this flag on to print out a message log.
     private Color drawColor = Color.BLUE;             //blue if unreserved; green if reserved.
-    private static int trackIncrement = 0;            // ID number for a given track piece
-    private String NAME;                              // Formal name of the train, useful for trace
+    private boolean DEBUG = true;                     //turn this flag on to print out a message log.
     //current train var?
 
     public RailTrack()
@@ -70,12 +70,20 @@ public class RailTrack implements IMessagable, IDrawable {
     }
     
     /**
-     * @param m
+     * @param m message
      *  input
      *  first message in pendingMessages.
      *  Any non-null Message.
      *
      *  Parses and acts on the given Message.
+     *
+     *  HELLOTEST
+     *      Forwards message to right neighbor.
+     *  SEARCH_FOR_ROUTE
+     *      Adds itself to the sender list.
+     *      Checks who the message is from and forwards the message to its other neighbor.
+     *      If it came from the left and the message is going to the right but right is null, for example, the message
+     *          just doesn't get sent anywhere.
      */
     private void readMessage(Message m)
     { //todo: switchcase?
