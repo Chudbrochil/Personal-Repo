@@ -22,6 +22,7 @@ public class Train implements IMessagable, IDrawable
         NAME = "Train" + trainIncrement;
         trainIncrement++;
     }
+    
     public Train(String n)
     {
         NAME = n;
@@ -42,6 +43,7 @@ public class Train implements IMessagable, IDrawable
     }
     
     //todo: I feel like this should maybe be a private method.
+    //todo: I'm literally copy and pasting both these messages... THat makes me think maybe we should make a rail class of some kind. Abstract, even.
     public void sendMessage(Message message, IMessagable neighbor)
     {
         if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
@@ -66,6 +68,12 @@ public class Train implements IMessagable, IDrawable
     {
         Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station);
         sendMessage(message, currentTrack);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return NAME;
     }
     
     //generate random destination, could call that method for 'computer' trains and use user input still via requestRoute()

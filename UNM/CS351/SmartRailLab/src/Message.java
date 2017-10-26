@@ -25,6 +25,18 @@ public class Message
         type = m;
         STATION = station;
     }
+    
+    /**
+     * For making clones of messages ONLY.
+     */
+    private Message(String trainSender, Stack<IMessagable> senders, MessageType m, String station)
+    {
+        TRAIN = trainSender;
+        senderList = new Stack<>();
+        senderList.addAll(senders);
+        type = m;
+        STATION = station;
+    }
   
     /**
      * To be used for debugging purposes.
@@ -66,5 +78,11 @@ public class Message
     public IMessagable peekSenderList()
     {
         return senderList.peek();
+    }
+    
+    @Override
+    public Message clone()
+    {
+        return new Message(this.TRAIN, this.senderList, this.type, this.STATION);
     }
 }

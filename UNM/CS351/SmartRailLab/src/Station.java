@@ -16,7 +16,7 @@ public class Station implements IMessagable, IDrawable
     
     public Station()
     {
-        NAME = "Station+" + stationIncrement;
+        NAME = "Station" + stationIncrement;
         stationIncrement++;
     }
     public Station(String name)
@@ -45,9 +45,19 @@ public class Station implements IMessagable, IDrawable
     {
       if(m.type == MessageType.SEARCH_FOR_ROUTE)
       {
-          if(m.STATION == this.NAME)
+          //If it's a train, send the message on.
+          if(m.peekSenderList() instanceof Train)
           {
-              System.out.println("Route to Station "+NAME+" has been found!");
+              m.pushSenderList(this);
+              sendMessage(m,neighbor);
+              //todo: How should we handle if a train requests a route to a station it's ON?
+          }
+          //If the first sender isn't a train, it must be a track and the message is coming in.
+          else if(m.STATION.equals(this.NAME))
+          {
+              if(DEBUG) System.out.println("Route to Station "+NAME+" has been found!");
+              m.type = MessageType.RESERVE_ROUTE;
+              sendMessage(m,neighbor);
               //todo: implement
               //m.setType(MessageType.FOUND_ROUTE);
               //sendMessage(message, neighbor);
@@ -79,6 +89,12 @@ public class Station implements IMessagable, IDrawable
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
         //this.notify();
+    }
+    
+    @Override
+    public String toString()
+    {
+        return NAME;
     }
 
 }

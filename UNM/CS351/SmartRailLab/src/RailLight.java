@@ -28,9 +28,4 @@ public class RailLight //implements IMessagable, IDrawable
       {
 
       }
-      
-      public void sendMessage(Message message){}
-      public void recvMessage(Message message){}
-
-
 }

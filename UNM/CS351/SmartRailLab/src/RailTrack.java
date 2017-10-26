@@ -95,19 +95,28 @@ public class RailTrack implements IMessagable, IDrawable {
         }
         if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
-            //look for which neighbor sent this message. Send this message to your other neighbors.
+            //Was it a train that sent the message? If so, you'll need to send one to both neighbors.
             IMessagable mostRecentSender = m.peekSenderList();
             IMessagable neighborToSendTo=null;
             m.pushSenderList(this);
-    
+            //todo: Delete this? this goes in Station, because trains only request routes from stations.
+            if(mostRecentSender instanceof Train)
+            {
+                if(leftNeighbor!=null)  sendMessage(m.clone(),leftNeighbor); //two instances of message now.
+                if(rightNeighbor!=null) sendMessage(m,rightNeighbor);
+            }
+            
+            //look for which neighbor sent this message. Send this message to your other neighbors.
+            
             //If the message came from your right, send it to your left, and vis versa.
-            if(mostRecentSender==leftNeighbor || mostRecentSender==rightNeighbor)
+            else if(mostRecentSender==leftNeighbor || mostRecentSender==rightNeighbor)
             {
                 if(mostRecentSender==this.leftNeighbor) neighborToSendTo = rightNeighbor;
                 if(mostRecentSender==this.rightNeighbor) neighborToSendTo = leftNeighbor;
                 if(neighborToSendTo!=null)
                 {
                     sendMessage(m,neighborToSendTo);
+                    //Only one instance of this message needed because only one instance is being sent out.
                 }
                 //else... //todo: If we need to send a negative 'no route found' message back, we can do that here.
                 //maybe the train only acts if it finds a route. Otherwise... It just sits? Maybe after a while it gets
@@ -120,6 +129,19 @@ public class RailTrack implements IMessagable, IDrawable {
                     +"not a neighbor. No message sent.");
                 System.err.println("Message passed from one Rail piece to another that was not a neighbor.");
             }
+        }
+        if(m.type == MessageType.RESERVE_ROUTE)
+        {
+            //Tracks don't need to check if they CAN protect. They don't have anything to do.
+            //todo: light. Check if light. If so, which direction do we need to protect? look at the next neighbor. That
+            //is where train will come from. (And, you can assume, the other direction is where the train is going
+            // /where the message came from.
+            
+            reserve();
+            //Actually pop the person this time. It will be either the right or left neighbor, if this was done correctly.
+            IMessagable mostRecentSender = m.popSenderList();
+            if(mostRecentSender == leftNeighbor) sendMessage(m, leftNeighbor);
+            if(mostRecentSender == rightNeighbor) sendMessage(m,rightNeighbor);
         }
     }
     
