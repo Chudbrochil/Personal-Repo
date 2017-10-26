@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -38,7 +40,7 @@ public class Train implements IMessagable, IDrawable
         this.currentTrack = currentTrack;
     }
     
-    public void draw(int x, int y)
+    public void draw(int x, int y, GraphicsContext gc)
     {
 
     }

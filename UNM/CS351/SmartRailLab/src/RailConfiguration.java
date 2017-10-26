@@ -1,13 +1,20 @@
 // Class that instantiates all of the initial pieces for the rail
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.ArrayList;
 
 // TODO: This class should be "static", we only need one...
 public class RailConfiguration
 {
     private ArrayList<TrackLine> trackLines;
+    private GraphicsContext gcDraw;
 
-    public RailConfiguration() { trackLines = new ArrayList<>(); }
+    public RailConfiguration(GraphicsContext gcDraw)
+    {
+        trackLines = new ArrayList<>();
+        this.gcDraw = gcDraw;
+    }
 
     public void loadTracks(ArrayList<TrackLine> trackLines)
     {
@@ -25,8 +32,13 @@ public class RailConfiguration
         System.out.println("");
     }
 
-    public ArrayList<IDrawable> loadComponents(ArrayList<IDrawable> drawableComponents)
+    public ArrayList<IDrawable> drawInitialComponents()
     {
+        //TODO: Fixed size for now!
+        for(int i = 0; i < trackLines.size(); ++i)
+        {
+
+        }
         return new ArrayList<IDrawable>();
     }
 
