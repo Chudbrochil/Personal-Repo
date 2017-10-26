@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 /**
  * Anna Carey 10/18/17
  *
@@ -24,7 +26,7 @@ public class RailLight //implements IMessagable, IDrawable
        * @param y y location to begin drawing on the canvas
        * Draws the object on a canvas at location x,y according to its currrent state.
        */
-      public void draw(int x, int y)
+      public void draw(int x, int y, GraphicsContext gc)
       {
 
       }

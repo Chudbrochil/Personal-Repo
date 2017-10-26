@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -106,9 +108,9 @@ public class Station implements IMessagable, IDrawable
      * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
-    public void draw(int x, int y)
+    public void draw(int x, int y, GraphicsContext gc)
     {
-
+        gc.fillText(this.toString(), x, y);
     }
     
     public void sendMessage(Message message, IMessagable neighbor)

@@ -9,12 +9,24 @@ public class Controller
     @FXML
     private Canvas canvasRail;
 
+
+
     @FXML
     private void initialize()
     {
         GraphicsContext gcDraw = canvasRail.getGraphicsContext2D();
         gcDraw.setFill(Color.BLACK);
         gcDraw.fillRect(50, 50, 100, 100); // Drawing a rectangle for effect
+
+        // TODO: Running tests
+        RailConfiguration rc = new RailConfiguration();
+
+
+        RailConfigurationLoader rcl = new RailConfigurationLoader(rc);
+        rcl.loadNewConfiguration("SimpleOneTrack.txt");
+        rcl.loadNewConfiguration("SimpleTwoTrack.txt");
+
+
     }
 
     public Controller() { }

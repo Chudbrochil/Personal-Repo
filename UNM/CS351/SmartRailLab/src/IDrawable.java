@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 /**
  * Anna Carey 10/18/17
  *
@@ -11,7 +13,7 @@ public interface IDrawable
        * @param y y location to begin drawing on the canvas
        * Draws the object on a canvas at location x,y according to its currrent state.
        */
-      void draw(int x, int y);
+      void draw(int x, int y, GraphicsContext gc);
 
 
 }

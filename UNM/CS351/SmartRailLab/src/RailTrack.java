@@ -1,3 +1,4 @@
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -170,10 +171,11 @@ public class RailTrack implements IMessagable, IDrawable {
      * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
-    public void draw(int x, int y)
+    public void draw(int x, int y, GraphicsContext gc)
     {
         //todo: take in Graphics Context. Just draw a line using the railColor,
         // which changes whether the track is reserved or not.
+        gc.fillText(this.toString(), x, y);
     }
     
     /**
