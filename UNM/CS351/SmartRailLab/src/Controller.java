@@ -14,14 +14,10 @@ public class Controller
     private void initialize()
     {
         GraphicsContext gcDraw = canvasRail.getGraphicsContext2D();
-        //gcDraw.setFill(Color.BLACK);
-        //gcDraw.fillRect(50, 50, 100, 100); // Drawing a rectangle for effect
 
-        // TODO: Running tests
-        RailConfiguration rc = new RailConfiguration(gcDraw);
-
-
+        RailConfiguration rc = new RailConfiguration(gcDraw, 50, 10);
         RailConfigurationLoader rcl = new RailConfigurationLoader(rc);
+
         //rcl.loadNewConfiguration("SimpleOneTrack.txt");
         //rcl.loadNewConfiguration("SimpleTwoTrack.txt");
         rcl.loadNewConfiguration("LightThreeTrack.txt");
@@ -30,6 +26,7 @@ public class Controller
         int canvasHeight = 600;
         int canvasWidth = 800;
         rc.drawInitialComponents(canvasHeight, canvasWidth);
+        rc.drawTrain();
 
 
     }

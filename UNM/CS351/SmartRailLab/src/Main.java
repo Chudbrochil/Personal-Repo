@@ -1,3 +1,8 @@
+// Resource Attributions
+// Tracks: https://www.freepik.com/free-vector/train-track-collection_1111346.htm
+// Trains: https://opengameart.org/content/passenger-train-car
+
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

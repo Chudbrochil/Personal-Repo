@@ -12,11 +12,15 @@ public class RailConfiguration
 {
     private ArrayList<TrackLine> trackLines;
     private GraphicsContext gcDraw;
+    private int initialHeight;
+    private int initialWidth;
 
-    public RailConfiguration(GraphicsContext gcDraw)
+    public RailConfiguration(GraphicsContext gcDraw, int initialHeight, int initialWidth)
     {
         trackLines = new ArrayList<>();
         this.gcDraw = gcDraw;
+        this.initialHeight = initialHeight;
+        this.initialWidth = initialWidth;
     }
 
     public void loadTracks(ArrayList<TrackLine> trackLines)
@@ -37,8 +41,6 @@ public class RailConfiguration
 
     public ArrayList<IDrawable> drawInitialComponents(int canvasHeight, int canvasWidth)
     {
-        int height = 50;
-        int width = 10;
         int heightStep = canvasHeight / trackLines.size();
         int widthStep = canvasWidth / trackLines.get(0).getDrawableListList().size();
 
@@ -56,7 +58,7 @@ public class RailConfiguration
                 ArrayList<IDrawable> currentGrid = currentTrack.get(j);
                 for(int k = 0; k < currentGrid.size(); ++k)
                 {
-                    currentGrid.get(k).draw(width + widthStep*j, height + heightStep*i, gcDraw);
+                    currentGrid.get(k).draw(initialWidth + widthStep*j, initialHeight + heightStep*i, gcDraw);
                 }
 
             }
@@ -64,6 +66,15 @@ public class RailConfiguration
 
         // TODO: This is a placeholder for now.
         return new ArrayList<IDrawable>();
+    }
+
+
+
+    //TODO: Work inprogress for the draw train stuff...
+    public void drawTrain()
+    {
+        Train myRedTrain = new Train();
+        myRedTrain.draw(initialHeight, initialWidth, gcDraw);
     }
 
 

@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -18,12 +19,14 @@ public class Train implements IMessagable, IDrawable
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable currentTrack;
     private boolean DEBUG = true;
+    private Image redTrainImg;
     
     //todo: list of stations you can visit?
     public Train()
     {
         NAME = "Train" + trainIncrement;
         trainIncrement++;
+        if(redTrainImg == null) { redTrainImg = new Image("RedTrain.jpg"); }
     }
     
     public Train(String n)
@@ -40,9 +43,9 @@ public class Train implements IMessagable, IDrawable
         this.currentTrack = currentTrack;
     }
     
-    public void draw(int x, int y, GraphicsContext gc)
+    public void draw(int x, int y, GraphicsContext gcDraw)
     {
-
+        gcDraw.drawImage(redTrainImg, x, y);
     }
     
     /**
