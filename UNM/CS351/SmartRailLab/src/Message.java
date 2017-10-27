@@ -45,9 +45,9 @@ public class Message
      @Override
     public String toString()
   {
-    return "Train:"+TRAIN+"\t Most recent sender:"+ senderList.peek() +"\t Message:"+ type;
+    return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type;
   }
-    
+  
     /**
      * @return The most recently added value in the senderList is returned. (The most recently visited neighbor.)
      */
