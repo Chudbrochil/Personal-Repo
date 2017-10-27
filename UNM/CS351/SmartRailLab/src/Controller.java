@@ -15,7 +15,7 @@ public class Controller
     private void initialize()
     {
         GraphicsContext gcDraw = canvasRail.getGraphicsContext2D();
-        gcDraw.setFill(Color.BLACK);
+        //gcDraw.setFill(Color.BLACK);
         //gcDraw.fillRect(50, 50, 100, 100); // Drawing a rectangle for effect
 
         // TODO: Running tests
@@ -27,7 +27,9 @@ public class Controller
         rcl.loadNewConfiguration("SimpleTwoTrack.txt");
 
         // Drawing the components
-        rc.drawInitialComponents();
+        int canvasHeight = 400;
+        int canvasWidth = 600;
+        rc.drawInitialComponents(canvasHeight, canvasWidth);
 
 
     }

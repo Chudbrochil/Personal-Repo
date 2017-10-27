@@ -171,11 +171,10 @@ public class RailTrack implements IMessagable, IDrawable {
      * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
-    public void draw(int x, int y, GraphicsContext gc)
+    public void draw(int x, int y, GraphicsContext gcDraw)
     {
-        //todo: take in Graphics Context. Just draw a line using the railColor,
-        // which changes whether the track is reserved or not.
-        gc.fillText(this.toString(), x, y);
+        //TODO: Change color when the track is reserved
+        gcDraw.fillText(this.toString(), x, y);
     }
     
     /**

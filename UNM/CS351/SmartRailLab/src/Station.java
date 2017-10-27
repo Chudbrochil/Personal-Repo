@@ -107,9 +107,9 @@ public class Station implements IMessagable, IDrawable
      * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
-    public void draw(int x, int y, GraphicsContext gc)
+    public void draw(int x, int y, GraphicsContext gcDraw)
     {
-        gc.fillText(this.toString(), x, y);
+        gcDraw.fillText(this.toString(), x, y);
     }
     
     public void sendMessage(Message message, IMessagable neighbor)
