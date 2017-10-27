@@ -1,16 +1,17 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TrackLine
 {
     private String leftStation;
     private String rightStation;
     private ArrayList<Integer> componentsList;
-    private ArrayList<IDrawable> drawableList;
+    private ArrayList<ArrayList<IDrawable>> drawableListList;
 
     public TrackLine(String[] components)
     {
         componentsList = new ArrayList<>();
-        drawableList = new ArrayList<>();
+        drawableListList = new ArrayList<ArrayList<IDrawable>>();
 
         for(int i = 0; i < components.length; ++i)
         {
@@ -37,20 +38,34 @@ public class TrackLine
         return output;
     }
 
+    /**
+     * 0 reserved for station
+     * 1 is track
+     * 2 is track + light
+     */
     private void initializeComponents()
     {
-        drawableList.add(new Station(this.leftStation));
+        ArrayList<IDrawable> leftStationList = new ArrayList<>();
+        leftStationList.add(new Station(this.leftStation));
+        drawableListList.add(leftStationList);
+
+        //TODO: Add more grid types, 3-4-5-6-7
         for(int i = 0; i < componentsList.size(); ++i)
         {
-            if(componentsList.get(i) == 1)
+            ArrayList<IDrawable> gridComponentList = new ArrayList<>();
+            gridComponentList.add(new RailTrack());
+            if(componentsList.get(i) == 2)
             {
-                drawableList.add(new RailTrack());
+                gridComponentList.add(new RailLight());
             }
-            //TODO: Add 2, 3, 4, 5, 6, etc.
+            drawableListList.add(gridComponentList);
         }
-        drawableList.add(new Station(this.rightStation));
+
+        ArrayList<IDrawable> rightStationList = new ArrayList<>();
+        rightStationList.add(new Station(this.rightStation));
+        drawableListList.add(rightStationList);
     }
 
-    public ArrayList<IDrawable> getDrawableList() { return drawableList; }
+    public ArrayList<ArrayList<IDrawable>> getDrawableListList() { return drawableListList; }
 
 }

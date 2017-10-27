@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 // TODO: This class should be "static", we only need one...
 public class RailConfiguration
@@ -36,21 +37,28 @@ public class RailConfiguration
 
     public ArrayList<IDrawable> drawInitialComponents(int canvasHeight, int canvasWidth)
     {
-        int height = 10;
+        int height = 50;
         int width = 10;
         int heightStep = canvasHeight / trackLines.size();
-        int widthStep = canvasWidth / trackLines.get(0).getDrawableList().size();
+        int widthStep = canvasWidth / trackLines.get(0).getDrawableListList().size();
 
         gcDraw.setFill(Color.BLACK);
         gcDraw.setFont(new Font("Arial", 12));
 
+        // trackLines is each row of components, each trackLine is down in height
         for(int i = 0; i < trackLines.size(); ++i)
         {
-            ArrayList<IDrawable> currentTrack = trackLines.get(i).getDrawableList();
+            ArrayList<ArrayList<IDrawable>> currentTrack = trackLines.get(i).getDrawableListList();
+            // currentTrack is a list of lists of drawables, i.e. a list of components within a row
             for(int j = 0; j < currentTrack.size(); ++j)
             {
-                currentTrack.get(j).draw(width + widthStep*j, height + heightStep*i, gcDraw);
-                System.out.println(currentTrack.get(j).toString());
+                // currentGrid is a list of the components in each grid
+                ArrayList<IDrawable> currentGrid = currentTrack.get(j);
+                for(int k = 0; k < currentGrid.size(); ++k)
+                {
+                    currentGrid.get(k).draw(width + widthStep*j, height + heightStep*i, gcDraw);
+                }
+
             }
         }
 
