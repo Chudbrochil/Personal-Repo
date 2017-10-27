@@ -36,7 +36,7 @@ public class TestMain
     
     private static void testSearchRoute()
     {
-        Train t = new Train();
+        Train train1 = new Train();
         RailTrack track1 = new RailTrack();
         RailTrack track2 = new RailTrack();
         RailTrack track3 = new RailTrack();
@@ -48,7 +48,7 @@ public class TestMain
          *  {train1}
          *  station2 - track1 - track2 - track3 - station1
          */
-        t.setCurrentTrack(station2);
+        train1.setCurrentTrack(station2);
         station2.setNeighbor(track1);
         track1.setLeftNeighbor(station2);
         track1.setRightNeighbor(track2);
@@ -58,11 +58,12 @@ public class TestMain
         track3.setRightNeighbor(station1);
         station1.setNeighbor(track3);
         
-        t.requestRoute("Station1");
+        train1.requestRoute("Station1");
         
         //If there were threads, this would run on its own. But we have to pretend to be multiple threads for now.
-        for(int i=0; i<5; i++)
+        for(int i=0; i<10; i++)
         {
+            train1.run();
             track1.run(); //this should read and send the message
             station2.run();
             track2.run(); //this should read and send the message

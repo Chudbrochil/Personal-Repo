@@ -69,16 +69,15 @@ public class Station implements IMessagable, IDrawable
           //todo: else, send a negative response?
       }
       
-      if(m.type == MessageType.RESERVE_ROUTE)
+      else if(m.type == MessageType.RESERVE_ROUTE)
       {
           //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
           //message that the train that is IN this station
           IMessagable nextSenderInList = m.popSenderList();
-          Train requestingTrain;
           if(nextSenderInList instanceof Train)
           {
               Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION);
-              nextSenderInList.sendMessage(goMessage, nextSenderInList);
+              sendMessage(goMessage, nextSenderInList);
           }
           else
           {

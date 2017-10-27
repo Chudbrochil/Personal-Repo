@@ -98,7 +98,7 @@ public class RailTrack implements IMessagable, IDrawable {
             if(rightNeighbor!=null) sendMessage(m, rightNeighbor);
             else if(DEBUG) System.out.println("End of the line reached at "+this.toString());
         }
-        if(m.type == MessageType.SEARCH_FOR_ROUTE)
+        else if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             //Was it a train that sent the message? If so, you'll need to send one to both neighbors.
             IMessagable mostRecentSender = m.peekSenderList();
@@ -134,7 +134,7 @@ public class RailTrack implements IMessagable, IDrawable {
                 printNeighborError(m.type.toString());
             }
         }
-        if(m.type == MessageType.RESERVE_ROUTE)
+        else if(m.type == MessageType.RESERVE_ROUTE)
         {
             //Tracks don't need to check if they CAN protect. They don't have anything to do.
             //todo: light. Check if light. If so, which direction do we need to protect? look at the next neighbor. That

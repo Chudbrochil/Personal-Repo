@@ -32,7 +32,7 @@ public class Train implements IMessagable, IDrawable
     }
     
     /**
-     * To use a train, you sMUST set its current track.
+     * To use a train, you MUST set its current track.
      * @param currentTrack
      */
     public void setCurrentTrack(IMessagable currentTrack)
