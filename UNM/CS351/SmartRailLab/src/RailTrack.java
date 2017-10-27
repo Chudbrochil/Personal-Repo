@@ -156,8 +156,8 @@ public class RailTrack implements IMessagable, IDrawable {
     
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
     {
-        System.out.println(this.toString()+" just got a message (type "+messageType+" from "+mostRecentSender+", which is"
-            +"not a neighbor. No message sent.");
+        System.out.println(this.toString()+" just got a message (type "+messageType+") from "+mostRecentSender+", which is"
+            +" not a neighbor. No message sent.");
     }
     
     private void printNeighborError(String type)

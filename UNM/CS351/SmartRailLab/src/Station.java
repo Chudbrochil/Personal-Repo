@@ -82,7 +82,7 @@ public class Station implements IMessagable, IDrawable
           }
           else
           {
-              if(DEBUG) System.out.println(this.toString()+" just got a message (type "+m.type.toString()+" whose next" +
+              if(DEBUG) System.out.println(this.toString()+" just got a message (type "+m.type.toString()+") whose next " +
                   "reference is "+nextSenderInList.toString()+", which is not a train. No message sent.");
               System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
               return;
