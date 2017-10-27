@@ -50,6 +50,7 @@ public class TrackLine
         drawableListList.add(leftStationList);
 
         //TODO: Add more grid types, 3-4-5-6-7
+        // Adds a list of components to each element
         for(int i = 0; i < componentsList.size(); ++i)
         {
             ArrayList<IDrawable> gridComponentList = new ArrayList<>();

@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -21,12 +22,15 @@ public class RailTrack implements IMessagable, IDrawable {
     private IMessagable rightNeighbor = null;          //left neighbor 'this' can send and receive messages from
     private Color drawColor = Color.BLUE;             //blue if unreserved; green if reserved.
     private boolean DEBUG = true;                     //turn this flag on to print out a message log.
+    private static Image trackImg;
     //current train var?
 
     public RailTrack()
     {
         NAME = "Track" + trackIncrement;
         trackIncrement++;
+        // Doing this to save the resources from creating a million images for each track.
+        if(trackImg == null) { trackImg = new Image("Track.png"); }
     }
     
     /**
@@ -175,6 +179,7 @@ public class RailTrack implements IMessagable, IDrawable {
     {
         //TODO: Change color when the track is reserved
         gcDraw.fillText(this.toString(), x, y);
+        gcDraw.drawImage(trackImg, x, y);
     }
     
     /**

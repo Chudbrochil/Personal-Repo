@@ -62,6 +62,7 @@ public class RailConfiguration
             }
         }
 
+        // TODO: This is a placeholder for now.
         return new ArrayList<IDrawable>();
     }
 

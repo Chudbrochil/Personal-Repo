@@ -17,6 +17,7 @@ public class RailConfigurationLoader
         this.rc = rc;
     }
 
+    // Loads a new file to configure an initial train track/light/switch setup
     public void loadNewConfiguration(String configFileName)
     {
         trackLines.clear();
