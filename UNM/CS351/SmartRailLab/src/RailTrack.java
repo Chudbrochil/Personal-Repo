@@ -84,6 +84,10 @@ public class RailTrack implements IMessagable, IDrawable {
      *      Checks who the message is from and forwards the message to its other neighbor.
      *      If it came from the left and the message is going to the right but right is null, for example, the message
      *          just doesn't get sent anywhere.
+     *  RESERVE_ROUTE
+     *      Reserves itself todo: (And the light, if applicable)
+     *      Then pops the next member off the sender list in Message m and forwards the message to that Rail component
+     *      IF it is a neighbor of this track. If it is not, an error message is printed and the message is dropped.
      */
     private void readMessage(Message m)
     { //todo: switchcase?
@@ -125,9 +129,8 @@ public class RailTrack implements IMessagable, IDrawable {
             }
             else
             {
-                if(DEBUG) System.out.println(this.toString()+" just got a message from "+mostRecentSender+", which is"
-                    +"not a neighbor. No message sent.");
-                System.err.println("Message passed from one Rail piece to another that was not a neighbor.");
+                if(DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                printNeighborError(m.type.toString());
             }
         }
         if(m.type == MessageType.RESERVE_ROUTE)
@@ -138,11 +141,27 @@ public class RailTrack implements IMessagable, IDrawable {
             // /where the message came from.
             
             reserve();
-            //Actually pop the person this time. It will be either the right or left neighbor, if this was done correctly.
-            IMessagable mostRecentSender = m.popSenderList();
-            if(mostRecentSender == leftNeighbor) sendMessage(m, leftNeighbor);
-            if(mostRecentSender == rightNeighbor) sendMessage(m,rightNeighbor);
+            //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
+            IMessagable nextSenderInList = m.popSenderList();
+            if(nextSenderInList == leftNeighbor) sendMessage(m, leftNeighbor);
+            else if(nextSenderInList == rightNeighbor) sendMessage(m,rightNeighbor);
+            else
+            {
+                if(DEBUG) printNeighborDebug(nextSenderInList, m.type.toString());
+                printNeighborError(m.type.toString());
+            }
         }
+    }
+    
+    private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
+    {
+        System.out.println(this.toString()+" just got a message (type "+messageType+" from "+mostRecentSender+", which is"
+            +"not a neighbor. No message sent.");
+    }
+    
+    private void printNeighborError(String type)
+    {
+        System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: "+type);
     }
     
     /**

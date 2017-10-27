@@ -6,7 +6,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *   then (todo: still to implement) travel along routes.
  *
  * To make a Train, you must give it a name and set the current track via the setCurrentTrack() method.
- *   Then, you can have it request routes
+ *   Then, you can have it request routes. This is currently a public method (10/26/17) but may be internal later?
+ *
  */
 public class Train implements IMessagable, IDrawable
 {
@@ -29,7 +30,7 @@ public class Train implements IMessagable, IDrawable
     }
     
     /**
-     * To use a train, you MUST set its current track.
+     * To use a train, you sMUST set its current track.
      * @param currentTrack
      */
     public void setCurrentTrack(IMessagable currentTrack)
@@ -40,6 +41,30 @@ public class Train implements IMessagable, IDrawable
     public void draw(int x, int y)
     {
 
+    }
+    
+    /**
+     * When this class extends Thread, this method will handle itself and loop infinitely.
+     * For now, we're just calling it from the main thread each time we want it to be called.
+     */
+    public void run()
+    {
+        //while program running
+        if(!pendingMessages.isEmpty())
+        {
+            readMessage(pendingMessages.poll());
+        }
+        
+        //TODO: wait(), this will eventually come alive with a notify() later in the receive message
+    }
+    
+    private void readMessage(Message m)
+    {
+        if(m.type == MessageType.GO)
+        {
+            System.out.println(toString()+" has received a message from "+m.peekSenderList().toString()+" to proceed to" +
+                m.STATION.toString());
+        }
     }
     
     //todo: I feel like this should maybe be a private method.

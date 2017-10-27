@@ -25,7 +25,6 @@ public class Station implements IMessagable, IDrawable
     }
     
     //TODO: Do we want a left/right neighbor? Does it matter?
-    //(Can the train sit on it? My vote is yes.)
     public void setNeighbor(IMessagable n)
     {
       neighbor = n;
@@ -57,14 +56,48 @@ public class Station implements IMessagable, IDrawable
           {
               if(DEBUG) System.out.println("Route to Station "+NAME+" has been found!");
               m.type = MessageType.RESERVE_ROUTE;
-              sendMessage(m,neighbor);
-              //todo: implement
-              //m.setType(MessageType.FOUND_ROUTE);
-              //sendMessage(message, neighbor);
-              //we don't want route destroyed on the way back, though. We want to keep that.
+              IMessagable mostRecentSender = m.popSenderList();
+              if(mostRecentSender == neighbor) sendMessage(m,neighbor);
+              else
+              {
+                  if(DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                  printNeighborError(m.type.toString());
+              }
           }
           //todo: else, send a negative response?
       }
+      
+      if(m.type == MessageType.RESERVE_ROUTE)
+      {
+          //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
+          //message that the train that is IN this station
+          IMessagable nextSenderInList = m.popSenderList();
+          Train requestingTrain;
+          if(nextSenderInList instanceof Train)
+          {
+              Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION);
+              nextSenderInList.sendMessage(goMessage, nextSenderInList);
+          }
+          else
+          {
+              if(DEBUG) System.out.println(this.toString()+" just got a message (type "+m.type.toString()+" whose next" +
+                  "reference is "+nextSenderInList.toString()+", which is not a train. No message sent.");
+              System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
+              return;
+          }
+          
+      }
+    }
+    
+    private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
+    {
+        System.out.println(this.toString()+" just got a message (type "+messageType+") from "+mostRecentSender+", which is"
+            +"not a neighbor. No message sent.");
+    }
+    
+    private void printNeighborError(String type)
+    {
+        System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: "+type);
     }
 
     /**

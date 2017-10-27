@@ -6,7 +6,7 @@ import java.util.Stack;
  * This is a data class that contains all the information all the Rail components need to communicate with each other.
  *   (request routes, reserve routes, train to travel.)
  *
- * Contains the senderList, which is a Stack. Public methods give access to most Stack methods (pop, push, isEmpty,
+ * Contains the senderList, which is a Stack. Public methods give access to most Stack methods (pop, push, isEmpty.)
  */
 public class Message
 {
@@ -52,9 +52,9 @@ public class Message
      * @return The most recently added value in the senderList is returned. (The most recently visited neighbor.)
      */
     public IMessagable popSenderList()
-  {
-    return senderList.pop();
-  }
+    {
+        return senderList.pop();
+    }
     
     /**
      * @param s IMessagable sender to be added to the senderList.
