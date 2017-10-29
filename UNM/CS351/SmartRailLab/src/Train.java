@@ -20,6 +20,9 @@ public class Train implements IMessagable, IDrawable
     private IMessagable currentTrack;
     private boolean DEBUG = true;
     private Image redTrainImg;
+    private boolean going = false; //True the train has received a valid 'GO' message and is proceeding along the track.
+    private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
+                                      //the route goes to the desired location.
     
     //todo: list of stations you can visit?
     public Train()
@@ -67,11 +70,74 @@ public class Train implements IMessagable, IDrawable
     {
         if(m.type == MessageType.GO)
         {
-            System.out.println(toString()+" has received a message from "+m.peekSenderList().toString()+" to proceed to" +
-                m.STATION.toString());
+            if(m.peekSenderList()==currentTrack)
+            {
+                if(m.STATION == destination)
+                {
+                    if(DEBUG) System.out.println(toString()+" has received a message from "+m.peekSenderList().toString()+
+                        " to proceed to"+ m.STATION.toString());
+                    going = true;
+                    sendMessage(new Message(NAME, this, MessageType.REQUEST_NEXT_TRACK, destination), currentTrack);
+                }
+                else
+                {
+                    System.err.println(toString()+" received 'GO' message from currentTrack "+m.peekSenderList()+" to " +
+                        "proceed to"+m.STATION+", which is not this train's destination, "+destination);
+                }
+            }
+            else
+            {
+                if(DEBUG) System.out.println(toString()+" received a 'GO' message from "+m.peekSenderList()+", which is " +
+                    "not a neighbor. Train remains stationary.");
+                System.err.println(toString()+" received a go signal from "+m.peekSenderList()+", which is not a neighbor.");
+            }
+        }
+        //Train should only receive this message if it sent it.
+        else if(m.type == MessageType.REQUEST_NEXT_TRACK)
+        {
+            if(going)
+            {
+                if(m.peekSenderList() == currentTrack)
+                {
+                    m.popSenderList();
+                    IMessagable nextTrack = m.popSenderList();
+                    proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
+                    //checks if it's arrived at the station
+                    if(currentTrack instanceof Station && ((Station) currentTrack).NAME == destination)
+                    {
+                        System.out.println(toString()+" has arrived at destination, "+destination+"!");
+                    }
+                    //send another message to request the NEXT track.
+                    else
+                    {
+                        sendMessage(new Message(NAME, this, MessageType.REQUEST_NEXT_TRACK, destination), currentTrack);
+                    }
+                    
+                }
+                else
+                {
+                    System.err.println(toString()+" received a REQUEST_NEXT_TRACK message from "+m.peekSenderList()+", " +
+                        "which is not a neighbor. Train is remaining stationary.");
+                }
+            }
+            else
+            {
+                System.err.println(toString()+" received a REQUEST_NEXT_TRACK message when 'going' status is false.");
+            }
         }
     }
     
+    /**
+     * @param nextTrack a reference to the next track the train will be on.
+     * This method sets currentTrack to next track.
+     * //todo: I "encapsulated" this to make it easier for the graphics to deal with this phase however they will.
+     *                  //maybe there's a 'wait' in here so the train can inch across the screen.
+     */
+    private void proceedTo(IMessagable nextTrack)
+    {
+        currentTrack = nextTrack;
+    }
+
     //todo: I feel like this should maybe be a private method.
     //todo: I'm literally copy and pasting both these messages... THat makes me think maybe we should make a rail class of some kind. Abstract, even.
     public void sendMessage(Message message, IMessagable neighbor)
@@ -96,6 +162,7 @@ public class Train implements IMessagable, IDrawable
      */
     public void requestRoute(String station)
     {
+        destination = station;
         Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station);
         sendMessage(message, currentTrack);
     }

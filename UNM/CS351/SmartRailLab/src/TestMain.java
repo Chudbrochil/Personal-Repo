@@ -1,3 +1,5 @@
+import javafx.embed.swing.JFXPanel;
+
 /**
  * Created by Anna Careyon 10/20/17
  *
@@ -36,6 +38,7 @@ public class TestMain
     
     private static void testSearchRoute()
     {
+        JFXPanel jfxPanel = new JFXPanel(); //this line is needed so the object images can be stored somewhere.
         Train train1 = new Train();
         RailTrack track1 = new RailTrack();
         RailTrack track2 = new RailTrack();
