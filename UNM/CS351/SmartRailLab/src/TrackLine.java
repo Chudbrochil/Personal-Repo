@@ -3,38 +3,26 @@ import java.util.HashMap;
 
 public class TrackLine
 {
-    private String leftStation;
-    private String rightStation;
-    private ArrayList<Integer> componentsList;
+    private Station leftStation;
+    private Station rightStation;
     private ArrayList<ArrayList<IDrawable>> drawableListList;
+    private ArrayList<IMessagable> messagableList;
 
     public TrackLine(String[] components)
     {
-        componentsList = new ArrayList<>();
         drawableListList = new ArrayList<ArrayList<IDrawable>>();
-
-        for(int i = 0; i < components.length; ++i)
-        {
-            if(i == 0) { leftStation = components[i]; }
-            else if (i == components.length - 1) { rightStation = components[i]; }
-
-            // TODO: Catch for exception of incorrect cast?
-            else { componentsList.add(Integer.valueOf(components[i])); }
-        }
-        initializeComponents();
+        messagableList = new ArrayList<>();
+        initializeComponents(components);
     }
 
-    // TODO: Update this for using drawable list
     @Override
     public String toString()
     {
         String output = "";
-        output += leftStation;
-        for(int i = 0; i < componentsList.size(); ++i)
+        for(int i = 0; i < messagableList.size(); ++i)
         {
-            output += componentsList.get(i);
+            output += messagableList.get(i).toString();
         }
-        output += rightStation;
         return output;
     }
 
@@ -43,28 +31,59 @@ public class TrackLine
      * 1 is track
      * 2 is track + light
      */
-    private void initializeComponents()
+    private void initializeComponents(String[] components)
     {
         ArrayList<IDrawable> leftStationList = new ArrayList<>();
-        leftStationList.add(new Station(this.leftStation));
+        leftStation = new Station(components[0]);
+        leftStationList.add(leftStation);
         drawableListList.add(leftStationList);
+        messagableList.add(leftStation);
 
         //TODO: Add more grid types, 3-4-5-6-7
         // Adds a list of components to each element
-        for(int i = 0; i < componentsList.size(); ++i)
+        for(int i = 1; i < components.length - 1; ++i)
         {
             ArrayList<IDrawable> gridComponentList = new ArrayList<>();
-            gridComponentList.add(new RailTrack());
-            if(componentsList.get(i) == 2)
+            RailTrack trackToAdd;
+            RailLight lightToAdd;
+            if(String.valueOf("1").equals(components[i]))
             {
-                gridComponentList.add(new RailLight());
+                trackToAdd = new RailTrack();
+                gridComponentList.add(trackToAdd);
+                messagableList.add(trackToAdd);
+            }
+            else if(String.valueOf("2").equals(components[i]))
+            {
+                //TODO: Does this really need to be a list of lists? The track could contain the switch, light, etc.
+                // Look at this part of the design later.
+                lightToAdd = new RailLight();
+                trackToAdd = new RailTrack(lightToAdd);
+                gridComponentList.add(trackToAdd);
+                gridComponentList.add(lightToAdd);
+                messagableList.add(trackToAdd);
             }
             drawableListList.add(gridComponentList);
         }
 
         ArrayList<IDrawable> rightStationList = new ArrayList<>();
-        rightStationList.add(new Station(this.rightStation));
+        rightStation = new Station(components[components.length - 1]);
+        rightStationList.add(rightStation);
         drawableListList.add(rightStationList);
+        messagableList.add(rightStation);
+
+        attachNeighbors();
+    }
+
+    private void attachNeighbors()
+    {
+        // TODO: This casting can removed by adding setright/setleft neighbor in the interface....
+        ((Station)messagableList.get(0)).setNeighbor(messagableList.get(1));
+        for(int i = 1; i < messagableList.size() - 1; ++i)
+        {
+            ((RailTrack)messagableList.get(i)).setLeftNeighbor(messagableList.get(i-1));
+            ((RailTrack)messagableList.get(i)).setRightNeighbor(messagableList.get(i+1));
+        }
+        ((Station)messagableList.get(messagableList.size()-1)).setNeighbor(messagableList.get(messagableList.size()-1));
     }
 
     public ArrayList<ArrayList<IDrawable>> getDrawableListList() { return drawableListList; }

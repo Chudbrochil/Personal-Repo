@@ -3,9 +3,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
 // TODO: This class should be "static", we only need one...
 public class RailConfiguration

@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * Anna Carey 10/18/17
@@ -11,12 +12,14 @@ public class RailLight implements IDrawable
     private boolean reserved; //Has this track been reserved for a route?
     private String NAME;
     private static int lightIncrement = 1;
-
+    private static Image greenLightImg, redLightImg;
 
     public RailLight()
     {
         NAME = "Light" + lightIncrement;
         lightIncrement++;
+        if(greenLightImg == null) { greenLightImg = new Image("GreenLight-resized.png"); }
+        if(redLightImg == null) { redLightImg = new Image("RedLight-resized.png"); }
     }
 
       public void reserve()
@@ -39,6 +42,7 @@ public class RailLight implements IDrawable
        */
       public void draw(int x, int y, GraphicsContext gcDraw)
       {
-          gcDraw.fillText(this.toString(), x, y - 30);
+          //gcDraw.fillText(this.toString(), x, y - 30);
+          gcDraw.drawImage(redLightImg, x + 30, y-50);
       }
 }

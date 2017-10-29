@@ -32,7 +32,6 @@ public class Station implements IMessagable, IDrawable
       neighbor = n;
     }
     
-    
     public void run()
     {
         //while program running

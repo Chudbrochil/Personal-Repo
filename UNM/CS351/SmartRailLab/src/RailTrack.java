@@ -22,7 +22,8 @@ public class RailTrack implements IMessagable, IDrawable {
     private IMessagable rightNeighbor = null;          //left neighbor 'this' can send and receive messages from
     private Color drawColor = Color.BLUE;             //blue if unreserved; green if reserved.
     private boolean DEBUG = true;                     //turn this flag on to print out a message log.
-    private static Image trackImg;
+    private static Image trackImg;                    // Image that we use to draw a track.
+    private RailLight trackLight;                     // Light that is affixed on a track.
     //current train var?
 
     public RailTrack()
@@ -31,6 +32,11 @@ public class RailTrack implements IMessagable, IDrawable {
         trackIncrement++;
         // Doing this to save the resources from creating a million images for each track.
         if(trackImg == null) { trackImg = new Image("Track.png"); }
+    }
+    public RailTrack(RailLight trackLight)
+    {
+        this();
+        this.trackLight = trackLight;
     }
     
     /**
@@ -230,9 +236,5 @@ public class RailTrack implements IMessagable, IDrawable {
     {
         return NAME;
     }
-
-
-
-
 
 }

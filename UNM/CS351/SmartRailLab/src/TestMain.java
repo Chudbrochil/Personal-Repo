@@ -52,14 +52,14 @@ public class TestMain
          *  station2 - track1 - track2 - track3 - station1
          */
         train1.setCurrentTrack(station2);
-        station2.setNeighbor(track1);
+        station2.setNeighbor(track1); // Anthony, changed this line for stations FYI
         track1.setLeftNeighbor(station2);
         track1.setRightNeighbor(track2);
         track2.setLeftNeighbor(track1);
         track2.setRightNeighbor(track3);
         track3.setLeftNeighbor(track2);
         track3.setRightNeighbor(station1);
-        station1.setNeighbor(track3);
+        station1.setNeighbor(track3); // Anthony, changed this line for stations FYI
         
         train1.requestRoute("Station1");
         
