@@ -86,7 +86,23 @@ public class Station implements IMessagable, IDrawable
               System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
               return;
           }
-          
+          //TODO: IMPLEMENT NEXT TRACK
+      }
+      else if(m.type == MessageType.REQUEST_NEXT_TRACK)
+      {
+          //Should be the first request a train makes.
+          if(m.peekSenderList() instanceof Train)
+          {
+              Train train = (Train)m.popSenderList();
+              m.pushSenderList(this);
+              m.pushSenderList(neighbor);
+              sendMessage(m, train);
+          }
+          else
+          {
+              System.err.println(toString()+" got a message of type REQUEST_NEXT_TRACK from "+m.peekSenderList().toString()
+                  +" is not a train.");
+          }
       }
     }
     

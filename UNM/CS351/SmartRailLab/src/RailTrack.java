@@ -156,6 +156,29 @@ public class RailTrack implements IMessagable, IDrawable {
                 printNeighborError(m.type.toString());
             }
         }
+        if(m.type == MessageType.REQUEST_NEXT_TRACK)
+        {
+            if(m.peekSenderList() instanceof Train)
+            {
+                Train train = (Train)m.popSenderList();
+                IMessagable trainPrevTrack = m.popSenderList();
+                IMessagable nextForTrain = null;
+                if(trainPrevTrack == leftNeighbor) nextForTrain = rightNeighbor;
+                else if(trainPrevTrack == rightNeighbor) nextForTrain = leftNeighbor;
+                else
+                {
+                    System.err.println(toString()+"got a request from a train that didn't just come from its neighbor.");
+                }
+                m.pushSenderList(this);
+                m.pushSenderList(nextForTrain);
+                sendMessage(m, train);
+            }
+            else
+            {
+                System.err.println(toString()+" got a message of type REQUEST_NEXT_TRACK from "+m.peekSenderList().toString()
+                    +" is not a train.");
+            }
+        }
     }
     
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)

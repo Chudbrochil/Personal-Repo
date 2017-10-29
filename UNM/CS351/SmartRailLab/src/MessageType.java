@@ -10,8 +10,9 @@ public enum MessageType
      *   The requested station's name is included in the GO message, as well as a 'signature' from the station who sent the message.
      * REQUEST_NEXT_TRACK is sent by a train ONLY to obtain a reference to the next track from its current track.
      *   Tracks that receive this message send the request back to the train (by peeking at the sender list, seeing it's
-     *   a train, and using that reference). The return message contains  in the sender list first the track that sent
-     *   the message AND THEN a reference to the next IMessagable the train will proceed to.
+     *   a train, and using that reference). The return message contains  in the sender list first a reference to the
+     *   next IMessagable the train will proceed to AND THEN a reference to the track that sent the message (In the order
+     *   they'd be popped, respectively.)
      */
     HELLOTEST, SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK
 }

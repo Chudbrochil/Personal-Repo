@@ -64,7 +64,7 @@ public class TestMain
         train1.requestRoute("Station1");
         
         //If there were threads, this would run on its own. But we have to pretend to be multiple threads for now.
-        for(int i=0; i<10; i++)
+        for(int i=0; i<15; i++)
         {
             train1.run();
             track1.run(); //this should read and send the message

@@ -93,26 +93,30 @@ public class Train implements IMessagable, IDrawable
             }
         }
         //Train should only receive this message if it sent it.
+        //Train pops the first reference off the sender list, which is the track it should be going to. Then
+        //checks the next sender list reference, which is the actual sender. This reference STAYS. The train pushes
+        //itself, then sends this message on to the new currentTrack. (The result is a sender list that contains
+        //the [PreviousTrack, Train] going to currentTrack.
         else if(m.type == MessageType.REQUEST_NEXT_TRACK)
         {
             if(going)
             {
+                IMessagable nextTrack = m.popSenderList();
                 if(m.peekSenderList() == currentTrack)
                 {
-                    m.popSenderList();
-                    IMessagable nextTrack = m.popSenderList();
                     proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
                     //checks if it's arrived at the station
-                    if(currentTrack instanceof Station && ((Station) currentTrack).NAME == destination)
+                    if(currentTrack instanceof Station && ((Station) currentTrack).NAME.equals(destination))
                     {
                         System.out.println(toString()+" has arrived at destination, "+destination+"!");
+                        going = false;
                     }
                     //send another message to request the NEXT track.
                     else
                     {
-                        sendMessage(new Message(NAME, this, MessageType.REQUEST_NEXT_TRACK, destination), currentTrack);
+                        m.pushSenderList(this);
+                        sendMessage(m, currentTrack);
                     }
-                    
                 }
                 else
                 {
