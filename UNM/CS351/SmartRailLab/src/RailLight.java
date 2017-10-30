@@ -18,8 +18,8 @@ public class RailLight implements IDrawable
     {
         NAME = "Light" + lightIncrement;
         lightIncrement++;
-        if(greenLightImg == null) { greenLightImg = new Image("GreenLight-resized.png"); }
-        if(redLightImg == null) { redLightImg = new Image("RedLight-resized.png"); }
+        if(greenLightImg == null) { greenLightImg = new Image("GreenLightNoPole.png"); }
+        if(redLightImg == null) { redLightImg = new Image("RedLightNoPole.png"); }
     }
 
       public void reserve()
