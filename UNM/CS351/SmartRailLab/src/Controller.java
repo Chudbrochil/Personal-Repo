@@ -1,12 +1,16 @@
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 
 public class Controller
 {
 
     @FXML
     private Canvas canvasRail;
+
+    @FXML
+    private Button btnTestMain;
 
 
 
@@ -29,6 +33,12 @@ public class Controller
         rc.drawTrain();
 
 
+    }
+
+    @FXML
+    private void btnTestMain()
+    {
+        TestMain.testSearchRoute();
     }
 
     public Controller() { }
