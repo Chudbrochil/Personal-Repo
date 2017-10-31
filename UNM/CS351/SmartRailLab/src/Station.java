@@ -27,9 +27,10 @@ public class Station extends Thread implements IMessagable, IDrawable
     }
     
     //TODO: Do we want a left/right neighbor? Does it matter?
-    public void setNeighbor(IMessagable n)
+    public void setNeighbors(IMessagable left, IMessagable right)
     {
-      neighbor = n;
+        if(left != null) { neighbor = left; }
+        else { neighbor = right; }
     }
     
     public void run()

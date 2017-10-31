@@ -41,9 +41,15 @@ public class Train extends Thread implements IMessagable, IDrawable
      * To use a train, you MUST set its current track.
      * @param currentTrack
      */
-    public void setCurrentTrack(IMessagable currentTrack)
+    //private void setCurrentTrack(IMessagable currentTrack)
     {
         this.currentTrack = currentTrack;
+    }
+
+    public void setNeighbors(IMessagable left, IMessagable right)
+    {
+        if(left != null) { currentTrack = left; }
+        else { currentTrack = right; }
     }
     
     public void draw(int x, int y, GraphicsContext gcDraw)

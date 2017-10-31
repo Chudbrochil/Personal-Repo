@@ -77,13 +77,29 @@ public class TrackLine
     private void attachNeighbors()
     {
         // TODO: This casting can removed by adding setright/setleft neighbor in the interface....
-        ((Station)messagableList.get(0)).setNeighbor(messagableList.get(1));
-        for(int i = 1; i < messagableList.size() - 1; ++i)
+//        ((Station)messagableList.get(0)).setNeighbor(messagableList.get(1));
+//        for(int i = 1; i < messagableList.size() - 1; ++i)
+//        {
+//            ((RailTrack)messagableList.get(i)).setLeftNeighbor(messagableList.get(i-1));
+//            ((RailTrack)messagableList.get(i)).setRightNeighbor(messagableList.get(i+1));
+//        }
+//        ((Station)messagableList.get(messagableList.size()-1)).setNeighbor(messagableList.get(messagableList.size()-1));
+
+
+        for(int i = 0; i < messagableList.size(); ++i)
         {
-            ((RailTrack)messagableList.get(i)).setLeftNeighbor(messagableList.get(i-1));
-            ((RailTrack)messagableList.get(i)).setRightNeighbor(messagableList.get(i+1));
+            // Must be left station...
+            if(i == 0) { messagableList.get(i).setNeighbors(messagableList.get(i+1), messagableList.get(i+1)); }
+            // Must be right station...
+            else if(i == messagableList.size() - 1) { messagableList.get(i).setNeighbors(messagableList.get(i-1), messagableList.get(i-1)); }
+            else
+            {
+                messagableList.get(i).setNeighbors(messagableList.get(i-1), messagableList.get(i+1));
+            }
+
         }
-        ((Station)messagableList.get(messagableList.size()-1)).setNeighbor(messagableList.get(messagableList.size()-1));
+
+
     }
 
     public ArrayList<ArrayList<IDrawable>> getDrawableListList() { return drawableListList; }

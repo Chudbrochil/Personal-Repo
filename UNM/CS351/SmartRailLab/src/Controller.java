@@ -10,11 +10,6 @@ public class Controller
     private Canvas canvasRail;
 
     @FXML
-    private Button btnTestMain;
-
-
-
-    @FXML
     private void initialize()
     {
         GraphicsContext gcDraw = canvasRail.getGraphicsContext2D();
@@ -32,6 +27,12 @@ public class Controller
         rc.drawInitialComponents(canvasHeight, canvasWidth);
         rc.drawTrain();
 
+
+    }
+
+    // Put the testMain in here....
+    private void testMessage()
+    {
 
     }
 
