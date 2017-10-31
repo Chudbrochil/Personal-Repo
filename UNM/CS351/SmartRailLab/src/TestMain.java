@@ -36,7 +36,7 @@ public class TestMain
         trackc.run(); //this should read and send the message and report the end of the line.
     }
     
-    private static void testSearchRoute()
+    public static void testSearchRoute()
     {
         JFXPanel jfxPanel = new JFXPanel(); //this line is needed so the object images can be stored somewhere.
         Train train1 = new Train();
