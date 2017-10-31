@@ -12,10 +12,12 @@ public class RailConfiguration
     private GraphicsContext gcDraw;
     private int initialHeight;
     private int initialWidth;
+    private ArrayList<Station> stationList;
 
     public RailConfiguration(GraphicsContext gcDraw, int initialHeight, int initialWidth)
     {
         trackLines = new ArrayList<>();
+        stationList = new ArrayList<>();
         this.gcDraw = gcDraw;
         this.initialHeight = initialHeight;
         this.initialWidth = initialWidth;
@@ -64,6 +66,15 @@ public class RailConfiguration
 
         // TODO: This is a placeholder for now.
         return new ArrayList<IDrawable>();
+    }
+
+    public ArrayList<Station> getStationList()
+    {
+        for(int i = 0; i < trackLines.size(); ++i)
+        {
+            stationList.addAll(trackLines.get(i).getStationList());
+        }
+        return stationList;
     }
 
 

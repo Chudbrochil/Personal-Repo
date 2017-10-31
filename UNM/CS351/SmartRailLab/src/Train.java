@@ -42,10 +42,14 @@ public class Train extends Thread implements IMessagable, IDrawable
      * @param currentTrack
      */
     //private void setCurrentTrack(IMessagable currentTrack)
-    {
-        this.currentTrack = currentTrack;
-    }
+//    {
+//        this.currentTrack = currentTrack;
+//    }
 
+    /**
+     * setNeighbors()
+     * Will set it's currentTrack based upon which one isn't null.
+     */
     public void setNeighbors(IMessagable left, IMessagable right)
     {
         if(left != null) { currentTrack = left; }

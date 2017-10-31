@@ -65,7 +65,7 @@ public class TestMain
         track3.start();
     
         train1.requestRoute("Station1");
-        try{Thread.sleep(100);}
+        try{Thread.sleep(500);}
         catch(Exception e){}
         train1.requestRoute("Station2");
         
