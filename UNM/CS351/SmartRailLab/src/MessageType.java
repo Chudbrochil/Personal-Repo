@@ -14,5 +14,5 @@ public enum MessageType
      *   next IMessagable the train will proceed to AND THEN a reference to the track that sent the message (In the order
      *   they'd be popped, respectively.)
      */
-    HELLOTEST, SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK
+    HELLOTEST, SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, UNRESERVE_TRACK
 }

@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * To use this class, you MUST set neighbor by calling setNeighbor().
  */
-public class Station implements IMessagable, IDrawable
+public class Station extends Thread implements IMessagable, IDrawable
 {
     public String NAME;             //Default name of "Station#" given, or a name can be specified
     private static int stationIncrement = 1;   //Static int that gives the stations their ID's.
@@ -34,10 +34,20 @@ public class Station implements IMessagable, IDrawable
     
     public void run()
     {
-        //while program running
-        if(!pendingMessages.isEmpty())
+        while(isAlive())
         {
-            readMessage(pendingMessages.poll());
+            if (!pendingMessages.isEmpty())
+            {
+                readMessage(pendingMessages.poll());
+            }
+            else
+            {
+                try
+                {
+                    wait();
+                }
+                catch(Exception e) {}
+            }
         }
     }
     
@@ -127,17 +137,17 @@ public class Station implements IMessagable, IDrawable
         gcDraw.fillText(this.toString(), x, y);
     }
     
-    public void sendMessage(Message message, IMessagable neighbor)
+    private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
         neighbor.recvMessage(message);
     }
     
-    public void recvMessage(Message message)
+    public synchronized void recvMessage(Message message)
     {
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
-        //this.notify();
+        this.notify();
     }
     
     @Override

@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *   Then, you can have it request routes. This is currently a public method (10/26/17) but may be internal later?
  *
  */
-public class Train implements IMessagable, IDrawable
+public class Train extends Thread implements IMessagable, IDrawable
 {
     public final String NAME;
     private static int trainIncrement = 1;
@@ -57,13 +57,21 @@ public class Train implements IMessagable, IDrawable
      */
     public void run()
     {
-        //while program running
-        if(!pendingMessages.isEmpty())
+        while(isAlive())
         {
-            readMessage(pendingMessages.poll());
+            if (!pendingMessages.isEmpty())
+            {
+                readMessage(pendingMessages.poll());
+            }
+            else
+            {
+                try
+                {
+                    wait();
+                }
+                catch(Exception e) {}
+            }
         }
-        
-        //TODO: wait(), this will eventually come alive with a notify() later in the receive message
     }
     
     private void readMessage(Message m)
@@ -105,6 +113,7 @@ public class Train implements IMessagable, IDrawable
                 if(m.peekSenderList() == currentTrack)
                 {
                     proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
+                    
                     //checks if it's arrived at the station
                     if(currentTrack instanceof Station && ((Station) currentTrack).NAME.equals(destination))
                     {
@@ -144,15 +153,16 @@ public class Train implements IMessagable, IDrawable
 
     //todo: I feel like this should maybe be a private method.
     //todo: I'm literally copy and pasting both these messages... THat makes me think maybe we should make a rail class of some kind. Abstract, even.
-    public void sendMessage(Message message, IMessagable neighbor)
+    private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
         neighbor.recvMessage(message);
     }
-    public void recvMessage(Message message)
+    public synchronized void recvMessage(Message message)
     {
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
+        this.notify();
     }
     
     //todo: make private?

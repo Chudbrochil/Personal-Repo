@@ -61,17 +61,28 @@ public class TestMain
         track3.setRightNeighbor(station1);
         station1.setNeighbor(track3); // Anthony, changed this line for stations FYI
         
+        train1.start();
+        station1.start();
+        station2.start();
+        track1.start();
+        track2.start();
+        track3.start();
+    
         train1.requestRoute("Station1");
+        try{Thread.sleep(100);}
+        catch(Exception e){}
+        train1.requestRoute("Station2");
+        
         
         //If there were threads, this would run on its own. But we have to pretend to be multiple threads for now.
-        for(int i=0; i<15; i++)
-        {
-            train1.run();
-            track1.run(); //this should read and send the message
-            station2.run();
-            track2.run(); //this should read and send the message
-            track3.run(); //this should read and send the message
-            station1.run();//This should read and station should confirm that it has been found, as requested.
-        }
+        //for(int i=0; i<15; i++)
+        //{
+        //    train1.run();
+        //    track1.run(); //this should read and send the message
+        //    station2.run();
+        //    track2.run(); //this should read and send the message
+        //    track3.run(); //this should read and send the message
+        //    station1.run();//This should read and station should confirm that it has been found, as requested.
+        //}
     }
 }

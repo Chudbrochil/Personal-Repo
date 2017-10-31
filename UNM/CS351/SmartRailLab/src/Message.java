@@ -12,7 +12,6 @@ public class Message
 {
     public final String TRAIN;    //Train who originated this message--either pointer to or identifier/name.
     private Stack<IMessagable> senderList;   //Keeps track of who has passed the message. Used to retrace steps. (often message type is changed.)
-    //todo: will need to make senderList into a list if we want to retrace our steps.
     public MessageType type;     //Enum that tells the Rail pieces what they should do with this message.
     public final String STATION; //name of the station requested or found, depending on the message type.
   

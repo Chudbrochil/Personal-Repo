@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  */
 
-public class RailTrack implements IMessagable, IDrawable {
+public class RailTrack extends Thread implements IMessagable, IDrawable {
     
     private String NAME;                              // Formal name of the train, useful for trace
     private static int trackIncrement = 1;            // ID number for a given track piece
@@ -66,18 +66,26 @@ public class RailTrack implements IMessagable, IDrawable {
     }
     
     /**
-     * When this class extends Thread, this method will handle itself and loop infinitely.
-     * For now, we're just calling it from the main thread each time we want it to be called.
+     * Check pendingMessages. If it is empty, wait. (Notify is in the recMessage() method)
      */
     public void run()
     {
-        //while program running
-        if(!pendingMessages.isEmpty())
+        while(isAlive())
         {
-            readMessage(pendingMessages.poll());
+            if (!pendingMessages.isEmpty())
+            {
+                readMessage(pendingMessages.poll());
+            }
+            else
+            {
+                //wait
+                try
+                {
+                    wait();
+                }
+                catch(Exception e) {}
+            }
         }
-
-        //TODO: wait(), this will eventually come alive with a notify() later in the receive message
     }
     
     /**
@@ -150,7 +158,7 @@ public class RailTrack implements IMessagable, IDrawable {
             //todo: light. Check if light. If so, which direction do we need to protect? look at the next neighbor. That
             //is where train will come from. (And, you can assume, the other direction is where the train is going
             // /where the message came from.
-            
+            //todo: Check if already reserved? Second train
             reserve();
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
             IMessagable nextSenderInList = m.popSenderList();
@@ -177,6 +185,7 @@ public class RailTrack implements IMessagable, IDrawable {
                 }
                 m.pushSenderList(this);
                 m.pushSenderList(nextForTrain);
+                unreserve();
                 sendMessage(m, train);
             }
             else
@@ -219,16 +228,16 @@ public class RailTrack implements IMessagable, IDrawable {
         sendMessage(new Message("TestTrain", this, MessageType.HELLOTEST, null), rightNeighbor);
     }
     
-    //todo: I feel like this should maybe be a private method.
-    public void sendMessage(Message message, IMessagable neighbor)
+    private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
         neighbor.recvMessage(message);
     }
-    public void recvMessage(Message message)
+    public synchronized void recvMessage(Message message)
     {
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
         pendingMessages.add(message);
+        this.notify();
     }
 
     @Override
