@@ -70,20 +70,18 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
      */
     public void run()
     {
-        while(isAlive())
+        while(true)
         {
-            if (!pendingMessages.isEmpty())
+            while (!pendingMessages.isEmpty())
             {
                 readMessage(pendingMessages.poll());
             }
-            else
+            //wait
+            try
             {
-                //wait
-                try
-                {
-                    wait();
-                }
-                catch(Exception e) {}
+                wait();
+             }
+            catch(Exception e) {}
             }
         }
     }

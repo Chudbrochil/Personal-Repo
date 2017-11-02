@@ -34,9 +34,9 @@ public class Station extends Thread implements IMessagable, IDrawable
     
     public void run()
     {
-        while(isAlive())
+        while(true)
         {
-            if (!pendingMessages.isEmpty())
+            while (!pendingMessages.isEmpty())
             {
                 readMessage(pendingMessages.poll());
             }
