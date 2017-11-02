@@ -22,9 +22,10 @@ public class RailLight implements IDrawable
         if(redLightImg == null) { redLightImg = new Image("RedLightNoPole.png"); }
     }
 
-      public void reserve()
+      public void reserve(Direction trainFacing)
       {
-        reserved = true;
+          
+          reserved = true;
       }
 
       public void unreserve() //I would call this 'free', but that sounds confusing.

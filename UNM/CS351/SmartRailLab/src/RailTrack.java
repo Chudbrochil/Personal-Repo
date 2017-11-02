@@ -41,9 +41,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     }
     
     /**
-     * todo: Should these be combined? I left them separate for clarity.
-     * @param neighbor IMessagable piece to the left of this piece. Initialized at runtime.
-     *       input
+     * @param left IMessagable piece to the left of this piece. Initialized at runtime.
+     * @param right IMessagable piece to the right of this piece. Initialized at runtime.
      *       null if no neighbor or a IMessagable class to which 'this' can pass messages.
      */
     public void setNeighbors(IMessagable left, IMessagable right)
@@ -53,12 +52,16 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     }
     
     //Reserves the track and (ideally) prevents any other traffic from passing over it.
-    public void reserve()
+    private void reserve(Direction trainFacing)
     {
+        if(trackLight!=null)
+        {
+            trackLight.reserve(trainFacing);
+        }
         reserved = true;
     }
     
-    public void unreserve()
+    private void unreserve()
     {
         reserved = false;
     }
@@ -78,9 +81,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
             try
             {
                 wait();
-             }
-            catch(Exception e) {}
             }
+            catch(Exception e) {}
         }
     }
     
@@ -112,23 +114,19 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
             if(rightNeighbor!=null) sendMessage(m, rightNeighbor);
             else if(DEBUG) System.out.println("End of the line reached at "+this.toString());
         }
+        
+        //SEARCH_FOR_ROUTE
         else if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             //Was it a train that sent the message? If so, you'll need to send one to both neighbors.
             IMessagable mostRecentSender = m.peekSenderList();
             IMessagable neighborToSendTo=null;
             m.pushSenderList(this);
-            //todo: Delete this? this goes in Station, because trains only request routes from stations.
-            if(mostRecentSender instanceof Train)
-            {
-                if(leftNeighbor!=null)  sendMessage(m.clone(),leftNeighbor); //two instances of message now.
-                if(rightNeighbor!=null) sendMessage(m,rightNeighbor);
-            }
             
             //look for which neighbor sent this message. Send this message to your other neighbors.
             
             //If the message came from your right, send it to your left, and vis versa.
-            else if(mostRecentSender==leftNeighbor || mostRecentSender==rightNeighbor)
+            if(mostRecentSender==leftNeighbor || mostRecentSender==rightNeighbor)
             {
                 if(mostRecentSender==this.leftNeighbor) neighborToSendTo = rightNeighbor;
                 if(mostRecentSender==this.rightNeighbor) neighborToSendTo = leftNeighbor;
@@ -148,6 +146,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
                 printNeighborError(m.type.toString());
             }
         }
+        
+        //RESERVE_ROUTE
         else if(m.type == MessageType.RESERVE_ROUTE)
         {
             //Tracks don't need to check if they CAN protect. They don't have anything to do.
@@ -155,18 +155,29 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
             //is where train will come from. (And, you can assume, the other direction is where the train is going
             // /where the message came from.
             //todo: Check if already reserved? Second train
-            reserve();
+            
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
             IMessagable nextSenderInList = m.popSenderList();
-            if(nextSenderInList == leftNeighbor) sendMessage(m, leftNeighbor);
-            else if(nextSenderInList == rightNeighbor) sendMessage(m,rightNeighbor);
+            if(nextSenderInList == leftNeighbor)
+            {
+                //the train will be coming from the left to the right; it is facing right.
+                reserve(Direction.RIGHT);
+                sendMessage(m, leftNeighbor);
+            }
+            else if(nextSenderInList == rightNeighbor)
+            {
+                reserve(Direction.LEFT);
+                sendMessage(m,rightNeighbor);
+            }
             else
             {
                 if(DEBUG) printNeighborDebug(nextSenderInList, m.type.toString());
                 printNeighborError(m.type.toString());
             }
         }
-        if(m.type == MessageType.REQUEST_NEXT_TRACK)
+        
+        //REQUEST_NEXT_TRACK
+        else if(m.type == MessageType.REQUEST_NEXT_TRACK)
         {
             if(m.peekSenderList() instanceof Train)
             {
@@ -192,12 +203,25 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         }
     }
     
+    /**
+     * @param mostRecentSender Neighbor who just sent the message
+     * @param messageType Type of message that went wrong
+     *
+     * This method prints a debug statement "this.toString just got a message type messageType from mostRecentSender,
+     *                    which is not a neighbor. No message sent."
+     */
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
     {
         System.out.println(this.toString()+" just got a message (type "+messageType+") from "+mostRecentSender+", which is"
             +" not a neighbor. No message sent.");
     }
     
+    /**
+     * @param type Type of message that went wrong
+     *
+     * This method prints a System err statement "Message passed from Rail peice to another that was not a neighbor.
+     *             Message type: type."
+     */
     private void printNeighborError(String type)
     {
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: "+type);
@@ -232,6 +256,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
         neighbor.recvMessage(message);
     }
+    
     public synchronized void recvMessage(Message message)
     {
         if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());

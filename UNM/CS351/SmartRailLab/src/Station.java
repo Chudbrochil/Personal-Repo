@@ -42,14 +42,11 @@ public class Station extends Thread implements IMessagable, IDrawable
             {
                 readMessage(pendingMessages.poll());
             }
-            else
+            try
             {
-                try
-                {
-                    wait();
-                }
-                catch(Exception e) {}
+                wait();
             }
+            catch(Exception e) {}
         }
     }
     
