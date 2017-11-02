@@ -27,10 +27,12 @@ public class Station extends Thread implements IMessagable, IDrawable
     }
     
     //TODO: Do we want a left/right neighbor? Does it matter?
-    public void setNeighbor(IMessagable n)
+    public void setNeighbors(IMessagable left, IMessagable right)
     {
-      neighbor = n;
+        if(left != null) { neighbor = left; }
+        else { neighbor = right; }
     }
+    public IMessagable getNeighbor() { return neighbor; }
     
     public void run()
     {
@@ -58,6 +60,7 @@ public class Station extends Thread implements IMessagable, IDrawable
           //If it's a train, send the message on.
           if(m.peekSenderList() instanceof Train)
           {
+              System.out.println("Wat");
               m.pushSenderList(this);
               sendMessage(m,neighbor);
               //todo: How should we handle if a train requests a route to a station it's ON?

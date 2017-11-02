@@ -23,10 +23,9 @@ public class TestMain
          * Layout:
          *  tracka - trackb - trackc
          */
-        tracka.setRightNeighbor(trackb);
-        trackb.setLeftNeighbor(tracka);
-        trackb.setRightNeighbor(trackc);
-        trackc.setLeftNeighbor(trackb);
+        tracka.setNeighbors(null, trackb);
+        trackb.setNeighbors(tracka, trackc);
+        trackc.setNeighbors(trackb, null);
     
         tracka.sendTestMessage();
     
@@ -51,15 +50,12 @@ public class TestMain
          *  {train1}
          *  station2 - track1 - track2 - track3 - station1
          */
-        train1.setCurrentTrack(station2);
-        station2.setNeighbor(track1); // Anthony, changed this line for stations FYI
-        track1.setLeftNeighbor(station2);
-        track1.setRightNeighbor(track2);
-        track2.setLeftNeighbor(track1);
-        track2.setRightNeighbor(track3);
-        track3.setLeftNeighbor(track2);
-        track3.setRightNeighbor(station1);
-        station1.setNeighbor(track3); // Anthony, changed this line for stations FYI
+        train1.setNeighbors(station2, null);
+        station2.setNeighbors(track1, null);
+        track1.setNeighbors(station2, track2);
+        track2.setNeighbors(track1, track3);
+        track3.setNeighbors(track2, station1);
+        station1.setNeighbors(track3, null);
         
         train1.start();
         station1.start();
@@ -69,7 +65,7 @@ public class TestMain
         track3.start();
     
         train1.requestRoute("Station1");
-        try{Thread.sleep(100);}
+        try{Thread.sleep(500);}
         catch(Exception e){}
         train1.requestRoute("Station2");
         

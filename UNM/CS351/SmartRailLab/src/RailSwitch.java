@@ -25,6 +25,5 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         pendingMessages.add(message);
         this.notify();
     }
-    public void setLeftNeighbor(IMessagable neighbor) { this.leftNeighbor = neighbor; }
-    public void setRightNeighbor(IMessagable neighbor) { this.rightNeighbor = neighbor; }
+    public void setNeighbors(IMessagable left, IMessagable right) {}
 }

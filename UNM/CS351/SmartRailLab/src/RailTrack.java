@@ -20,10 +20,10 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();  //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable leftNeighbor = null;           //left neighbor 'this' can send and receive messages from
     private IMessagable rightNeighbor = null;          //left neighbor 'this' can send and receive messages from
-    private Color drawColor = Color.BLUE;             //blue if unreserved; green if reserved.
     private boolean DEBUG = true;                     //turn this flag on to print out a message log.
     private static Image trackImg;                    // Image that we use to draw a track.
     private RailLight trackLight;                     // Light that is affixed on a track.
+    private boolean reserved;
     //current train var?
 
     public RailTrack()
@@ -32,6 +32,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         trackIncrement++;
         // Doing this to save the resources from creating a million images for each track.
         if(trackImg == null) { trackImg = new Image("Track.png"); }
+        reserved = true;
     }
     public RailTrack(RailLight trackLight)
     {
@@ -45,24 +46,21 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
      *       input
      *       null if no neighbor or a IMessagable class to which 'this' can pass messages.
      */
-    public void setLeftNeighbor(IMessagable neighbor)
+    public void setNeighbors(IMessagable left, IMessagable right)
     {
-        leftNeighbor = neighbor;
-    }
-    public void setRightNeighbor(IMessagable neighbor)
-    {
-        rightNeighbor = neighbor;
+        leftNeighbor = left;
+        rightNeighbor = right;
     }
     
     //Reserves the track and (ideally) prevents any other traffic from passing over it.
     public void reserve()
     {
-        drawColor = Color.GREEN;
+        reserved = true;
     }
     
     public void unreserve()
     {
-        drawColor = Color.BLUE;
+        reserved = false;
     }
     
     /**
@@ -214,8 +212,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     public void draw(int x, int y, GraphicsContext gcDraw)
     {
         //TODO: Change color when the track is reserved
+        if(reserved) { gcDraw.setFill(Color.BLUE); }
+        else { gcDraw.setFill(Color.BLACK); }
         gcDraw.fillText(this.toString(), x, y);
         gcDraw.drawImage(trackImg, x, y);
+        gcDraw.setFill(Color.BLACK);
     }
     
     /**
