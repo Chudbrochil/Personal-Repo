@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Class that represents a 'train' in the SmartRail simulation. Trains can request routes and receive routes back,
- *   then (todo: still to implement) travel along routes.
+ *   then travel along routes.
  *
  * To make a Train, you must give it a name and set the current track via the setCurrentTrack() method.
  *   Then, you can have it request routes. This is currently a public method (10/26/17) but may be internal later?

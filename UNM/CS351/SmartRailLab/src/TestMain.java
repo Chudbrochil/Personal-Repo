@@ -39,7 +39,7 @@ public class TestMain
     {
         JFXPanel jfxPanel = new JFXPanel(); //this line is needed so the object images can be stored somewhere.
         Train train1 = new Train();
-        RailTrack track1 = new RailTrack();
+        RailTrack track1 = new RailTrack(new RailLight());
         RailTrack track2 = new RailTrack();
         RailTrack track3 = new RailTrack();
         Station station1 = new Station(); //named "Station1"

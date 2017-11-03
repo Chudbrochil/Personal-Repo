@@ -19,12 +19,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     private static int trackIncrement = 1;            // ID number for a given track piece
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>();  //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable leftNeighbor = null;           //left neighbor 'this' can send and receive messages from
-    private IMessagable rightNeighbor = null;          //left neighbor 'this' can send and receive messages from
+    private IMessagable rightNeighbor = null;          //right neighbor 'this' can send and receive messages from
     private boolean DEBUG = true;                     //turn this flag on to print out a message log.
     private static Image trackImg;                    // Image that we use to draw a track.
     private RailLight trackLight;                     // Light that is affixed on a track.
     private boolean reserved;
-    //current train var?
 
     public RailTrack()
     {
@@ -51,12 +50,30 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         rightNeighbor = right;
     }
     
+    /**
+     * @return true if this track has a light.
+     */
+    public boolean hasLight()
+    {
+        return trackLight == null;
+    }
+    
+    /**
+     * @return the direction in which the light is green.
+     *   Returns null if the track has no light.
+     */
+    public Direction trackLightGreenDirection()
+    {
+        if(hasLight()) return trackLight.getGreenDirection();
+        else return null;
+    }
+    
     //Reserves the track and (ideally) prevents any other traffic from passing over it.
-    private void reserve(Direction trainFacing)
+    private void reserve(Direction trainComingFrom)
     {
         if(trackLight!=null)
         {
-            trackLight.reserve(trainFacing);
+            trackLight.reserve(trainComingFrom);
         }
         reserved = true;
     }
@@ -160,13 +177,13 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
             IMessagable nextSenderInList = m.popSenderList();
             if(nextSenderInList == leftNeighbor)
             {
-                //the train will be coming from the left to the right; it is facing right.
-                reserve(Direction.RIGHT);
+                //the train will be coming from the left to the right; The light should be green facing the left.
+                reserve(Direction.LEFT);
                 sendMessage(m, leftNeighbor);
             }
             else if(nextSenderInList == rightNeighbor)
             {
-                reserve(Direction.LEFT);
+                reserve(Direction.RIGHT);
                 sendMessage(m,rightNeighbor);
             }
             else
@@ -184,8 +201,17 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
                 Train train = (Train)m.popSenderList();
                 IMessagable trainPrevTrack = m.popSenderList();
                 IMessagable nextForTrain = null;
-                if(trainPrevTrack == leftNeighbor) nextForTrain = rightNeighbor;
-                else if(trainPrevTrack == rightNeighbor) nextForTrain = leftNeighbor;
+                Direction trainComingFrom;
+                if(trainPrevTrack == leftNeighbor)
+                {
+                    trainComingFrom = Direction.LEFT;
+                    nextForTrain = rightNeighbor;
+                }
+                else if(trainPrevTrack == rightNeighbor)
+                {
+                    trainComingFrom = Direction.RIGHT;
+                    nextForTrain = leftNeighbor;
+                }
                 else
                 {
                     System.err.println(toString()+"got a request from a train that didn't just come from its neighbor.");

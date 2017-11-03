@@ -9,8 +9,9 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private static int switchIncrement = 1;
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private boolean DEBUG = true;
-    IMessagable leftNeighbor;
+    IMessagable perminateNeighbor;
     IMessagable rightNeighbor;
+    IMessagable downNeighbor;
     
 
     public void draw(int x, int y, GraphicsContext gc)
@@ -25,5 +26,15 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         pendingMessages.add(message);
         this.notify();
     }
-    public void setNeighbors(IMessagable left, IMessagable right) {}
+    
+    public void setNeighbors(IMessagable left, IMessagable right)
+    {
+        perminateNeighbor = left;
+        rightNeighbor = right;
+    }
+    
+    public void setNeighbors(IMessagable perminate, IMessagable up, IMessagable down)
+    {
+        
+    }
 }

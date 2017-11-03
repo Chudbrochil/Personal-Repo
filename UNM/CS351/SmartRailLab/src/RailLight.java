@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
  */
 public class RailLight implements IDrawable
 {
-    private boolean isGreenLeft; //Is the light shining green to the left? OR can make an emum left/right.
+    private Direction greenDirection = Direction.LEFT; //just a default direction.
     private boolean reserved; //Has this track been reserved for a route?
     private String NAME;
     private static int lightIncrement = 1;
@@ -22,15 +22,25 @@ public class RailLight implements IDrawable
         if(redLightImg == null) { redLightImg = new Image("RedLightNoPole.png"); }
     }
 
-      public void reserve(Direction trainFacing)
+      public void reserve(Direction trainComingFrom)
       {
-          
+          greenDirection = trainComingFrom;
           reserved = true;
       }
 
       public void unreserve() //I would call this 'free', but that sounds confusing.
       {
-        reserved = false;
+          //Don't need to 'turn off' light.
+          reserved = false;
+      }
+    
+    /**
+     *
+     * @return the Direction in which the 'green' light is shining (greenDirection)
+     */
+    public Direction getGreenDirection()
+      {
+          return greenDirection;
       }
 
       public String toString() { return NAME; }
