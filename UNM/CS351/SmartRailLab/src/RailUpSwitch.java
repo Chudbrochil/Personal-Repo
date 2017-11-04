@@ -18,8 +18,9 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
     private static int switchIncrement = 1;
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     IMessagable leftNeighbor;       //any track piece
-    IMessagable downRightNeighbor;  //any track piece
-    IMessagable upRightNeighbor;    //a  RailDownSwitch.
+    IMessagable rightNeighbor;  //any track piece
+    IMessagable switchNeighbor;    //a  RailDownSwitch.
+    private Direction switchSide; //if LEFT, this is a 
     private boolean isUp; //is the switch in the 'up' position, or lying flat left to right?
     private boolean DEBUG = true;
     private boolean reserved;
@@ -83,7 +84,8 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
      *  SEARCH_FOR_ROUTE
      *      Adds itself to the sender list.
      *      Checks who the message is from and forwards the message to its other neighbor or neighbors.
-     *      If it came from the left, the switch sends it to its
+     *      If it came from the left, the switch sends it to its two right neighbors.
+     *      If it came from either of the right neighbors, it sends it to the left neighbor.
      *      If it came from the left and the message is going to the right but right is null, for example, the message
      *          just doesn't get sent anywhere.
      *  RESERVE_ROUTE
@@ -99,7 +101,6 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
      */
     private void readMessage(Message m)
     {
-        System.out.println(toString()+" reading messages");
         if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             IMessagable mostRecentSender = m.peekSenderList();
@@ -107,15 +108,15 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
           
             //look for which neighbor sent this message. Send this message to your other neighbors.
             // if the message came from your right, just send it to your left.
-            if(mostRecentSender==downRightNeighbor || mostRecentSender==upRightNeighbor)
+            if(mostRecentSender== rightNeighbor || mostRecentSender== switchNeighbor)
             {
                 if(leftNeighbor!=null) sendMessage(m, leftNeighbor);
             }
             else if(mostRecentSender==leftNeighbor)
             {
                 Message mClone = m.clone();
-                if(downRightNeighbor!=null) sendMessage(m, downRightNeighbor);
-                if(upRightNeighbor!=null) sendMessage(mClone, upRightNeighbor);
+                if(rightNeighbor !=null) sendMessage(m, rightNeighbor);
+                if(switchNeighbor !=null) sendMessage(mClone, switchNeighbor);
             }
             else
             {
@@ -154,7 +155,7 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
     public void setNeighbors(IMessagable left, IMessagable right)
     {
         leftNeighbor = left;
-        downRightNeighbor = right;
+        rightNeighbor = right;
     }
     
     /**
@@ -162,8 +163,8 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
      */
     public void setUpNeighbor(IMessagable upRight)
     {
-        upRightNeighbor = upRight;
-        upRightNeighbor = upRight;
+        switchNeighbor = upRight;
+        switchNeighbor = upRight;
     }
     
     /**
@@ -175,8 +176,8 @@ public class RailUpSwitch extends Thread implements IMessagable, IDrawable
     public void setNeighbors(IMessagable left, IMessagable downRight, IMessagable upRight)
     {
         leftNeighbor = left;
-        downRightNeighbor = downRight;
-        upRightNeighbor = upRight;
+        rightNeighbor = downRight;
+        switchNeighbor = upRight;
     }
     
     

@@ -99,7 +99,6 @@ public class RailDownSwitch extends Thread implements IMessagable, IDrawable
      */
     private void readMessage(Message m)
     {
-        System.out.println(toString()+" reading messages");
         if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             IMessagable mostRecentSender = m.peekSenderList();
