@@ -15,6 +15,7 @@ public class Controller
 
     RailConfiguration railConfig;
     RailConfigurationLoader railConfigLoader;
+    ArrayList<Station> stationList;
 
     @FXML
     private void initialize()
@@ -22,6 +23,7 @@ public class Controller
         gcDraw = canvasRail.getGraphicsContext2D();
         railConfig = new RailConfiguration(gcDraw, 50, 10);
         railConfigLoader = new RailConfigurationLoader(railConfig);
+        stationList = new ArrayList<>();
 
         //rcl.loadNewConfiguration("SimpleOneTrack.txt");
         //rcl.loadNewConfiguration("SimpleTwoTrack.txt");
@@ -29,9 +31,7 @@ public class Controller
         //rcl.loadNewConfiguration("AnnaOneTrack.txt");
 
         launchNewConfiguration("AnnaOneTrack.txt");
-
-
-
+        makeTrain();
 
     }
 
@@ -45,16 +45,19 @@ public class Controller
         //rc.drawTrain();
 
         // Assigning the train to station1....
-        ArrayList<Station> stationList = railConfig.getStationList();
+        stationList = railConfig.getStationList();
+    }
 
+    private void makeTrain()
+    {
+        // Maybe make a list of trains?
         Train theTrain = new Train();
         theTrain.setNeighbors(stationList.get(0), null);
         theTrain.requestRoute("Station2");
         theTrain.draw(50, 50, gcDraw);
 
-        // TODO: Not sure why the message isn't being sent to track1....
-        System.out.println(stationList.get(0).getNeighbor().toString());
-
+        // Other components are started in TrackLine
+        theTrain.start();
     }
 
     // Put the testMain in here....

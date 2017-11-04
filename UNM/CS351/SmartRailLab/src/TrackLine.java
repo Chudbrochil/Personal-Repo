@@ -88,7 +88,7 @@ public class TrackLine
             {
                 messagableList.get(i).setNeighbors(messagableList.get(i-1), messagableList.get(i+1));
             }
-
+            ((Thread)messagableList.get(i)).start();
         }
     }
 
