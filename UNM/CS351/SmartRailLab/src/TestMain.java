@@ -10,7 +10,7 @@ public class TestMain
 {
     public static void main (String args[])
     {
-        testSearchRoute();
+        testSwitch();
     }
     
     private static void testMessage()
@@ -80,5 +80,47 @@ public class TestMain
         //    track3.run(); //this should read and send the message
         //    station1.run();//This should read and station should confirm that it has been found, as requested.
         //}
+    }
+    
+    public static void testSwitch()
+    {
+        JFXPanel jfxPanel = new JFXPanel(); //this line is needed so the object images can be stored somewhere.
+        Train train1 = new Train();
+        RailTrack track1 = new RailTrack(new RailLight());
+        RailTrack track2 = new RailTrack();
+        RailTrack track3 = new RailTrack();
+        RailUpSwitch switch1 = new RailUpSwitch();
+        //RailUpSwitch
+        Station station1 = new Station(); //named "Station1"
+        Station station2 = new Station(); //named "Station2"
+        Station station3 = new Station();
+    
+        /**
+         * Layout:
+         *                            ~ - track3 - station1
+         *  {train1}
+         *  station2 - track1 - switch1 - track2 - station3
+         *
+         */
+        train1.setNeighbors(station2, null);
+        station2.setNeighbors(null,track1);
+        track1.setNeighbors(station2, switch1);
+        switch1.setNeighbors(track1, track2);
+        switch1.setUpNeighbor(track3);
+        track2.setNeighbors(switch1, station3);
+        track3.setNeighbors(null, station1); // Next todo: Add down switch so the message can get BACK.
+        station1.setNeighbors(track2, null);
+    
+        train1.start();
+        station1.start();
+        station2.start();
+        switch1.start();
+        track1.start();
+        track2.start();
+        track3.start();
+    
+        train1.requestRoute("Station1");
+        try{Thread.sleep(500);}
+        catch(Exception e){}
     }
 }

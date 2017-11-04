@@ -119,9 +119,15 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
      *      If it came from the left and the message is going to the right but right is null, for example, the message
      *          just doesn't get sent anywhere.
      *  RESERVE_ROUTE
-     *      Reserves itself todo: (And the light, if applicable)
+     *      Reserves itself and its light, if applicable.
      *      Then pops the next member off the sender list in Message m and forwards the message to that Rail component
      *      IF it is a neighbor of this track. If it is not, an error message is printed and the message is dropped.
+     *      Adds itself to the sender list, then sends it off.
+     *  REQUEST_NEXT_TRACK
+     *      Pulls train from the sender list
+     *      Pops the next sender, which is the track the train was previously on
+     *      Pushes itself and then the next track the train should be going to to the sender list
+     *      Sends the message back to the train.
      */
     private void readMessage(Message m)
     { //todo: switchcase?
@@ -135,10 +141,9 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         //SEARCH_FOR_ROUTE
         else if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
-            //Was it a train that sent the message? If so, you'll need to send one to both neighbors.
             IMessagable mostRecentSender = m.peekSenderList();
             IMessagable neighborToSendTo=null;
-            m.pushSenderList(this);
+            m.pushSenderList(this); //sign before you pass it on.
             
             //look for which neighbor sent this message. Send this message to your other neighbors.
             
@@ -165,16 +170,16 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         }
         
         //RESERVE_ROUTE
+        //The first member is the one the message came from. The next 'sender' is the one the message needs to go to.
         else if(m.type == MessageType.RESERVE_ROUTE)
         {
             //Tracks don't need to check if they CAN protect. They don't have anything to do.
-            //todo: light. Check if light. If so, which direction do we need to protect? look at the next neighbor. That
-            //is where train will come from. (And, you can assume, the other direction is where the train is going
-            // /where the message came from.
             //todo: Check if already reserved? Second train
             
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
+            m.popSenderList(); //RailTrack doesn't care who it came from, just where it's going.
             IMessagable nextSenderInList = m.popSenderList();
+            m.pushSenderList(this);
             if(nextSenderInList == leftNeighbor)
             {
                 //the train will be coming from the left to the right; The light should be green facing the left.

@@ -14,11 +14,13 @@ public class Message
     private Stack<IMessagable> senderList;   //Keeps track of who has passed the message. Used to retrace steps. (often message type is changed.)
     public MessageType type;     //Enum that tells the Rail pieces what they should do with this message.
     public final String STATION; //name of the station requested or found, depending on the message type.
+    //public final Direction TRAINHEADING;
   
   
     public Message(String trainSender, IMessagable firstSender, MessageType m, String station)
     {
         TRAIN = trainSender;
+        //TRAINHEADING = heading;
         senderList = new Stack<>();
         senderList.push(firstSender);
         type = m;
@@ -31,6 +33,7 @@ public class Message
     private Message(String trainSender, Stack<IMessagable> senders, MessageType m, String station)
     {
         TRAIN = trainSender;
+        //TRAINHEADING = trainheading;
         senderList = new Stack<>();
         senderList.addAll(senders);
         type = m;
@@ -44,7 +47,7 @@ public class Message
      @Override
     public String toString()
   {
-    return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type;
+    return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type +"\t Station:"+STATION;
   }
   
     /**

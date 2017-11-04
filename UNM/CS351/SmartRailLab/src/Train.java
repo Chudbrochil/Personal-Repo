@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Class that represents a 'train' in the SmartRail simulation. Trains can request routes and receive routes back,
  *   then travel along routes.
  *
+ * To use a train, you MUST call the setNeighbors method.
+ *
  * To make a Train, you must give it a name and set the current track via the setCurrentTrack() method.
  *   Then, you can have it request routes. This is currently a public method (10/26/17) but may be internal later?
  *
@@ -23,6 +25,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     private boolean going = false; //True the train has received a valid 'GO' message and is proceeding along the track.
     private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
                                       //the route goes to the desired location.
+    private Direction heading;      //which way is the train heading?
     
     //todo: list of stations you can visit?
     public Train()
@@ -30,6 +33,7 @@ public class Train extends Thread implements IMessagable, IDrawable
         NAME = "Train" + trainIncrement;
         trainIncrement++;
         if(redTrainImg == null) { redTrainImg = new Image("RedTrain.jpg"); }
+        heading = Direction.RIGHT;
     }
     
     public Train(String n)
@@ -54,6 +58,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     {
         if(left != null) { currentTrack = left; }
         else { currentTrack = right; }
+        //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
     }
     
     public void draw(int x, int y, GraphicsContext gcDraw)
@@ -81,6 +86,14 @@ public class Train extends Thread implements IMessagable, IDrawable
         }
     }
     
+    /**
+     * @param m message sent to this train from any other IMessagable object.
+     *   REQUEST_HEADING
+     *          Receives this message from a station to request which Direction, LEFT or RIGHT, the train is 'facing.'
+     *   GO
+     *          Receives this message fom a station when a route has been successfully found for this train.
+     *
+     */
     private void readMessage(Message m)
     {
         if(m.type == MessageType.GO)
@@ -126,6 +139,8 @@ public class Train extends Thread implements IMessagable, IDrawable
                     {
                         System.out.println(toString()+" has arrived at destination, "+destination+"!");
                         going = false;
+                        //reset heading to current station.
+                        //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
                     }
                     //send another message to request the NEXT track.
                     else
@@ -158,8 +173,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         currentTrack = nextTrack;
     }
 
-    //todo: I feel like this should maybe be a private method.
-    //todo: I'm literally copy and pasting both these messages... THat makes me think maybe we should make a rail class of some kind. Abstract, even.
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());

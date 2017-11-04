@@ -57,7 +57,6 @@ public class Station extends Thread implements IMessagable, IDrawable
           //If it's a train, send the message on.
           if(m.peekSenderList() instanceof Train)
           {
-              System.out.println("Wat");
               m.pushSenderList(this);
               sendMessage(m,neighbor);
               //todo: How should we handle if a train requests a route to a station it's ON?
@@ -68,6 +67,7 @@ public class Station extends Thread implements IMessagable, IDrawable
               if(DEBUG) System.out.println("Route to Station "+NAME+" has been found!");
               m.type = MessageType.RESERVE_ROUTE;
               IMessagable mostRecentSender = m.popSenderList();
+              m.pushSenderList(this); //sign the message before you send it on.
               if(mostRecentSender == neighbor) sendMessage(m,neighbor);
               else
               {
@@ -82,6 +82,9 @@ public class Station extends Thread implements IMessagable, IDrawable
       {
           //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
           //message that the train that is IN this station
+          
+          //The first sender is who sent this message. Station doesn't care about that--just the Train it's going to.
+          m.popSenderList();
           IMessagable nextSenderInList = m.popSenderList();
           if(nextSenderInList instanceof Train)
           {
@@ -95,7 +98,6 @@ public class Station extends Thread implements IMessagable, IDrawable
               System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
               return;
           }
-          //TODO: IMPLEMENT NEXT TRACK
       }
       else if(m.type == MessageType.REQUEST_NEXT_TRACK)
       {
