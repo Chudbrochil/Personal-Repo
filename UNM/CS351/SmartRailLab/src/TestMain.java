@@ -89,7 +89,8 @@ public class TestMain
         RailTrack track1 = new RailTrack(new RailLight());
         RailTrack track2 = new RailTrack();
         RailTrack track3 = new RailTrack();
-        RailUpSwitch switch1 = new RailUpSwitch();
+        RailSwitch switch1 = new RailSwitch();
+        RailSwitch switch2 = new RailSwitch();
         //RailUpSwitch
         Station station1 = new Station(); //named "Station1"
         Station station2 = new Station(); //named "Station2"
@@ -97,8 +98,8 @@ public class TestMain
     
         /**
          * Layout:
-         *                            ~ - track3 - station1
-         *  {train1}
+         *                    - switch2 - track3 - station1
+         *  {train1}              _-'
          *  station2 - track1 - switch1 - track2 - station3
          *
          */
@@ -106,15 +107,19 @@ public class TestMain
         station2.setNeighbors(null,track1);
         track1.setNeighbors(station2, switch1);
         switch1.setNeighbors(track1, track2);
-        switch1.setUpNeighbor(track3);
+        switch1.setSwitchNeighbor(switch2, Direction.RIGHT);
         track2.setNeighbors(switch1, station3);
-        track3.setNeighbors(null, station1); // Next todo: Add down switch so the message can get BACK.
-        station1.setNeighbors(track2, null);
+        switch2.setNeighbors(null,track3);
+        switch2.setSwitchNeighbor(switch1, Direction.LEFT);
+        track3.setNeighbors(switch2, station1); // Next todo: Add down switch so the message can get BACK.
+        station1.setNeighbors(track3, null);
     
         train1.start();
         station1.start();
         station2.start();
+        station3.start();
         switch1.start();
+        switch2.start();
         track1.start();
         track2.start();
         track3.start();
