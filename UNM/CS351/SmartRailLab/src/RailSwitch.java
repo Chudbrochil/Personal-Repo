@@ -41,11 +41,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
     
     /**
-     * @param trainComingFrom Direction train is coming from. May affect where the switch needs to sit.?
+     * @param switchEng Whether the train needs the switch engaged or not.
      *                        //todo: find out which way the train needs to go.
      */
-    private void reserve(Direction trainComingFrom)
+    private void reserve(boolean switchEng)
     {
+        switchEngaged = switchEng;
         reserved = true;
     }
     private void unreserve()
@@ -103,29 +104,31 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      */
     private void readMessage(Message m)
     {
+        /** This code executes to assign these members to make code module moving forward.**/
+        IMessagable switchSideOtherNeighbor;
+        IMessagable aloneNeighbor;
+    
+        //Find out which side the 'switchNeighbor' is on. Adjust which neighbor is its 'partner' in direction accordingly.
+        if(switchSide == Direction.RIGHT)
+        {
+            switchSideOtherNeighbor = rightNeighbor;
+            aloneNeighbor = leftNeighbor;
+        }
+        else //switchSide == Direction.LEFT
+        {
+            switchSideOtherNeighbor = leftNeighbor;
+            aloneNeighbor = rightNeighbor;
+        }
+        
+        /** Begin message typing **/
         if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
-            IMessagable switchSideOtherNeighbor;
-            IMessagable aloneNeighbor;
-    
-            //Find out which side the 'switchNeighbor' is on. Adjust which neighbor is its 'partner' in direction accordingly.
-            if(switchSide == Direction.RIGHT)
-            {
-                switchSideOtherNeighbor = rightNeighbor;
-                aloneNeighbor = leftNeighbor;
-            }
-            else //switchSide == Direction.LEFT
-            {
-                switchSideOtherNeighbor = leftNeighbor;
-                aloneNeighbor = rightNeighbor;
-            }
-            
             //look for which neighbor sent this message. Send this message to your other neighbor or neighbors.
             IMessagable mostRecentSender = m.peekSenderList();
             m.pushSenderList(this); //sign the sender list before you pass it on.
     
             //Now actually find out which way the message came from and send it on its way.
-            if(mostRecentSender==switchSideOtherNeighbor || mostRecentSender== switchNeighbor)
+            if(mostRecentSender==switchSideOtherNeighbor || mostRecentSender==switchNeighbor)
             {
                 if(aloneNeighbor!=null) sendMessage(m, aloneNeighbor);
             }
@@ -143,7 +146,49 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
         else if(m.type == MessageType.RESERVE_ROUTE)
         {
-            System.out.println("Message type 'RESERVE_ROUTE' not yet implemented in "+toString());
+            //todo: Check if already reserved? Second train
+    
+            //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
+            IMessagable cameFrom = m.popSenderList(); //RailSwitch cares who it came from.
+            IMessagable goingTo = m.popSenderList(); //Also cares where it's going
+            m.pushSenderList(this);             //Sign the message
+            
+            
+            if(cameFrom == aloneNeighbor)
+            {
+                if(goingTo == switchSideOtherNeighbor)
+                {
+                    //don't need the switch neighbor
+                    reserve(false);
+                    sendMessage(m, switchSideOtherNeighbor);
+                }
+                else if(goingTo == switchNeighbor)
+                {
+                    reserve(true);
+                    sendMessage(m, switchNeighbor);
+                }
+                else
+                {
+                    System.err.println(toString()+" cannot reserve for the neighbor "+goingTo.toString()+" it received.");
+                }
+            }
+            else if(cameFrom == switchSideOtherNeighbor)
+            {
+                reserve(false);
+                if(goingTo == aloneNeighbor) sendMessage(m, aloneNeighbor);
+                else System.err.println(toString()+" cannot reserve for the neighbor "+goingTo.toString()+" it received.");
+            }
+            else if(cameFrom == switchNeighbor)
+            {
+                reserve(true);
+                if(goingTo == aloneNeighbor) sendMessage(m, aloneNeighbor);
+                else System.err.println(toString()+" cannot reserve for the neighbor "+goingTo.toString()+" it received.");
+            }
+            else
+            {
+                if(DEBUG) printNeighborDebug(cameFrom, m.type.toString());
+                printNeighborError(m.type.toString());
+            }
         }
         else if(m.type == MessageType.REQUEST_NEXT_TRACK)
         {
