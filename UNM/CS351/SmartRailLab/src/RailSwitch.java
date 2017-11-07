@@ -8,9 +8,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * This switch has two neighbors on the left and one neighbor on the right. It is drawn to go UP and straight across.
  *
- * To use this class, you MUST call setNeighbors with all three parameters OR setNeighbors with two parameters
- *   and setSwitchNeighbor to set its neighbor.
- *   rightUpNeighbor must be a RailDownSwitch.
+ * To use this class, you MUST call setNeighbors with all four parameters OR setNeighbors with two parameters
+ *   and setSwitchNeighbor to set its neighbor and a direction.
+ *
  */
 public class RailSwitch extends Thread implements IMessagable, IDrawable
 {
