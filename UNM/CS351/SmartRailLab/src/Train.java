@@ -1,6 +1,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -170,6 +171,14 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     private void proceedTo(IMessagable nextTrack)
     {
+        for(int i = 0; i < 20; ++i)
+        {
+            this.draw(50 + i*2, 50, gcDraw);
+            try{ Thread.sleep(50); }
+            catch(InterruptedException e) { System.out.println(e.getMessage()); }
+        }
+
+
         currentTrack = nextTrack;
     }
 
