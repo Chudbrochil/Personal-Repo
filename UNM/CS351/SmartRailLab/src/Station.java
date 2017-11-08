@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -19,6 +20,7 @@ public class Station extends Thread implements IMessagable, IDrawable
     private GraphicsContext gcDraw;
     private int canvasX;
     private int canvasY;
+    private int side;
     
     public Station()
     {
@@ -36,7 +38,11 @@ public class Station extends Thread implements IMessagable, IDrawable
         this.gcDraw = gcDraw;
         canvasX = x;
         canvasY = y;
+        side = 80;
     }
+
+    public int getCanvasX() { return canvasX; }
+    public int getCanvasY() { return canvasY; }
     
     //TODO: Do we want a left/right neighbor? Does it matter?
     public void setNeighbors(IMessagable left, IMessagable right)
@@ -141,13 +147,15 @@ public class Station extends Thread implements IMessagable, IDrawable
     }
 
     /**
-     * @param x x location to begin drawing on the canvas
-     * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
     public void draw()
     {
-        gcDraw.fillText(this.toString(), canvasX, canvasY);
+        gcDraw.setFill(Color.WHITE);
+        gcDraw.fillRect(canvasX + 10, canvasY - 20, side, side);
+        gcDraw.setFill(Color.BLACK);
+        gcDraw.fillText(this.toString(), canvasX + 30, canvasY + 30);
+
     }
     
     private synchronized void sendMessage(Message message, IMessagable neighbor)
@@ -168,5 +176,13 @@ public class Station extends Thread implements IMessagable, IDrawable
     {
         return NAME;
     }
+
+    public boolean isInClickedArea(int x, int y)
+    {
+        if(x >= canvasX + 10 && x <= canvasX + 10 + side &&
+                y >= canvasY - 20 && y <= canvasY - 20 + side) { return true;  }
+        else { return false; }
+    }
+
 
 }

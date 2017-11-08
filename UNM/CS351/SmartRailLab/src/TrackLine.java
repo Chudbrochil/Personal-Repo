@@ -5,7 +5,8 @@ import java.util.HashMap;
 
 public class TrackLine
 {
-    private ArrayList<ArrayList<IDrawable>> drawableListList;
+    //private ArrayList<ArrayList<IDrawable>> drawableListList;
+    private ArrayList<IDrawable> drawableList;
     private ArrayList<IMessagable> messagableList;
     private ArrayList<Station> stationList;
     private GraphicsContext gcDraw;
@@ -13,7 +14,8 @@ public class TrackLine
 
     public TrackLine(String[] components, GraphicsContext gcDraw, int trackLineNum)
     {
-        drawableListList = new ArrayList<>();
+        //drawableListList = new ArrayList<>();
+        drawableList = new ArrayList<>();
         messagableList = new ArrayList<>();
         stationList = new ArrayList<>();
         this.gcDraw = gcDraw;
@@ -41,15 +43,13 @@ public class TrackLine
      */
     private void initializeComponents(String[] components)
     {
-        int initialX = 20;
+        int initialX = 0;
         int initialY = 20;
         int xStep = 100;
         int yStep = 150;
 
-        ArrayList<IDrawable> leftStationList = new ArrayList<>();
         Station leftStation = new Station(components[0], gcDraw, initialX, initialY + yStep*trackLineNum);
-        leftStationList.add(leftStation);
-        drawableListList.add(leftStationList);
+        drawableList.add(leftStation);
         messagableList.add(leftStation);
         stationList.add(leftStation);
 
@@ -57,32 +57,27 @@ public class TrackLine
         // Adds a list of components to each element
         for(int i = 1; i < components.length - 1; ++i)
         {
-            ArrayList<IDrawable> gridComponentList = new ArrayList<>();
             RailTrack trackToAdd;
             RailLight lightToAdd;
             if(String.valueOf("1").equals(components[i]))
             {
                 trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
-                gridComponentList.add(trackToAdd);
+                drawableList.add(trackToAdd);
                 messagableList.add(trackToAdd);
             }
             else if(String.valueOf("2").equals(components[i]))
             {
-                //TODO: Does this really need to be a list of lists? The track could contain the switch, light, etc.
-                // Look at this part of the design later.
                 lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 trackToAdd = new RailTrack(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
-                gridComponentList.add(trackToAdd);
-                gridComponentList.add(lightToAdd);
+                drawableList.add(lightToAdd);
+                drawableList.add(trackToAdd);
                 messagableList.add(trackToAdd);
             }
-            drawableListList.add(gridComponentList);
         }
 
-        ArrayList<IDrawable> rightStationList = new ArrayList<>();
-        Station rightStation = new Station(components[components.length - 1], gcDraw, initialX + xStep*drawableListList.size(), initialY + yStep*trackLineNum);
-        rightStationList.add(rightStation);
-        drawableListList.add(rightStationList);
+        Station rightStation = new Station(components[components.length - 1], gcDraw,
+                initialX + xStep*(components.length-1), initialY + yStep*trackLineNum);
+        drawableList.add(rightStation);
         messagableList.add(rightStation);
         stationList.add(rightStation);
 
@@ -105,7 +100,7 @@ public class TrackLine
         }
     }
 
-    public ArrayList<ArrayList<IDrawable>> getDrawableListList() { return drawableListList; }
+    public ArrayList<IDrawable> getDrawableList() { return drawableList; }
     public ArrayList<Station> getStationList() { return stationList; }
 
 }

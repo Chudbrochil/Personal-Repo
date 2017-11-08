@@ -35,7 +35,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         trackIncrement++;
         // Doing this to save the resources from creating a million images for each track.
         if(trackImg == null) { trackImg = new Image("Track.png"); }
-        reserved = true;
+        reserved = false;
     }
     public RailTrack(RailLight trackLight)
     {

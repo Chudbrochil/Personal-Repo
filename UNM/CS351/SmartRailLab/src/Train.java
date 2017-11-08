@@ -53,15 +53,19 @@ public class Train extends Thread implements IMessagable, IDrawable
         canvasX = x;
         canvasY = y;
     }
-    
-    /**
-     * To use a train, you MUST set its current track.
-     * @param currentTrack
-     */
-    //private void setCurrentTrack(IMessagable currentTrack)
-//    {
-//        this.currentTrack = currentTrack;
-//    }
+
+    public boolean hasAStation()
+    {
+        if(currentTrack != null) { return true; }
+        else { return false; }
+    }
+
+    public void setCoords(int x, int y)
+    {
+        canvasX = x;
+        canvasY = y;
+    }
+
 
     /**
      * setNeighbors()
@@ -187,7 +191,7 @@ public class Train extends Thread implements IMessagable, IDrawable
         for(int i = 0; i < 20; ++i)
         {
             canvasX += 5;
-            this.draw();
+            //this.draw();
             try{ Thread.sleep(200); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }
