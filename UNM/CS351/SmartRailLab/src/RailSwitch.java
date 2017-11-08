@@ -197,7 +197,35 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
         else if(m.type == MessageType.REQUEST_NEXT_TRACK)
         {
-            System.out.println("Message type 'REQUEST_NEXT_TRACK' not yet implemented in "+toString());
+            if(m.peekSenderList() instanceof Train)
+            {
+                Train train = (Train)m.popSenderList();
+                IMessagable trainPrevTrack = m.popSenderList();
+                IMessagable nextForTrain = null;
+                if(trainPrevTrack == aloneNeighbor)
+                {
+                    if(switchEngaged) nextForTrain = switchNeighbor;
+                    else nextForTrain = switchSideOtherNeighbor;
+                }
+                else if(trainPrevTrack == switchNeighbor || trainPrevTrack == switchSideOtherNeighbor)
+                {
+                    nextForTrain = aloneNeighbor;
+                }
+                else
+                {
+                    System.err.println(toString()+"got a request from a train that didn't just come from its neighbor.");
+                }
+        
+                m.pushSenderList(this);
+                m.pushSenderList(nextForTrain);
+                unreserve();
+                sendMessage(m, train);
+            }
+            else
+            {
+                System.err.println(toString()+" got a message of type REQUEST_NEXT_TRACK from "+m.peekSenderList().toString()
+                    +" is not a train.");
+            }
         }
     }
     

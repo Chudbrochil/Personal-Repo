@@ -95,10 +95,11 @@ public class TestMain
         Station station1 = new Station(); //named "Station1"
         Station station2 = new Station(); //named "Station2"
         Station station3 = new Station();
+        Station station4 = new Station();
     
         /**
          * Layout:
-         *                    - switch2 - track3 - station1
+         *           station4 - switch2 - track3 - station1
          *  {train1}              _-'
          *  station2 - track1 - switch1 - track2 - station3
          *
@@ -109,23 +110,29 @@ public class TestMain
         switch1.setNeighbors(track1, track2);
         switch1.setSwitchNeighbor(switch2, Direction.RIGHT);
         track2.setNeighbors(switch1, station3);
-        switch2.setNeighbors(null,track3);
+        station4.setNeighbors(null, switch2);
+        switch2.setNeighbors(station4,track3);
         switch2.setSwitchNeighbor(switch1, Direction.LEFT);
-        track3.setNeighbors(switch2, station1); // Next todo: Add down switch so the message can get BACK.
+        track3.setNeighbors(switch2, station1);
         station1.setNeighbors(track3, null);
     
         train1.start();
         station1.start();
         station2.start();
         station3.start();
+        station4.start();
         switch1.start();
         switch2.start();
         track1.start();
         track2.start();
         track3.start();
     
-        train1.requestRoute("Station1");
-        try{Thread.sleep(500);}
+        train1.requestRoute("Station4");
+        try{Thread.sleep(6000);}
         catch(Exception e){}
+        train1.requestRoute("Station1");
+        try{Thread.sleep(6000);}
+        catch(Exception e){}
+        train1.requestRoute("Station4");
     }
 }
