@@ -27,6 +27,11 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private boolean DEBUG = true;
     private boolean reserved;
 
+    private GraphicsContext gcDraw;
+    private int canvasX;
+    private int canvasY;
+
+
     public RailSwitch()
     {
         NAME = "RailSwitch"+switchIncrement;
@@ -35,7 +40,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         reserved = true;
     }
     
-    public void draw(int x, int y, GraphicsContext gc)
+    public void draw()
     {
 
     }

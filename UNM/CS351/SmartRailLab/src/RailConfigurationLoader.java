@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +20,7 @@ public class RailConfigurationLoader
     }
 
     // Loads a new file to configure an initial train track/light/switch setup
-    public void loadNewConfiguration(String configFileName)
+    public void loadNewConfiguration(String configFileName, GraphicsContext gcDraw)
     {
         trackLines.clear();
         try
@@ -26,11 +28,13 @@ public class RailConfigurationLoader
             InputStream inputFile = getClass().getResourceAsStream("Configurations/" + configFileName);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile,"UTF-8"));
             String line;
+            int trackLineNum = 0; // Tells us what trackLine we are working on. 0 is the first trackLine, 3 is the 4th... etc.
             while((line = reader.readLine()) != null)
             {
                 String[] components = line.split(",");
-                TrackLine tl = new TrackLine(components);
+                TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
                 trackLines.add(tl);
+                trackLineNum++;
             }
         }
         catch(IOException e) { System.out.println(e.getMessage()); }

@@ -14,12 +14,26 @@ public class RailLight implements IDrawable
     private static int lightIncrement = 1;
     private static Image greenLightImg, redLightImg;
 
+    private GraphicsContext gcDraw;
+    private int canvasX;
+    private int canvasY;
+
+
+
     public RailLight()
     {
         NAME = "Light" + lightIncrement;
         lightIncrement++;
         if(greenLightImg == null) { greenLightImg = new Image("GreenLightNoPole.png"); }
         if(redLightImg == null) { redLightImg = new Image("RedLightNoPole.png"); }
+    }
+
+    public RailLight(GraphicsContext gcDraw, int x, int y)
+    {
+        this();
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
     }
 
       public void reserve(Direction trainComingFrom)
@@ -51,9 +65,9 @@ public class RailLight implements IDrawable
        * @param y y location to begin drawing on the canvas
        * Draws the object on a canvas at location x,y according to its currrent state.
        */
-      public void draw(int x, int y, GraphicsContext gcDraw)
+      public void draw()
       {
           //gcDraw.fillText(this.toString(), x, y - 30);
-          gcDraw.drawImage(redLightImg, x + 30, y-50);
+          gcDraw.drawImage(redLightImg, canvasX + 30, canvasY - 50);
       }
 }

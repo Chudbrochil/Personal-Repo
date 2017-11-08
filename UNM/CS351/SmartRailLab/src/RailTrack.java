@@ -25,6 +25,10 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     private RailLight trackLight;                     // Light that is affixed on a track.
     private boolean reserved;
 
+    private GraphicsContext gcDraw;
+    private int canvasX;
+    private int canvasY;
+
     public RailTrack()
     {
         NAME = "Track" + trackIncrement;
@@ -37,6 +41,20 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     {
         this();
         this.trackLight = trackLight;
+    }
+    public RailTrack(GraphicsContext gcDraw, int x, int y)
+    {
+        this();
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
+    }
+    public RailTrack(RailLight trackLight, GraphicsContext gcDraw, int x, int y)
+    {
+        this(trackLight);
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
     }
     
     /**
@@ -264,13 +282,13 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
      * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
-    public void draw(int x, int y, GraphicsContext gcDraw)
+    public void draw()
     {
         //TODO: Change color when the track is reserved
         if(reserved) { gcDraw.setFill(Color.BLUE); }
         else { gcDraw.setFill(Color.BLACK); }
-        gcDraw.fillText(this.toString(), x, y);
-        gcDraw.drawImage(trackImg, x, y);
+        gcDraw.fillText(this.toString(), canvasX, canvasY);
+        gcDraw.drawImage(trackImg, canvasX, canvasY);
         gcDraw.setFill(Color.BLACK);
     }
     

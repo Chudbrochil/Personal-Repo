@@ -27,6 +27,10 @@ public class Train extends Thread implements IMessagable, IDrawable
     private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
                                       //the route goes to the desired location.
     private Direction heading;      //which way is the train heading?
+    private GraphicsContext gcDraw;
+
+    private int canvasX;
+    private int canvasY;
     
     //todo: list of stations you can visit?
     public Train()
@@ -40,6 +44,14 @@ public class Train extends Thread implements IMessagable, IDrawable
     public Train(String n)
     {
         NAME = n;
+    }
+
+    public Train(GraphicsContext gcDraw, int x, int y)
+    {
+        this();
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
     }
     
     /**
@@ -61,10 +73,11 @@ public class Train extends Thread implements IMessagable, IDrawable
         else { currentTrack = right; }
         //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
     }
-    
-    public void draw(int x, int y, GraphicsContext gcDraw)
+
+
+    public void draw()
     {
-        gcDraw.drawImage(redTrainImg, x, y);
+        gcDraw.drawImage(redTrainImg, canvasX, canvasY);
     }
     
     /**
@@ -173,8 +186,9 @@ public class Train extends Thread implements IMessagable, IDrawable
     {
         for(int i = 0; i < 20; ++i)
         {
-            this.draw(50 + i*2, 50, gcDraw);
-            try{ Thread.sleep(50); }
+            canvasX += 5;
+            this.draw();
+            try{ Thread.sleep(200); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }
 

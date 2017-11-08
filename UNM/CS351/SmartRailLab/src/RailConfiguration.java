@@ -14,7 +14,8 @@ public class RailConfiguration
     private int initialWidth;
     private ArrayList<Station> stationList;
 
-    public RailConfiguration(GraphicsContext gcDraw, int initialHeight, int initialWidth)
+    //public RailConfiguration(int initialHeight, int initialWidth)
+    public RailConfiguration(GraphicsContext gcDraw)
     {
         trackLines = new ArrayList<>();
         stationList = new ArrayList<>();
@@ -58,7 +59,9 @@ public class RailConfiguration
                 ArrayList<IDrawable> currentGrid = currentTrack.get(j);
                 for(int k = 0; k < currentGrid.size(); ++k)
                 {
-                    currentGrid.get(k).draw(initialWidth + widthStep*j, initialHeight + heightStep*i, gcDraw);
+                    //currentGrid.get(k).draw(initialWidth + widthStep*j, initialHeight + heightStep*i, gcDraw);
+                    //currentGrid.get(k).draw(30 + widthStep*j, 30 + heightStep*i, gcDraw);
+                    currentGrid.get(k).draw();
                 }
 
             }
@@ -80,11 +83,11 @@ public class RailConfiguration
 
 
     //TODO: Work inprogress for the draw train stuff...
-    public void drawTrain()
-    {
-        Train myRedTrain = new Train();
-        myRedTrain.draw(initialHeight, initialWidth, gcDraw);
-    }
+//    public void drawTrain()
+//    {
+//        Train myRedTrain = new Train();
+//        myRedTrain.draw(initialHeight, initialWidth, gcDraw);
+//    }
 
 
 }

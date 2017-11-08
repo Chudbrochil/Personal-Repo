@@ -15,6 +15,10 @@ public class Station extends Thread implements IMessagable, IDrawable
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable neighbor; //track piece the Station is connected to.
     private boolean DEBUG = true;   //Debug flag
+
+    private GraphicsContext gcDraw;
+    private int canvasX;
+    private int canvasY;
     
     public Station()
     {
@@ -24,6 +28,14 @@ public class Station extends Thread implements IMessagable, IDrawable
     public Station(String name)
     {
         NAME = name;
+    }
+
+    public Station(String name, GraphicsContext gcDraw, int x, int y)
+    {
+        NAME = name;
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
     }
     
     //TODO: Do we want a left/right neighbor? Does it matter?
@@ -133,9 +145,9 @@ public class Station extends Thread implements IMessagable, IDrawable
      * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
-    public void draw(int x, int y, GraphicsContext gcDraw)
+    public void draw()
     {
-        gcDraw.fillText(this.toString(), x, y);
+        gcDraw.fillText(this.toString(), canvasX, canvasY);
     }
     
     private synchronized void sendMessage(Message message, IMessagable neighbor)
