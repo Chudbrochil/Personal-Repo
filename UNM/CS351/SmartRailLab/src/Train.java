@@ -2,7 +2,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -22,7 +24,13 @@ public class Train extends Thread implements IMessagable, IDrawable
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable currentTrack;
     private boolean DEBUG = true;
-    private Image redTrainImg;
+    private static Image redTrainImg;
+    private static Image blueTrainImg;
+    private static Image brownTrainImg;
+    private static Image greenTrainImg;
+    private Image randomTrainImg;
+    private static ArrayList<Image> trainImgs;
+
     private boolean going = false; //True the train has received a valid 'GO' message and is proceeding along the track.
     private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
                                       //the route goes to the desired location.
@@ -31,16 +39,21 @@ public class Train extends Thread implements IMessagable, IDrawable
 
     private int canvasX;
     private int canvasY;
+
+    // Details of the image gotten from the actual jpg image
+    private int knownTrainSizeX = 69;
+    private int knownTrainSizeY = 14;
     
     //todo: list of stations you can visit?
     public Train()
     {
         NAME = "Train" + trainIncrement;
         trainIncrement++;
-        if(redTrainImg == null) { redTrainImg = new Image("RedTrain.jpg"); }
+        trainImgInit();
         heading = Direction.RIGHT;
     }
-    
+
+    // TODO: Where is this constructor used? I want to remove this...
     public Train(String n)
     {
         NAME = n;
@@ -52,6 +65,23 @@ public class Train extends Thread implements IMessagable, IDrawable
         this.gcDraw = gcDraw;
         canvasX = x;
         canvasY = y;
+    }
+
+    private void trainImgInit()
+    {
+        if(redTrainImg == null) { redTrainImg = new Image("RedTrain.jpg"); }
+        if(blueTrainImg == null) { blueTrainImg = new Image("BlueTrain.jpg"); }
+        if(brownTrainImg == null) { brownTrainImg = new Image("BrownTrain.jpg"); }
+        if(greenTrainImg == null) { greenTrainImg = new Image("GreenTrain.jpg"); }
+
+        trainImgs = new ArrayList<>();
+        trainImgs.add(redTrainImg);
+        trainImgs.add(blueTrainImg);
+        trainImgs.add(brownTrainImg);
+        trainImgs.add(greenTrainImg);
+
+        Random rand = new Random();
+        randomTrainImg = trainImgs.get(rand.nextInt(4));
     }
 
     public boolean hasAStation()
@@ -81,7 +111,7 @@ public class Train extends Thread implements IMessagable, IDrawable
 
     public void draw()
     {
-        gcDraw.drawImage(redTrainImg, canvasX, canvasY);
+        gcDraw.drawImage(randomTrainImg, canvasX, canvasY);
     }
     
     /**
@@ -191,7 +221,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         for(int i = 0; i < 20; ++i)
         {
             canvasX += 5;
-            //this.draw();
             try{ Thread.sleep(200); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }
@@ -233,6 +262,18 @@ public class Train extends Thread implements IMessagable, IDrawable
     {
         return NAME;
     }
+
+    public boolean isInClickedArea(int x, int y)
+    {
+        if(x >= canvasX && x <= canvasX + knownTrainSizeX &&
+                y >= canvasY && y <= canvasY + knownTrainSizeY)
+        {
+            return true;
+        }
+        else { return false; }
+    }
+
+
     
     //generate random destination, could call that method for 'computer' trains and use user input still via requestRoute()
 }
