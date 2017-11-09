@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -35,13 +34,7 @@ public class Controller
     private void initialize()
     {
         freshInitialize();
-
-        // TODO: Gather this using an initial dropdown or a button that shows a drop-down
-        //launchNewConfiguration("SimpleFourTrack.txt");
-        //launchNewConfiguration("LightFourTrack.txt");
-
         userSelectConfig();
-
         reDraw();
     }
 
@@ -80,7 +73,6 @@ public class Controller
         stationList = new ArrayList<>();
         activeTrains = new ArrayList<>();
         drawableList = new ArrayList<>();
-        
         gcDraw.fillText("Trainyard", 10, 560);
     }
 
@@ -93,17 +85,18 @@ public class Controller
             @Override
             public void run()
             {
+                gcDraw.clearRect(0,0,800,600);
                 for(int i = 0; i < drawableList.size(); ++i)
                 {
                     drawableList.get(i).draw();
 
                     // The combination of clearing the lower portion of the board and then re-drawing
                     // active trains allows the active trains to be cleared when moved.
-                    gcDraw.clearRect(initialTrainX,initialTrainY,700,50);
+                    //gcDraw.clearRect(initialTrainX,initialTrainY,700,50);
                     drawActiveTrains();
                 }
             }
-        }, 0, 100, TimeUnit.MILLISECONDS);
+        }, 0, 25, TimeUnit.MILLISECONDS);
     }
 
     // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
@@ -150,7 +143,6 @@ public class Controller
         {
             attemptTrainSelect((int)me.getX(), (int)me.getY());
             attemptStationSelect((int)me.getX(), (int)me.getY());
-            // TODO: I could add another method here that does "attemptTrainSelect" and allows me to drop trains on stations...
 
         }
     }
@@ -199,6 +191,7 @@ public class Controller
     }
 
 
+    // TODO: I could make this able to be drag and dropped onto the station instead...
     private void attemptTrainSelect(int x, int y)
     {
         for(int i = 0; i < activeTrains.size(); ++i)

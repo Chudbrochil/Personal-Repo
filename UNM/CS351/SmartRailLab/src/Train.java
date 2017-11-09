@@ -218,10 +218,10 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     private void proceedTo(IMessagable nextTrack)
     {
-        for(int i = 0; i < 20; ++i)
+        for(int i = 0; i < 100; ++i)
         {
-            canvasX += 5;
-            try{ Thread.sleep(200); }
+            canvasX += 1;
+            try{ Thread.sleep(40); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }
 
