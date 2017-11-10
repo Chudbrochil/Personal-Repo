@@ -252,13 +252,16 @@ public class Train extends Thread implements IMessagable, IDrawable
             } else if (heading == Direction.LEFT)
             {
                 canvasX -= 1;
-            } else if (heading == Direction.UPRIGHT)
+            }
+            //TODO: Note: the trains move too much if they move in the x for the switches also. For now, this is a bad but functional fix. --Anna
+            //(The trains now arrive on the stations, not the 100*switchesTraveled pixels away from the station. XD
+            else if (heading == Direction.UPRIGHT)
             {
-                canvasX += 1;
+                //canvasX += 1;
                 canvasY -= 1;
             } else if (heading == Direction.DOWNLEFT)
             {
-                canvasX -= 1;
+                //canvasX -= 1;
                 canvasY += 1;
             }
             try
