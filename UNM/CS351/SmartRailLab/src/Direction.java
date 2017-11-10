@@ -4,5 +4,12 @@
  */
 public enum Direction
 {
-    LEFT, RIGHT
+    /**
+     * LEFT and RIGHT
+     *   Used arbitrarily to distinguish directions in all sorts of ways, including neighbor sides, light
+     *   sides, and Train headings.
+     * UPRIGHT and DOWNLEFT
+     *   Used exclusively by switches to indicate the train's heading.
+     */
+    LEFT, RIGHT, UPRIGHT, DOWNLEFT
 }
