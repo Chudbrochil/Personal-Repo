@@ -10,14 +10,14 @@ import java.util.Stack;
  */
 public class Message
 {
-    public final String TRAIN;    //Train who originated this message--either pointer to or identifier/name.
+    public final String TRAIN;    //Train who originated this message--identifier/name.
     private Stack<IMessagable> senderList;   //Keeps track of who has passed the message. Used to retrace steps. (often message type is changed.)
     public MessageType type;     //Enum that tells the Rail pieces what they should do with this message.
     public final String STATION; //name of the station requested or found, depending on the message type.
-    //public final Direction TRAINHEADING;
+    private Direction heading;
   
   
-    public Message(String trainSender, IMessagable firstSender, MessageType m, String station)
+    public Message(String trainSender, IMessagable firstSender, MessageType m, String station, Direction direction)
     {
         TRAIN = trainSender;
         //TRAINHEADING = heading;
@@ -30,10 +30,10 @@ public class Message
     /**
      * For making clones of messages ONLY.
      */
-    private Message(String trainSender, Stack<IMessagable> senders, MessageType m, String station)
+    private Message(String trainSender, Stack<IMessagable> senders, MessageType m, String station, Direction trainHeading)
     {
         TRAIN = trainSender;
-        //TRAINHEADING = trainheading;
+        heading = trainHeading;
         senderList = new Stack<>();
         senderList.addAll(senders);
         type = m;
@@ -45,10 +45,10 @@ public class Message
      * @return message data fields in an intelligible way.
     */
      @Override
-    public String toString()
-  {
-    return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type +"\t Station:"+STATION;
-  }
+      public String toString()
+     {
+         return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type +"\t Station:"+STATION;
+     }
   
     /**
      * @return The most recently added value in the senderList is returned. (The most recently visited neighbor.)
@@ -82,9 +82,26 @@ public class Message
         return senderList.peek();
     }
     
+    /**
+     *
+     * @param direction Direction the train or message is heading.
+     */
+    public void setHeading(Direction direction)
+    {
+        heading = direction;
+    }
+    
+    /**
+     * @return Direction the train and/or message is heading.
+     */
+    public Direction getHeading()
+    {
+      return heading;
+    }
+    
     @Override
     public Message clone()
     {
-        return new Message(this.TRAIN, this.senderList, this.type, this.STATION);
+        return new Message(this.TRAIN, this.senderList, this.type, this.STATION, this.heading);
     }
 }

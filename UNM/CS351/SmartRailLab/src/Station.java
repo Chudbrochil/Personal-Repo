@@ -5,9 +5,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Stations are placed at the end of lines and are deistinations for Trains in the SmartRail simulation.
+ * Stations are placed at the end of lines and are destinations for Trains in the SmartRail simulation.
  *
- * To use this class, you MUST set neighbor by calling setNeighbor().
+ * To use this class, you MUST set neighbor by calling setNeighbors() with ONLY ONE non-null Parameter. That non-null parameter
+ *   will determine which "side" the station knows it's on. For instance, if setNeigbhors(null, track1) is called,
+ *   the station will know that it is on the left most size of the tracks and that its neighobr lies to the right.
+ *   Thus, neighborSide gets set to Direction.LEFT.
  */
 public class Station extends Thread implements IMessagable, IDrawable
 {
@@ -15,6 +18,7 @@ public class Station extends Thread implements IMessagable, IDrawable
     private static int stationIncrement = 1;   //Static int that gives the stations their ID's.
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable neighbor; //track piece the Station is connected to.
+    private Direction neighborSide; //Determined by which neighbor is non-null in the method call to setNeighbors().
     private boolean DEBUG = true;   //Debug flag
 
     private GraphicsContext gcDraw;
@@ -44,11 +48,26 @@ public class Station extends Thread implements IMessagable, IDrawable
     public int getCanvasX() { return canvasX; }
     public int getCanvasY() { return canvasY; }
     
-    //TODO: Do we want a left/right neighbor? Does it matter?
+    /**
+     * @param left Station's neighbor if it is on the left. null otherwise
+     * @param right Station's neighbor if it is on the right. null otherwise.
+     *     This method MUST be called to use a Station.
+     *     left or right MUST be null. The parameter that is not null will determine whether neighborSide
+     *     is set to Direction.LEFT or Direction.RIGHT. This determines the train headings for the trains that are
+     *     in the stations.
+     */
     public void setNeighbors(IMessagable left, IMessagable right)
     {
-        if(left != null) { neighbor = left; }
-        else { neighbor = right; }
+        if(left != null)
+        {
+            neighbor = left;
+            neighborSide = Direction.LEFT;
+        }
+        else
+        {
+            neighbor = right;
+            neighborSide = Direction.RIGHT;
+        }
     }
     public IMessagable getNeighbor() { return neighbor; }
     
@@ -76,6 +95,7 @@ public class Station extends Thread implements IMessagable, IDrawable
           if(m.peekSenderList() instanceof Train)
           {
               m.pushSenderList(this);
+              m.setHeading(neighborSide);
               sendMessage(m,neighbor);
               //todo: How should we handle if a train requests a route to a station it's ON?
           }
@@ -106,7 +126,7 @@ public class Station extends Thread implements IMessagable, IDrawable
           IMessagable nextSenderInList = m.popSenderList();
           if(nextSenderInList instanceof Train)
           {
-              Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION);
+              Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION, neighborSide);
               sendMessage(goMessage, nextSenderInList);
           }
           else
