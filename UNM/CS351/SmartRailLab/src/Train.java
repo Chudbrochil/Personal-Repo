@@ -248,7 +248,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     public void requestRoute(String station)
     {
         destination = station;
-        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station);
+        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station, null);
         sendMessage(message, currentTrack);
     }
     
