@@ -219,7 +219,7 @@ public class Train extends Thread implements IMessagable, IDrawable
             // Sleeping for 40 milliseconds results in a 4 second traversal per piece of track.
             // This could be easily configurable, but where? The user may not want this granularity
             if(heading == Direction.RIGHT) { canvasX += 1; }
-            else { canvasX -= 1; }
+            else if(heading == Direction.LEFT) { canvasX -= 1; }
             try{ Thread.sleep(40); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }

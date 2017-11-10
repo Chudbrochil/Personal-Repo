@@ -123,11 +123,11 @@ public class Controller
     private void makeTrain()
     {
         tfOutput.setText("Please select a train and then select your station for it to start.");
+        // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
         //Train aTrain = new Train();
         //activeTrains.add(aTrain);
         Train aTrain = new Train(gcDraw, initialTrainX + activeTrains.size()*75, initialTrainY);
         activeTrains.add(aTrain);
-        // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
         drawableList.add(aTrain);
 
         aTrain.start();
