@@ -1,5 +1,6 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -35,6 +36,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private RailLight trackLight;
 
     private static Image switchImg;
+    private static Image trackImg;
+    private static Image reserveTrackImg;
+    private static Image switchRegularReserveImg;
+    private static Image switchDiagonalReserveImg;
 
 
     public RailSwitch()
@@ -44,6 +49,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         switchEngaged = false;
         reserved = true;
         if(switchImg == null) { switchImg = new Image("Switch.png"); }
+        if(trackImg == null) { trackImg = new Image("Track.png"); }
+        if(reserveTrackImg == null) { reserveTrackImg = new Image("Track-Reserve.png"); }
+        if(switchRegularReserveImg == null) { switchRegularReserveImg = new Image("Switch-RegularReserve.png"); }
+        if(switchDiagonalReserveImg == null) { switchDiagonalReserveImg = new Image("Switch-DiagonalReserve.png"); }
     }
 
     public RailSwitch(RailLight trackLight)
@@ -51,15 +60,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         this();
         this.trackLight = trackLight;
     }
-
-//    public RailSwitch(GraphicsContext gcDraw, int x, int y)
-//    {
-//        this();
-//        this.gcDraw = gcDraw;
-//        canvasX = x;
-//        canvasY = y;
-//    }
-
 
     /**
      * // TODO: FIX COMMENTS
@@ -93,7 +93,28 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     
     public void draw()
     {
-        gcDraw.drawImage(switchImg, canvasX, canvasY);
+        // Only need one switch piece to draw itself...
+        if(switchSide == Direction.UPRIGHT)
+        {
+            gcDraw.drawImage(switchImg, canvasX, canvasY - 70);
+        }
+        else if(switchSide == Direction.UPRIGHT && switchEngaged && reserved)
+        {
+            gcDraw.drawImage(switchDiagonalReserveImg, canvasX, canvasY - 70);
+        }
+        else if(switchSide == Direction.UPRIGHT && reserved)
+        {
+            gcDraw.drawImage(switchRegularReserveImg, canvasX, canvasY - 70);
+        }
+        else if(switchSide == Direction.DOWNLEFT)
+        {
+            gcDraw.drawImage(trackImg, canvasX, canvasY);
+        }
+        else if(switchSide == Direction.DOWNLEFT && reserved)
+        {
+            gcDraw.drawImage(reserveTrackImg, canvasX, canvasY);
+        }
+
     }
     
     /**
@@ -104,10 +125,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     {
         switchEngaged = switchEng;
         reserved = true;
+        trackLight.reserve(switchSide);
     }
     private void unreserve()
     {
         reserved = false;
+        trackLight.unreserve();
     }
     
     /**

@@ -26,8 +26,8 @@ public class Controller
     private ArrayList<Station> stationList;
     private ArrayList<IDrawable> drawableList;
     private ArrayList<Train> activeTrains;
-    private int initialTrainX = 100;
-    private int initialTrainY = 550;
+    private int trainyardX = 100;
+    private int trainyardY = 550;
     private Train currentTrain;
 
     @FXML
@@ -107,6 +107,12 @@ public class Controller
         }, 0, 25, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * launchNewConfiguration()
+     * This starts the program by loading a file with a track configuration in it.
+     * This starts instantiating all the objects and does the initial draw
+     * @param configurationName The String of the file that holds the configuration.
+     */
     private void launchNewConfiguration(String configurationName)
     {
         // Loading the specified configuration of tracks, lights, switches, stations
@@ -114,13 +120,19 @@ public class Controller
 
         // Drawing the components and getting back the list of components we need to continue to draw
         drawableList = railConfig.drawInitialComponents();
+
+        // Attaching switchs to their switch neighbors
         railConfig.attachSwitches();
 
         // Getting the list of possible stations that we can put trains into
         stationList = railConfig.getStationList();
-
     }
 
+    /**
+     * makeTrain()
+     * Method that is engaged by the user. Makes a train on screen in the train yard that is ready to be placed in
+     * a station.
+     */
     @FXML
     private void makeTrain()
     {
@@ -128,8 +140,8 @@ public class Controller
         // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
         //Train aTrain = new Train();
         //activeTrains.add(aTrain);
-        Train aTrain = new Train(gcDraw, initialTrainX + activeTrains.size()*75, initialTrainY);
-        activeTrains.add(aTrain);
+        Train aTrain = new Train(gcDraw, trainyardX + activeTrains.size()*75, trainyardY);
+        activeTrains.add(aTrain); //TODO: Do I need activeTrains?
         drawableList.add(aTrain);
 
         aTrain.start();
@@ -137,6 +149,10 @@ public class Controller
         // TODO: Add a method for a textbox in train, this will be the narrator. i.e. I arrived at station X, I'm moving to station X, I'm on track blahblah
     }
 
+    /**
+     * canvasClicked()
+     * @param me This is a click event that I can gather the left-click's, right-click's from, etc.
+     */
     @FXML
     private void canvasClicked(MouseEvent me)
     {
@@ -145,10 +161,16 @@ public class Controller
         {
             attemptTrainSelect((int)me.getX(), (int)me.getY());
             attemptStationSelect((int)me.getX(), (int)me.getY());
-
         }
     }
 
+    /**
+     * attemptStationSelect()
+     * This method attempts to select a station on the canvas via a click. If a station is selected then it will
+     * call a follow-up method to decide a behavior.
+     * @param x x-coord that was clicked
+     * @param y y-coord that was clicked
+     */
     private void attemptStationSelect(int x, int y)
     {
         for(int i = 0; i < stationList.size(); ++i)
@@ -161,6 +183,11 @@ public class Controller
         }
     }
 
+    /**
+     * decideStationAction()
+     * Does a certain action from the station based on what the status of the currentTrain is.
+     * @param stationClicked Station that was gathered from the user's click
+     */
     private void decideStationAction(Station stationClicked)
     {
         if(currentTrain != null)
@@ -182,7 +209,7 @@ public class Controller
                 currentTrain.setNeighbors(stationClicked, null);
                 tfOutput.setText(currentTrain.toString() + " has been put into " +  stationClicked.toString() +
                     ". Select a destination.");
-                currentTrain.setCoords(stationClicked.getCanvasX() + 10, stationClicked.getCanvasY());
+                currentTrain.setCoords(stationClicked.getCanvasX() + 10, stationClicked.getCanvasY() + 10);
             }
         }
         else
@@ -194,6 +221,13 @@ public class Controller
 
 
     // TODO: I could make this able to be drag and dropped onto the station instead...
+
+    /**
+     * attemptTrainSelect()
+     * Attempts to select a station based on users click. This will set the currentTrain if clicking on a train.
+     * @param x x-coord that was clicked
+     * @param y y-coord that was clicked
+     */
     private void attemptTrainSelect(int x, int y)
     {
         for(int i = 0; i < activeTrains.size(); ++i)

@@ -30,8 +30,8 @@ public class RailLight implements IDrawable
     {
         this();
         this.gcDraw = gcDraw;
-        canvasX = x + 30;
-        canvasY = y - 50;
+        canvasX = x + 45;
+        canvasY = y - 26; // Light height is 26
     }
 
     public RailLight(GraphicsContext gcDraw, int x, int y, Direction lightPosition)
@@ -43,7 +43,7 @@ public class RailLight implements IDrawable
         }
         else if(lightPosition == Direction.RIGHT)
         {
-            canvasX = x + 60;
+            canvasX = x + 90;
         }
     }
 
@@ -76,7 +76,6 @@ public class RailLight implements IDrawable
        */
       public void draw()
       {
-          //gcDraw.fillText(this.toString(), x, y - 30);
           if(reserved == true) { gcDraw.drawImage(greenLightImg, canvasX, canvasY); }
           else { gcDraw.drawImage(redLightImg, canvasX, canvasY); }
       }

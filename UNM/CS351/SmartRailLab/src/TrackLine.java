@@ -51,9 +51,9 @@ public class TrackLine
     private void initializeComponents(String[] components)
     {
         int initialX = 0;
-        int initialY = 20;
+        int initialY = 40;
         int xStep = 100;
-        int yStep = 150;
+        int yStep = 100;
 
         Station leftStation = new Station(components[0], gcDraw, initialX, initialY + yStep*trackLineNum);
         drawableList.add(leftStation);
@@ -90,25 +90,19 @@ public class TrackLine
             {
                 // Upswitch means light goes on right-side
                 lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.RIGHT);
-                //trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.RIGHT);
                 drawableList.add(lightToAdd);
-                //drawableList.add(trackToAdd);
                 drawableList.add(switchToAdd);
-                //messagableList.add(trackToAdd);
                 messagableList.add(switchToAdd);
             }
             // Track, DownSwitch and its Light
             else if(String.valueOf("4").equals(components[i]))
             {
-                //Downswitch meas light goes on left-side
+                //Downswitch means light goes on left-side
                 lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.LEFT);
-                //trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.LEFT);
                 drawableList.add(lightToAdd);
-                //drawableList.add(trackToAdd);
                 drawableList.add(switchToAdd);
-                //messagableList.add(trackToAdd);
                 messagableList.add(switchToAdd);
             }
         }

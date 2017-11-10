@@ -217,14 +217,23 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     private void proceedTo(IMessagable nextTrack)
     {
-
+        // Each track section is 100 pixels long. This will move 100 pixels.
+        // Sleeping for 40 milliseconds results in a 4 second traversal per piece of track.
+        // This could be easily configurable, but where? The user may not want this granularity
         for(int i = 0; i < 100; ++i)
         {
-            // Each track section is 100 pixels long. This will move 100 pixels.
-            // Sleeping for 40 milliseconds results in a 4 second traversal per piece of track.
-            // This could be easily configurable, but where? The user may not want this granularity
             if(heading == Direction.RIGHT) { canvasX += 1; }
             else if(heading == Direction.LEFT) { canvasX -= 1; }
+            else if(heading == Direction.UPRIGHT)
+            {
+                canvasX += 1;
+                canvasY -= 1;
+            }
+            else if(heading == Direction.DOWNLEFT)
+            {
+                canvasX -= 1;
+                canvasY += 1;
+            }
             try{ Thread.sleep(40); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }

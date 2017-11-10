@@ -22,6 +22,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     private IMessagable rightNeighbor = null;          //right neighbor 'this' can send and receive messages from
     private boolean DEBUG = true;                     //turn this flag on to print out a message log.
     private static Image trackImg;                    // Image that we use to draw a track.
+    private static Image reserveTrackImg;                // Image for a blue track, typically for reserved track.
     private RailLight trackLight;                     // Light that is affixed on a track.
     private boolean reserved;
 
@@ -35,6 +36,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         trackIncrement++;
         // Doing this to save the resources from creating a million images for each track.
         if(trackImg == null) { trackImg = new Image("Track.png"); }
+        if(reserveTrackImg == null) { reserveTrackImg = new Image("Track-Reserve.png"); }
         reserved = false;
     }
     public RailTrack(RailLight trackLight)
@@ -281,11 +283,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     public void draw()
     {
         //TODO: Change color when the track is reserved
-        if(reserved) { gcDraw.setFill(Color.BLUE); }
-        else { gcDraw.setFill(Color.BLACK); }
+//        if(reserved) { gcDraw.setFill(Color.BLUE); }
+//        else { gcDraw.setFill(Color.BLACK); }
         gcDraw.fillText(this.toString(), canvasX, canvasY);
-        gcDraw.drawImage(trackImg, canvasX, canvasY);
-        gcDraw.setFill(Color.BLACK);
+        if(reserved) { gcDraw.drawImage(reserveTrackImg, canvasX, canvasY); }
+        else { gcDraw.drawImage(trackImg, canvasX, canvasY); }
     }
     
     private synchronized void sendMessage(Message message, IMessagable neighbor)

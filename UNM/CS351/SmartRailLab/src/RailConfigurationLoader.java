@@ -19,7 +19,13 @@ public class RailConfigurationLoader
         this.rc = rc;
     }
 
-    // Loads a new file to configure an initial train track/light/switch setup
+    /**
+     * loadNewConfiguration()
+     * Loads a new configuration text file and loads it into an array that builds an object that holds the components.
+     * For example, this is how we know what area has a light, switch, etc.
+     * @param configFileName Filename of the configuration file that shows this class to setup the board.
+     * @param gcDraw GraphicsContext that gets passed to the underlying component holding object.
+     */
     public void loadNewConfiguration(String configFileName, GraphicsContext gcDraw)
     {
         trackLines.clear();
