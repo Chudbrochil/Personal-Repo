@@ -8,7 +8,6 @@ Anthony: Per the spec, "Two trains cannot be on the same track". I don't do a ch
 Us: Documentation all over the code
 
 Optional:
-Anthony: Bugs with trainyard display
 Anthony: More options for the textfield output
 Anna: send no route to station message when train is requesting a station
 Anthony: Remove the trains when they arrive at the station?
