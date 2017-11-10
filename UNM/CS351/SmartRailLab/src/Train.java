@@ -34,7 +34,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     private boolean going = false; //True the train has received a valid 'GO' message and is proceeding along the track.
     private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
                                       //the route goes to the desired location.
-    private Direction heading;      //which way is the train heading?
+    private Direction heading;       //which way is the train heading?
     private GraphicsContext gcDraw;
 
     private int canvasX;
@@ -51,12 +51,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         trainIncrement++;
         trainImgInit();
         heading = Direction.RIGHT;
-    }
-
-    // TODO: Where is this constructor used? I want to remove this...
-    public Train(String n)
-    {
-        NAME = n;
     }
 
     public Train(GraphicsContext gcDraw, int x, int y)
@@ -148,12 +142,13 @@ public class Train extends Thread implements IMessagable, IDrawable
         {
             if(m.peekSenderList()==currentTrack)
             {
+                heading = m.getHeading();
                 if(m.STATION == destination)
                 {
                     if(DEBUG) System.out.println(toString()+" has received a message from "+m.peekSenderList().toString()+
                         " to proceed to"+ m.STATION.toString());
                     going = true;
-                    sendMessage(new Message(NAME, this, MessageType.REQUEST_NEXT_TRACK, destination), currentTrack);
+                    sendMessage(new Message(NAME, this, MessageType.REQUEST_NEXT_TRACK, destination, heading), currentTrack);
                 }
                 else
                 {
