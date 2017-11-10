@@ -94,8 +94,8 @@ public class TestMain
         RailTrack track1 = new RailTrack(new RailLight());
         RailTrack track2 = new RailTrack();
         RailTrack track3 = new RailTrack();
-        RailSwitch switch1 = new RailSwitch();
-        RailSwitch switch2 = new RailSwitch();
+        RailSwitch switch1 = new RailSwitch(new RailLight());
+        RailSwitch switch2 = new RailSwitch(new RailLight());
         //RailUpSwitch
         Station station1 = new Station(); //named "Station1"
         Station station2 = new Station(); //named "Station2"
