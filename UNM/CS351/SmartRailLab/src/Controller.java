@@ -38,6 +38,10 @@ public class Controller
         reDraw();
     }
 
+    /**
+     * userSelectConfig()
+     * This gives the user a drop-down for selecting which simuation the user wants to see.
+     */
     private void userSelectConfig()
     {
         ArrayList<String> configs = new ArrayList<>();
@@ -65,6 +69,11 @@ public class Controller
 
     }
 
+    /**
+     * freshInitialize()
+     * Initializes the data structures in this class to null for initial use. Could also be used if we are making a
+     * new simulation on the fly.
+     */
     private void freshInitialize()
     {
         gcDraw = canvasRail.getGraphicsContext2D();
@@ -73,11 +82,13 @@ public class Controller
         stationList = new ArrayList<>();
         activeTrains = new ArrayList<>();
         drawableList = new ArrayList<>();
-        gcDraw.fillText("Trainyard", 10, 560);
     }
 
-    // This effectively becomes a thread that is constantly redrawing the canvas
-    // https://stackoverflow.com/questions/3541676/java-thread-every-x-seconds
+    /**
+     * reDraw()
+     * This effectively becomes a thread that is constantly redrawing the canvas.
+     * Inspired by https://stackoverflow.com/questions/3541676/java-thread-every-x-seconds
+     */
     private void reDraw()
     {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
@@ -86,26 +97,13 @@ public class Controller
             public void run()
             {
                 gcDraw.clearRect(0,0,800,600);
+                gcDraw.fillText("Trainyard", 10, 560);
                 for(int i = 0; i < drawableList.size(); ++i)
                 {
                     drawableList.get(i).draw();
-
-                    // The combination of clearing the lower portion of the board and then re-drawing
-                    // active trains allows the active trains to be cleared when moved.
-                    //gcDraw.clearRect(initialTrainX,initialTrainY,700,50);
-                    drawActiveTrains();
                 }
             }
         }, 0, 25, TimeUnit.MILLISECONDS);
-    }
-
-    // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
-    private void drawActiveTrains()
-    {
-        for(int i = 0; i < activeTrains.size(); ++i)
-        {
-            activeTrains.get(i).draw();
-        }
     }
 
     private void launchNewConfiguration(String configurationName)
@@ -125,10 +123,12 @@ public class Controller
     private void makeTrain()
     {
         tfOutput.setText("Please select a train and then select your station for it to start.");
+        //Train aTrain = new Train();
+        //activeTrains.add(aTrain);
         Train aTrain = new Train(gcDraw, initialTrainX + activeTrains.size()*75, initialTrainY);
         activeTrains.add(aTrain);
+        // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
         drawableList.add(aTrain);
-        //aTrain.setCoords(activeTrains.indexOf(aTrain)*75, initialTrainY);
 
         aTrain.start();
 

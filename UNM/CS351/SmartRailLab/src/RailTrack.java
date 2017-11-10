@@ -89,16 +89,15 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     //Reserves the track and (ideally) prevents any other traffic from passing over it.
     private void reserve(Direction trainComingFrom)
     {
-        if(trackLight!=null)
-        {
-            trackLight.reserve(trainComingFrom);
-        }
+        if(trackLight!=null) { trackLight.reserve(trainComingFrom); }
         reserved = true;
     }
     
     private void unreserve()
     {
+
         reserved = false;
+        if(trackLight != null) { trackLight.unreserve(); }
     }
     
     /**
@@ -277,9 +276,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
     }
     
     /**
-     *
-     * @param x x location to begin drawing on the canvas
-     * @param y y location to begin drawing on the canvas
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
     public void draw()

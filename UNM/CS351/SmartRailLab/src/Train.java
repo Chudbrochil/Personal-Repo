@@ -53,12 +53,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         heading = Direction.RIGHT;
     }
 
-    // TODO: Where is this constructor used? I want to remove this...
-    public Train(String n)
-    {
-        NAME = n;
-    }
-
     public Train(GraphicsContext gcDraw, int x, int y)
     {
         this();
@@ -220,6 +214,9 @@ public class Train extends Thread implements IMessagable, IDrawable
     {
         for(int i = 0; i < 100; ++i)
         {
+            // Each track section is 100 pixels long. This will move 100 pixels.
+            // Sleeping for 40 milliseconds results in a 4 second traversal per piece of track.
+            // This could be easily configurable, but where? The user may not want this granularity
             canvasX += 1;
             try{ Thread.sleep(40); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }

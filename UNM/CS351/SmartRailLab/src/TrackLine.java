@@ -89,9 +89,9 @@ public class TrackLine
         for(int i = 0; i < messagableList.size(); ++i)
         {
             // Must be left station...
-            if(i == 0) { messagableList.get(i).setNeighbors(messagableList.get(i+1), messagableList.get(i+1)); }
+            if(i == 0) { messagableList.get(i).setNeighbors(null, messagableList.get(i+1)); }
             // Must be right station...
-            else if(i == messagableList.size() - 1) { messagableList.get(i).setNeighbors(messagableList.get(i-1), messagableList.get(i-1)); }
+            else if(i == messagableList.size() - 1) { messagableList.get(i).setNeighbors(messagableList.get(i-1), null); }
             else
             {
                 messagableList.get(i).setNeighbors(messagableList.get(i-1), messagableList.get(i+1));

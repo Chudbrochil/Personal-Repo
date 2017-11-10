@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
  */
 public class RailLight implements IDrawable
 {
-    private Direction greenDirection = Direction.LEFT; //just a default direction.
+    private Direction greenDirection = null; //just a default direction.
     private boolean reserved; //Has this track been reserved for a route?
     private String NAME;
     private static int lightIncrement = 1;
@@ -46,6 +46,7 @@ public class RailLight implements IDrawable
       {
           //Don't need to 'turn off' light.
           reserved = false;
+          greenDirection = null;
       }
     
     /**
@@ -60,14 +61,12 @@ public class RailLight implements IDrawable
       public String toString() { return NAME; }
 
       /**
-       *
-       * @param x x location to begin drawing on the canvas
-       * @param y y location to begin drawing on the canvas
        * Draws the object on a canvas at location x,y according to its currrent state.
        */
       public void draw()
       {
           //gcDraw.fillText(this.toString(), x, y - 30);
-          gcDraw.drawImage(redLightImg, canvasX + 30, canvasY - 50);
+          if(reserved == true) { gcDraw.drawImage(greenLightImg, canvasX + 30, canvasY - 50); }
+          else { gcDraw.drawImage(redLightImg, canvasX + 30, canvasY - 50); }
       }
 }
