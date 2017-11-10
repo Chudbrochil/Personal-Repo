@@ -175,12 +175,15 @@ public class Train extends Thread implements IMessagable, IDrawable
                 IMessagable nextTrack = m.popSenderList();
                 if(m.peekSenderList() == currentTrack)
                 {
-                    proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
+                    //If it's in the station, get the reference to the next track so that you're at the "beginning" of the track before drawing yourself.
+                    if(currentTrack instanceof Station) currentTrack = nextTrack;
+                    else proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
                     heading = m.getHeading();
                     
                     //checks if it's arrived at the station
                     if(currentTrack instanceof Station && ((Station) currentTrack).NAME.equals(destination))
                     {
+                        proceedTo(nextTrack);
                         System.out.println(toString()+" has arrived at destination, "+destination+"!");
                         going = false;
                         //reset heading to current station.
