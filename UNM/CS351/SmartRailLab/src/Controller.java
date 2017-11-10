@@ -28,8 +28,9 @@ public class Controller
     private ArrayList<IDrawable> drawableList;
     private ArrayList<Train> activeTrains;
     private int trainyardX = 100;
-    private int trainyardY = 550;
+    private int trainyardY = 520;
     private Train currentTrain;
+    private static int MAX_TRAINS;
 
     @FXML
     private void initialize()
@@ -83,6 +84,12 @@ public class Controller
         stationList = new ArrayList<>();
         activeTrains = new ArrayList<>();
         drawableList = new ArrayList<>();
+        MAX_TRAINS = 30;
+
+        for(int i = 0; i < MAX_TRAINS; ++i)
+        {
+            activeTrains.add(null);
+        }
     }
 
     /**
@@ -99,7 +106,7 @@ public class Controller
             public void run()
             {
                 gcDraw.clearRect(0, 0, 800, 600);
-                gcDraw.fillText("Trainyard", 10, 560);
+                gcDraw.fillText("Trainyard", 10, 530);
                 for (int i = 0; i < drawableList.size(); ++i)
                 {
                     drawableList.get(i).draw();
@@ -139,14 +146,28 @@ public class Controller
     private void makeTrain()
     {
         tfOutput.setText("Please select a train and then select your station for it to start.");
-        // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
-        //Train aTrain = new Train();
-        //activeTrains.add(aTrain);
-        Train aTrain = new Train(gcDraw, trainyardX + activeTrains.size() * 75, trainyardY);
-        activeTrains.add(aTrain); //TODO: Do I need activeTrains?
-        drawableList.add(aTrain);
 
-        aTrain.start();
+        // This is all to make sure that the train is drawn in a unique spot. If trains are removed in the middle
+        // of the drawn list, the behavior can get kind of weird. This check protects against this.
+        int indexOfNullTrain = -1;
+        for(int i = 0; i < MAX_TRAINS; ++i)
+        {
+            if(activeTrains.get(i) == null)
+            {
+                indexOfNullTrain = i;
+                break;
+            }
+        }
+
+        if(indexOfNullTrain != -1)
+        {
+            Train aTrain = new Train(gcDraw,
+                    trainyardX + (indexOfNullTrain%10) * 75, trainyardY + (indexOfNullTrain / 10) * 30);
+            activeTrains.set(indexOfNullTrain, aTrain);
+            drawableList.add(aTrain);
+            aTrain.start();
+        }
+
 
         // TODO: Add a method for a textbox in train, this will be the narrator. i.e. I arrived at station X, I'm moving to station X, I'm on track blahblah
     }
@@ -210,7 +231,8 @@ public class Controller
             // We want to put the train in the station
             else
             {
-                activeTrains.remove(currentTrain);
+                // Setting the currentTrain's element to null so it's spot is now available, avoids redraw errors
+                activeTrains.set(activeTrains.indexOf(currentTrain), null);
                 currentTrain.setNeighbors(stationClicked, null);
                 tfOutput.setText(currentTrain.toString() + " has been put into " + stationClicked.toString() +
                         ". Select a destination.");
@@ -237,11 +259,15 @@ public class Controller
     {
         for (int i = 0; i < activeTrains.size(); ++i)
         {
-            if (activeTrains.get(i).isInClickedArea(x, y))
+            if(activeTrains.get(i) != null)
             {
-                currentTrain = activeTrains.get(i);
-                tfOutput.setText("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
+                if (activeTrains.get(i).isInClickedArea(x, y))
+                {
+                    currentTrain = activeTrains.get(i);
+                    tfOutput.setText("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
+                }
             }
+
         }
     }
 
