@@ -208,8 +208,8 @@ public class Train extends Thread implements IMessagable, IDrawable
     /**
      * @param nextTrack a reference to the next track the train will be on.
      * This method sets currentTrack to next track.
-     * //todo: I "encapsulated" this to make it easier for the graphics to deal with this phase however they will.
-     *                  //maybe there's a 'wait' in here so the train can inch across the screen.
+     * This is also the method where train learns where it should go on the canvas. The draw method will use this
+     * position to draw in the location.
      */
     private void proceedTo(IMessagable nextTrack)
     {
@@ -218,7 +218,8 @@ public class Train extends Thread implements IMessagable, IDrawable
             // Each track section is 100 pixels long. This will move 100 pixels.
             // Sleeping for 40 milliseconds results in a 4 second traversal per piece of track.
             // This could be easily configurable, but where? The user may not want this granularity
-            canvasX += 1;
+            if(heading == Direction.RIGHT) { canvasX += 1; }
+            else { canvasX -= 1; }
             try{ Thread.sleep(40); }
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }
