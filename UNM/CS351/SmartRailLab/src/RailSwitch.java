@@ -87,8 +87,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      *
      *  Parses and acts on the given Message.
      *
-     *  HELLOTEST
-     *      NOT IMPLEMENTED
      *  SEARCH_FOR_ROUTE
      *      Adds itself to the sender list.
      *      Checks who the message is from and forwards the message to its other neighbor or neighbors.

@@ -128,8 +128,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
      *
      *  Parses and acts on the given Message.
      *
-     *  HELLOTEST
-     *      Forwards message to right neighbor.
      *  SEARCH_FOR_ROUTE
      *      Adds itself to the sender list.
      *      Checks who the message is from and forwards the message to its other neighbor.
@@ -147,16 +145,9 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
      *      Sends the message back to the train.
      */
     private void readMessage(Message m)
-    { //todo: switchcase?
-        if(m.type == MessageType.HELLOTEST)
-        {
-            m.pushSenderList(this);
-            if(rightNeighbor!=null) sendMessage(m, rightNeighbor);
-            else if(DEBUG) System.out.println("End of the line reached at "+this.toString());
-        }
-        
+    {
         //SEARCH_FOR_ROUTE
-        else if(m.type == MessageType.SEARCH_FOR_ROUTE)
+        if(m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             IMessagable mostRecentSender = m.peekSenderList();
             IMessagable neighborToSendTo=null;
@@ -286,14 +277,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable {
         gcDraw.fillText(this.toString(), canvasX, canvasY);
         gcDraw.drawImage(trackImg, canvasX, canvasY);
         gcDraw.setFill(Color.BLACK);
-    }
-    
-    /**
-     * This method sends a MessageType.HELLOTEST down the line.
-     */
-    public void sendTestMessage()
-    {
-        sendMessage(new Message("TestTrain", this, MessageType.HELLOTEST, null), rightNeighbor);
     }
     
     private synchronized void sendMessage(Message message, IMessagable neighbor)
