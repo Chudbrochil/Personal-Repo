@@ -58,35 +58,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         canvasY = y;
     }
 
-    private void trainImgInit()
-    {
-        if (redTrainImg == null)
-        {
-            redTrainImg = new Image("RedTrain.jpg");
-        }
-        if (blueTrainImg == null)
-        {
-            blueTrainImg = new Image("BlueTrain.jpg");
-        }
-        if (brownTrainImg == null)
-        {
-            brownTrainImg = new Image("BrownTrain.jpg");
-        }
-        if (greenTrainImg == null)
-        {
-            greenTrainImg = new Image("GreenTrain.jpg");
-        }
-
-        trainImgs = new ArrayList<>();
-        trainImgs.add(redTrainImg);
-        trainImgs.add(blueTrainImg);
-        trainImgs.add(brownTrainImg);
-        trainImgs.add(greenTrainImg);
-
-        Random rand = new Random();
-        randomTrainImg = trainImgs.get(rand.nextInt(4));
-    }
-
     public boolean hasAStation()
     {
         if (currentTrack != null)
@@ -149,6 +120,75 @@ public class Train extends Thread implements IMessagable, IDrawable
             {
             }
         }
+    }
+
+    public synchronized void recvMessage(Message message)
+    {
+        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
+        pendingMessages.add(message);
+        this.notify();
+    }
+
+    /**
+     * @param station: NAME of the station to which the Train wishes to travel.
+     *                 input
+     *                 Any String. For a station to be found, it must match a Station's NAME field.
+     *                 Messages will be passed to search for a route.
+     *                 Searches for a route. If a route is found, a message indicating this will be received.
+     */
+    public void requestRoute(String station)
+    {
+        destination = station;
+        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station, null);
+        sendMessage(message, currentTrack);
+    }
+
+    @Override
+    public String toString()
+    {
+        return NAME;
+    }
+
+    public boolean isInClickedArea(int x, int y)
+    {
+        if (x >= canvasX && x <= canvasX + knownTrainSizeX &&
+                y >= canvasY && y <= canvasY + knownTrainSizeY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void trainImgInit()
+    {
+        if (redTrainImg == null)
+        {
+            redTrainImg = new Image("RedTrain.jpg");
+        }
+        if (blueTrainImg == null)
+        {
+            blueTrainImg = new Image("BlueTrain.jpg");
+        }
+        if (brownTrainImg == null)
+        {
+            brownTrainImg = new Image("BrownTrain.jpg");
+        }
+        if (greenTrainImg == null)
+        {
+            greenTrainImg = new Image("GreenTrain.jpg");
+        }
+
+        trainImgs = new ArrayList<>();
+        trainImgs.add(redTrainImg);
+        trainImgs.add(blueTrainImg);
+        trainImgs.add(brownTrainImg);
+        trainImgs.add(greenTrainImg);
+
+        Random rand = new Random();
+        randomTrainImg = trainImgs.get(rand.nextInt(4));
     }
 
     /**
@@ -284,47 +324,6 @@ public class Train extends Thread implements IMessagable, IDrawable
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
     }
-
-    public synchronized void recvMessage(Message message)
-    {
-        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
-        pendingMessages.add(message);
-        this.notify();
-    }
-
-    /**
-     * @param station: NAME of the station to which the Train wishes to travel.
-     *                 input
-     *                 Any String. For a station to be found, it must match a Station's NAME field.
-     *                 Messages will be passed to search for a route.
-     *                 Searches for a route. If a route is found, a message indicating this will be received.
-     */
-    public void requestRoute(String station)
-    {
-        destination = station;
-        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station, null);
-        sendMessage(message, currentTrack);
-    }
-
-    @Override
-    public String toString()
-    {
-        return NAME;
-    }
-
-    public boolean isInClickedArea(int x, int y)
-    {
-        if (x >= canvasX && x <= canvasX + knownTrainSizeX &&
-                y >= canvasY && y <= canvasY + knownTrainSizeY)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
 
     //generate random destination, could call that method for 'computer' trains and use user input still via requestRoute()
 }

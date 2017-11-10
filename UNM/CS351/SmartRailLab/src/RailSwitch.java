@@ -127,25 +127,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             gcDraw.drawImage(trackImg, canvasX, canvasY);
         }
 
-
-    }
-
-    /**
-     * @param switchEng Whether the train needs the switch engaged or not.
-     *    Engages the switch, reserves the light.
-     * @param trainComingFrom Direction the train will come from. I.e, direction light should shine green.
-     */
-    private void reserve(boolean switchEng, Direction trainComingFrom)
-    {
-        switchEngaged = switchEng;
-        reserved = true;
-        trackLight.reserve(switchEng, trainComingFrom);
-    }
-
-    private void unreserve()
-    {
-        reserved = false;
-        trackLight.unreserve();
     }
 
     /**
@@ -170,6 +151,71 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             {
             }
         }
+    }
+
+    public synchronized void recvMessage(Message message)
+    {
+        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
+        pendingMessages.add(message);
+        this.notify();
+    }
+
+    /**
+     * @param left  IMessagable piece to the left of this piece. Initialized at runtime.
+     * @param right IMessagable piece to the right of this piece. Initialized at runtime.
+     *              null if no neighbor or a IMessagable class to which 'this' can pass messages.
+     */
+    public void setNeighbors(IMessagable left, IMessagable right)
+    {
+        leftNeighbor = left;
+        rightNeighbor = right;
+    }
+
+    /**
+     * @param switchN IMessagable piece above this switch.
+     */
+    public void setSwitchNeighbor(IMessagable switchN)
+    {
+        switchNeighbor = switchN;
+
+    }
+
+    /**
+     * This method is for setting all 3 neighbors at once.
+     *
+     * @param left    IMessagable piece to the left of this piece. Initialized at runtime.
+     * @param right   IMessagable piece to the right of this piece. Initialized at runtime.
+     *                null if no neighbor or a IMessagable class to which 'this' can pass messages.
+     * @param switchN IMessagable piece above this switch.
+     */
+    public void setNeighbors(IMessagable left, IMessagable right, IMessagable switchN)
+    {
+        this.setNeighbors(left, right);
+        this.setSwitchNeighbor(switchN);
+    }
+
+    @Override
+    public String toString()
+    {
+        return NAME;
+    }
+
+    /**
+     * @param switchEng Whether the train needs the switch engaged or not.
+     *    Engages the switch, reserves the light.
+     * @param trainComingFrom Direction the train will come from. I.e, direction light should shine green.
+     */
+    private void reserve(boolean switchEng, Direction trainComingFrom)
+    {
+        switchEngaged = switchEng;
+        reserved = true;
+        trackLight.reserve(switchEng, trainComingFrom);
+    }
+
+    private void unreserve()
+    {
+        reserved = false;
+        trackLight.unreserve();
     }
 
     /**
@@ -384,47 +430,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         neighbor.recvMessage(message);
     }
 
-    public synchronized void recvMessage(Message message)
-    {
-        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
-        pendingMessages.add(message);
-        this.notify();
-    }
-
-    /**
-     * @param left  IMessagable piece to the left of this piece. Initialized at runtime.
-     * @param right IMessagable piece to the right of this piece. Initialized at runtime.
-     *              null if no neighbor or a IMessagable class to which 'this' can pass messages.
-     */
-    public void setNeighbors(IMessagable left, IMessagable right)
-    {
-        leftNeighbor = left;
-        rightNeighbor = right;
-    }
-
-    /**
-     * @param switchN IMessagable piece above this switch.
-     */
-    public void setSwitchNeighbor(IMessagable switchN)
-    {
-        switchNeighbor = switchN;
-
-    }
-
-    /**
-     * This method is for setting all 3 neighbors at once.
-     *
-     * @param left    IMessagable piece to the left of this piece. Initialized at runtime.
-     * @param right   IMessagable piece to the right of this piece. Initialized at runtime.
-     *                null if no neighbor or a IMessagable class to which 'this' can pass messages.
-     * @param switchN IMessagable piece above this switch.
-     */
-    public void setNeighbors(IMessagable left, IMessagable right, IMessagable switchN)
-    {
-        this.setNeighbors(left, right);
-        this.setSwitchNeighbor(switchN);
-    }
-
 
     /**
      * @param mostRecentSender Neighbor who just sent the message
@@ -450,10 +455,4 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
     }
 
-
-    @Override
-    public String toString()
-    {
-        return NAME;
-    }
 }

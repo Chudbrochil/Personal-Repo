@@ -95,26 +95,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         else return null;
     }
 
-    //Reserves the track and (ideally) prevents any other traffic from passing over it.
-    private void reserve(Direction trainComingFrom)
-    {
-        if (trackLight != null)
-        {
-            trackLight.reserve(trainComingFrom);
-        }
-        reserved = true;
-    }
-
-    private void unreserve()
-    {
-
-        reserved = false;
-        if (trackLight != null)
-        {
-            trackLight.unreserve();
-        }
-    }
-
     /**
      * Check pendingMessages. If it is empty, wait. (Notify is in the recMessage() method)
      */
@@ -134,6 +114,55 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             catch (Exception e)
             {
             }
+        }
+    }
+
+    /**
+     * Draws the object on a canvas at location x,y according to its currrent state.
+     */
+    public void draw()
+    {
+        gcDraw.fillText(this.toString(), canvasX, canvasY);
+        if (reserved)
+        {
+            gcDraw.drawImage(reserveTrackImg, canvasX, canvasY);
+        }
+        else
+        {
+            gcDraw.drawImage(trackImg, canvasX, canvasY);
+        }
+    }
+
+    public synchronized void recvMessage(Message message)
+    {
+        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
+        pendingMessages.add(message);
+        this.notify();
+    }
+
+    @Override
+    public String toString()
+    {
+        return NAME;
+    }
+
+    //Reserves the track and (ideally) prevents any other traffic from passing over it.
+    private void reserve(Direction trainComingFrom)
+    {
+        if (trackLight != null)
+        {
+            trackLight.reserve(trainComingFrom);
+        }
+        reserved = true;
+    }
+
+    private void unreserve()
+    {
+
+        reserved = false;
+        if (trackLight != null)
+        {
+            trackLight.unreserve();
         }
     }
 
@@ -306,40 +335,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
     }
 
-    /**
-     * Draws the object on a canvas at location x,y according to its currrent state.
-     */
-    public void draw()
-    {
-        gcDraw.fillText(this.toString(), canvasX, canvasY);
-        if (reserved)
-        {
-            gcDraw.drawImage(reserveTrackImg, canvasX, canvasY);
-        }
-        else
-        {
-            gcDraw.drawImage(trackImg, canvasX, canvasY);
-        }
-    }
-
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
-    }
-
-    public synchronized void recvMessage(Message message)
-    {
-        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
-        pendingMessages.add(message);
-        this.notify();
-    }
-
-    @Override
-    public String toString()
-    {
-        return NAME;
     }
 
 }

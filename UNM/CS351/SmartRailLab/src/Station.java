@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Station extends Thread implements IMessagable, IDrawable
 {
-    public String NAME;             //Default name of "Station#" given, or a name can be specified
+    private String NAME;             //Default name of "Station#" given, or a name can be specified
     private static int stationIncrement = 1;   //Static int that gives the stations their ID's.
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable neighbor; //track piece the Station is connected to.
@@ -94,6 +94,38 @@ public class Station extends Thread implements IMessagable, IDrawable
             }
         }
     }
+
+    /**
+     * Draws the object on a canvas at location x,y according to its currrent state.
+     */
+    public void draw()
+    {
+        gcDraw.setFill(Color.WHITE);
+        gcDraw.fillRect(canvasX + 10, canvasY - 20, side, side);
+        gcDraw.setFill(Color.BLACK);
+        gcDraw.fillText(this.toString(), canvasX + 30, canvasY + 30);
+    }
+
+    @Override
+    public String toString()
+    {
+        return NAME;
+    }
+
+    public boolean isInClickedArea(int x, int y)
+    {
+        if (x >= canvasX + 10 && x <= canvasX + 10 + side &&
+                y >= canvasY - 20 && y <= canvasY - 20 + side)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
 
     private void readMessage(Message m)
     {
@@ -176,18 +208,6 @@ public class Station extends Thread implements IMessagable, IDrawable
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
     }
 
-    /**
-     * Draws the object on a canvas at location x,y according to its currrent state.
-     */
-    public void draw()
-    {
-        gcDraw.setFill(Color.WHITE);
-        gcDraw.fillRect(canvasX + 10, canvasY - 20, side, side);
-        gcDraw.setFill(Color.BLACK);
-        gcDraw.fillText(this.toString(), canvasX + 30, canvasY + 30);
-
-    }
-
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         if (Main.DEBUG)
@@ -201,25 +221,5 @@ public class Station extends Thread implements IMessagable, IDrawable
         pendingMessages.add(message);
         this.notify();
     }
-
-    @Override
-    public String toString()
-    {
-        return NAME;
-    }
-
-    public boolean isInClickedArea(int x, int y)
-    {
-        if (x >= canvasX + 10 && x <= canvasX + 10 + side &&
-                y >= canvasY - 20 && y <= canvasY - 20 + side)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
 
 }

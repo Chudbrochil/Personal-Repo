@@ -26,6 +26,37 @@ public class TrackLine
         initializeComponents(components);
     }
 
+    /**
+     * getDrawableList()
+     * Useful for re-drawing all the components
+     * @return The drawable list of components in this line.
+     */
+    public ArrayList<IDrawable> getDrawableList()
+    {
+        return drawableList;
+    }
+
+    /**
+     * getStationList()
+     * Useful for attaching trains to stations and requesting routes to stations.
+     * @return The list of stations in this line.
+     */
+    public ArrayList<Station> getStationList()
+    {
+        return stationList;
+    }
+
+    /**
+     * getMessagableList()
+     * Useful for attaching neighbors to eachother. This is exclusively used at the moment for finding switches
+     * and attaching them to eachother.
+     * @return The messagable list of components in this line.
+     */
+    public ArrayList<IMessagable> getMessagableList()
+    {
+        return messagableList;
+    }
+
     @Override
     public String toString()
     {
@@ -148,37 +179,6 @@ public class TrackLine
 
 
         }
-    }
-
-    /**
-     * getDrawableList()
-     * Useful for re-drawing all the components
-     * @return The drawable list of components in this line.
-     */
-    public ArrayList<IDrawable> getDrawableList()
-    {
-        return drawableList;
-    }
-
-    /**
-     * getStationList()
-     * Useful for attaching trains to stations and requesting routes to stations.
-     * @return The list of stations in this line.
-     */
-    public ArrayList<Station> getStationList()
-    {
-        return stationList;
-    }
-
-    /**
-     * getMessagableList()
-     * Useful for attaching neighbors to eachother. This is exclusively used at the moment for finding switches
-     * and attaching them to eachother.
-     * @return The messagable list of components in this line.
-     */
-    public ArrayList<IMessagable> getMessagableList()
-    {
-        return messagableList;
     }
 
 }

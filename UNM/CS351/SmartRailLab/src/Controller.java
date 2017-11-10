@@ -20,6 +20,9 @@ public class Controller
 
     private Conductor conductor;
 
+    public Controller()
+    {
+    }
 
     @FXML
     private void initialize()
@@ -82,10 +85,5 @@ public class Controller
     {
         conductor.makeTrain();
     }
-
-    public Controller()
-    {
-    }
-
 
 }
