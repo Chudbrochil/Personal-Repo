@@ -24,7 +24,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     //This also determines whiether the 'switch' neighbor functions as a second
     //right neighbor or a second left neighbor.
     private boolean switchEngaged; //is the switch currently connected to its other switch neighbor, or lying flat left to right?
-    private boolean DEBUG = true;
     private boolean reserved;
 
     private GraphicsContext gcDraw;
@@ -45,7 +44,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         NAME = "RailSwitch" + switchIncrement;
         switchIncrement++;
         switchEngaged = false;
-        reserved = true;
+        reserved = false;
         if (switchImg == null)
         {
             switchImg = new Image("Switch.png");
@@ -98,7 +97,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         if (switchSide == Direction.RIGHT || switchSide == Direction.UPRIGHT)
         {
             this.switchSide = Direction.UPRIGHT;
-        } else //side==Direction.LEFT || side==Direction.DOWNLEFT
+        }
+        else
         {
             this.switchSide = Direction.DOWNLEFT;
         }
@@ -106,23 +106,29 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
 
     public void draw()
     {
-        // Only need one switch piece to draw itself...
-        if (switchSide == Direction.UPRIGHT)
-        {
-            gcDraw.drawImage(switchImg, canvasX, canvasY - 70);
-        } else if (switchSide == Direction.UPRIGHT && switchEngaged && reserved)
+        // Various ways in which a switch should paint itself.
+        if (switchSide == Direction.UPRIGHT && switchEngaged && reserved)
         {
             gcDraw.drawImage(switchDiagonalReserveImg, canvasX, canvasY - 70);
-        } else if (switchSide == Direction.UPRIGHT && reserved)
+        }
+        else if (switchSide == Direction.UPRIGHT && reserved)
         {
             gcDraw.drawImage(switchRegularReserveImg, canvasX, canvasY - 70);
-        } else if (switchSide == Direction.DOWNLEFT)
+        }
+        else if (switchSide == Direction.UPRIGHT)
         {
-            gcDraw.drawImage(trackImg, canvasX, canvasY);
-        } else if (switchSide == Direction.DOWNLEFT && reserved)
+            gcDraw.drawImage(switchImg, canvasX, canvasY - 70);
+        }
+        // A DOWNLEFT switch is drawn as a regular track
+        else if (switchSide == Direction.DOWNLEFT && reserved)
         {
             gcDraw.drawImage(reserveTrackImg, canvasX, canvasY);
         }
+        else if (switchSide == Direction.DOWNLEFT)
+        {
+            gcDraw.drawImage(trackImg, canvasX, canvasY);
+        }
+
 
     }
 
@@ -153,6 +159,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             while (!pendingMessages.isEmpty())
             {
                 readMessage(pendingMessages.poll());
+                // TODO: This is figuring out how the lights should be lit for switch
+                System.out.println("Reserved: " + reserved + " Switch engaged: " + switchEngaged);
             }
             //wait
             try
@@ -202,7 +210,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         {
             switchSideOtherNeighbor = rightNeighbor;
             aloneNeighbor = leftNeighbor;
-        } else //switchSide == Direction.DOWNLEFT
+        }
+        else //switchSide == Direction.DOWNLEFT
         {
             switchSideOtherNeighbor = leftNeighbor;
             aloneNeighbor = rightNeighbor;
@@ -223,7 +232,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     m.setHeading(getSide(aloneNeighbor));
                     sendMessage(m, aloneNeighbor);
                 }
-            } else if (mostRecentSender == aloneNeighbor)
+            }
+            else if (mostRecentSender == aloneNeighbor)
             {
                 Message mClone = m.clone();
                 if (switchSideOtherNeighbor != null)
@@ -236,12 +246,14 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     m.setHeading(switchSide);
                     sendMessage(mClone, switchNeighbor);
                 }
-            } else
+            }
+            else
             {
-                if (DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
                 printNeighborError(m.type.toString());
             }
-        } else if (m.type == MessageType.RESERVE_ROUTE)
+        }
+        else if (m.type == MessageType.RESERVE_ROUTE)
         {
             //todo: Check if already reserved? Second train
 
@@ -259,39 +271,47 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     reserve(false);
                     m.setHeading(getSide(switchSideOtherNeighbor));
                     sendMessage(m, switchSideOtherNeighbor);
-                } else if (goingTo == switchNeighbor)
+                }
+                else if (goingTo == switchNeighbor)
                 {
                     reserve(true);
                     m.setHeading(switchSide);
                     sendMessage(m, switchNeighbor);
-                } else
+                }
+                else
                 {
                     System.err.println(toString() + " cannot reserve for the neighbor " + goingTo.toString() + " it received.");
                 }
-            } else if (cameFrom == switchSideOtherNeighbor)
+            }
+            else if (cameFrom == switchSideOtherNeighbor)
             {
                 reserve(false);
                 if (goingTo == aloneNeighbor)
                 {
                     m.setHeading(getSide(aloneNeighbor));
                     sendMessage(m, aloneNeighbor);
-                } else
+                }
+                else
                     System.err.println(toString() + " cannot reserve for the neighbor " + goingTo.toString() + " it received.");
-            } else if (cameFrom == switchNeighbor)
+            }
+            else if (cameFrom == switchNeighbor)
             {
                 reserve(true);
                 if (goingTo == aloneNeighbor)
                 {
                     m.setHeading(getSide(switchNeighbor));
                     sendMessage(m, aloneNeighbor);
-                } else
+                }
+                else
                     System.err.println(toString() + " cannot reserve for the neighbor " + goingTo.toString() + " it received.");
-            } else
+            }
+            else
             {
-                if (DEBUG) printNeighborDebug(cameFrom, m.type.toString());
+                if (Main.DEBUG) printNeighborDebug(cameFrom, m.type.toString());
                 printNeighborError(m.type.toString());
             }
-        } else if (m.type == MessageType.REQUEST_NEXT_TRACK)
+        }
+        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
             if (m.peekSenderList() instanceof Train)
             {
@@ -305,16 +325,19 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     {
                         nextForTrain = switchNeighbor;
                         headingForTrain = switchSide;
-                    } else
+                    }
+                    else
                     {
                         nextForTrain = switchSideOtherNeighbor;
                         headingForTrain = getSide(switchSideOtherNeighbor);
                     }
-                } else if (trainPrevTrack == switchNeighbor || trainPrevTrack == switchSideOtherNeighbor)
+                }
+                else if (trainPrevTrack == switchNeighbor || trainPrevTrack == switchSideOtherNeighbor)
                 {
                     nextForTrain = aloneNeighbor;
                     headingForTrain = getSide(aloneNeighbor);
-                } else
+                }
+                else
                 {
                     System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
                 }
@@ -324,7 +347,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 m.setHeading(headingForTrain);
                 unreserve();
                 sendMessage(m, train);
-            } else
+            }
+            else
             {
                 System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
                         + " is not a train.");
@@ -340,14 +364,14 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
 
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
-        if (DEBUG)
+        if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
     }
 
     public synchronized void recvMessage(Message message)
     {
-        if (DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
+        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
         pendingMessages.add(message);
         this.notify();
     }

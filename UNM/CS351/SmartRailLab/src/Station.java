@@ -19,7 +19,6 @@ public class Station extends Thread implements IMessagable, IDrawable
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     private IMessagable neighbor; //track piece the Station is connected to.
     private Direction neighborSide; //Determined by which neighbor is non-null in the method call to setNeighbors().
-    private boolean DEBUG = true;   //Debug flag
 
     private GraphicsContext gcDraw;
     private int canvasX;
@@ -70,7 +69,8 @@ public class Station extends Thread implements IMessagable, IDrawable
         {
             neighbor = left;
             neighborSide = Direction.LEFT;
-        } else
+        }
+        else
         {
             neighbor = right;
             neighborSide = Direction.RIGHT;
@@ -110,7 +110,7 @@ public class Station extends Thread implements IMessagable, IDrawable
             //If the first sender isn't a train, it must be a track and the message is coming in.
             else if (m.STATION.equals(this.NAME))
             {
-                if (DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
+                if (Main.DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
                 m.type = MessageType.RESERVE_ROUTE;
                 if (neighborSide == Direction.RIGHT) m.setHeading(Direction.RIGHT);
                 else m.setHeading(Direction.LEFT);
@@ -119,12 +119,13 @@ public class Station extends Thread implements IMessagable, IDrawable
                 if (mostRecentSender == neighbor) sendMessage(m, neighbor);
                 else
                 {
-                    if (DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                    if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
                     printNeighborError(m.type.toString());
                 }
             }
             //todo: else, send a negative response?
-        } else if (m.type == MessageType.RESERVE_ROUTE)
+        }
+        else if (m.type == MessageType.RESERVE_ROUTE)
         {
             //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
             //message that the train that is IN this station
@@ -136,15 +137,17 @@ public class Station extends Thread implements IMessagable, IDrawable
             {
                 Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION, neighborSide);
                 sendMessage(goMessage, nextSenderInList);
-            } else
+            }
+            else
             {
-                if (DEBUG)
+                if (Main.DEBUG)
                     System.out.println(this.toString() + " just got a message (type " + m.type.toString() + ") whose next " +
                             "reference is " + nextSenderInList.toString() + ", which is not a train. No message sent.");
                 System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
                 return;
             }
-        } else if (m.type == MessageType.REQUEST_NEXT_TRACK)
+        }
+        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
             //Should be the first request a train makes.
             if (m.peekSenderList() instanceof Train)
@@ -153,7 +156,8 @@ public class Station extends Thread implements IMessagable, IDrawable
                 m.pushSenderList(this);
                 m.pushSenderList(neighbor);
                 sendMessage(m, train);
-            } else
+            }
+            else
             {
                 System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
                         + " is not a train.");
@@ -186,14 +190,14 @@ public class Station extends Thread implements IMessagable, IDrawable
 
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
-        if (DEBUG)
+        if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
     }
 
     public synchronized void recvMessage(Message message)
     {
-        if (DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
+        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
         pendingMessages.add(message);
         this.notify();
     }
@@ -210,7 +214,8 @@ public class Station extends Thread implements IMessagable, IDrawable
                 y >= canvasY - 20 && y <= canvasY - 20 + side)
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
         }

@@ -3,10 +3,8 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
 import java.util.ArrayList;
 
-// TODO: This class should be "static", we only need one...
 public class RailConfiguration
 {
     private ArrayList<TrackLine> trackLines;
@@ -20,22 +18,26 @@ public class RailConfiguration
         this.gcDraw = gcDraw;
     }
 
+    /**
+     * loadTracks()
+     *
+     * This loads all of the trackline objects into drawable lists and imessagable lists.
+     * This also allows the initial draw to be done.
+     *
+     * @param trackLines A list holding objects that hold all components in a line.
+     */
     public void loadTracks(ArrayList<TrackLine> trackLines)
     {
         this.trackLines.addAll(trackLines);
-        testTrackLines();
     }
 
-    // TODO: Purely debug
-    private void testTrackLines()
-    {
-        for (int i = 0; i < trackLines.size(); ++i)
-        {
-            System.out.println(trackLines.get(i).toString());
-        }
-        System.out.println("");
-    }
-
+    /**
+     * drawInitialComponents()
+     *
+     * Does the first draw of all the components. This is done one trackLine at a time.
+     *
+     * @return The full list of all drawable items. These need to be redrawn by the controller.
+     */
     public ArrayList<IDrawable> drawInitialComponents()
     {
         ArrayList<IDrawable> fullTrackDrawable = new ArrayList<>();
@@ -58,24 +60,19 @@ public class RailConfiguration
         return fullTrackDrawable;
     }
 
+    /**
+     * attachSwitches()
+     * Finds all the switches and matches them up as neighbors. This facilitates the communication between
+     * the train and when it's on a switch for drawing and path finding.
+     */
     public void attachSwitches()
     {
-        //ArrayList<IMessagable> listOfMessagables = new ArrayList<>();
         ArrayList<IMessagable> aTrackLine = new ArrayList<>();
-
-        // This list needs to be as long as it's size but null
-//        for(int i = 0; i < trackLines.get(0).getMessagableList().size(); ++i)
-//        {
-//            aTrackLine.set(i, null);
-//        }
-
-        //ArrayList<RailSwitch> switchList = new ArrayList<>();
 
         RailSwitch[] switchList = new RailSwitch[trackLines.get(0).getMessagableList().size()];
 
         for (int i = 0; i < trackLines.size(); ++i)
         {
-            //listOfMessagables.addAll(trackLines.get(i).getMessagableList());
             aTrackLine = trackLines.get(i).getMessagableList();
 
             for (int j = 0; j < aTrackLine.size(); ++j)
@@ -83,7 +80,7 @@ public class RailConfiguration
                 IMessagable currentComponent = aTrackLine.get(j);
                 if (currentComponent instanceof RailSwitch)
                 {
-                    // TODO: What is the list going to do when it's fresh?
+                    // Add yourself to the array
                     if (switchList[j] == null)
                     {
                         switchList[j] = (RailSwitch) currentComponent;
@@ -107,6 +104,14 @@ public class RailConfiguration
         }
     }
 
+    /**
+     * getStationList()
+     *
+     * Returns the full list of stations. We need these to get trains to hook into for initial placement and
+     * requesting routes.
+     *
+     * @return A list of all the station objects.
+     */
     public ArrayList<Station> getStationList()
     {
         for (int i = 0; i < trackLines.size(); ++i)

@@ -49,11 +49,12 @@ public class Controller
         ArrayList<String> configs = new ArrayList<>();
         configs.add("SimpleOneTrack.txt");
         configs.add("SimpleTwoTrack.txt");
+        configs.add("SwitchTwoTrack.txt");
         configs.add("LightThreeTrack.txt");
         configs.add("SimpleFourTrack.txt");
         configs.add("LightFourTrack.txt");
         configs.add("SwitchFourTrack.txt");
-        configs.add("AnnaOneTrack.txt");
+        configs.add("FancyFiveTrack.txt");
 
         ChoiceDialog dialog = new ChoiceDialog(configs.get(0), configs);
         dialog.setTitle("SmartRail!");
@@ -62,9 +63,9 @@ public class Controller
 
         if (result.isPresent())
         {
-            System.out.println(result.get());
             launchNewConfiguration(result.get());
-        } else
+        }
+        else
         {
             launchNewConfiguration(configs.get(0));
         }
@@ -86,7 +87,7 @@ public class Controller
         drawableList = new ArrayList<>();
         MAX_TRAINS = 30;
 
-        for(int i = 0; i < MAX_TRAINS; ++i)
+        for (int i = 0; i < MAX_TRAINS; ++i)
         {
             activeTrains.add(null);
         }
@@ -97,6 +98,7 @@ public class Controller
      * This effectively becomes a thread that is constantly redrawing the canvas.
      * Inspired by https://stackoverflow.com/questions/3541676/java-thread-every-x-seconds
      */
+    // TODO: I may need to end this thread when the program closes, it might be a bit rogue
     private void reDraw()
     {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
@@ -150,21 +152,23 @@ public class Controller
         // This is all to make sure that the train is drawn in a unique spot. If trains are removed in the middle
         // of the drawn list, the behavior can get kind of weird. This check protects against this.
         int indexOfNullTrain = -1;
-        for(int i = 0; i < MAX_TRAINS; ++i)
+        for (int i = 0; i < MAX_TRAINS; ++i)
         {
-            if(activeTrains.get(i) == null)
+            if (activeTrains.get(i) == null)
             {
                 indexOfNullTrain = i;
                 break;
             }
         }
 
-        if(indexOfNullTrain != -1)
+        if (indexOfNullTrain != -1)
         {
             Train aTrain = new Train(gcDraw,
-                    trainyardX + (indexOfNullTrain%10) * 75, trainyardY + (indexOfNullTrain / 10) * 30);
+                    trainyardX + (indexOfNullTrain % 10) * 75, trainyardY + (indexOfNullTrain / 10) * 30);
             activeTrains.set(indexOfNullTrain, aTrain);
             drawableList.add(aTrain);
+            // This way trains won't outlive Main.
+            aTrain.setDaemon(true);
             aTrain.start();
         }
 
@@ -238,7 +242,8 @@ public class Controller
                         ". Select a destination.");
                 currentTrain.setCoords(stationClicked.getCanvasX() + 10, stationClicked.getCanvasY() + 10);
             }
-        } else
+        }
+        else
         {
             tfOutput.setText("You can't select a station without a train. Please make a train and select it.");
         }
@@ -259,7 +264,7 @@ public class Controller
     {
         for (int i = 0; i < activeTrains.size(); ++i)
         {
-            if(activeTrains.get(i) != null)
+            if (activeTrains.get(i) != null)
             {
                 if (activeTrains.get(i).isInClickedArea(x, y))
                 {

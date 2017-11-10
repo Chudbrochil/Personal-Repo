@@ -4,19 +4,23 @@ import java.util.ArrayList;
 
 public class TrackLine
 {
-    //private ArrayList<ArrayList<IDrawable>> drawableListList;
     private ArrayList<IDrawable> drawableList;
     private ArrayList<IMessagable> messagableList;
     private ArrayList<Station> stationList;
     private GraphicsContext gcDraw;
     private int trackLineNum;
 
+    // TODO: Dynamic city selection?
+    private static ArrayList<String> westCoastCities;
+    private static ArrayList<String> eastCoastCities;
+
     public TrackLine(String[] components, GraphicsContext gcDraw, int trackLineNum)
     {
-        //drawableListList = new ArrayList<>();
         drawableList = new ArrayList<>();
         messagableList = new ArrayList<>();
         stationList = new ArrayList<>();
+        westCoastCities = new ArrayList<>();
+        eastCoastCities = new ArrayList<>();
         this.gcDraw = gcDraw;
         this.trackLineNum = trackLineNum;
         initializeComponents(components);
@@ -34,7 +38,7 @@ public class TrackLine
     }
 
     /**
-     * 0 reserved for station
+     * 0 station
      * 1 is track
      * 2 is track + light
      * 3 is track + light + switch up
@@ -42,9 +46,9 @@ public class TrackLine
      * Currently we only have switches heading from 2nd track upto 1st track going left to right and the reverse
      * e.g.
      * ------------------------
-     * /
-     * /
-     * /
+     *     /
+     *    /
+     *   /
      * ------------------------
      */
     private void initializeComponents(String[] components)
@@ -54,67 +58,72 @@ public class TrackLine
         int xStep = 100;
         int yStep = 100;
 
-        Station leftStation = new Station(components[0], gcDraw, initialX, initialY + yStep * trackLineNum);
-        drawableList.add(leftStation);
-        messagableList.add(leftStation);
-        stationList.add(leftStation);
-
-        //TODO: Add more grid types, 3-4-5-6-7
-        // Adds a list of components to each element
-        for (int i = 1; i < components.length - 1; ++i)
+        // Adds each component to messagable/drawable lists
+        for (int i = 0; i < components.length; ++i)
         {
-            RailTrack trackToAdd;
-            RailLight lightToAdd;
-            // Just a track
-            if (String.valueOf("1").equals(components[i]))
+            Station stationToAdd = null;
+            RailTrack trackToAdd = null;
+            RailLight lightToAdd = null;
+            RailSwitch switchToAdd = null;
+
+            // Station - If the first character is a letter, it must be a station
+            if(Character.isLetter(components[i].charAt(0)))
+            {
+                stationToAdd = new Station(components[i], gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+            }
+            // Track
+            else if (String.valueOf("1").equals(components[i]))
             {
                 trackToAdd = new RailTrack(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
-                drawableList.add(trackToAdd);
-                messagableList.add(trackToAdd);
             }
             // Track and Light
             else if (String.valueOf("2").equals(components[i]))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
                 trackToAdd = new RailTrack(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
-                drawableList.add(lightToAdd);
+            }
+            // Track, UpSwitch and its Light - UpSwitch means light goes on right-side
+            else if (String.valueOf("3").equals(components[i]))
+            {
+                lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
+                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
+            }
+            // Track, DownSwitch and its Light - DownSwitch means light goes on left-side
+            else if (String.valueOf("4").equals(components[i]))
+            {
+                lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
+                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
+            }
+
+            if(trackToAdd != null)
+            {
                 drawableList.add(trackToAdd);
                 messagableList.add(trackToAdd);
             }
-
-
-            // TODO: Compress these two else if's
-            // Track, UpSwitch and its Light
-            else if (String.valueOf("3").equals(components[i]))
+            if(lightToAdd != null) { drawableList.add(lightToAdd); }
+            if(switchToAdd != null)
             {
-                // Upswitch means light goes on right-side
-                lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
-                RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
-                drawableList.add(lightToAdd);
                 drawableList.add(switchToAdd);
                 messagableList.add(switchToAdd);
             }
-            // Track, DownSwitch and its Light
-            else if (String.valueOf("4").equals(components[i]))
+            if(stationToAdd != null)
             {
-                //Downswitch means light goes on left-side
-                lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
-                RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
-                drawableList.add(lightToAdd);
-                drawableList.add(switchToAdd);
-                messagableList.add(switchToAdd);
+                drawableList.add(stationToAdd);
+                messagableList.add(stationToAdd);
+                stationList.add(stationToAdd);
             }
+
         }
-
-        Station rightStation = new Station(components[components.length - 1], gcDraw,
-                initialX + xStep * (components.length - 1), initialY + yStep * trackLineNum);
-        drawableList.add(rightStation);
-        messagableList.add(rightStation);
-        stationList.add(rightStation);
 
         attachNeighbors();
     }
 
+    /**
+     * attachNeighbors()
+     *
+     * Attachs all the left and right neighbors to IMessagable's. Additional work needs to be done for switches as
+     * they span multiple trackLines.
+     */
     private void attachNeighbors()
     {
         for (int i = 0; i < messagableList.size(); ++i)
@@ -128,24 +137,45 @@ public class TrackLine
             else if (i == messagableList.size() - 1)
             {
                 messagableList.get(i).setNeighbors(messagableList.get(i - 1), null);
-            } else
+            }
+            else
             {
                 messagableList.get(i).setNeighbors(messagableList.get(i - 1), messagableList.get(i + 1));
             }
+            // Fixes the annoying issue of threads outliving main
+            ((Thread) messagableList.get(i)).setDaemon(true);
             ((Thread) messagableList.get(i)).start();
+
+
         }
     }
 
+    /**
+     * getDrawableList()
+     * Useful for re-drawing all the components
+     * @return The drawable list of components in this line.
+     */
     public ArrayList<IDrawable> getDrawableList()
     {
         return drawableList;
     }
 
+    /**
+     * getStationList()
+     * Useful for attaching trains to stations and requesting routes to stations.
+     * @return The list of stations in this line.
+     */
     public ArrayList<Station> getStationList()
     {
         return stationList;
     }
 
+    /**
+     * getMessagableList()
+     * Useful for attaching neighbors to eachother. This is exclusively used at the moment for finding switches
+     * and attaching them to eachother.
+     * @return The messagable list of components in this line.
+     */
     public ArrayList<IMessagable> getMessagableList()
     {
         return messagableList;

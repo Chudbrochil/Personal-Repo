@@ -46,7 +46,8 @@ public class RailLight implements IDrawable
         if (lightPosition == Direction.LEFT)
         {
             canvasX = x;
-        } else if (lightPosition == Direction.RIGHT)
+        }
+        else if (lightPosition == Direction.RIGHT)
         {
             canvasX = x + 90;
         }
@@ -86,7 +87,8 @@ public class RailLight implements IDrawable
         if (reserved == true)
         {
             gcDraw.drawImage(greenLightImg, canvasX, canvasY);
-        } else
+        }
+        else
         {
             gcDraw.drawImage(redLightImg, canvasX, canvasY);
         }

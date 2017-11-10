@@ -1,8 +1,7 @@
 NOT-OPTIONAL:
-Anthony: (STATION PASS-THROUGH FIX)Trains moving over switches end up passing stations (Might get fixed by proper unreserve route....)
-Anna: (SWITCH RESERVE FIX)Switches don't properly reserve themselves. It seems like reserved is always false...
+Anthony: (STATION PASS-THROUGH FIX)Trains moving over switches end up passing stations (Reserve route checks?)
 Anna: (UNRESERVE MSG)send unreserve route when train is leaving a component (new message)
-Anna: (LIGHTS)Verify that switch lights are working correctly
+Anna: (LIGHTS)Verify that switch lights are working correctly - Note: Are we putting the lights in the right spots?
 Anna: (MULTI-TRAIN)If I set a train down on the same track and let it go, it won't wait for the track to be reserved before going?
 Anthony: Per the spec, "Two trains cannot be on the same track". I don't do a check for this, not sure how. (Reserve route checks?)
 Us: Documentation all over the code
@@ -12,3 +11,12 @@ Anthony: More options for the textfield output
 Anna: send no route to station message when train is requesting a station
 Anthony: Remove the trains when they arrive at the station?
 Anna: Need some sort of hook that lets me know if there is no route to the station
+
+
+(DONE)Anthony: Make the station object creation more dynamic and allow for more stations on one side than the other
+(DONE)Anthony: Make switches look not awful, some visual display of reservation.
+(DONE)Anthony: Make switch lights better
+(DONE)Anthony: Bugs with trainyard display
+(DONE)Anna: (SWITCH RESERVE FIX)Switches don't properly reserve themselves. It seems like reserved is always false...
+(DONE)Anna: Verify that switch lights are working correctly
+(DONE)Anna: Photo editing: 1.) draw a reserved track, 2.) make switch
