@@ -245,7 +245,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                     heading = m.getHeading();
 
                     //checks if it's arrived at the station
-                    if (currentTrack instanceof Station && ((Station) currentTrack).NAME.equals(destination))
+                    if (currentTrack instanceof Station && ((Station) currentTrack).toString().equals(destination))
                     {
                         proceedTo(nextTrack);
                         System.out.println(toString() + " has arrived at destination, " + destination + "!");
