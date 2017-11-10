@@ -1,0 +1,6 @@
+Anthony: Make switches look not awful, some visual display of reservation.
+Anthony: Make switch lights better
+Anna: send unreserve route when train is leaving a component (new message)
+Anna: send no route to station message when train is requesting a station (maybe optional?)
+Anna: Verify that switch lights are working correctly
+Anna: Photo editing: 1.) draw a reserved track, 2.) make switch
