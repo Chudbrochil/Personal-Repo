@@ -69,7 +69,6 @@ public class Station extends Thread implements IMessagable, IDrawable
             neighborSide = Direction.RIGHT;
         }
     }
-    public IMessagable getNeighbor() { return neighbor; }
     
     public void run()
     {

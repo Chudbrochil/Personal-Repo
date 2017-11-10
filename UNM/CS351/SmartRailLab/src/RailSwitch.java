@@ -139,12 +139,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         IMessagable aloneNeighbor;
     
         //Find out which side the 'switchNeighbor' is on. Adjust which neighbor is its 'partner' in direction accordingly.
-        if(switchSide == Direction.RIGHT)
+        if(switchSide == Direction.UPRIGHT)
         {
             switchSideOtherNeighbor = rightNeighbor;
             aloneNeighbor = leftNeighbor;
         }
-        else //switchSide == Direction.LEFT
+        else //switchSide == Direction.DOWNLEFT
         {
             switchSideOtherNeighbor = leftNeighbor;
             aloneNeighbor = rightNeighbor;
@@ -160,13 +160,25 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             //Now actually find out which way the message came from and send it on its way.
             if(mostRecentSender==switchSideOtherNeighbor || mostRecentSender==switchNeighbor)
             {
-                if(aloneNeighbor!=null) sendMessage(m, aloneNeighbor);
+                if(aloneNeighbor!=null)
+                {
+                    m.setHeading(getSide(aloneNeighbor));
+                    sendMessage(m, aloneNeighbor);
+                }
             }
             else if(mostRecentSender==aloneNeighbor)
             {
                 Message mClone = m.clone();
-                if(switchSideOtherNeighbor !=null) sendMessage(m, switchSideOtherNeighbor);
-                if(switchNeighbor !=null) sendMessage(mClone, switchNeighbor);
+                if(switchSideOtherNeighbor !=null)
+                {
+                    m.setHeading(getSide(switchSideOtherNeighbor));
+                    sendMessage(m, switchSideOtherNeighbor);
+                }
+                if(switchNeighbor !=null)
+                {
+                    m.setHeading(switchSide);
+                    sendMessage(mClone, switchNeighbor);
+                }
             }
             else
             {
@@ -190,11 +202,13 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 {
                     //don't need the switch neighbor
                     reserve(false);
+                    m.setHeading(getSide(switchSideOtherNeighbor));
                     sendMessage(m, switchSideOtherNeighbor);
                 }
                 else if(goingTo == switchNeighbor)
                 {
                     reserve(true);
+                    m.setHeading(switchSide);
                     sendMessage(m, switchNeighbor);
                 }
                 else
@@ -205,13 +219,21 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             else if(cameFrom == switchSideOtherNeighbor)
             {
                 reserve(false);
-                if(goingTo == aloneNeighbor) sendMessage(m, aloneNeighbor);
+                if(goingTo == aloneNeighbor)
+                {
+                    m.setHeading(getSide(aloneNeighbor));
+                    sendMessage(m, aloneNeighbor);
+                }
                 else System.err.println(toString()+" cannot reserve for the neighbor "+goingTo.toString()+" it received.");
             }
             else if(cameFrom == switchNeighbor)
             {
                 reserve(true);
-                if(goingTo == aloneNeighbor) sendMessage(m, aloneNeighbor);
+                if(goingTo == aloneNeighbor)
+                {
+                    m.setHeading(getSide(switchNeighbor));
+                    sendMessage(m, aloneNeighbor);
+                }
                 else System.err.println(toString()+" cannot reserve for the neighbor "+goingTo.toString()+" it received.");
             }
             else
@@ -227,14 +249,24 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 Train train = (Train)m.popSenderList();
                 IMessagable trainPrevTrack = m.popSenderList();
                 IMessagable nextForTrain = null;
+                Direction headingForTrain = null;
                 if(trainPrevTrack == aloneNeighbor)
                 {
-                    if(switchEngaged) nextForTrain = switchNeighbor;
-                    else nextForTrain = switchSideOtherNeighbor;
+                    if(switchEngaged)
+                    {
+                        nextForTrain = switchNeighbor;
+                        headingForTrain = switchSide;
+                    }
+                    else
+                    {
+                        nextForTrain = switchSideOtherNeighbor;
+                        headingForTrain = getSide(switchSideOtherNeighbor);
+                    }
                 }
                 else if(trainPrevTrack == switchNeighbor || trainPrevTrack == switchSideOtherNeighbor)
                 {
                     nextForTrain = aloneNeighbor;
+                    headingForTrain = getSide(aloneNeighbor);
                 }
                 else
                 {
@@ -243,6 +275,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         
                 m.pushSenderList(this);
                 m.pushSenderList(nextForTrain);
+                m.setHeading(headingForTrain);
                 unreserve();
                 sendMessage(m, train);
             }
@@ -252,6 +285,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     +" is not a train.");
             }
         }
+    }
+    
+    private Direction getSide(IMessagable trackNeighbor)
+    {
+        if(trackNeighbor==rightNeighbor) return Direction.RIGHT;
+        else return Direction.LEFT;
     }
     
     private synchronized void sendMessage(Message message, IMessagable neighbor)
@@ -281,12 +320,20 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     /**
      * @param switchN IMessagable piece above this switch.
      * @param side Direction side of the Switch the connection is on.
-     *             (LEFT = down, RIGHT = up.)
+     *             (RIGHT and UPRIGHT are synonymous
+     *             (LEFT and DOWNLEFT are synonymous)
      */
     public void setSwitchNeighbor(IMessagable switchN, Direction side)
     {
         switchNeighbor = switchN;
-        switchSide = side;
+        if(side==Direction.RIGHT || side==Direction.UPRIGHT)
+        {
+            switchSide = Direction.UPRIGHT;
+        }
+        else //side==Direction.LEFT || side==Direction.DOWNLEFT
+        {
+            switchSide = Direction.DOWNLEFT;
+        }
     }
     
     /**
@@ -299,10 +346,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      */
     public void setNeighbors(IMessagable left, IMessagable right, IMessagable switchN, Direction side)
     {
-        leftNeighbor = left;
-        rightNeighbor = right;
-        switchNeighbor = switchN;
-        switchSide = side;
+        this.setNeighbors(left,right);
+        this.setSwitchNeighbor(switchN, side);
     }
     
     
