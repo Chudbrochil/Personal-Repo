@@ -20,7 +20,7 @@ public class Message
     public Message(String trainSender, IMessagable firstSender, MessageType m, String station, Direction direction)
     {
         TRAIN = trainSender;
-        //TRAINHEADING = heading;
+        heading = direction;
         senderList = new Stack<>();
         senderList.push(firstSender);
         type = m;
