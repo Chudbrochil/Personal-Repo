@@ -214,6 +214,7 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     private void proceedTo(IMessagable nextTrack)
     {
+        
         for(int i = 0; i < 100; ++i)
         {
             // Each track section is 100 pixels long. This will move 100 pixels.
@@ -225,8 +226,8 @@ public class Train extends Thread implements IMessagable, IDrawable
             catch(InterruptedException e) { System.out.println(e.getMessage()); }
         }
 
-
         currentTrack = nextTrack;
+
     }
 
     private synchronized void sendMessage(Message message, IMessagable neighbor)

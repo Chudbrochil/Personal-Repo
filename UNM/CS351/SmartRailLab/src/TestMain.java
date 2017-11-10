@@ -108,11 +108,11 @@ public class TestMain
         station2.setNeighbors(null,track1);
         track1.setNeighbors(station2, switch1);
         switch1.setNeighbors(track1, track2);
-        switch1.setSwitchNeighbor(switch2, Direction.RIGHT);
+        switch1.setSwitchNeighbor(switch2);
         track2.setNeighbors(switch1, station3);
         station4.setNeighbors(null, switch2);
         switch2.setNeighbors(station4,track3);
-        switch2.setSwitchNeighbor(switch1, Direction.LEFT);
+        switch2.setSwitchNeighbor(switch1);
         track3.setNeighbors(switch2, station1);
         station1.setNeighbors(track3, null);
     

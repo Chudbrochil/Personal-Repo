@@ -57,6 +57,56 @@ public class RailConfiguration
         return fullTrackDrawable;
     }
 
+    public void attachSwitches()
+    {
+        //ArrayList<IMessagable> listOfMessagables = new ArrayList<>();
+        ArrayList<IMessagable> aTrackLine = new ArrayList<>();
+
+        // This list needs to be as long as it's size but null
+//        for(int i = 0; i < trackLines.get(0).getMessagableList().size(); ++i)
+//        {
+//            aTrackLine.set(i, null);
+//        }
+
+        //ArrayList<RailSwitch> switchList = new ArrayList<>();
+
+        RailSwitch[] switchList = new RailSwitch[trackLines.get(0).getMessagableList().size()];
+
+        for(int i = 0; i < trackLines.size(); ++i)
+        {
+            //listOfMessagables.addAll(trackLines.get(i).getMessagableList());
+            aTrackLine = trackLines.get(i).getMessagableList();
+
+            for(int j = 0; j < aTrackLine.size(); ++j)
+            {
+                IMessagable currentComponent = aTrackLine.get(j);
+                if(currentComponent instanceof RailSwitch)
+                {
+                    // TODO: What is the list going to do when it's fresh?
+                    if(switchList[j] == null)
+                    {
+                        switchList[j] = (RailSwitch)currentComponent;
+                    }
+                    // Attach yourself to your buddy,
+                    else
+                    {
+                        // Getting the switch's from the list
+                        RailSwitch upSwitch = (RailSwitch)currentComponent;
+                        RailSwitch downSwitch = switchList[j];
+                        switchList[j] = null;
+
+                        // Assigning it's switch neighbors
+                        downSwitch.setSwitchNeighbor(upSwitch);
+                        upSwitch.setSwitchNeighbor(downSwitch);
+                    }
+                }
+            }
+
+
+
+        }
+    }
+
     public ArrayList<Station> getStationList()
     {
         for(int i = 0; i < trackLines.size(); ++i)

@@ -82,23 +82,34 @@ public class TrackLine
                 drawableList.add(trackToAdd);
                 messagableList.add(trackToAdd);
             }
+
+
+            // TODO: Compress these two else if's
             // Track, UpSwitch and its Light
             else if(String.valueOf("3").equals(components[i]))
             {
                 // Upswitch means light goes on right-side
                 lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.RIGHT);
-                trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+                //trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.RIGHT);
-
-
-
+                drawableList.add(lightToAdd);
+                //drawableList.add(trackToAdd);
+                drawableList.add(switchToAdd);
+                //messagableList.add(trackToAdd);
+                messagableList.add(switchToAdd);
             }
             // Track, DownSwitch and its Light
             else if(String.valueOf("4").equals(components[i]))
             {
                 //Downswitch meas light goes on left-side
-
-
+                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.LEFT);
+                //trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+                RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.LEFT);
+                drawableList.add(lightToAdd);
+                //drawableList.add(trackToAdd);
+                drawableList.add(switchToAdd);
+                //messagableList.add(trackToAdd);
+                messagableList.add(switchToAdd);
             }
         }
 
@@ -129,5 +140,6 @@ public class TrackLine
 
     public ArrayList<IDrawable> getDrawableList() { return drawableList; }
     public ArrayList<Station> getStationList() { return stationList; }
+    public ArrayList<IMessagable> getMessagableList() { return messagableList; }
 
 }

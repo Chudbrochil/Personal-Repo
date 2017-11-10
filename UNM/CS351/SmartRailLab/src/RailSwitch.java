@@ -52,13 +52,26 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         this.trackLight = trackLight;
     }
 
-    public RailSwitch(GraphicsContext gcDraw, int x, int y)
-    {
-        this();
-        this.gcDraw = gcDraw;
-        canvasX = x;
-        canvasY = y;
-    }
+//    public RailSwitch(GraphicsContext gcDraw, int x, int y)
+//    {
+//        this();
+//        this.gcDraw = gcDraw;
+//        canvasX = x;
+//        canvasY = y;
+//    }
+
+
+    /**
+     * // TODO: FIX COMMENTS
+     *      * @param side Direction side of the Switch the connection is on.
+     *             (RIGHT and UPRIGHT are synonymous
+     *             (LEFT and DOWNLEFT are synonymous)
+     * @param trackLight
+     * @param gcDraw
+     * @param x
+     * @param y
+     * @param switchSide
+     */
     public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchSide)
     {
         this(trackLight);
@@ -66,6 +79,16 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         this.switchSide = switchSide;
         canvasX = x;
         canvasY = y;
+
+
+        if(switchSide==Direction.RIGHT || switchSide==Direction.UPRIGHT)
+        {
+            this.switchSide = Direction.UPRIGHT;
+        }
+        else //side==Direction.LEFT || side==Direction.DOWNLEFT
+        {
+            this.switchSide = Direction.DOWNLEFT;
+        }
     }
     
     public void draw()
@@ -320,35 +343,26 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     
     /**
      * @param switchN IMessagable piece above this switch.
-     * @param side Direction side of the Switch the connection is on.
-     *             (RIGHT and UPRIGHT are synonymous
-     *             (LEFT and DOWNLEFT are synonymous)
+
      */
-    public void setSwitchNeighbor(IMessagable switchN, Direction side)
+    public void setSwitchNeighbor(IMessagable switchN)
     {
         switchNeighbor = switchN;
-        if(side==Direction.RIGHT || side==Direction.UPRIGHT)
-        {
-            switchSide = Direction.UPRIGHT;
-        }
-        else //side==Direction.LEFT || side==Direction.DOWNLEFT
-        {
-            switchSide = Direction.DOWNLEFT;
-        }
+
     }
     
     /**
+     * This method is for setting all 3 neighbors at once.
+     *
      * @param left IMessagable piece to the left of this piece. Initialized at runtime.
      * @param right IMessagable piece to the right of this piece. Initialized at runtime.
      *       null if no neighbor or a IMessagable class to which 'this' can pass messages.
      * @param switchN IMessagable piece above this switch.
-     * @param side Direction side of the Switch the connection is on.
-     *             (LEFT = down, RIGHT = up.)
      */
-    public void setNeighbors(IMessagable left, IMessagable right, IMessagable switchN, Direction side)
+    public void setNeighbors(IMessagable left, IMessagable right, IMessagable switchN)
     {
         this.setNeighbors(left,right);
-        this.setSwitchNeighbor(switchN, side);
+        this.setSwitchNeighbor(switchN);
     }
     
     

@@ -50,6 +50,7 @@ public class Controller
         configs.add("LightThreeTrack.txt");
         configs.add("SimpleFourTrack.txt");
         configs.add("LightFourTrack.txt");
+        configs.add("SwitchFourTrack.txt");
         configs.add("AnnaOneTrack.txt");
 
         ChoiceDialog dialog = new ChoiceDialog(configs.get(0), configs);
@@ -113,6 +114,7 @@ public class Controller
 
         // Drawing the components and getting back the list of components we need to continue to draw
         drawableList = railConfig.drawInitialComponents();
+        railConfig.attachSwitches();
 
         // Getting the list of possible stations that we can put trains into
         stationList = railConfig.getStationList();
