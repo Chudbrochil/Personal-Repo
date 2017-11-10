@@ -12,6 +12,9 @@ public enum MessageType
      * a train, and using that reference). The return message contains  in the sender list first a reference to the
      * next IMessagable the train will proceed to AND THEN a reference to the track that sent the message (In the order
      * they'd be popped, respectively.)
+     * TRAIN_GOODBYE_UNRESERVE
+     *  Sent by a Train to the track piece it is just about to leave. The track piece then 'unreserves' itself.
+     *  (Sent in proceedTo in Train.) Only the sender list and the message type will be checked on this message.
      */
-    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, UNRESERVE_TRACK
+    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, TRAIN_GOODBYE_UNRESERVE
 }

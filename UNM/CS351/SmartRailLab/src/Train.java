@@ -38,8 +38,8 @@ public class Train extends Thread implements IMessagable, IDrawable
     private int canvasY;
 
     // Details of the image gotten from the actual jpg image
-    private int knownTrainSizeX = 69;
-    private int knownTrainSizeY = 14;
+    private final int knownTrainSizeX = 69;
+    private final int knownTrainSizeY = 14;
 
     //todo: list of stations you can visit?
     public Train()
@@ -249,17 +249,14 @@ public class Train extends Thread implements IMessagable, IDrawable
             if (heading == Direction.RIGHT)
             {
                 canvasX += 1;
-            }
-            else if (heading == Direction.LEFT)
+            } else if (heading == Direction.LEFT)
             {
                 canvasX -= 1;
-            }
-            else if (heading == Direction.UPRIGHT)
+            } else if (heading == Direction.UPRIGHT)
             {
                 canvasX += 1;
                 canvasY -= 1;
-            }
-            else if (heading == Direction.DOWNLEFT)
+            } else if (heading == Direction.DOWNLEFT)
             {
                 canvasX -= 1;
                 canvasY += 1;
@@ -267,13 +264,13 @@ public class Train extends Thread implements IMessagable, IDrawable
             try
             {
                 Thread.sleep(40);
-            }
-            catch (InterruptedException e)
+            } catch (InterruptedException e)
             {
                 System.out.println(e.getMessage());
             }
         }
-
+        
+        sendMessage(new Message(NAME, this, MessageType.TRAIN_GOODBYE_UNRESERVE, null, null), currentTrack);
         currentTrack = nextTrack;
 
     }

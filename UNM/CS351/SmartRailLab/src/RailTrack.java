@@ -160,6 +160,9 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
      *          Pops the next sender, which is the track the train was previously on
      *          Pushes itself and then the next track the train should be going to to the sender list
      *          Sends the message back to the train.
+     *          TRAIN_GOODBYE_UNRESERVE
+     *          If the first sender is a train, it calls 'unreserve' on itself. To be sent when the train leaves the track.
+     *          else, prints to System.err
      */
     private void readMessage(Message m)
     {
@@ -257,13 +260,24 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 }
                 m.pushSenderList(this);
                 m.pushSenderList(nextForTrain);
-                unreserve();
                 sendMessage(m, train);
             }
             else
             {
                 System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
                         + " is not a train.");
+            }
+        }
+        else if(m.type == MessageType.TRAIN_GOODBYE_UNRESERVE)
+        {
+            if(m.peekSenderList() instanceof Train)
+            {
+                unreserve();
+            }
+            else
+            {
+                System.err.println(toString()+ "got a message of type TRAIN_GOODBYE_UNRESERVE from "+
+                    m.peekSenderList().toString()+", which is not a Train.");
             }
         }
     }
