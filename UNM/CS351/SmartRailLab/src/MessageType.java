@@ -1,8 +1,6 @@
 public enum MessageType
 {
     /**
-     * HELLOTEST sends messages down the line to the right.
-     * //REQUEST_HEADING sent by a train when its currentTrack is initialized to its current station to learn if it is facing left or right.
      * SEARCH_FOR_ROUTE sent by train, searches for station. Tracks pass on and duplicate the message if needed.
      * RESERVE_ROUTE is sent by a station after a route is found. The route is secured as the sender list is popped back
      *   to the train.
@@ -15,5 +13,5 @@ public enum MessageType
      *   next IMessagable the train will proceed to AND THEN a reference to the track that sent the message (In the order
      *   they'd be popped, respectively.)
      */
-    HELLOTEST, SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, UNRESERVE_TRACK
+    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, UNRESERVE_TRACK
 }
