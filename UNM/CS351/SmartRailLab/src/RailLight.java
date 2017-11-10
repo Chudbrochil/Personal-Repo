@@ -18,12 +18,6 @@ public class RailLight implements IDrawable
     private int canvasX;
     private int canvasY;
 
-
-
-
-
-
-
     public RailLight()
     {
         NAME = "Light" + lightIncrement;
@@ -32,27 +26,25 @@ public class RailLight implements IDrawable
         if(redLightImg == null) { redLightImg = new Image("RedLightNoPole.png"); }
     }
 
-    public RailLight(GraphicsContext gcDraw, int x, int y, LightPosition lightPosition)
+    public RailLight(GraphicsContext gcDraw, int x, int y)
     {
         this();
         this.gcDraw = gcDraw;
-        if(lightPosition == LightPosition.LEFT)
+        canvasX = x + 30;
+        canvasY = y - 50;
+    }
+
+    public RailLight(GraphicsContext gcDraw, int x, int y, Direction lightPosition)
+    {
+        this(gcDraw, x, y);
+        if(lightPosition == Direction.LEFT)
         {
             canvasX = x;
-            canvasY = y - 50;
         }
-        else if(lightPosition == LightPosition.MID)
-        {
-            canvasX = x + 30;
-            canvasY = y - 50;
-        }
-        else if(lightPosition == lightPosition.RIGHT)
+        else if(lightPosition == Direction.RIGHT)
         {
             canvasX = x + 60;
-            canvasY = y - 50;
         }
-        //canvasX = x;
-        //canvasY = y;
     }
 
       public void reserve(Direction trainComingFrom)

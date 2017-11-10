@@ -76,7 +76,7 @@ public class TrackLine
             // Track and Light
             else if(String.valueOf("2").equals(components[i]))
             {
-                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, LightPosition.MID);
+                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 trackToAdd = new RailTrack(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 drawableList.add(lightToAdd);
                 drawableList.add(trackToAdd);
@@ -86,9 +86,10 @@ public class TrackLine
             else if(String.valueOf("3").equals(components[i]))
             {
                 // Upswitch means light goes on right-side
-                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, LightPosition.RIGHT);
+                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.RIGHT);
                 trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
-                RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+                RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, Direction.RIGHT);
+
 
 
             }

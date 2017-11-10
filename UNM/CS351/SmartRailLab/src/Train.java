@@ -176,6 +176,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                 if(m.peekSenderList() == currentTrack)
                 {
                     proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
+                    heading = m.getHeading();
                     
                     //checks if it's arrived at the station
                     if(currentTrack instanceof Station && ((Station) currentTrack).NAME.equals(destination))

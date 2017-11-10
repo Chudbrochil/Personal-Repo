@@ -59,10 +59,11 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         canvasX = x;
         canvasY = y;
     }
-    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y)
+    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchSide)
     {
         this(trackLight);
         this.gcDraw = gcDraw;
+        this.switchSide = switchSide;
         canvasX = x;
         canvasY = y;
     }
