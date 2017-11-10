@@ -103,8 +103,8 @@ public class Station extends Thread implements IMessagable, IDrawable
           {
               if(DEBUG) System.out.println("Route to Station "+NAME+" has been found!");
               m.type = MessageType.RESERVE_ROUTE;
-              if(neighborSide==Direction.RIGHT) m.setHeading(Direction.LEFT);
-              else m.setHeading(Direction.RIGHT);
+              if(neighborSide==Direction.RIGHT) m.setHeading(Direction.RIGHT);
+              else m.setHeading(Direction.LEFT);
               IMessagable mostRecentSender = m.popSenderList();
               m.pushSenderList(this); //sign the message before you send it on.
               if(mostRecentSender == neighbor) sendMessage(m,neighbor);
