@@ -3,6 +3,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
 import java.util.ArrayList;
 
 // TODO: This class should be "static", we only need one...
@@ -28,7 +29,7 @@ public class RailConfiguration
     // TODO: Purely debug
     private void testTrackLines()
     {
-        for(int i = 0; i < trackLines.size(); ++i)
+        for (int i = 0; i < trackLines.size(); ++i)
         {
             System.out.println(trackLines.get(i).toString());
         }
@@ -43,12 +44,12 @@ public class RailConfiguration
         gcDraw.setFont(new Font("Arial", 12));
 
         // trackLines is each row of components, each trackLine is down in height
-        for(int i = 0; i < trackLines.size(); ++i)
+        for (int i = 0; i < trackLines.size(); ++i)
         {
             ArrayList<IDrawable> currentTrack = trackLines.get(i).getDrawableList();
             fullTrackDrawable.addAll(currentTrack);
             // currentTrack is a list of lists of drawables, i.e. a list of components within a row
-            for(int j = 0; j < currentTrack.size(); ++j)
+            for (int j = 0; j < currentTrack.size(); ++j)
             {
                 currentTrack.get(j).draw();
             }
@@ -72,26 +73,26 @@ public class RailConfiguration
 
         RailSwitch[] switchList = new RailSwitch[trackLines.get(0).getMessagableList().size()];
 
-        for(int i = 0; i < trackLines.size(); ++i)
+        for (int i = 0; i < trackLines.size(); ++i)
         {
             //listOfMessagables.addAll(trackLines.get(i).getMessagableList());
             aTrackLine = trackLines.get(i).getMessagableList();
 
-            for(int j = 0; j < aTrackLine.size(); ++j)
+            for (int j = 0; j < aTrackLine.size(); ++j)
             {
                 IMessagable currentComponent = aTrackLine.get(j);
-                if(currentComponent instanceof RailSwitch)
+                if (currentComponent instanceof RailSwitch)
                 {
                     // TODO: What is the list going to do when it's fresh?
-                    if(switchList[j] == null)
+                    if (switchList[j] == null)
                     {
-                        switchList[j] = (RailSwitch)currentComponent;
+                        switchList[j] = (RailSwitch) currentComponent;
                     }
                     // Attach yourself to your buddy,
                     else
                     {
                         // Getting the switch's from the list
-                        RailSwitch upSwitch = (RailSwitch)currentComponent;
+                        RailSwitch upSwitch = (RailSwitch) currentComponent;
                         RailSwitch downSwitch = switchList[j];
                         switchList[j] = null;
 
@@ -103,13 +104,12 @@ public class RailConfiguration
             }
 
 
-
         }
     }
 
     public ArrayList<Station> getStationList()
     {
-        for(int i = 0; i < trackLines.size(); ++i)
+        for (int i = 0; i < trackLines.size(); ++i)
         {
             stationList.addAll(trackLines.get(i).getStationList());
         }

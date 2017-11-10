@@ -23,8 +23,9 @@ public class RailConfigurationLoader
      * loadNewConfiguration()
      * Loads a new configuration text file and loads it into an array that builds an object that holds the components.
      * For example, this is how we know what area has a light, switch, etc.
+     *
      * @param configFileName Filename of the configuration file that shows this class to setup the board.
-     * @param gcDraw GraphicsContext that gets passed to the underlying component holding object.
+     * @param gcDraw         GraphicsContext that gets passed to the underlying component holding object.
      */
     public void loadNewConfiguration(String configFileName, GraphicsContext gcDraw)
     {
@@ -32,10 +33,10 @@ public class RailConfigurationLoader
         try
         {
             InputStream inputFile = getClass().getResourceAsStream("Configurations/" + configFileName);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile,"UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile, "UTF-8"));
             String line;
             int trackLineNum = 0; // Tells us what trackLine we are working on. 0 is the first trackLine, 3 is the 4th... etc.
-            while((line = reader.readLine()) != null)
+            while ((line = reader.readLine()) != null)
             {
                 String[] components = line.split(",");
                 TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
@@ -43,11 +44,13 @@ public class RailConfigurationLoader
                 trackLineNum++;
             }
         }
-        catch(IOException e) { System.out.println(e.getMessage()); }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
         rc.loadTracks(trackLines);
     }
-
 
 
 }

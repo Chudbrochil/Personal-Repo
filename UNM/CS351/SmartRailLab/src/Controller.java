@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -58,12 +59,11 @@ public class Controller
         dialog.setHeaderText("Choose your simulation");
         Optional<String> result = dialog.showAndWait();
 
-        if(result.isPresent())
+        if (result.isPresent())
         {
             System.out.println(result.get());
             launchNewConfiguration(result.get());
-        }
-        else
+        } else
         {
             launchNewConfiguration(configs.get(0));
         }
@@ -93,13 +93,14 @@ public class Controller
     private void reDraw()
     {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(new Runnable() {
+        exec.scheduleAtFixedRate(new Runnable()
+        {
             @Override
             public void run()
             {
-                gcDraw.clearRect(0,0,800,600);
+                gcDraw.clearRect(0, 0, 800, 600);
                 gcDraw.fillText("Trainyard", 10, 560);
-                for(int i = 0; i < drawableList.size(); ++i)
+                for (int i = 0; i < drawableList.size(); ++i)
                 {
                     drawableList.get(i).draw();
                 }
@@ -111,6 +112,7 @@ public class Controller
      * launchNewConfiguration()
      * This starts the program by loading a file with a track configuration in it.
      * This starts instantiating all the objects and does the initial draw
+     *
      * @param configurationName The String of the file that holds the configuration.
      */
     private void launchNewConfiguration(String configurationName)
@@ -140,7 +142,7 @@ public class Controller
         // TODO: weird circumstances can cause the trains to be overdrawn, fix this.
         //Train aTrain = new Train();
         //activeTrains.add(aTrain);
-        Train aTrain = new Train(gcDraw, trainyardX + activeTrains.size()*75, trainyardY);
+        Train aTrain = new Train(gcDraw, trainyardX + activeTrains.size() * 75, trainyardY);
         activeTrains.add(aTrain); //TODO: Do I need activeTrains?
         drawableList.add(aTrain);
 
@@ -151,16 +153,17 @@ public class Controller
 
     /**
      * canvasClicked()
+     *
      * @param me This is a click event that I can gather the left-click's, right-click's from, etc.
      */
     @FXML
     private void canvasClicked(MouseEvent me)
     {
         // LEFT CLICK
-        if(me.getButton().name() == "PRIMARY")
+        if (me.getButton().name() == "PRIMARY")
         {
-            attemptTrainSelect((int)me.getX(), (int)me.getY());
-            attemptStationSelect((int)me.getX(), (int)me.getY());
+            attemptTrainSelect((int) me.getX(), (int) me.getY());
+            attemptStationSelect((int) me.getX(), (int) me.getY());
         }
     }
 
@@ -168,15 +171,16 @@ public class Controller
      * attemptStationSelect()
      * This method attempts to select a station on the canvas via a click. If a station is selected then it will
      * call a follow-up method to decide a behavior.
+     *
      * @param x x-coord that was clicked
      * @param y y-coord that was clicked
      */
     private void attemptStationSelect(int x, int y)
     {
-        for(int i = 0; i < stationList.size(); ++i)
+        for (int i = 0; i < stationList.size(); ++i)
         {
             Station currentStation = stationList.get(i);
-            if(currentStation.isInClickedArea(x,y))
+            if (currentStation.isInClickedArea(x, y))
             {
                 decideStationAction(currentStation);
             }
@@ -186,14 +190,15 @@ public class Controller
     /**
      * decideStationAction()
      * Does a certain action from the station based on what the status of the currentTrain is.
+     *
      * @param stationClicked Station that was gathered from the user's click
      */
     private void decideStationAction(Station stationClicked)
     {
-        if(currentTrain != null)
+        if (currentTrain != null)
         {
             // We want the train to go to the clicked station (i.e. request a route)
-            if(currentTrain.hasAStation())
+            if (currentTrain.hasAStation())
             {
                 currentTrain.requestRoute(stationClicked.toString());
                 tfOutput.setText("Request route: " + stationClicked.toString());
@@ -207,12 +212,11 @@ public class Controller
             {
                 activeTrains.remove(currentTrain);
                 currentTrain.setNeighbors(stationClicked, null);
-                tfOutput.setText(currentTrain.toString() + " has been put into " +  stationClicked.toString() +
-                    ". Select a destination.");
+                tfOutput.setText(currentTrain.toString() + " has been put into " + stationClicked.toString() +
+                        ". Select a destination.");
                 currentTrain.setCoords(stationClicked.getCanvasX() + 10, stationClicked.getCanvasY() + 10);
             }
-        }
-        else
+        } else
         {
             tfOutput.setText("You can't select a station without a train. Please make a train and select it.");
         }
@@ -225,14 +229,15 @@ public class Controller
     /**
      * attemptTrainSelect()
      * Attempts to select a station based on users click. This will set the currentTrain if clicking on a train.
+     *
      * @param x x-coord that was clicked
      * @param y y-coord that was clicked
      */
     private void attemptTrainSelect(int x, int y)
     {
-        for(int i = 0; i < activeTrains.size(); ++i)
+        for (int i = 0; i < activeTrains.size(); ++i)
         {
-            if(activeTrains.get(i).isInClickedArea(x,y))
+            if (activeTrains.get(i).isInClickedArea(x, y))
             {
                 currentTrain = activeTrains.get(i);
                 tfOutput.setText("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
@@ -240,7 +245,9 @@ public class Controller
         }
     }
 
-    public Controller() { }
+    public Controller()
+    {
+    }
 
 
 }

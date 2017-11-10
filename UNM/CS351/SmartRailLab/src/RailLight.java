@@ -3,7 +3,7 @@ import javafx.scene.image.Image;
 
 /**
  * Anna Carey 10/18/17
- *
+ * <p>
  * Track compoment. If not green in the train's current traveling direction, the train is expected to stop before crossing.
  */
 public class RailLight implements IDrawable
@@ -22,8 +22,14 @@ public class RailLight implements IDrawable
     {
         NAME = "Light" + lightIncrement;
         lightIncrement++;
-        if(greenLightImg == null) { greenLightImg = new Image("GreenLightNoPole.png"); }
-        if(redLightImg == null) { redLightImg = new Image("RedLightNoPole.png"); }
+        if (greenLightImg == null)
+        {
+            greenLightImg = new Image("GreenLightNoPole.png");
+        }
+        if (redLightImg == null)
+        {
+            redLightImg = new Image("RedLightNoPole.png");
+        }
     }
 
     public RailLight(GraphicsContext gcDraw, int x, int y)
@@ -37,46 +43,52 @@ public class RailLight implements IDrawable
     public RailLight(GraphicsContext gcDraw, int x, int y, Direction lightPosition)
     {
         this(gcDraw, x, y);
-        if(lightPosition == Direction.LEFT)
+        if (lightPosition == Direction.LEFT)
         {
             canvasX = x;
-        }
-        else if(lightPosition == Direction.RIGHT)
+        } else if (lightPosition == Direction.RIGHT)
         {
             canvasX = x + 90;
         }
     }
 
-      public void reserve(Direction trainComingFrom)
-      {
-          greenDirection = trainComingFrom;
-          reserved = true;
-      }
+    public void reserve(Direction trainComingFrom)
+    {
+        greenDirection = trainComingFrom;
+        reserved = true;
+    }
 
-      public void unreserve() //I would call this 'free', but that sounds confusing.
-      {
-          //Don't need to 'turn off' light.
-          reserved = false;
-          greenDirection = null;
-      }
-    
+    public void unreserve() //I would call this 'free', but that sounds confusing.
+    {
+        //Don't need to 'turn off' light.
+        reserved = false;
+        greenDirection = null;
+    }
+
     /**
-     *
      * @return the Direction in which the 'green' light is shining (greenDirection)
      */
     public Direction getGreenDirection()
-      {
-          return greenDirection;
-      }
+    {
+        return greenDirection;
+    }
 
-      public String toString() { return NAME; }
+    public String toString()
+    {
+        return NAME;
+    }
 
-      /**
-       * Draws the object on a canvas at location x,y according to its currrent state.
-       */
-      public void draw()
-      {
-          if(reserved == true) { gcDraw.drawImage(greenLightImg, canvasX, canvasY); }
-          else { gcDraw.drawImage(redLightImg, canvasX, canvasY); }
-      }
+    /**
+     * Draws the object on a canvas at location x,y according to its currrent state.
+     */
+    public void draw()
+    {
+        if (reserved == true)
+        {
+            gcDraw.drawImage(greenLightImg, canvasX, canvasY);
+        } else
+        {
+            gcDraw.drawImage(redLightImg, canvasX, canvasY);
+        }
+    }
 }

@@ -6,11 +6,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Stations are placed at the end of lines and are destinations for Trains in the SmartRail simulation.
- *
+ * <p>
  * To use this class, you MUST set neighbor by calling setNeighbors() with ONLY ONE non-null Parameter. That non-null parameter
- *   will determine which "side" the station knows it's on. For instance, if setNeigbhors(null, track1) is called,
- *   the station will know that it is on the left most size of the tracks and that its neighobr lies to the right.
- *   Thus, neighborSide gets set to Direction.LEFT.
+ * will determine which "side" the station knows it's on. For instance, if setNeigbhors(null, track1) is called,
+ * the station will know that it is on the left most size of the tracks and that its neighobr lies to the right.
+ * Thus, neighborSide gets set to Direction.LEFT.
  */
 public class Station extends Thread implements IMessagable, IDrawable
 {
@@ -25,12 +25,13 @@ public class Station extends Thread implements IMessagable, IDrawable
     private int canvasX;
     private int canvasY;
     private int side;
-    
+
     public Station()
     {
         NAME = "Station" + stationIncrement;
         stationIncrement++;
     }
+
     public Station(String name)
     {
         NAME = name;
@@ -45,34 +46,40 @@ public class Station extends Thread implements IMessagable, IDrawable
         side = 80;
     }
 
-    public int getCanvasX() { return canvasX; }
-    public int getCanvasY() { return canvasY; }
-    
+    public int getCanvasX()
+    {
+        return canvasX;
+    }
+
+    public int getCanvasY()
+    {
+        return canvasY;
+    }
+
     /**
-     * @param left Station's neighbor if it is on the left. null otherwise
+     * @param left  Station's neighbor if it is on the left. null otherwise
      * @param right Station's neighbor if it is on the right. null otherwise.
-     *     This method MUST be called to use a Station.
-     *     left or right MUST be null. The parameter that is not null will determine whether neighborSide
-     *     is set to Direction.LEFT or Direction.RIGHT. This determines the train headings for the trains that are
-     *     in the stations.
+     *              This method MUST be called to use a Station.
+     *              left or right MUST be null. The parameter that is not null will determine whether neighborSide
+     *              is set to Direction.LEFT or Direction.RIGHT. This determines the train headings for the trains that are
+     *              in the stations.
      */
     public void setNeighbors(IMessagable left, IMessagable right)
     {
-        if(left != null)
+        if (left != null)
         {
             neighbor = left;
             neighborSide = Direction.LEFT;
-        }
-        else
+        } else
         {
             neighbor = right;
             neighborSide = Direction.RIGHT;
         }
     }
-    
+
     public void run()
     {
-        while(true)
+        while (true)
         {
             while (!pendingMessages.isEmpty())
             {
@@ -82,89 +89,87 @@ public class Station extends Thread implements IMessagable, IDrawable
             {
                 wait();
             }
-            catch(Exception e) {}
+            catch (Exception e)
+            {
+            }
         }
     }
-    
+
     private void readMessage(Message m)
     {
-      if(m.type == MessageType.SEARCH_FOR_ROUTE)
-      {
-          //If it's a train, send the message on.
-          if(m.peekSenderList() instanceof Train)
-          {
-              m.pushSenderList(this);
-              m.setHeading(neighborSide);
-              sendMessage(m,neighbor);
-              //todo: How should we handle if a train requests a route to a station it's ON?
-          }
-          //If the first sender isn't a train, it must be a track and the message is coming in.
-          else if(m.STATION.equals(this.NAME))
-          {
-              if(DEBUG) System.out.println("Route to Station "+NAME+" has been found!");
-              m.type = MessageType.RESERVE_ROUTE;
-              if(neighborSide==Direction.RIGHT) m.setHeading(Direction.RIGHT);
-              else m.setHeading(Direction.LEFT);
-              IMessagable mostRecentSender = m.popSenderList();
-              m.pushSenderList(this); //sign the message before you send it on.
-              if(mostRecentSender == neighbor) sendMessage(m,neighbor);
-              else
-              {
-                  if(DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
-                  printNeighborError(m.type.toString());
-              }
-          }
-          //todo: else, send a negative response?
-      }
-      
-      else if(m.type == MessageType.RESERVE_ROUTE)
-      {
-          //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
-          //message that the train that is IN this station
-          
-          //The first sender is who sent this message. Station doesn't care about that--just the Train it's going to.
-          m.popSenderList();
-          IMessagable nextSenderInList = m.popSenderList();
-          if(nextSenderInList instanceof Train)
-          {
-              Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION, neighborSide);
-              sendMessage(goMessage, nextSenderInList);
-          }
-          else
-          {
-              if(DEBUG) System.out.println(this.toString()+" just got a message (type "+m.type.toString()+") whose next " +
-                  "reference is "+nextSenderInList.toString()+", which is not a train. No message sent.");
-              System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
-              return;
-          }
-      }
-      else if(m.type == MessageType.REQUEST_NEXT_TRACK)
-      {
-          //Should be the first request a train makes.
-          if(m.peekSenderList() instanceof Train)
-          {
-              Train train = (Train)m.popSenderList();
-              m.pushSenderList(this);
-              m.pushSenderList(neighbor);
-              sendMessage(m, train);
-          }
-          else
-          {
-              System.err.println(toString()+" got a message of type REQUEST_NEXT_TRACK from "+m.peekSenderList().toString()
-                  +" is not a train.");
-          }
-      }
+        if (m.type == MessageType.SEARCH_FOR_ROUTE)
+        {
+            //If it's a train, send the message on.
+            if (m.peekSenderList() instanceof Train)
+            {
+                m.pushSenderList(this);
+                m.setHeading(neighborSide);
+                sendMessage(m, neighbor);
+                //todo: How should we handle if a train requests a route to a station it's ON?
+            }
+            //If the first sender isn't a train, it must be a track and the message is coming in.
+            else if (m.STATION.equals(this.NAME))
+            {
+                if (DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
+                m.type = MessageType.RESERVE_ROUTE;
+                if (neighborSide == Direction.RIGHT) m.setHeading(Direction.RIGHT);
+                else m.setHeading(Direction.LEFT);
+                IMessagable mostRecentSender = m.popSenderList();
+                m.pushSenderList(this); //sign the message before you send it on.
+                if (mostRecentSender == neighbor) sendMessage(m, neighbor);
+                else
+                {
+                    if (DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                    printNeighborError(m.type.toString());
+                }
+            }
+            //todo: else, send a negative response?
+        } else if (m.type == MessageType.RESERVE_ROUTE)
+        {
+            //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
+            //message that the train that is IN this station
+
+            //The first sender is who sent this message. Station doesn't care about that--just the Train it's going to.
+            m.popSenderList();
+            IMessagable nextSenderInList = m.popSenderList();
+            if (nextSenderInList instanceof Train)
+            {
+                Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION, neighborSide);
+                sendMessage(goMessage, nextSenderInList);
+            } else
+            {
+                if (DEBUG)
+                    System.out.println(this.toString() + " just got a message (type " + m.type.toString() + ") whose next " +
+                            "reference is " + nextSenderInList.toString() + ", which is not a train. No message sent.");
+                System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
+                return;
+            }
+        } else if (m.type == MessageType.REQUEST_NEXT_TRACK)
+        {
+            //Should be the first request a train makes.
+            if (m.peekSenderList() instanceof Train)
+            {
+                Train train = (Train) m.popSenderList();
+                m.pushSenderList(this);
+                m.pushSenderList(neighbor);
+                sendMessage(m, train);
+            } else
+            {
+                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
+                        + " is not a train.");
+            }
+        }
     }
-    
+
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
     {
-        System.out.println(this.toString()+" just got a message (type "+messageType+") from "+mostRecentSender+", which is"
-            +"not a neighbor. No message sent.");
+        System.out.println(this.toString() + " just got a message (type " + messageType + ") from " + mostRecentSender + ", which is"
+                + "not a neighbor. No message sent.");
     }
-    
+
     private void printNeighborError(String type)
     {
-        System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: "+type);
+        System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
     }
 
     /**
@@ -178,20 +183,21 @@ public class Station extends Thread implements IMessagable, IDrawable
         gcDraw.fillText(this.toString(), canvasX + 30, canvasY + 30);
 
     }
-    
+
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
-        if(DEBUG) System.out.println(this.toString()+" sending message to "+neighbor.toString()+". Message is: "+message.toString());
+        if (DEBUG)
+            System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
     }
-    
+
     public synchronized void recvMessage(Message message)
     {
-        if(DEBUG) System.out.println(this.toString()+" received a message. Message is: "+message.toString());
+        if (DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
         pendingMessages.add(message);
         this.notify();
     }
-    
+
     @Override
     public String toString()
     {
@@ -200,9 +206,14 @@ public class Station extends Thread implements IMessagable, IDrawable
 
     public boolean isInClickedArea(int x, int y)
     {
-        if(x >= canvasX + 10 && x <= canvasX + 10 + side &&
-                y >= canvasY - 20 && y <= canvasY - 20 + side) { return true;  }
-        else { return false; }
+        if (x >= canvasX + 10 && x <= canvasX + 10 + side &&
+                y >= canvasY - 20 && y <= canvasY - 20 + side)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
 
