@@ -67,12 +67,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
     }
 
-    public RailSwitch(RailLight trackLight)
-    {
-        this();
-        this.trackLight = trackLight;
-    }
-
     /**
      * // TODO: FIX COMMENTS
      * * @param side Direction side of the Switch the connection is on.
@@ -87,7 +81,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      */
     public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchSide)
     {
-        this(trackLight);
+        this();
+        this.trackLight = trackLight;
         this.gcDraw = gcDraw;
         this.switchSide = switchSide;
         canvasX = x;
