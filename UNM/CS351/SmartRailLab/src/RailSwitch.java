@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -31,6 +32,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private int canvasX;
     private int canvasY;
 
+    private RailLight trackLight;
+
+    private static Image switchImg;
+
 
     public RailSwitch()
     {
@@ -38,11 +43,33 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         switchIncrement++;
         switchEngaged = false;
         reserved = true;
+        if(switchImg == null) { switchImg = new Image("Switch.png"); }
+    }
+
+    public RailSwitch(RailLight trackLight)
+    {
+        this();
+        this.trackLight = trackLight;
+    }
+
+    public RailSwitch(GraphicsContext gcDraw, int x, int y)
+    {
+        this();
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
+    }
+    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y)
+    {
+        this(trackLight);
+        this.gcDraw = gcDraw;
+        canvasX = x;
+        canvasY = y;
     }
     
     public void draw()
     {
-
+        gcDraw.drawImage(switchImg, canvasX, canvasY);
     }
     
     /**

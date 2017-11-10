@@ -40,6 +40,13 @@ public class TrackLine
      * 2 is track + light
      * 3 is track + light + switch up
      * 4 is track + light + switch down
+     * Currently we only have switches heading from 2nd track upto 1st track going left to right and the reverse
+     * e.g.
+     * ------------------------
+     *      /
+     *     /
+     *    /
+     * ------------------------
      */
     private void initializeComponents(String[] components)
     {
@@ -59,19 +66,38 @@ public class TrackLine
         {
             RailTrack trackToAdd;
             RailLight lightToAdd;
+            // Just a track
             if(String.valueOf("1").equals(components[i]))
             {
                 trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 drawableList.add(trackToAdd);
                 messagableList.add(trackToAdd);
             }
+            // Track and Light
             else if(String.valueOf("2").equals(components[i]))
             {
-                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, LightPosition.MID);
                 trackToAdd = new RailTrack(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
                 drawableList.add(lightToAdd);
                 drawableList.add(trackToAdd);
                 messagableList.add(trackToAdd);
+            }
+            // Track, UpSwitch and its Light
+            else if(String.valueOf("3").equals(components[i]))
+            {
+                // Upswitch means light goes on right-side
+                lightToAdd = new RailLight(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum, LightPosition.RIGHT);
+                trackToAdd = new RailTrack(gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+                RailSwitch switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+
+
+            }
+            // Track, DownSwitch and its Light
+            else if(String.valueOf("4").equals(components[i]))
+            {
+                //Downswitch meas light goes on left-side
+
+
             }
         }
 

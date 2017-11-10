@@ -47,7 +47,7 @@ public class Message
      @Override
       public String toString()
      {
-         return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type +"\t Station:"+STATION;
+         return "\n Train:"+TRAIN+"\t Sender List:"+ senderList.toString() +"\t Message:"+ type +"\t Station:"+STATION+"\t Heading:"+heading;
      }
   
     /**
