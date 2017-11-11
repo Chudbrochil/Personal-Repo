@@ -6,23 +6,31 @@ import java.util.Stack;
  * This is a data class that contains all the information all the Rail components need to communicate with each other.
  * (request routes, reserve routes, train to travel.)
  * <p>
- * Contains the senderList, which is a Stack. Public methods give access to most Stack methods (pop, push, isEmpty.)
+ * Contains the routeList, which is a Stack. Public methods give access to most Stack methods (pop, push, isEmpty.)
+ *
+ * Sign a message with setMostRecentSender(this) before sending it on (unless you wrote the message. Then mostRecentSender
+ *   already equals you.) **This is done in the sendMessage() method of all Rail components.***
  */
+ 
 public class Message
 {
     public final String TRAIN;    //Train who originated this message--identifier/name.
-    private Stack<IMessagable> senderList;   //Keeps track of who has passed the message. Used to retrace steps. (often message type is changed.)
+    private Stack<IMessagable> routeList;   //Keeps track of who has passed the message. Used to retrace steps. (often message type is changed.)
+    private Stack<IMessagable> poppedRouteList;
+    private IMessagable mostRecentSender;
     public MessageType type;     //Enum that tells the Rail pieces what they should do with this message.
     public final String STATION; //name of the station requested or found, depending on the message type.
     private Direction heading;
 
 
-    public Message(String trainSender, IMessagable firstSender, MessageType m, String station, Direction direction)
+    public Message(MessageType m, String trainSender, IMessagable firstSender, String station, Direction direction)
     {
         TRAIN = trainSender;
         heading = direction;
-        senderList = new Stack<>();
-        senderList.push(firstSender);
+        routeList = new Stack<>();
+        routeList.push(firstSender);
+        poppedRouteList = new Stack<>();
+        mostRecentSender = firstSender;
         type = m;
         STATION = station;
     }
@@ -30,12 +38,16 @@ public class Message
     /**
      * For making clones of messages ONLY.
      */
-    private Message(String trainSender, Stack<IMessagable> senders, MessageType m, String station, Direction trainHeading)
+    private Message(MessageType m, String trainSender, Stack<IMessagable> route, Stack<IMessagable> poppedList, IMessagable recentSender,
+                    String station, Direction trainHeading)
     {
         TRAIN = trainSender;
         heading = trainHeading;
-        senderList = new Stack<>();
-        senderList.addAll(senders);
+        routeList = new Stack<>();
+        routeList.addAll(route);
+        poppedRouteList = new Stack<>();
+        poppedRouteList.addAll(poppedList);
+        mostRecentSender = recentSender;
         type = m;
         STATION = station;
     }
@@ -48,41 +60,61 @@ public class Message
     @Override
     public String toString()
     {
-        return "\n Train:" + TRAIN + "\t Sender List:" + senderList.toString() + "\t Message:" + type + "\t Station:" + STATION + "\t Heading:" + heading;
+        return "\n Train:" + TRAIN + "\t Sender List:" + routeList.toString() + "\t Message:" + type + "\t Station:" + STATION + "\t Heading:" + heading;
     }
 
     /**
-     * @return The most recently added value in the senderList is returned. (The most recently visited neighbor.)
+     * @return The most recently added value in the routeList is returned. (The most recently visited neighbor or the next
+     *         neighbor to send the message to next, depending on the type of message.)
      */
-    public IMessagable popSenderList()
+    public IMessagable popRouteList()
     {
-        return senderList.pop();
+        IMessagable popped = routeList.pop();
+        poppedRouteList.push(popped);
+        return popped;
     }
 
     /**
-     * @param s IMessagable sender to be added to the senderList.
+     * @param s IMessagable sender to be added to the routeList.
      */
-    public void pushSenderList(IMessagable s)
+    public void pushRouteList(IMessagable s)
     {
-        senderList.push(s);
+        routeList.push(s);
     }
 
     /**
-     * @return true if the senderList has more members. False if it is empty.
+     * @return true if the routeList has more members. False if it is empty.
      */
     public boolean senderListIsEmpty()
     {
-        return senderList.isEmpty();
+        return routeList.isEmpty();
     }
 
     /**
      * @return the most recent sender (top of the stack) without removing it.
      */
-    public IMessagable peekSenderList()
+    public IMessagable peekRouteList()
     {
-        return senderList.peek();
+        return routeList.peek();
     }
-
+    
+    /**
+     * @return mostRecentSender
+     */
+    public IMessagable getMostRecentSender()
+    {
+        return mostRecentSender;
+    }
+    
+    /**
+     * @param sender Should always be called as (this) before sending the message.
+     */
+    public void setMostRecentSender(IMessagable sender)
+    {
+        mostRecentSender = sender;
+    }
+    
+    
     /**
      * @param direction Direction the train or message is heading.
      */
@@ -102,6 +134,7 @@ public class Message
     @Override
     public Message clone()
     {
-        return new Message(this.TRAIN, this.senderList, this.type, this.STATION, this.heading);
+        return new Message(this.type, this.TRAIN, this.routeList, this.poppedRouteList, this.mostRecentSender,
+            this.STATION, this.heading);
     }
 }

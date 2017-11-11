@@ -139,7 +139,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     public void requestRoute(String station)
     {
         destination = station;
-        Message message = new Message(NAME, this, MessageType.SEARCH_FOR_ROUTE, station, null);
+        Message message = new Message(MessageType.SEARCH_FOR_ROUTE, NAME, this, station, null);
         sendMessage(message, currentTrack);
     }
 
@@ -202,29 +202,29 @@ public class Train extends Thread implements IMessagable, IDrawable
     {
         if (m.type == MessageType.GO)
         {
-            if (m.peekSenderList() == currentTrack)
+            if (m.peekRouteList() == currentTrack)
             {
                 heading = m.getHeading();
                 if (m.STATION == destination)
                 {
                     if (Main.DEBUG)
-                        System.out.println(toString() + " has received a message from " + m.peekSenderList().toString() +
+                        System.out.println(toString() + " has received a message from " + m.peekRouteList().toString() +
                                 " to proceed to" + m.STATION.toString());
                     going = true;
-                    sendMessage(new Message(NAME, this, MessageType.REQUEST_NEXT_TRACK, destination, heading), currentTrack);
+                    sendMessage(new Message(MessageType.REQUEST_NEXT_TRACK, NAME, this, destination, heading), currentTrack);
                 }
                 else
                 {
-                    System.err.println(toString() + " received 'GO' message from currentTrack " + m.peekSenderList() + " to " +
+                    System.err.println(toString() + " received 'GO' message from currentTrack " + m.peekRouteList() + " to " +
                             "proceed to" + m.STATION + ", which is not this train's destination, " + destination);
                 }
             }
             else
             {
                 if (Main.DEBUG)
-                    System.out.println(toString() + " received a 'GO' message from " + m.peekSenderList() + ", which is " +
+                    System.out.println(toString() + " received a 'GO' message from " + m.peekRouteList() + ", which is " +
                             "not a neighbor. Train remains stationary.");
-                System.err.println(toString() + " received a go signal from " + m.peekSenderList() + ", which is not a neighbor.");
+                System.err.println(toString() + " received a go signal from " + m.peekRouteList() + ", which is not a neighbor.");
             }
         }
         //Train should only receive this message if it sent it.
@@ -236,17 +236,17 @@ public class Train extends Thread implements IMessagable, IDrawable
         {
             if (going)
             {
-                IMessagable nextTrack = m.popSenderList();
-                if (m.peekSenderList() == currentTrack)
+                IMessagable nextTrack = m.popRouteList();
+                if (m.peekRouteList() == currentTrack)
                 {
                     //If it's in the station, get the reference to the next track so that you're at the "beginning" of the track before drawing yourself.
-                    if (currentTrack instanceof Station) currentTrack = nextTrack;
-                    else proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
+                    proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
                     heading = m.getHeading();
 
                     //checks if it's arrived at the station
                     if (currentTrack instanceof Station && ((Station) currentTrack).toString().equals(destination))
                     {
+                        //todo: making this into a currentTrack = nextTrack makes the 'unreserves' look right, but the switches are way wrong then.
                         proceedTo(nextTrack);
                         System.out.println(toString() + " has arrived at destination, " + destination + "!");
                         going = false;
@@ -256,13 +256,13 @@ public class Train extends Thread implements IMessagable, IDrawable
                     //send another message to request the NEXT track.
                     else
                     {
-                        m.pushSenderList(this);
+                        m.pushRouteList(this);
                         sendMessage(m, currentTrack);
                     }
                 }
                 else
                 {
-                    System.err.println(toString() + " received a REQUEST_NEXT_TRACK message from " + m.peekSenderList() + ", " +
+                    System.err.println(toString() + " received a REQUEST_NEXT_TRACK message from " + m.peekRouteList() + ", " +
                             "which is not a neighbor. Train is remaining stationary.");
                 }
             }
@@ -284,7 +284,15 @@ public class Train extends Thread implements IMessagable, IDrawable
         // Each track section is 100 pixels long. This will move 100 pixels.
         // Sleeping for 40 milliseconds results in a 4 second traversal per piece of track.
         // This could be easily configurable, but where? The user may not want this granularity
-        for (int i = 0; i < 100; ++i)
+        
+        //This allows the train to move out of the station and onto the track before doing its movement 'on that track'
+        //(thus it unreserves when it leaves it.) This also allows the train to move into the station, but no further, when it arrives.
+        //todo: the 'unreserve' still looks like it happens before the train's off the track (it's when the center of the train moves from
+        //one piece to another.) So this could be improved,but it is good enough for now.
+        int loopIterations = 100;
+        if(currentTrack instanceof Station) loopIterations = 50;
+        
+        for (int i = 0; i < loopIterations; ++i)
         {
             if (heading == Direction.RIGHT)
             {
@@ -313,13 +321,20 @@ public class Train extends Thread implements IMessagable, IDrawable
             }
         }
         
-        sendMessage(new Message(NAME, this, MessageType.TRAIN_GOODBYE_UNRESERVE, null, null), currentTrack);
+        sendMessage(new Message(MessageType.TRAIN_GOODBYE_UNRESERVE, NAME, this, null, null), currentTrack);
         currentTrack = nextTrack;
 
     }
-
+    
+    /**
+     * @param message The Message to send
+     * @param neighbor IMessagable to which to send the message.
+     *
+     * sets the mostRecentSender in message to this and then calls recvMessage(message) on neighbor.
+     */
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
+        message.setMostRecentSender(this);
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);

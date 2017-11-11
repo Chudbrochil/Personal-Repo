@@ -132,9 +132,9 @@ public class Station extends Thread implements IMessagable, IDrawable
         if (m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             //If it's a train, send the message on.
-            if (m.peekSenderList() instanceof Train)
+            if (m.peekRouteList() instanceof Train)
             {
-                m.pushSenderList(this);
+                m.pushRouteList(this);
                 m.setHeading(neighborSide);
                 sendMessage(m, neighbor);
                 //todo: How should we handle if a train requests a route to a station it's ON?
@@ -146,8 +146,8 @@ public class Station extends Thread implements IMessagable, IDrawable
                 m.type = MessageType.RESERVE_ROUTE;
                 if (neighborSide == Direction.RIGHT) m.setHeading(Direction.RIGHT);
                 else m.setHeading(Direction.LEFT);
-                IMessagable mostRecentSender = m.popSenderList();
-                m.pushSenderList(this); //sign the message before you send it on.
+                IMessagable mostRecentSender = m.popRouteList();
+                m.pushRouteList(this); //sign the message before you send it on.
                 if (mostRecentSender == neighbor) sendMessage(m, neighbor);
                 else
                 {
@@ -163,11 +163,11 @@ public class Station extends Thread implements IMessagable, IDrawable
             //message that the train that is IN this station
 
             //The first sender is who sent this message. Station doesn't care about that--just the Train it's going to.
-            m.popSenderList();
-            IMessagable nextSenderInList = m.popSenderList();
+            m.popRouteList();
+            IMessagable nextSenderInList = m.popRouteList();
             if (nextSenderInList instanceof Train)
             {
-                Message goMessage = new Message(((Train) nextSenderInList).NAME, this, MessageType.GO, m.STATION, neighborSide);
+                Message goMessage = new Message(MessageType.GO, ((Train) nextSenderInList).NAME, this, m.STATION, neighborSide);
                 sendMessage(goMessage, nextSenderInList);
             }
             else
@@ -182,16 +182,16 @@ public class Station extends Thread implements IMessagable, IDrawable
         else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
             //Should be the first request a train makes.
-            if (m.peekSenderList() instanceof Train)
+            if (m.peekRouteList() instanceof Train)
             {
-                Train train = (Train) m.popSenderList();
-                m.pushSenderList(this);
-                m.pushSenderList(neighbor);
+                Train train = (Train) m.popRouteList();
+                m.pushRouteList(this);
+                m.pushRouteList(neighbor);
                 sendMessage(m, train);
             }
             else
             {
-                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
+                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
                         + " is not a train.");
             }
         }
@@ -207,9 +207,16 @@ public class Station extends Thread implements IMessagable, IDrawable
     {
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
     }
-
+    
+    /**
+     * @param message The Message to send
+     * @param neighbor IMessagable to which to send the message.
+     *
+     * sets the mostRecentSender in message to this and then calls recvMessage(message) on neighbor.
+     */
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
+        message.setMostRecentSender(this);
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);

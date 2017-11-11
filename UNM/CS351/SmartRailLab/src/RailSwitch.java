@@ -269,8 +269,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         if (m.type == MessageType.SEARCH_FOR_ROUTE)
         {
             //look for which neighbor sent this message. Send this message to your other neighbor or neighbors.
-            IMessagable mostRecentSender = m.peekSenderList();
-            m.pushSenderList(this); //sign the sender list before you pass it on.
+            IMessagable mostRecentSender = m.peekRouteList();
+            m.pushRouteList(this); //sign the sender list before you pass it on.
 
             //Now actually find out which way the message came from and send it on its way.
             if (mostRecentSender == switchSideOtherNeighbor || mostRecentSender == switchNeighbor)
@@ -306,9 +306,9 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             //todo: Check if already reserved? Second train
 
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
-            IMessagable cameFrom = m.popSenderList(); //RailSwitch cares who it came from.
-            IMessagable goingTo = m.popSenderList(); //Also cares where it's going
-            m.pushSenderList(this);             //Sign the message
+            IMessagable cameFrom = m.popRouteList(); //RailSwitch cares who it came from.
+            IMessagable goingTo = m.popRouteList(); //Also cares where it's going
+            m.pushRouteList(this);             //Sign the message
 
 
             if (cameFrom == aloneNeighbor)
@@ -363,10 +363,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
         else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
-            if (m.peekSenderList() instanceof Train)
+            if (m.peekRouteList() instanceof Train)
             {
-                Train train = (Train) m.popSenderList();
-                IMessagable trainPrevTrack = m.popSenderList();
+                Train train = (Train) m.popRouteList();
+                IMessagable trainPrevTrack = m.popRouteList();
                 IMessagable nextForTrain = null;
                 Direction headingForTrain = null;
                 if (trainPrevTrack == aloneNeighbor)
@@ -392,27 +392,27 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
                 }
 
-                m.pushSenderList(this);
-                m.pushSenderList(nextForTrain);
+                m.pushRouteList(this);
+                m.pushRouteList(nextForTrain);
                 m.setHeading(headingForTrain);
                 sendMessage(m, train);
             }
             else
             {
-                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
+                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
                         + " is not a train.");
             }
         }
         else if(m.type == MessageType.TRAIN_GOODBYE_UNRESERVE)
         {
-            if(m.peekSenderList() instanceof Train)
+            if(m.peekRouteList() instanceof Train)
             {
                 unreserve();
             }
             else
             {
                 System.err.println(toString()+ "got a message of type TRAIN_GOODBYE_UNRESERVE from "+
-                    m.peekSenderList().toString()+", which is not a Train.");
+                    m.peekRouteList().toString()+", which is not a Train.");
             }
         }
     }
@@ -422,9 +422,16 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         if (trackNeighbor == rightNeighbor) return Direction.RIGHT;
         else return Direction.LEFT;
     }
-
+    
+    /**
+     * @param message The Message to send
+     * @param neighbor IMessagable to which to send the message.
+     *
+     * sets the mostRecentSender in message to this and then calls recvMessage(message) on neighbor.
+     */
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
+        message.setMostRecentSender(this);
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);

@@ -198,9 +198,9 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         //SEARCH_FOR_ROUTE
         if (m.type == MessageType.SEARCH_FOR_ROUTE)
         {
-            IMessagable mostRecentSender = m.peekSenderList();
+            IMessagable mostRecentSender = m.peekRouteList();
             IMessagable neighborToSendTo = null;
-            m.pushSenderList(this); //sign before you pass it on.
+            m.pushRouteList(this); //sign before you pass it on.
 
             //look for which neighbor sent this message. Send this message to your other neighbors.
 
@@ -242,9 +242,9 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             //todo: Check if already reserved? Second train
 
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
-            m.popSenderList(); //RailTrack doesn't care who it came from, just where it's going.
-            IMessagable nextSenderInList = m.popSenderList();
-            m.pushSenderList(this);
+            m.popRouteList(); //RailTrack doesn't care who it came from, just where it's going.
+            IMessagable nextSenderInList = m.popRouteList();
+            m.pushRouteList(this);
             if (nextSenderInList == leftNeighbor)
             {
                 //the train will be coming from the left to the right; The light should be green facing the left.
@@ -268,10 +268,10 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         //REQUEST_NEXT_TRACK
         else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
-            if (m.peekSenderList() instanceof Train)
+            if (m.peekRouteList() instanceof Train)
             {
-                Train train = (Train) m.popSenderList();
-                IMessagable trainPrevTrack = m.popSenderList();
+                Train train = (Train) m.popRouteList();
+                IMessagable trainPrevTrack = m.popRouteList();
                 IMessagable nextForTrain = null;
                 if (trainPrevTrack == leftNeighbor)
                 {
@@ -287,26 +287,26 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 {
                     System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
                 }
-                m.pushSenderList(this);
-                m.pushSenderList(nextForTrain);
+                m.pushRouteList(this);
+                m.pushRouteList(nextForTrain);
                 sendMessage(m, train);
             }
             else
             {
-                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekSenderList().toString()
+                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
                         + " is not a train.");
             }
         }
         else if(m.type == MessageType.TRAIN_GOODBYE_UNRESERVE)
         {
-            if(m.peekSenderList() instanceof Train)
+            if(m.peekRouteList() instanceof Train)
             {
                 unreserve();
             }
             else
             {
                 System.err.println(toString()+ "got a message of type TRAIN_GOODBYE_UNRESERVE from "+
-                    m.peekSenderList().toString()+", which is not a Train.");
+                    m.peekRouteList().toString()+", which is not a Train.");
             }
         }
     }
@@ -334,9 +334,16 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     {
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
     }
-
+    
+    /**
+     * @param message The Message to send
+     * @param neighbor IMessagable to which to send the message.
+     *
+     * sets the mostRecentSender in message to this and then calls recvMessage(message) on neighbor.
+     */
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
+        message.setMostRecentSender(this);
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
