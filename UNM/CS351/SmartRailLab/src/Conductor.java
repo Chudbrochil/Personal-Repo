@@ -1,7 +1,11 @@
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.TextField;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -65,6 +69,7 @@ public class Conductor
             if (currentTrain.hasAStation())
             {
                 currentTrain.requestRoute(stationClicked.toString());
+                playSound("Train_Whistle.wav");
                 tfOutput.setText("Request route: " + stationClicked.toString());
 
                 // TODO: Weird situation where if a useer puts a train in a station, but doesn't give it a route right away
@@ -218,6 +223,23 @@ public class Conductor
 
 
         // TODO: Add a method for a textbox in train, this will be the narrator. i.e. I arrived at station X, I'm moving to station X, I'm on track blahblah
+    }
+
+
+    // TODO: Add sound for arriving at a station.
+    /**
+     * playSound()
+     * Plays a given sound.
+     * @param filePath Path of the sound you're trying to play
+     */
+    private void playSound(String filePath)
+    {
+        try{
+            InputStream is = getClass().getResourceAsStream(filePath);
+            AudioStream audioStream = new AudioStream(is);
+            AudioPlayer.player.start(audioStream);
+        }
+        catch(IOException e) { System.out.println(e.getMessage()); }
     }
 
 
