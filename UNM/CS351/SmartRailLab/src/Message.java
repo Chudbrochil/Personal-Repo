@@ -122,7 +122,7 @@ public class Message
     {
       Stack<IMessagable> temp = routeList;
       routeList = poppedRouteList;
-      poppedRouteList = routeList;
+      poppedRouteList = temp;
     }
     
     /**

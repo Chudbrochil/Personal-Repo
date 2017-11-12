@@ -296,6 +296,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             if(reserved)
             {
                 unreserve();
+                m.popRouteList(); //pop yourself off so that you don't cause bugs.
                 IMessagable nextIMessagableToInform = m.popRouteList();
                 if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
                 else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);

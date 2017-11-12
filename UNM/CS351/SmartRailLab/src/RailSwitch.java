@@ -388,6 +388,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             if(reserved)
             {
                 unreserve();
+                IMessagable popped = m.popRouteList(); //pop yourself off so that you don't cause bugs.
+                System.out.println("Popped: "+popped.toString());
                 //should be the next track to be unreserved
                 IMessagable nextIMessagableToInform = m.popRouteList();
                 if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
