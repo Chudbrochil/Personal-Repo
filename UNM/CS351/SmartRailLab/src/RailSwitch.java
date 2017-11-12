@@ -25,7 +25,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     //right neighbor or a second left neighbor.
     private boolean switchEngaged; //is the switch currently connected to its other switch neighbor, or lying flat left to right?
     private boolean reserved;
-    private String trainReservedFor; //The Train name for which this route is reserved
+    private String trainReservedFor = ""; //The Train name for which this route is reserved
 
     private GraphicsContext gcDraw;
     private int canvasX;
@@ -218,7 +218,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private void unreserve()
     {
         reserved = false;
-        trainReservedFor = null;
+        trainReservedFor = "";
         trackLight.unreserve();
     }
 
@@ -308,7 +308,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         else if (m.type == MessageType.RESERVE_ROUTE)
         {
             if(reserved)
-            {  //TODO: ANTHONY: This code is new and could be the source of the bug.
+            {
                 m.type = MessageType.ABORT_RESERVE_ROUTE;
                 m.reverseRouteList();
                 m.popRouteList(); //pop yourself off so that you don't cause bugs.
@@ -323,8 +323,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
                     printNeighborError(m.type.toString());
                 }
-        
-                //todo: WAIT_FOR_ROUTE send message back to train saying "TrainX is in your way. Wait and request the route again later."
+                
                 return;
             }
 
@@ -386,7 +385,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         //TODO: ANTHONY: This code is new and could be the source of the bug.
         else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
         {
-            if(reserved)
+            if(reserved && trainReservedFor.equals(m.TRAIN))
             {
                 unreserve();
                 //should be the next track to be unreserved
@@ -402,9 +401,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             }
             else
             {
-                if(Main.DEBUG) System.out.println(this.toString()+" received an ABORT_RESERVE_ROUTE from "+
-                    m.getMostRecentSender().toString() +"while unreserved. No message sent.");
-                System.err.println(this.toString()+" received an ABORT_RESERVE_ROUTE when unreserved.");
+                if(!reserved)
+                {
+                    if (Main.DEBUG) System.out.println(this.toString() + " received an ABORT_RESERVE_ROUTE from " +
+                        m.getMostRecentSender().toString() + "while unreserved. No message sent.");
+                    System.err.println(this.toString() + " received an ABORT_RESERVE_ROUTE when unreserved.");
+                }
             }
         }
         

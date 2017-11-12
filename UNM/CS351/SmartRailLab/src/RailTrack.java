@@ -23,7 +23,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private static Image reserveTrackImg;                // Image for a blue track, typically for reserved track.
     private RailLight trackLight;                     // Light that is affixed on a track.
     private boolean reserved;
-    private String trainReservedFor;                //The Train name for which this route is reserved
+    private String trainReservedFor = "";             //The Train name for which this route is reserved
 
     private GraphicsContext gcDraw;
     private int canvasX;
@@ -170,7 +170,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private void unreserve()
     {
         reserved = false;
-        trainReservedFor = null;
+        trainReservedFor = "";
         if (trackLight != null)
         {
             trackLight.unreserve();
@@ -295,7 +295,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         //ABORT_RESERVE_ROUTE
         else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
         {
-            if(reserved)
+            if(reserved && trainReservedFor.equals(m.TRAIN))
             {
                 unreserve();
                 IMessagable nextIMessagableToInform = m.popRouteList();
@@ -309,9 +309,12 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             }
             else
             {
-                if(Main.DEBUG) System.out.println(this.toString()+" received an ABORT_RESERVE_ROUTE from "+
-                    m.getMostRecentSender().toString() +"while unreserved. No message sent.");
-                System.err.println(this.toString()+" received an ABORT_RESERVE_ROUTE when unreserved.");
+                if(!reserved)
+                {
+                    if (Main.DEBUG) System.out.println(this.toString() + " received an ABORT_RESERVE_ROUTE from " +
+                        m.getMostRecentSender().toString() + "while unreserved. No message sent.");
+                    System.err.println(this.toString() + " received an ABORT_RESERVE_ROUTE when unreserved.");
+                }
             }
         }
 
