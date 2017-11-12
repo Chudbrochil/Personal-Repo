@@ -114,7 +114,16 @@ public class Message
         mostRecentSender = sender;
     }
     
-    //todo: reverseRouteList
+    /**
+     * Reverses the route list as though you're reversing the order of traversal on an array list.
+     * This method should be called if an ABORT_RESERVE_ROUTE is called because there is a route conflict.
+     */
+    public void reverseRouteList()
+    {
+      Stack<IMessagable> temp = routeList;
+      routeList = poppedRouteList;
+      poppedRouteList = routeList;
+    }
     
     /**
      * @param direction Direction the train or message is heading.

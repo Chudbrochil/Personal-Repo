@@ -23,6 +23,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private static Image reserveTrackImg;                // Image for a blue track, typically for reserved track.
     private RailLight trackLight;                     // Light that is affixed on a track.
     private boolean reserved;
+    private String trainReservedFor;                //The Train name for which this route is reserved
 
     private GraphicsContext gcDraw;
     private int canvasX;
@@ -145,21 +146,31 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     {
         return NAME;
     }
-
-    //Reserves the track and (ideally) prevents any other traffic from passing over it.
-    private void reserve(Direction trainComingFrom)
+    
+    /**
+     * @param trainComingFrom Direction the train will approach this track from (RIGHT or LEFT). This is used to reserve
+     *                        the light as green in the right direction.
+     * @param trainName String train parameter of the Message m. Indicates which Train this track is reserved on behalf of.
+     */
+    private void reserve(Direction trainComingFrom, String trainName)
     {
+        reserved = true;
+        trainReservedFor = trainName;
         if (trackLight != null)
         {
             trackLight.reserve(trainComingFrom);
         }
-        reserved = true;
     }
-
+    
+    /**
+     * Unreserves the track to allow other trains to pass over it.
+     *
+     * reserved becomes false, trainReservedFor becomes null, and unreserves light if applicable.
+     */
     private void unreserve()
     {
-
         reserved = false;
+        trainReservedFor = null;
         if (trackLight != null)
         {
             trackLight.unreserve();
@@ -235,27 +246,40 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         }
 
         //RESERVE_ROUTE
-        //The first member is the one the message came from. The next 'sender' is the one the message needs to go to.
         else if (m.type == MessageType.RESERVE_ROUTE)
         {
-            //Tracks don't need to check if they CAN protect. They don't have anything to do.
-            //todo: Check if already reserved? Second train
+            //If the track is already reserved, this new route must be aborted and tried again later.
+            if(reserved)
+            {
+                m.type = MessageType.ABORT_RESERVE_ROUTE;
+                m.reverseRouteList();
+                //will now go backwards to the Rail component that just sent this message.
+                IMessagable nextIMessagableToInform = m.popRouteList();
+                
+                if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
+                else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
+                else
+                {
+                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
+                    printNeighborError(m.type.toString());
+                }
 
-            //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
-            //*** m.popRouteList(); //RailTrack doesn't care who it came from, just where it's going.
-            
+                //todo: WAIT_FOR_ROUTE send message back to train saying "TrainX is in your way. Wait and request the route again later."
+                return;
+            }
+
+            //Actually pop the sender this time. It will be either the right or left neighbor.
             IMessagable nextIMessagableToReserve = m.popRouteList();
-            //***m.pushRouteList(this);
             if (nextIMessagableToReserve == leftNeighbor)
             {
                 //the train will be coming from the left to the right; The light should be green facing the left.
-                reserve(Direction.LEFT);
+                reserve(Direction.LEFT, m.TRAIN);
                 m.setHeading(Direction.LEFT);
                 sendMessage(m, leftNeighbor);
             }
             else if (nextIMessagableToReserve == rightNeighbor)
             {
-                reserve(Direction.RIGHT);
+                reserve(Direction.RIGHT, m.TRAIN);
                 m.setHeading(Direction.RIGHT);
                 sendMessage(m, rightNeighbor);
             }
@@ -263,6 +287,29 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             {
                 if (Main.DEBUG) printNeighborDebug(nextIMessagableToReserve, m.type.toString());
                 printNeighborError(m.type.toString());
+            }
+        }
+        
+        //ABORT_RESERVE_ROUTE
+        else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
+        {
+            if(reserved)
+            {
+                unreserve();
+                IMessagable nextIMessagableToInform = m.popRouteList();
+                if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
+                else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
+                else
+                {
+                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
+                    printNeighborError(m.type.toString());
+                }
+            }
+            else
+            {
+                if(Main.DEBUG) System.out.println(this.toString()+" received an ABORT_RESERVE_ROUTE from "+
+                    m.getMostRecentSender().toString() +"while unreserved. No message sent.");
+                System.err.println(this.toString()+" received an ABORT_RESERVE_ROUTE when unreserved.");
             }
         }
 

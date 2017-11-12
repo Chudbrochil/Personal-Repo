@@ -124,9 +124,15 @@ public class Station extends Thread implements IMessagable, IDrawable
             return false;
         }
     }
-
-
-
+    
+    
+    /**
+     * TODO: document responses. XD
+     *
+     * ABORT_RESERVE_ROUTE
+     *   Prints a debug statement
+     * @param m
+     */
     private void readMessage(Message m)
     {
         if (m.type == MessageType.SEARCH_FOR_ROUTE)
@@ -184,6 +190,12 @@ public class Station extends Thread implements IMessagable, IDrawable
                 return;
             }
         }
+        
+        else if (m.type == MessageType.ABORT_RESERVE_ROUTE)
+        {
+            if(Main.DEBUG) System.out.println("RESERVE_ROUTE to "+this.toString()+" by request of "+m.TRAIN+" successfully aborted.");
+        }
+        
         else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
             //Should be the first request a train makes.
@@ -200,6 +212,8 @@ public class Station extends Thread implements IMessagable, IDrawable
                         + " is not a train.");
             }
         }
+        
+        //Does not implement ABORT_RESERVE_ROUTE.
     }
 
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)

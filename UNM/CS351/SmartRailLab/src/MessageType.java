@@ -15,6 +15,11 @@ public enum MessageType
      * TRAIN_GOODBYE_UNRESERVE
      *  Sent by a Train to the track piece it is just about to leave. The track piece then 'unreserves' itself.
      *  (Sent in proceedTo in Train.) Only the sender list and the message type will be checked on this message.
+     * ABORT_ROUTE_RESERSVE
+     *   Sent by Rail components if a RESERVE_ROUTE message reaches a track that is currently reserved. If a component
+     *   that receives a RESERVE_ROUTE is already reserved, it calls reverseRouteList() on the message to be able
+     *   to send it backwards and changes the message type to ABORT_ROUTE_RESERVE. Then it unreserves itself and the
+     *   message is forwarded to the next IMessagable in that list.
      */
-    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, TRAIN_GOODBYE_UNRESERVE
+    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, TRAIN_GOODBYE_UNRESERVE, ABORT_RESERVE_ROUTE
 }
