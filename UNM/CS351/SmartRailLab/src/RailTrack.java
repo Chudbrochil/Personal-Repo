@@ -242,17 +242,18 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             //todo: Check if already reserved? Second train
 
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
-            m.popRouteList(); //RailTrack doesn't care who it came from, just where it's going.
-            IMessagable nextSenderInList = m.popRouteList();
-            m.pushRouteList(this);
-            if (nextSenderInList == leftNeighbor)
+            //*** m.popRouteList(); //RailTrack doesn't care who it came from, just where it's going.
+            
+            IMessagable nextIMessagableToReserve = m.popRouteList();
+            //***m.pushRouteList(this);
+            if (nextIMessagableToReserve == leftNeighbor)
             {
                 //the train will be coming from the left to the right; The light should be green facing the left.
                 reserve(Direction.LEFT);
                 m.setHeading(Direction.LEFT);
                 sendMessage(m, leftNeighbor);
             }
-            else if (nextSenderInList == rightNeighbor)
+            else if (nextIMessagableToReserve == rightNeighbor)
             {
                 reserve(Direction.RIGHT);
                 m.setHeading(Direction.RIGHT);
@@ -260,7 +261,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             }
             else
             {
-                if (Main.DEBUG) printNeighborDebug(nextSenderInList, m.type.toString());
+                if (Main.DEBUG) printNeighborDebug(nextIMessagableToReserve, m.type.toString());
                 printNeighborError(m.type.toString());
             }
         }

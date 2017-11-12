@@ -306,11 +306,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             //todo: Check if already reserved? Second train
 
             //Actually pop the sender this time. It will be either the right or left neighbor, if this was done correctly.
-            IMessagable cameFrom = m.popRouteList(); //RailSwitch cares who it came from.
+            IMessagable cameFrom = m.getMostRecentSender(); //RailSwitch cares who it came from.
             IMessagable goingTo = m.popRouteList(); //Also cares where it's going
-            m.pushRouteList(this);             //Sign the message
-
-
+            //***m.pushRouteList(this);             //Sign the message
+            
             if (cameFrom == aloneNeighbor)
             {
                 if (goingTo == switchSideOtherNeighbor)

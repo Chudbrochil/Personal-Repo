@@ -143,12 +143,17 @@ public class Station extends Thread implements IMessagable, IDrawable
             else if (m.STATION.equals(this.NAME))
             {
                 if (Main.DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
+                m.pushRouteList(this);
                 m.type = MessageType.RESERVE_ROUTE;
                 if (neighborSide == Direction.RIGHT) m.setHeading(Direction.RIGHT);
                 else m.setHeading(Direction.LEFT);
-                IMessagable mostRecentSender = m.popRouteList();
-                m.pushRouteList(this); //sign the message before you send it on.
-                if (mostRecentSender == neighbor) sendMessage(m, neighbor);
+                IMessagable mostRecentSender = m.getMostRecentSender();
+                if (mostRecentSender == neighbor)
+                {
+                    m.popRouteList(); //Pop yourself off the route list. Still saved in the reverse list inside m.
+                    m.popRouteList(); //Pop the neighbor you're about to send it to off the list. Still saved in the reverse list inside m.
+                    sendMessage(m, neighbor);
+                }
                 else
                 {
                     if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
@@ -163,7 +168,7 @@ public class Station extends Thread implements IMessagable, IDrawable
             //message that the train that is IN this station
 
             //The first sender is who sent this message. Station doesn't care about that--just the Train it's going to.
-            m.popRouteList();
+            //***m.popRouteList();
             IMessagable nextSenderInList = m.popRouteList();
             if (nextSenderInList instanceof Train)
             {

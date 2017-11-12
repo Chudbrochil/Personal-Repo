@@ -16,7 +16,7 @@ public class Message
 {
     public final String TRAIN;    //Train who originated this message--identifier/name.
     private Stack<IMessagable> routeList;   //Keeps track of who has passed the message. Used to retrace steps. (often message type is changed.)
-    private Stack<IMessagable> poppedRouteList;
+    private Stack<IMessagable> poppedRouteList; //stores the rest of the list in the order it was popped off. Can be used to 'reverse' the direction of the message.
     private IMessagable mostRecentSender;
     public MessageType type;     //Enum that tells the Rail pieces what they should do with this message.
     public final String STATION; //name of the station requested or found, depending on the message type.
@@ -114,6 +114,7 @@ public class Message
         mostRecentSender = sender;
     }
     
+    //todo: reverseRouteList
     
     /**
      * @param direction Direction the train or message is heading.
