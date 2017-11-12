@@ -252,6 +252,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             if(reserved)
             {
                 m.type = MessageType.ABORT_RESERVE_ROUTE;
+                m.popRouteList(); //pop yourself off so that you don't cause bugs.
+                
                 m.reverseRouteList();
                 //will now go backwards to the Rail component that just sent this message.
                 IMessagable nextIMessagableToInform = m.popRouteList();
@@ -296,7 +298,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             if(reserved)
             {
                 unreserve();
-                m.popRouteList(); //pop yourself off so that you don't cause bugs.
                 IMessagable nextIMessagableToInform = m.popRouteList();
                 if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
                 else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);

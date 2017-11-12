@@ -311,6 +311,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             {  //TODO: ANTHONY: This code is new and could be the source of the bug.
                 m.type = MessageType.ABORT_RESERVE_ROUTE;
                 m.reverseRouteList();
+                m.popRouteList(); //pop yourself off so that you don't cause bugs.
                 //will now go backwards to the Rail component that just sent this message.
                 IMessagable nextIMessagableToInform = m.popRouteList();
         
@@ -388,8 +389,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             if(reserved)
             {
                 unreserve();
-                IMessagable popped = m.popRouteList(); //pop yourself off so that you don't cause bugs.
-                System.out.println("Popped: "+popped.toString());
                 //should be the next track to be unreserved
                 IMessagable nextIMessagableToInform = m.popRouteList();
                 if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
