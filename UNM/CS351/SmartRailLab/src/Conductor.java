@@ -1,5 +1,6 @@
 import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
@@ -22,11 +23,11 @@ public class Conductor
     private int trainyardY = 520;
     private Train currentTrain;
     private static int MAX_TRAINS;
-    private TextField tfOutput;
+    private Label tfOutput;
     private GraphicsContext gcDraw;
 
 
-    public Conductor(TextField tfOutput, GraphicsContext gcDraw)
+    public Conductor(Label tfOutput, GraphicsContext gcDraw)
     {
         this.tfOutput = tfOutput;
         this.gcDraw = gcDraw;
@@ -70,7 +71,7 @@ public class Conductor
             {
                 currentTrain.requestRoute(stationClicked.toString());
                 playSound("Train_Whistle.wav");
-                tfOutput.setText("Request route: " + stationClicked.toString());
+                tfOutput.setText(currentTrain.toString() + " requested a route to " + stationClicked.toString());
 
                 // TODO: Weird situation where if a useer puts a train in a station, but doesn't give it a route right away
                 // then it will be stuck there forever...

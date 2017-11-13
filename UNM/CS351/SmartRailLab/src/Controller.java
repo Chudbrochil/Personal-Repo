@@ -2,6 +2,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Controller
     private Canvas canvasRail;
 
     @FXML
-    private TextField tfOutput;
+    private Label lblOutput;
 
     private GraphicsContext gcDraw;
 
@@ -28,7 +29,7 @@ public class Controller
     private void initialize()
     {
         gcDraw = canvasRail.getGraphicsContext2D();
-        conductor = new Conductor(tfOutput, gcDraw);
+        conductor = new Conductor(lblOutput, gcDraw);
         userSelectConfig();
     }
 

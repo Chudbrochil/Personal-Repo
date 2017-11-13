@@ -176,8 +176,6 @@ public class TrackLine
             // Fixes the annoying issue of threads outliving main
             ((Thread) messagableList.get(i)).setDaemon(true);
             ((Thread) messagableList.get(i)).start();
-
-
         }
     }
 
