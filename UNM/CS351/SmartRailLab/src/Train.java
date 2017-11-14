@@ -197,6 +197,9 @@ public class Train extends Thread implements IMessagable, IDrawable
      *          Receives this message from a station to request which Direction, LEFT or RIGHT, the train is 'facing.'
      *          GO
      *          Receives this message fom a station when a route has been successfully found for this train.
+     *          WAIT_FOR_CLEAR_ROUTE
+     *          Receiveing this message means that a route was found to the Station destination, but it is busy at this time.
+     *          So, wait for a bit, and then request the route again.
      */
     private void readMessage(Message m)
     {
@@ -227,6 +230,14 @@ public class Train extends Thread implements IMessagable, IDrawable
                 System.err.println(toString() + " received a go signal from " + m.peekRouteList() + ", which is not a neighbor.");
             }
         }
+        
+        else if (m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
+        {
+            if(Main.DEBUG) System.out.println(toString()+" received a "+MessageType.WAIT_FOR_CLEAR_ROUTE.toString()+" message. ");
+            try { Thread.sleep(5000); } catch (InterruptedException e){}
+            requestRoute(destination);
+        }
+        
         //Train should only receive this message if it sent it.
         //Train pops the first reference off the sender list, which is the track it should be going to. Then
         //checks the next sender list reference, which is the actual sender. This reference STAYS. The train pushes

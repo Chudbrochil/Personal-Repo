@@ -190,6 +190,21 @@ public class Station extends Thread implements IMessagable, IDrawable
                 return;
             }
         }
+
+        //WAIT_FOR_CLEAR_ROUTE
+        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
+        {
+            //Continue sending on the message in the direction it was going. This will eventually get to the train.
+            IMessagable nextIMessagableToInform = m.popRouteList();
+    
+            if(nextIMessagableToInform instanceof Train) sendMessage(m, nextIMessagableToInform);
+            else
+            {
+                if (Main.DEBUG) System.out.println(toString()+" received a message type "+m.type.toString()+" from "+m.getMostRecentSender().toString()+
+                ", but the last RouteList variable was "+ nextIMessagableToInform.toString()+", which is not a Train.");
+                System.err.println("Station received a message type "+ m.type.toString()+" but the next sender in the route list was not a Train.");
+            }
+        }
         
         else if (m.type == MessageType.ABORT_RESERVE_ROUTE)
         {

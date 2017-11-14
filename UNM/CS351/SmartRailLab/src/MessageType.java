@@ -20,6 +20,8 @@ public enum MessageType
      *   that receives a RESERVE_ROUTE is already reserved, it calls reverseRouteList() on the message to be able
      *   to send it backwards and changes the message type to ABORT_ROUTE_RESERVE. Then it unreserves itself and the
      *   message is forwarded to the next IMessagable in that list.
+     * WAIT_FOR_CLEAR_ROUTE
+     *
      */
-    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, TRAIN_GOODBYE_UNRESERVE, ABORT_RESERVE_ROUTE
+    SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, TRAIN_GOODBYE_UNRESERVE, ABORT_RESERVE_ROUTE, WAIT_FOR_CLEAR_ROUTE
 }

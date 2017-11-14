@@ -186,19 +186,24 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
      *          Parses and acts on the given Message.
      *          <p>
      *          SEARCH_FOR_ROUTE
-     *          Adds itself to the sender list.
+     *          Adds itself to the route list.
      *          Checks who the message is from and forwards the message to its other neighbor.
      *          If it came from the left and the message is going to the right but right is null, for example, the message
      *          just doesn't get sent anywhere.
      *          RESERVE_ROUTE
-     *          Reserves itself and its light, if applicable.
-     *          Then pops the next member off the sender list in Message m and forwards the message to that Rail component
+     *          Checks if this RailTrack is already reserved. If it is, reverses the route list in m and changes the type to ABORT_RESERVE_ROUTE.
+     *          If RailTrack is not reserved, it reserves itself and its light, if applicable.
+     *          Then pops the next member off the route list in Message m and forwards the message to that Rail component
      *          IF it is a neighbor of this track. If it is not, an error message is printed and the message is dropped.
-     *          Adds itself to the sender list, then sends it off.
+     *          WAIT_FOR_CLEAR_ROUTE
+     *          Forwards the message to the next route list neighbor.
+     *          ABORT_REVERSE_ROUTE
+     *          If this track is reserved on behalf of the train who first made this message, unreserve yourself and
+     *          pass on the message to the next track, one of your neighbors, that needs to be unreserved. (Obtained from the Route List.)
      *          REQUEST_NEXT_TRACK
-     *          Pulls train from the sender list
+     *          Pulls train from the route list
      *          Pops the next sender, which is the track the train was previously on
-     *          Pushes itself and then the next track the train should be going to to the sender list
+     *          Pushes itself and then the next track the train should be going to to the route list
      *          Sends the message back to the train.
      *          TRAIN_GOODBYE_UNRESERVE
      *          If the first sender is a train, it calls 'unreserve' on itself. To be sent when the train leaves the track.
@@ -233,10 +238,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                     sendMessage(m, neighborToSendTo);
                     //Only one instance of this message needed because only one instance is being sent out.
                 }
-                //else... //todo: If we need to send a negative 'no route found' message back, we can do that here.
-                //maybe the train only acts if it finds a route. Otherwise... It just sits? Maybe after a while it gets
-                // a new destination. If we send emssages back we'd have to wait a set amount of time for all the answers
-                //to 'come in' as well.
             }
             else
             {
@@ -251,10 +252,13 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             //If the track is already reserved, this new route must be aborted and tried again later.
             if(reserved)
             {
+                Message waitMessage = m.clone();
+                
+                //ABORT_RESERVE_ROUTE message
                 m.type = MessageType.ABORT_RESERVE_ROUTE;
+                m.reverseRouteList();
                 m.popRouteList(); //pop yourself off so that you don't cause bugs.
                 
-                m.reverseRouteList();
                 //will now go backwards to the Rail component that just sent this message.
                 IMessagable nextIMessagableToInform = m.popRouteList();
                 
@@ -265,8 +269,19 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                     if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
                     printNeighborError(m.type.toString());
                 }
-
-                //todo: WAIT_FOR_ROUTE send message back to train saying "TrainX is in your way. Wait and request the route again later."
+                
+                //WAIT_FOR_CLEAR_ROUTE message
+                waitMessage.type = MessageType.WAIT_FOR_CLEAR_ROUTE;
+                //Continue sending on the message in the direction it was going. This will eventually get to the train.
+                nextIMessagableToInform = waitMessage.popRouteList();
+                
+                if(nextIMessagableToInform == leftNeighbor) sendMessage(waitMessage, leftNeighbor);
+                else if(nextIMessagableToInform == rightNeighbor) sendMessage(waitMessage, rightNeighbor);
+                else
+                {
+                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
+                    printNeighborError(waitMessage.type.toString());
+                }
                 return;
             }
 
@@ -292,12 +307,29 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             }
         }
         
+        //WAIT_FOR_CLEAR_ROUTE
+        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
+        {
+            //Continue sending on the message in the direction it was going. This will eventually get to the train.
+            IMessagable nextIMessagableToInform = m.popRouteList();
+    
+            if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
+            else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
+            else
+            {
+                if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
+                printNeighborError(m.type.toString());
+            }
+        }
+        
         //ABORT_RESERVE_ROUTE
         else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
         {
+            //todo: implement heading?
             if(reserved && trainReservedFor.equals(m.TRAIN))
             {
                 unreserve();
+                //should be the next track to be unreserved
                 IMessagable nextIMessagableToInform = m.popRouteList();
                 if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
                 else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
