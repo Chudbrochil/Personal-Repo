@@ -231,21 +231,26 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      *          Parses and acts on the given Message.
      *          <p>
      *          SEARCH_FOR_ROUTE
-     *          Adds itself to the sender list.
+     *          Adds itself to the route list.
      *          Checks who the message is from and forwards the message to its other neighbor or neighbors.
      *          If it came from the left, the switch sends it to its two right neighbors.
      *          If it came from either of the right neighbors, it sends it to the left neighbor.
      *          If it came from the left and the message is going to the right but right is null, for example, the message
      *          just doesn't get sent anywhere.
      *          RESERVE_ROUTE
-     *          Reserves itself and its light, if applicable.
-     *          Then pops the next member off the sender list in Message m and forwards the message to that Rail component
+     *          Checks if this RailSwitch is already reserved. If it is, reverses the route list in m and changes the type to ABORT_RESERVE_ROUTE.
+     *          If RailSwitch is not reserved, it reserves itself and its light, if applicable.
+     *          Then pops the next member off the route list in Message m and forwards the message to that Rail component
      *          IF it is a neighbor of this track. If it is not, an error message is printed and the message is dropped.
-     *          Adds itself to the sender list, then sends it off.
+     *          WAIT_FOR_CLEAR_ROUTE
+     *          Forwards the message to the next route list neighbor.
+     *          ABORT_REVERSE_ROUTE
+     *          If this track is reserved on behalf of the train who first made this message, unreserve yourself and
+     *          pass on the message to the next track, one of your neighbors, that needs to be unreserved. (Obtained from the Route List.)
      *          REQUEST_NEXT_TRACK
-     *          Pulls train from the sender list
+     *          Pulls train from the route list
      *          Pops the next sender, which is the track the train was previously on
-     *          Pushes itself and then the next track the train should be going to to the sender list
+     *          Pushes itself and then the next track the train should be going to to the route list
      *          Sends the message back to the train.
      *          TRAIN_GOODBYE_UNRESERVE
      *          If the first sender is a train, it calls 'unreserve' on itself. To be sent when the train leaves the track.
@@ -253,7 +258,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      */
     private void readMessage(Message m)
     {
-        /** This code executes to assign these members to make code module moving forward.**/
+        /** This code labels the left and right neighbors to make the following code module for different switch types (up or down).**/
         IMessagable switchSideOtherNeighbor;
         IMessagable aloneNeighbor;
 
@@ -305,10 +310,14 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 printNeighborError(m.type.toString());
             }
         }
+        
         else if (m.type == MessageType.RESERVE_ROUTE)
         {
             if(reserved)
             {
+                Message waitMessage = m.clone();
+                
+                //ABORT_ROUTE message
                 m.type = MessageType.ABORT_RESERVE_ROUTE;
                 m.reverseRouteList();
                 m.popRouteList(); //pop yourself off so that you don't cause bugs.
@@ -322,6 +331,20 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 {
                     if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
                     printNeighborError(m.type.toString());
+                }
+    
+                //WAIT_FOR_CLEAR_ROUTE message
+                waitMessage.type = MessageType.WAIT_FOR_CLEAR_ROUTE;
+                //Continue sending on the message in the direction it was going. This will eventually get to the train.
+                nextIMessagableToInform = waitMessage.popRouteList();
+    
+                if(nextIMessagableToInform == leftNeighbor) sendMessage(waitMessage, leftNeighbor);
+                else if(nextIMessagableToInform == rightNeighbor) sendMessage(waitMessage, rightNeighbor);
+                else if(nextIMessagableToInform == switchNeighbor) sendMessage(waitMessage, switchNeighbor);
+                else
+                {
+                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
+                    printNeighborError(waitMessage.type.toString());
                 }
                 
                 return;
@@ -382,9 +405,25 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             }
         }
 
-        //TODO: ANTHONY: This code is new and could be the source of the bug.
+        //WAIT_FOR_CLEAR_ROUTE
+        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
+        {
+            //Continue sending on the message in the direction it was going. This will eventually get to the train.
+            IMessagable nextIMessagableToInform = m.popRouteList();
+    
+            if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
+            else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
+            else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);
+            else
+            {
+                if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
+                printNeighborError(m.type.toString());
+            }
+        }
+        
         else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
         {
+            //todo: implement heading?
             if(reserved && trainReservedFor.equals(m.TRAIN))
             {
                 unreserve();

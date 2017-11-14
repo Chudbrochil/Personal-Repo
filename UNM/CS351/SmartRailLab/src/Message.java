@@ -142,6 +142,12 @@ public class Message
     }
 
     @Override
+    /**
+     * Used by switches looking for a route and rail pieces when a reservation conflict is found (to make an ABORT_RESERVE_ROUTE
+     * as well as a WAIT_FOR_CLEAR_ROUTE messages to send in different directions.)
+     *
+     * Retains the routeList information, so cloning, rather than making an new message, is important.
+     */
     public Message clone()
     {
         return new Message(this.type, this.TRAIN, this.routeList, this.poppedRouteList, this.mostRecentSender,
