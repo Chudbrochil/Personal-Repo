@@ -10,10 +10,6 @@ public class TrackLine
     private GraphicsContext gcDraw;
     private int trackLineNum;
 
-    // TODO: Dynamic city selection?
-    private static ArrayList<String> westCoastCities;
-    private static ArrayList<String> eastCoastCities;
-
     /**
      * TrackLine()
      * TrackLine's constructor. This will be fed in an array of items corresponding to what that grid piece on the
@@ -28,8 +24,6 @@ public class TrackLine
         drawableList = new ArrayList<>();
         messagableList = new ArrayList<>();
         stationList = new ArrayList<>();
-        westCoastCities = new ArrayList<>();
-        eastCoastCities = new ArrayList<>();
         this.gcDraw = gcDraw;
         this.trackLineNum = trackLineNum;
         initializeComponents(components);

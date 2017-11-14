@@ -24,7 +24,7 @@ public class Main extends Application
     {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLDocumentController.fxml"));
         primaryStage.setTitle("SmartRail!");
-        primaryStage.setScene(new Scene(root, 800, 800));
+        primaryStage.setScene(new Scene(root, 800, 1000));
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> System.exit(0));
     }

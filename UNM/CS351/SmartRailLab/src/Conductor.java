@@ -12,11 +12,10 @@ public class Conductor
     private ArrayList<IDrawable> drawableList;
     private ArrayList<Train> activeTrains;
     private int trainyardX = 100;
-    private int trainyardY = 520;
+    private int trainyardY = 820;
     private Train currentTrain;
     private static int MAX_TRAINS;
     private GraphicsContext gcDraw;
-
 
     /**
      * Conductor()
@@ -138,7 +137,6 @@ public class Conductor
      * This effectively becomes a thread that is constantly redrawing the canvas.
      * Inspired by https://stackoverflow.com/questions/3541676/java-thread-every-x-seconds
      */
-    // TODO: I may need to end this thread when the program closes, it might be a bit rogue
     private void reDraw()
     {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
@@ -147,8 +145,8 @@ public class Conductor
             @Override
             public void run()
             {
-                gcDraw.clearRect(0, 0, 800, 600);
-                gcDraw.fillText("Trainyard", 10, 530);
+                gcDraw.clearRect(0, 0, 800, 900);
+                gcDraw.fillText("Trainyard", 10, 830);
                 for (int i = 0; i < drawableList.size(); ++i)
                 {
                     drawableList.get(i).draw();
