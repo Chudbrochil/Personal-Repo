@@ -15,7 +15,10 @@ public class Controller
     private Canvas canvasRail;
 
     @FXML
-    private Label lblOutput;
+    private Label lblUserAlert;
+
+    @FXML
+    private Label lblSimStatus;
 
     private GraphicsContext gcDraw;
 
@@ -29,7 +32,8 @@ public class Controller
     private void initialize()
     {
         gcDraw = canvasRail.getGraphicsContext2D();
-        conductor = new Conductor(lblOutput, gcDraw);
+        Logger logger = new Logger(lblUserAlert, lblSimStatus);
+        conductor = new Conductor(gcDraw);
         userSelectConfig();
     }
 

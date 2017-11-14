@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -209,7 +210,10 @@ public class Train extends Thread implements IMessagable, IDrawable
                 {
                     if (Main.DEBUG)
                         System.out.println(toString() + " has received a message from " + m.peekRouteList().toString() +
-                                " to proceed to" + m.STATION.toString());
+                                " to proceed to " + m.STATION.toString());
+                    Logger.updateSimStatus(toString() + " has received a message from " + m.peekRouteList().toString() +
+                            " to proceed to " + m.STATION.toString());
+                    Conductor.playSound("Train_Whistle.wav");
                     going = true;
                     sendMessage(new Message(MessageType.REQUEST_NEXT_TRACK, NAME, this, destination, heading), currentTrack);
                 }
@@ -249,6 +253,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                         //todo: making this into a currentTrack = nextTrack makes the 'unreserves' look right, but the switches are way wrong then.
                         proceedTo(nextTrack);
                         System.out.println(toString() + " has arrived at destination, " + destination + "!");
+                        Logger.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
                         going = false;
                         //reset heading to current station.
                         //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);

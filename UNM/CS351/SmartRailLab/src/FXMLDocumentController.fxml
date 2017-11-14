@@ -11,12 +11,12 @@
 <GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
     <children>
         <Canvas fx:id="canvasRail" height="600.0" onMouseClicked="#canvasClicked" width="800.0" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-      <Label fx:id="lblOutput" text="Please click Make Train to make a new train to play with!" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Label fx:id="lblUserAlert" text="Please click Make Train to make a new train to play with!" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <font>
             <Font size="18.0" />
          </font></Label>
         <Button mnemonicParsing="false" onAction="#makeTrain" text="Make Train" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-      <Label text="What's going on in sim" GridPane.columnIndex="1">
+      <Label fx:id="lblSimStatus" text="What's going on in sim" GridPane.columnIndex="1">
          <font>
             <Font size="18.0" />
          </font>

@@ -23,13 +23,11 @@ public class Conductor
     private int trainyardY = 520;
     private Train currentTrain;
     private static int MAX_TRAINS;
-    private Label tfOutput;
     private GraphicsContext gcDraw;
 
 
-    public Conductor(Label tfOutput, GraphicsContext gcDraw)
+    public Conductor(GraphicsContext gcDraw)
     {
-        this.tfOutput = tfOutput;
         this.gcDraw = gcDraw;
         freshInitialize();
     }
@@ -70,8 +68,7 @@ public class Conductor
             if (currentTrain.hasAStation())
             {
                 currentTrain.requestRoute(stationClicked.toString());
-                playSound("Train_Whistle.wav");
-                tfOutput.setText(currentTrain.toString() + " requested a route to " + stationClicked.toString());
+                Logger.updateUserAlert(currentTrain.toString() + " requested a route to " + stationClicked.toString());
 
                 // TODO: Weird situation where if a useer puts a train in a station, but doesn't give it a route right away
                 // then it will be stuck there forever...
@@ -83,14 +80,14 @@ public class Conductor
                 // Setting the currentTrain's element to null so it's spot is now available, avoids redraw errors
                 activeTrains.set(activeTrains.indexOf(currentTrain), null);
                 currentTrain.setNeighbors(stationClicked, null);
-                tfOutput.setText(currentTrain.toString() + " has been put into " + stationClicked.toString() +
+                Logger.updateUserAlert(currentTrain.toString() + " has been put into " + stationClicked.toString() +
                         ". Select a destination.");
                 currentTrain.setCoords(stationClicked.getCanvasX() + 10, stationClicked.getCanvasY() + 10);
             }
         }
         else
         {
-            tfOutput.setText("You can't select a station without a train. Please make a train and select it.");
+            Logger.updateUserAlert("You can't select a station without a train. Please make a train and select it.");
         }
 
     }
@@ -114,7 +111,7 @@ public class Conductor
                 if (activeTrains.get(i).isInClickedArea(x, y))
                 {
                     currentTrain = activeTrains.get(i);
-                    tfOutput.setText("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
+                    Logger.updateUserAlert("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
                 }
             }
 
@@ -197,7 +194,7 @@ public class Conductor
      */
     public void makeTrain()
     {
-        tfOutput.setText("Please select a train and then select your station for it to start.");
+        Logger.updateUserAlert("Please select a train and then select your station for it to start.");
 
         // This is all to make sure that the train is drawn in a unique spot. If trains are removed in the middle
         // of the drawn list, the behavior can get kind of weird. This check protects against this.
@@ -231,12 +228,13 @@ public class Conductor
     /**
      * playSound()
      * Plays a given sound.
+     * There is no reason that this can't be a static. It doesn't hold any state.
      * @param filePath Path of the sound you're trying to play
      */
-    private void playSound(String filePath)
+    public static void playSound(String filePath)
     {
         try{
-            InputStream is = getClass().getResourceAsStream(filePath);
+            InputStream is = Conductor.class.getResourceAsStream(filePath);
             AudioStream audioStream = new AudioStream(is);
             AudioPlayer.player.start(audioStream);
         }
