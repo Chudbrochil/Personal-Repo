@@ -18,6 +18,11 @@ public class Conductor
     private GraphicsContext gcDraw;
 
 
+    /**
+     * Conductor()
+     * Conductor's constructor
+     * @param gcDraw Graphics context used to draw on canvas
+     */
     public Conductor(GraphicsContext gcDraw)
     {
         this.gcDraw = gcDraw;

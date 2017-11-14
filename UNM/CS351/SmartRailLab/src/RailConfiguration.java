@@ -11,6 +11,13 @@ public class RailConfiguration
     private GraphicsContext gcDraw;
     private ArrayList<Station> stationList;
 
+    /**
+     * RailConfiguration()
+     * RailConfiguration's constructor. This class is used for setting up an initial simulation/configuration.
+     * The initial draw and loading of tracks will happen here. Additionally, switches will get attached to their
+     * neighbors here as well.
+     * @param gcDraw Graphics context given for drawing on the canvas.
+     */
     public RailConfiguration(GraphicsContext gcDraw)
     {
         trackLines = new ArrayList<>();
@@ -20,10 +27,8 @@ public class RailConfiguration
 
     /**
      * loadTracks()
-     *
      * This loads all of the trackline objects into drawable lists and imessagable lists.
      * This also allows the initial draw to be done.
-     *
      * @param trackLines A list holding objects that hold all components in a line.
      */
     public void loadTracks(ArrayList<TrackLine> trackLines)
@@ -33,9 +38,7 @@ public class RailConfiguration
 
     /**
      * drawInitialComponents()
-     *
      * Does the first draw of all the components. This is done one trackLine at a time.
-     *
      * @return The full list of all drawable items. These need to be redrawn by the controller.
      */
     public ArrayList<IDrawable> drawInitialComponents()
@@ -115,10 +118,8 @@ public class RailConfiguration
 
     /**
      * getStationList()
-     *
      * Returns the full list of stations. We need these to get trains to hook into for initial placement and
      * requesting routes.
-     *
      * @return A list of all the station objects.
      */
     public ArrayList<Station> getStationList()

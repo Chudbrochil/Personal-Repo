@@ -41,6 +41,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
 
     /**
      * RailSwitch constructor
+     * RailSwitch is a switch that a train can travel on to switch from one trackline to another. For each full switch
+     * there will be 2 objects. A top switch and a bottom switch. This makes sense because ultimately a switch is a
+     * piece on the top track and bottom track. These objects will get attached to eachother later in the initialization
+     * of objects.
      * @param trackLight Light that is attached to a given switch
      * @param gcDraw Graphics context to draw on
      * @param x x-coord to draw on
@@ -91,6 +95,11 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * draw()
+     * Draws a switch depending on it's current configuration. If the switch is a "downleft" switch then it is drawn
+     * as a regular track. Otherwise we have special graphics for the "upright" switch.
+     */
     public void draw()
     {
         // Various ways in which a switch should paint itself.
@@ -119,6 +128,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * run()
      * Check pendingMessages. If it is empty, wait. (Notify is in the recMessage() method)
      */
     public void run()

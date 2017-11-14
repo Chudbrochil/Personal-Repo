@@ -23,6 +23,16 @@ public class Message
     private Direction heading;
 
 
+    /**
+     * Message()
+     *
+     * TODO: This should be commented by Anna...
+     * @param m
+     * @param trainSender
+     * @param firstSender
+     * @param station
+     * @param direction
+     */
     public Message(MessageType m, String trainSender, IMessagable firstSender, String station, Direction direction)
     {
         TRAIN = trainSender;
@@ -36,6 +46,8 @@ public class Message
     }
 
     /**
+     * Message()
+     * Message clone constructor
      * For making clones of messages ONLY.
      */
     private Message(MessageType m, String trainSender, Stack<IMessagable> route, Stack<IMessagable> poppedList, IMessagable recentSender,
@@ -53,6 +65,7 @@ public class Message
     }
 
     /**
+     * toString()
      * To be used for debugging purposes.
      *
      * @return message data fields in an intelligible way.
@@ -64,6 +77,7 @@ public class Message
     }
 
     /**
+     * popRouteList()
      * @return The most recently added value in the routeList is returned. (The most recently visited neighbor or the next
      *         neighbor to send the message to next, depending on the type of message.)
      */
@@ -75,6 +89,7 @@ public class Message
     }
 
     /**
+     * pushRouteList()
      * @param s IMessagable sender to be added to the routeList.
      */
     public void pushRouteList(IMessagable s)
@@ -83,6 +98,7 @@ public class Message
     }
 
     /**
+     * senderListIsEmpty()
      * @return true if the routeList has more members. False if it is empty.
      */
     public boolean senderListIsEmpty()
@@ -91,6 +107,7 @@ public class Message
     }
 
     /**
+     * peekRouteList()
      * @return the most recent sender (top of the stack) without removing it.
      */
     public IMessagable peekRouteList()
@@ -99,6 +116,8 @@ public class Message
     }
     
     /**
+     * getMostRecentSender()
+     * TODO: Comment...
      * @return mostRecentSender
      */
     public IMessagable getMostRecentSender()
@@ -107,6 +126,7 @@ public class Message
     }
     
     /**
+     * setMostRecentSender()
      * @param sender Should always be called as (this) before sending the message.
      */
     public void setMostRecentSender(IMessagable sender)
@@ -115,6 +135,7 @@ public class Message
     }
     
     /**
+     * reverseRouteList()
      * Reverses the route list as though you're reversing the order of traversal on an array list.
      * This method should be called if an ABORT_RESERVE_ROUTE is called because there is a route conflict.
      */
@@ -126,6 +147,7 @@ public class Message
     }
     
     /**
+     * setHeading()
      * @param direction Direction the train or message is heading.
      */
     public void setHeading(Direction direction)
@@ -134,6 +156,7 @@ public class Message
     }
 
     /**
+     * getHeading()
      * @return Direction the train and/or message is heading.
      */
     public Direction getHeading()
@@ -143,6 +166,7 @@ public class Message
 
     @Override
     /**
+     * clone()
      * Used by switches looking for a route and rail pieces when a reservation conflict is found (to make an ABORT_RESERVE_ROUTE
      * as well as a WAIT_FOR_CLEAR_ROUTE messages to send in different directions.)
      *

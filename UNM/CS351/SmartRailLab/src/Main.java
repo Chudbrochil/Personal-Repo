@@ -14,6 +14,11 @@ public class Main extends Application
 
     public static boolean DEBUG = true;
 
+    /**
+     * start()
+     * @param primaryStage Stage that we are drawing via FXML
+     * @throws Exception Just in case we get a UI exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception
     {
@@ -23,7 +28,11 @@ public class Main extends Application
         primaryStage.show();
     }
 
-
+    /**
+     * main()
+     * Starts the primary stage, launchs the UI.
+     * @param args Default command line args
+     */
     public static void main(String[] args)
     {
         launch(args);

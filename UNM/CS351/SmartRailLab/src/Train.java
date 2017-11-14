@@ -41,18 +41,19 @@ public class Train extends Thread implements IMessagable, IDrawable
     private final int knownTrainSizeX = 69;
     private final int knownTrainSizeY = 14;
 
-    //todo: list of stations you can visit?
-    public Train()
+    /**
+     * Train()
+     * Train's constructor. This will create a train for us to place in a station and navigate routes.
+     * @param gcDraw Graphics context for drawing on canvas.
+     * @param x x-coord to draw train on
+     * @param y y-coord to draw train on
+     */
+    public Train(GraphicsContext gcDraw, int x, int y)
     {
         NAME = "Train" + trainIncrement;
         trainIncrement++;
         trainImgInit();
         heading = Direction.RIGHT;
-    }
-
-    public Train(GraphicsContext gcDraw, int x, int y)
-    {
-        this();
         this.gcDraw = gcDraw;
         canvasX = x;
         canvasY = y;
@@ -163,6 +164,10 @@ public class Train extends Thread implements IMessagable, IDrawable
         sendMessage(message, currentTrack);
     }
 
+    /**
+     * toString()
+     * @return String representing the name of the train.
+     */
     @Override
     public String toString()
     {

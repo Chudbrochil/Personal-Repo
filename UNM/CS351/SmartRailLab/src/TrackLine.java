@@ -14,6 +14,15 @@ public class TrackLine
     private static ArrayList<String> westCoastCities;
     private static ArrayList<String> eastCoastCities;
 
+    /**
+     * TrackLine()
+     * TrackLine's constructor. This will be fed in an array of items corresponding to what that grid piece on the
+     * track should look like.
+     * @param components Digits corresponding to what should be created and drawn on the board.
+     * @param gcDraw Graphics context that we want to draw on.
+     * @param trackLineNum What track line number is this? i.e. Is it the very first track? (element 0) This is important
+     *                     for giving the components an accurate y position to be drawn on.
+     */
     public TrackLine(String[] components, GraphicsContext gcDraw, int trackLineNum)
     {
         drawableList = new ArrayList<>();

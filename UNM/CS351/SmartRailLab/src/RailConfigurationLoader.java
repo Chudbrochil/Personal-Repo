@@ -13,6 +13,14 @@ public class RailConfigurationLoader
     private ArrayList<TrackLine> trackLines;
     private RailConfiguration rc;
 
+    /**
+     * RailConfigurationLoader()
+     * RailConfigurationLoader's constructor. This class is used to interface with a file structure that holds what
+     * a given train simulation should look like. This is done by loading the CSV file, reading it, filling an array
+     * with it's values and feeding it to RailConfiguration/TrackLine.
+     * This class could easily be converted to XML/other file format
+     * @param rc RailConfiguration object that will use this class' output
+     */
     public RailConfigurationLoader(RailConfiguration rc)
     {
         trackLines = new ArrayList<>();

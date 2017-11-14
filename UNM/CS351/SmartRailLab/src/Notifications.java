@@ -16,6 +16,13 @@ public class Notifications
 
     private static Label lblUserAlert, lblSimStatus;
 
+    /**
+     * Notifications()
+     * Notifications constructor. This class is used for notifying the user about what is going on in the simulation.
+     * This can be the form of updating labels, sounds or debug statements.
+     * @param lblUserAlert
+     * @param lblSimStatus
+     */
     public Notifications(Label lblUserAlert, Label lblSimStatus)
     {
         this.lblUserAlert = lblUserAlert;
@@ -59,7 +66,5 @@ public class Notifications
         }
         catch(IOException e) { System.out.println(e.getMessage()); }
     }
-
-
 
 }

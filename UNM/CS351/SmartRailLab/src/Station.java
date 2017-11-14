@@ -25,19 +25,20 @@ public class Station extends Thread implements IMessagable, IDrawable
     private int canvasY;
     private int side;
 
-    public Station()
+    /**
+     * Station()
+     * Station's constructor. This is a station that will serve as a loading point for trains and destination point
+     * for trains. Station's are critical to messaging as this is where "GO" messages will be sent from as well as
+     * termination for SEARCH_FOR_ROUTE and other critical messaging pieces.
+     * @param name Name of the station.
+     * @param gcDraw Graphics context to draw the station on the canvas
+     * @param x x-coord of the station
+     * @param y y-coord of the station
+     */
+    public Station(String name, GraphicsContext gcDraw, int x, int y)
     {
         NAME = "Station" + stationIncrement;
         stationIncrement++;
-    }
-
-    public Station(String name)
-    {
-        NAME = name;
-    }
-
-    public Station(String name, GraphicsContext gcDraw, int x, int y)
-    {
         NAME = name;
         this.gcDraw = gcDraw;
         canvasX = x;
@@ -120,6 +121,10 @@ public class Station extends Thread implements IMessagable, IDrawable
         gcDraw.fillText(this.toString(), canvasX + 30, canvasY + 30);
     }
 
+    /**
+     * toString()
+     * @return String representing the name of the Station.
+     */
     @Override
     public String toString()
     {
@@ -149,6 +154,7 @@ public class Station extends Thread implements IMessagable, IDrawable
     /**
      * TODO: document responses. XD
      *
+     * readMessage()
      * ABORT_RESERVE_ROUTE
      *   Prints a debug statement
      * @param m
@@ -251,12 +257,23 @@ public class Station extends Thread implements IMessagable, IDrawable
         //Does not implement ABORT_RESERVE_ROUTE.
     }
 
+    /**
+     * printNeighborDebug()
+     * TODO: Comment this.
+     * @param mostRecentSender
+     * @param messageType
+     */
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
     {
         System.out.println(this.toString() + " just got a message (type " + messageType + ") from " + mostRecentSender + ", which is"
                 + "not a neighbor. No message sent.");
     }
 
+    /**
+     * printNeighborError()
+     * TODO: Comment this.
+     * @param type
+     */
     private void printNeighborError(String type)
     {
         System.err.println("Message passed from Rail piece to another that was not a neighbor. Message type: " + type);
@@ -277,6 +294,11 @@ public class Station extends Thread implements IMessagable, IDrawable
         neighbor.recvMessage(message);
     }
 
+    /**
+     * recvMessage()
+     * TODO: Comment this...
+     * @param message
+     */
     public synchronized void recvMessage(Message message)
     {
         if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
