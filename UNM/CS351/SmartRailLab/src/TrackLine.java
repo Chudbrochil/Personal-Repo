@@ -69,6 +69,7 @@ public class TrackLine
     }
 
     /**
+     * initializeComponents()
      * 0 station
      * 1 is track
      * 2 is track + light
@@ -81,9 +82,7 @@ public class TrackLine
      *    /
      *   /
      * ------------------------
-     */
-    /**
-     * initializeComponents()
+     *
      * This is where the majority of the objects get created. Based upon what type of configuration file was fed
      * into the simulation it will make a simulation.
      * @param components List of an individual track lines' corresponding key

@@ -69,7 +69,15 @@ public class RailConfiguration
     {
         ArrayList<IMessagable> aTrackLine = new ArrayList<>();
 
-        RailSwitch[] switchList = new RailSwitch[trackLines.get(0).getMessagableList().size()];
+        int maximumTrackSize  = 0;
+        for(int i = 0; i < trackLines.size(); ++i)
+        {
+            if(trackLines.get(i).getMessagableList().size() > maximumTrackSize)
+            {
+                maximumTrackSize = trackLines.get(i).getMessagableList().size();
+            }
+        }
+        RailSwitch[] switchList = new RailSwitch[maximumTrackSize];
 
         for (int i = 0; i < trackLines.size(); ++i)
         {
@@ -77,6 +85,7 @@ public class RailConfiguration
 
             for (int j = 0; j < aTrackLine.size(); ++j)
             {
+                System.out.print(j);
                 IMessagable currentComponent = aTrackLine.get(j);
                 if (currentComponent instanceof RailSwitch)
                 {

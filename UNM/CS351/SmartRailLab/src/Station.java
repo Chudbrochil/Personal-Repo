@@ -45,17 +45,26 @@ public class Station extends Thread implements IMessagable, IDrawable
         side = 80;
     }
 
+    /**
+     * getCanvasX()
+     * @return The int x-coord where this station is drawn
+     */
     public int getCanvasX()
     {
         return canvasX;
     }
 
+    /**
+     * getCanvasY()
+     * @return The int y-coord where this station is drawn
+     */
     public int getCanvasY()
     {
         return canvasY;
     }
 
     /**
+     * setNeighbors()
      * @param left  Station's neighbor if it is on the left. null otherwise
      * @param right Station's neighbor if it is on the right. null otherwise.
      *              This method MUST be called to use a Station.
@@ -77,6 +86,10 @@ public class Station extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * run()
+     * Reads any messages in the queue
+     */
     public void run()
     {
         while (true)
@@ -96,6 +109,7 @@ public class Station extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * draw()
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
     public void draw()
@@ -112,6 +126,12 @@ public class Station extends Thread implements IMessagable, IDrawable
         return NAME;
     }
 
+    /**
+     * isInClickedArea()
+     * @param x x-coord we are checking
+     * @param y y-coord we are checking
+     * @return True if the clicked spot is in the stations coordinates. False if not.
+     */
     public boolean isInClickedArea(int x, int y)
     {
         if (x >= canvasX + 10 && x <= canvasX + 10 + side &&
@@ -243,6 +263,7 @@ public class Station extends Thread implements IMessagable, IDrawable
     }
     
     /**
+     * sendMessage()
      * @param message The Message to send
      * @param neighbor IMessagable to which to send the message.
      *

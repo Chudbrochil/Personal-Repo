@@ -55,6 +55,7 @@ public class Controller
         configs.add("LightFourTrack.txt");
         configs.add("SwitchFourTrack.txt");
         configs.add("FancyFiveTrack.txt");
+        configs.add("FancyFiveTrack2.txt");
 
         ChoiceDialog dialog = new ChoiceDialog(configs.get(0), configs);
         dialog.setTitle("SmartRail!");
