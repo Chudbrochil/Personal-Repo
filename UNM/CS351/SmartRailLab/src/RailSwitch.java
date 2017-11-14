@@ -38,12 +38,16 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private static Image reserveTrackImg;
     private static Image switchRegularReserveImg;
     private static Image switchDiagonalReserveImg;
-    
+
     /**
-     * @param trackLight An instance of trackLight.
-     *                   Must be included because traffic of switches should always be protected by lights.
+     * RailSwitch constructor
+     * @param trackLight Light that is attached to a given switch
+     * @param gcDraw Graphics context to draw on
+     * @param x x-coord to draw on
+     * @param y y-coord to draw on
+     * @param switchSide Direction side of the switch the connection is on.
      */
-    public RailSwitch(RailLight trackLight)
+    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchSide)
     {
         NAME = "RailSwitch" + switchIncrement;
         switchIncrement++;
@@ -70,23 +74,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             switchDiagonalReserveImg = new Image("Switch-DiagonalReserve.png");
         }
         this.trackLight = trackLight;
-    }
 
-    /**
-     * // TODO: FIX COMMENTS
-     * * @param side Direction side of the Switch the connection is on.
-     * (RIGHT and UPRIGHT are synonymous
-     * (LEFT and DOWNLEFT are synonymous)
-     *
-     * @param trackLight
-     * @param gcDraw
-     * @param x
-     * @param y
-     * @param switchSide
-     */
-    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchSide)
-    {
-        this(trackLight);
         this.gcDraw = gcDraw;
         this.switchSide = switchSide;
         canvasX = x;
@@ -140,8 +128,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             while (!pendingMessages.isEmpty())
             {
                 readMessage(pendingMessages.poll());
-                // TODO: This is figuring out how the lights should be lit for switch
-                System.out.println("Reserved: " + reserved + " Switch engaged: " + switchEngaged);
             }
             //wait
             try
@@ -154,6 +140,11 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * recvMessage()
+     * This is where a RailSwitch receives a message and then notifies to process it.
+     * @param message Message that was sent to railswitch
+     */
     public synchronized void recvMessage(Message message)
     {
         if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
@@ -162,6 +153,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * setNeighbors()
      * @param left  IMessagable piece to the left of this piece. Initialized at runtime.
      * @param right IMessagable piece to the right of this piece. Initialized at runtime.
      *              null if no neighbor or a IMessagable class to which 'this' can pass messages.
@@ -173,26 +165,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * setSwitchNeighbor()
      * @param switchN IMessagable piece above this switch.
      */
     public void setSwitchNeighbor(IMessagable switchN)
     {
         switchNeighbor = switchN;
-
-    }
-
-    /**
-     * This method is for setting all 3 neighbors at once.
-     *
-     * @param left    IMessagable piece to the left of this piece. Initialized at runtime.
-     * @param right   IMessagable piece to the right of this piece. Initialized at runtime.
-     *                null if no neighbor or a IMessagable class to which 'this' can pass messages.
-     * @param switchN IMessagable piece above this switch.
-     */
-    public void setNeighbors(IMessagable left, IMessagable right, IMessagable switchN)
-    {
-        this.setNeighbors(left, right);
-        this.setSwitchNeighbor(switchN);
     }
 
     @Override
@@ -202,6 +180,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * reserve()
      * @param switchEng Whether the train needs the switch engaged or not.
      *    Engages the switch, reserves the light.
      * @param trainComingFrom Direction the train will come from. I.e, direction light should shine green.
@@ -215,6 +194,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         trackLight.reserve(switchEng, trainComingFrom);
     }
 
+    /**
+     * unreserve()
+     * Unreserves this switch for future use by other trains.
+     */
     private void unreserve()
     {
         reserved = false;
@@ -223,6 +206,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * readMessage()
      * @param m message
      *          input
      *          first message in pendingMessages.
@@ -505,6 +489,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * TODO: I'm not sure if I'm commenting this right.
+     * getNeighborSide()
+     * @param trackNeighbor The neighbor that you are checking
+     * @return The direction that this neighbor is on.
+     */
     private Direction getNeighborSide(IMessagable trackNeighbor)
     {
         if (trackNeighbor == rightNeighbor) return Direction.RIGHT;
@@ -512,6 +502,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
     
     /**
+     * sendMessage()
      * @param message The Message to send
      * @param neighbor IMessagable to which to send the message.
      *
@@ -527,6 +518,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
 
 
     /**
+     * printNeighborDebug()
      * @param mostRecentSender Neighbor who just sent the message
      * @param messageType      Type of message that went wrong
      *                         <p>
@@ -540,6 +532,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * printNeighborError()
      * @param type Type of message that went wrong
      *             <p>
      *             This method prints a System err statement "Message passed from Rail peice to another that was not a neighbor.

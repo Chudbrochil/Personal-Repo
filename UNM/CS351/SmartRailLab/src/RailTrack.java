@@ -29,7 +29,15 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private int canvasX;
     private int canvasY;
 
-    public RailTrack()
+
+    /**
+     * railTrack()
+     * RailTrack constructor.
+     * @param gcDraw Graphics context to draw on
+     * @param x x-coord of track
+     * @param y y-coord of track
+     */
+    public RailTrack(GraphicsContext gcDraw, int x, int y)
     {
         NAME = "Track" + trackIncrement;
         trackIncrement++;
@@ -43,31 +51,28 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             reserveTrackImg = new Image("Track-Reserve.png");
         }
         reserved = false;
-    }
-
-    public RailTrack(RailLight trackLight)
-    {
-        this();
-        this.trackLight = trackLight;
-    }
-
-    public RailTrack(GraphicsContext gcDraw, int x, int y)
-    {
-        this();
-        this.gcDraw = gcDraw;
-        canvasX = x;
-        canvasY = y;
-    }
-
-    public RailTrack(RailLight trackLight, GraphicsContext gcDraw, int x, int y)
-    {
-        this(trackLight);
+        //this();
         this.gcDraw = gcDraw;
         canvasX = x;
         canvasY = y;
     }
 
     /**
+     * railTrack()
+     * RailTrack constructor with a light.
+     * @param trackLight Light attached to the track.
+     * @param gcDraw Graphics context to draw on
+     * @param x x-coord of track
+     * @param y y-coord of track
+     */
+    public RailTrack(RailLight trackLight, GraphicsContext gcDraw, int x, int y)
+    {
+        this(gcDraw, x, y);
+        this.trackLight = trackLight;
+    }
+
+    /**
+     * setNeighbors()
      * @param left  IMessagable piece to the left of this piece. Initialized at runtime.
      * @param right IMessagable piece to the right of this piece. Initialized at runtime.
      *              null if no neighbor or a IMessagable class to which 'this' can pass messages.
@@ -79,6 +84,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * hasLight()
      * @return true if this track has a light.
      */
     public boolean hasLight()
@@ -87,6 +93,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * TODO: Do we need this? I still don't get the two-direction facing lights...
+     * trackLightGreenDirection()
      * @return the direction in which the light is green.
      * Returns null if the track has no light.
      */
@@ -97,6 +105,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * run()
      * Check pendingMessages. If it is empty, wait. (Notify is in the recMessage() method)
      */
     public void run()
@@ -119,6 +128,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * draw()
      * Draws the object on a canvas at location x,y according to its currrent state.
      */
     public void draw()
@@ -134,6 +144,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * recvMessage()
+     * This is where a RailTrack receives a message and then notifies to process it.
+     * @param message Message that was sent to railswitch
+     */
     public synchronized void recvMessage(Message message)
     {
         if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
@@ -148,6 +163,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
     
     /**
+     * reserve()
      * @param trainComingFrom Direction the train will approach this track from (RIGHT or LEFT). This is used to reserve
      *                        the light as green in the right direction.
      * @param trainName String train parameter of the Message m. Indicates which Train this track is reserved on behalf of.
@@ -163,6 +179,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
     
     /**
+     * unreserve()
      * Unreserves the track to allow other trains to pass over it.
      *
      * reserved becomes false, trainReservedFor becomes null, and unreserves light if applicable.
@@ -178,6 +195,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * readMessage()
      * @param m message
      *          input
      *          first message in pendingMessages.
@@ -397,6 +415,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * printNeighborDebug()
      * @param mostRecentSender Neighbor who just sent the message
      * @param messageType      Type of message that went wrong
      *                         <p>
@@ -410,6 +429,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * printNeighborError()
      * @param type Type of message that went wrong
      *             <p>
      *             This method prints a System err statement "Message passed from Rail peice to another that was not a neighbor.
@@ -421,6 +441,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
     
     /**
+     * sendMessage()
      * @param message The Message to send
      * @param neighbor IMessagable to which to send the message.
      *

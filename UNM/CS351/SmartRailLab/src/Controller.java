@@ -3,7 +3,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -28,11 +27,15 @@ public class Controller
     {
     }
 
+    /**
+     * initialize()
+     * This is the initialization of the UI.
+     */
     @FXML
     private void initialize()
     {
         gcDraw = canvasRail.getGraphicsContext2D();
-        Logger logger = new Logger(lblUserAlert, lblSimStatus);
+        Notifications notifications = new Notifications(lblUserAlert, lblSimStatus);
         conductor = new Conductor(gcDraw);
         userSelectConfig();
     }
@@ -85,6 +88,11 @@ public class Controller
         }
     }
 
+    /**
+     * makeTrain()
+     *
+     * Makes a new train in the conductor. This will make a train that a user can place in a station.
+     */
     @FXML
     private void makeTrain()
     {

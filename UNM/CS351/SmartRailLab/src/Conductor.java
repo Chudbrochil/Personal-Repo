@@ -1,12 +1,4 @@
-import javafx.fxml.FXML;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,8 +23,6 @@ public class Conductor
         this.gcDraw = gcDraw;
         freshInitialize();
     }
-
-
 
     /**
      * attemptStationSelect()
@@ -68,7 +58,7 @@ public class Conductor
             if (currentTrain.hasAStation())
             {
                 currentTrain.requestRoute(stationClicked.toString());
-                Logger.updateUserAlert(currentTrain.toString() + " requested a route to " + stationClicked.toString());
+                Notifications.updateUserAlert(currentTrain.toString() + " requested a route to " + stationClicked.toString());
 
                 // TODO: Weird situation where if a useer puts a train in a station, but doesn't give it a route right away
                 // then it will be stuck there forever...
@@ -80,14 +70,14 @@ public class Conductor
                 // Setting the currentTrain's element to null so it's spot is now available, avoids redraw errors
                 activeTrains.set(activeTrains.indexOf(currentTrain), null);
                 currentTrain.setNeighbors(stationClicked, null);
-                Logger.updateUserAlert(currentTrain.toString() + " has been put into " + stationClicked.toString() +
+                Notifications.updateUserAlert(currentTrain.toString() + " has been put into " + stationClicked.toString() +
                         ". Select a destination.");
                 currentTrain.setCoords(stationClicked.getCanvasX() + 10, stationClicked.getCanvasY() + 10);
             }
         }
         else
         {
-            Logger.updateUserAlert("You can't select a station without a train. Please make a train and select it.");
+            Notifications.updateUserAlert("You can't select a station without a train. Please make a train and select it.");
         }
 
     }
@@ -111,7 +101,7 @@ public class Conductor
                 if (activeTrains.get(i).isInClickedArea(x, y))
                 {
                     currentTrain = activeTrains.get(i);
-                    Logger.updateUserAlert("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
+                    Notifications.updateUserAlert("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
                 }
             }
 
@@ -194,7 +184,7 @@ public class Conductor
      */
     public void makeTrain()
     {
-        Logger.updateUserAlert("Please select a train and then select your station for it to start.");
+        Notifications.updateUserAlert("Please select a train and then select your station for it to start.");
 
         // This is all to make sure that the train is drawn in a unique spot. If trains are removed in the middle
         // of the drawn list, the behavior can get kind of weird. This check protects against this.
@@ -219,27 +209,8 @@ public class Conductor
             aTrain.start();
         }
 
-
-        // TODO: Add a method for a textbox in train, this will be the narrator. i.e. I arrived at station X, I'm moving to station X, I'm on track blahblah
     }
 
-
-    // TODO: Add sound for arriving at a station.
-    /**
-     * playSound()
-     * Plays a given sound.
-     * There is no reason that this can't be a static. It doesn't hold any state.
-     * @param filePath Path of the sound you're trying to play
-     */
-    public static void playSound(String filePath)
-    {
-        try{
-            InputStream is = Conductor.class.getResourceAsStream(filePath);
-            AudioStream audioStream = new AudioStream(is);
-            AudioPlayer.player.start(audioStream);
-        }
-        catch(IOException e) { System.out.println(e.getMessage()); }
-    }
 
 
 }

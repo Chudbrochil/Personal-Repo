@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -59,6 +58,10 @@ public class Train extends Thread implements IMessagable, IDrawable
         canvasY = y;
     }
 
+    /**
+     * hasAStation()
+     * @return True if a train is in a station, false if train isn't in a station.
+     */
     public boolean hasAStation()
     {
         if (currentTrack != null)
@@ -71,6 +74,12 @@ public class Train extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * setCoords()
+     * This sets where the train should be drawn. Most components don't move, but trains do.
+     * @param x x-coord to set
+     * @param y y-coord to set
+     */
     public void setCoords(int x, int y)
     {
         canvasX = x;
@@ -96,6 +105,10 @@ public class Train extends Thread implements IMessagable, IDrawable
     }
 
 
+    /**
+     * draw()
+     * Draws the train on the canvas. proceedTo() is what figures out it's actual position
+     */
     public void draw()
     {
         gcDraw.drawImage(randomTrainImg, canvasX, canvasY);
@@ -123,6 +136,11 @@ public class Train extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * recvMessage()
+     * This is where a Train receives a message and then notifies to process it.
+     * @param message Message that was sent to railswitch
+     */
     public synchronized void recvMessage(Message message)
     {
         if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
@@ -131,6 +149,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * requestRoute()
      * @param station: NAME of the station to which the Train wishes to travel.
      *                 input
      *                 Any String. For a station to be found, it must match a Station's NAME field.
@@ -150,6 +169,12 @@ public class Train extends Thread implements IMessagable, IDrawable
         return NAME;
     }
 
+    /**
+     * isInClickedArea()
+     * @param x x-coord we are checking
+     * @param y y-coord we are checking
+     * @return True if the clicked spot is in the trains coordinates. False if not.
+     */
     public boolean isInClickedArea(int x, int y)
     {
         if (x >= canvasX && x <= canvasX + knownTrainSizeX &&
@@ -163,6 +188,10 @@ public class Train extends Thread implements IMessagable, IDrawable
         }
     }
 
+    /**
+     * trainImgInit()
+     * Initializes all of the train images. Then selects a random image for this train object.
+     */
     private void trainImgInit()
     {
         if (redTrainImg == null)
@@ -193,6 +222,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * readMessage()
      * @param m message sent to this train from any other IMessagable object.
      *          REQUEST_HEADING
      *          Receives this message from a station to request which Direction, LEFT or RIGHT, the train is 'facing.'
@@ -214,9 +244,9 @@ public class Train extends Thread implements IMessagable, IDrawable
                     if (Main.DEBUG)
                         System.out.println(toString() + " has received a message from " + m.peekRouteList().toString() +
                                 " to proceed to " + m.STATION.toString());
-                    Logger.updateSimStatus(toString() + " has received a message from " + m.peekRouteList().toString() +
+                    Notifications.updateSimStatus(toString() + " has received a message from " + m.peekRouteList().toString() +
                             " to proceed to " + m.STATION.toString());
-                    Conductor.playSound("Train_Whistle.wav");
+                    Notifications.playSound("Train_Whistle.wav");
                     going = true;
                     sendMessage(new Message(MessageType.REQUEST_NEXT_TRACK, NAME, this, destination, heading), currentTrack);
                 }
@@ -264,7 +294,8 @@ public class Train extends Thread implements IMessagable, IDrawable
                         //todo: making this into a currentTrack = nextTrack makes the 'unreserves' look right, but the switches are way wrong then.
                         proceedTo(nextTrack);
                         System.out.println(toString() + " has arrived at destination, " + destination + "!");
-                        Logger.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
+                        Notifications.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
+                        Notifications.playSound("Train_Arriving.wav");
                         going = false;
                         //reset heading to current station.
                         //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
@@ -290,6 +321,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     }
 
     /**
+     * proceedTo()
      * @param nextTrack a reference to the next track the train will be on.
      *                  This method sets currentTrack to next track.
      *                  This is also the method where train learns where it should go on the canvas. The draw method will use this
@@ -343,6 +375,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     }
     
     /**
+     * sendMessage()
      * @param message The Message to send
      * @param neighbor IMessagable to which to send the message.
      *
@@ -356,5 +389,4 @@ public class Train extends Thread implements IMessagable, IDrawable
         neighbor.recvMessage(message);
     }
 
-    //generate random destination, could call that method for 'computer' trains and use user input still via requestRoute()
 }
