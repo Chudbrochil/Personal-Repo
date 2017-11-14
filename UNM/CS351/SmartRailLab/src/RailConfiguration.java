@@ -1,5 +1,3 @@
-// Class that instantiates all of the initial pieces for the rail
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -88,7 +86,7 @@ public class RailConfiguration
 
             for (int j = 0; j < aTrackLine.size(); ++j)
             {
-                System.out.print(j);
+                System.out.print(j); // TODO: Debugging having extra stations on right.
                 IMessagable currentComponent = aTrackLine.get(j);
                 if (currentComponent instanceof RailSwitch)
                 {
