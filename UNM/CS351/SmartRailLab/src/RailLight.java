@@ -106,15 +106,6 @@ public class RailLight implements IDrawable
         greenDirection = null;
     }
 
-    /**
-     * getGreenDirection()
-     * @return the Direction in which the 'green' light is shining (greenDirection)
-     */
-    public Direction getGreenDirection()
-    {
-        return greenDirection;
-    }
-
     public String toString()
     {
         return NAME;
@@ -126,7 +117,6 @@ public class RailLight implements IDrawable
      */
     public void draw()
     {
-        //todo: Can make light bidirectional later. Functionality here. Just not displayed.
         if (greenDirection != null)
         {
             gcDraw.drawImage(greenLightImg, canvasX, canvasY);

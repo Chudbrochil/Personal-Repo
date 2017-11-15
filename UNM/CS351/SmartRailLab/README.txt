@@ -24,8 +24,11 @@ Known Bugs:
 
 List of Extra Features:
 Sounds for station arrival and train "GO".
-Ability to create LOTS(30 is current max..., could even go higher) of trains
+Ability to create LOTS(30 is current max..., could go even higher) of trains
 Ability to click on the trains and move them into stations dynamically
+Two user alert boxes. Gives user info on what to do and an insight into
+    what the simulation is doing.
+
 
 
 
@@ -36,7 +39,16 @@ Dragging and dropping trains into stations.
     - This wouldn't be difficult to do, however bugs and requirements add up 
         quick so it isn't added in this time.
 
-
+Dynamic filename population of configuration file names rather than hard-coded filename's.
+    - I looked into this for about 2 hours. Apparently this is very difficult to
+        do within a jar. Without a jar, it's straight-forward to read a directory's
+        filename's. I can't spend any more time on it.
+        
+Making the configuration file able to handle "right-aligned" tracks better
+    - I spent some time making this somewhat possible, but the refactor is too large.
+        The program is capable of having a station on the right and not one on the left.
+        
+        
         
 
 

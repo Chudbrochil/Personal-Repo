@@ -4,6 +4,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -48,7 +52,9 @@ public class Controller
     {
         ArrayList<String> configs = new ArrayList<>();
 
-        // TODO: Reading in the configurations folder is a bit challenging in a jar
+        // Apparently reading a directory's filenames from a jar is non-trivial. I found something, but this
+        // problem cost me a few hours already... Hard coding the configuration file names
+        // https://stackoverflow.com/questions/28985379/java-how-to-read-folder-and-list-files-in-that-folder-in-jar-environment-instead
         configs.add("1-Simple.txt");
         configs.add("2-Simple.txt");
         configs.add("2-Switch.txt");

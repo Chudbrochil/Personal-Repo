@@ -256,7 +256,7 @@ public class Station extends Thread implements IMessagable, IDrawable
 
     /**
      * printNeighborDebug()
-     * TODO: Comment this.
+     * TODO: Comment(Anna)
      * @param mostRecentSender
      * @param messageType
      */
@@ -268,7 +268,7 @@ public class Station extends Thread implements IMessagable, IDrawable
 
     /**
      * printNeighborError()
-     * TODO: Comment this.
+     * TODO: Comment(Anna)
      * @param type
      */
     private void printNeighborError(String type)
@@ -294,7 +294,7 @@ public class Station extends Thread implements IMessagable, IDrawable
 
     /**
      * recvMessage()
-     * TODO: Comment this...
+     * TODO: Comment(Anna)
      * @param message
      */
     public synchronized void recvMessage(Message message)

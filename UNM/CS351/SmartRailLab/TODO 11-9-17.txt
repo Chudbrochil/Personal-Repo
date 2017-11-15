@@ -10,9 +10,9 @@ Anthony: Remove the trains when they arrive at the station?
 Anna: Need some sort of hook that lets me know if there is no route to the station
 
 (DONE) Anna: Let trains know when there is a route so they can check for it to be clear, then try to reserve it again.
-(DONE) Anna: (MULTI-TRAIN)If I set a train down on the same track and let it go, it won't wait for the track to be reserved before going? //Response: Nope! XD Next on ToDo: 
+(DONE) Anna: (MULTI-TRAIN)If I set a train down on the same track and let it go, it won't wait for the track to be reserved before going? //Response: Nope! XD Next on
 (DONE) Anna: Implement ABORT_RESERVE. Sends back to train a 'wait for later' and unreserves the tracks previously reserved. //note: make another data structure in message for this? reservedList? routeList?
-Anthony: Per the spec, "Two trains cannot be on the same track". I don't do a check for this, not sure how. (Reserve route checks?) //Anna: Best way to do it is make sure no train goes until its whole route is reserved. The above todo will varify that.
+Anthony: Per the spec, "Two trains cannot be on the same track". I don't do a check for this, not sure how. (Reserve route checks?) //Anna: Best way to do it is make sure no train goes until its whole route is reserved. The above comment will varify that.
 (DONE)Us: Public methods above private methods in all files.
 (DONE)Anna: Quick and dirty fix of trains passing through stations. (Only Y movement.) Can be improved.
 (DONE)Anna: Verify that switch lights are working correctly. Note response: The light locations look great.

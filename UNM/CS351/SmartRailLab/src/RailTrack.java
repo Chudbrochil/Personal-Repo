@@ -84,27 +84,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
 
     /**
-     * hasLight()
-     * @return true if this track has a light.
-     */
-    public boolean hasLight()
-    {
-        return trackLight == null;
-    }
-
-    /**
-     * TODO: Do we need this? I still don't get the two-direction facing lights...
-     * trackLightGreenDirection()
-     * @return the direction in which the light is green.
-     * Returns null if the track has no light.
-     */
-    public Direction trackLightGreenDirection()
-    {
-        if (hasLight()) return trackLight.getGreenDirection();
-        else return null;
-    }
-
-    /**
      * run()
      * Check pendingMessages. If it is empty, wait. (Notify is in the recMessage() method)
      */
@@ -156,6 +135,10 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         this.notify();
     }
 
+    /**
+     * toString()
+     * @return String representing the name of this track
+     */
     @Override
     public String toString()
     {

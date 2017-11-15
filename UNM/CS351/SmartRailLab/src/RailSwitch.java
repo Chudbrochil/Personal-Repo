@@ -540,7 +540,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
-     * TODO: I'm not sure if I'm commenting this right.
+     * TODO: Comment(Anna)
      * getNeighborSide()
      * @param trackNeighbor The neighbor that you are checking
      * @return The direction that this neighbor is on.
