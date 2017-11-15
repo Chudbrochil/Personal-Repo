@@ -203,121 +203,181 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
      *          <p>
      *          Parses and acts on the given Message.
      *          <p>
-     *          SEARCH_FOR_ROUTE
+     */
+    private void readMessage(Message m)
+    {
+
+        if (m.type == MessageType.SEARCH_FOR_ROUTE)
+        {
+            readMessageSearchForRoute(m);
+        }
+        else if (m.type == MessageType.RESERVE_ROUTE)
+        {
+            readMessageReserveRoute(m);
+        }
+        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
+        {
+            readMessageWaitForClearRoute(m);
+        }
+        else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
+        {
+            readMessageAbortReserveRoute(m);
+        }
+        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
+        {
+            readMessageRequestNextTrack(m);
+        }
+        else if(m.type == MessageType.TRAIN_GOODBYE_UNRESERVE)
+        {
+            readMessageTrainGoodbyeUnreserve(m);
+        }
+    }
+    
+    /**
+     * @param m Message of messageType.SEARCH_FOR_ROUTE
+     * SEARCH_FOR_ROUTE
      *          Adds itself to the route list.
      *          Checks who the message is from and forwards the message to its other neighbor.
      *          If it came from the left and the message is going to the right but right is null, for example, the message
      *          just doesn't get sent anywhere.
-     *          RESERVE_ROUTE
-     *          Checks if this RailTrack is already reserved. If it is, reverses the route list in m and changes the type to ABORT_RESERVE_ROUTE.
+     */
+    private void readMessageSearchForRoute(Message m)
+    {
+        IMessagable mostRecentSender = m.peekRouteList();
+        IMessagable neighborToSendTo = null;
+        m.pushRouteList(this); //sign before you pass it on.
+    
+        //look for which neighbor sent this message. Send this message to your other neighbors.
+    
+        //If the message came from your right, send it to your left, and vis versa.
+        if (mostRecentSender == leftNeighbor || mostRecentSender == rightNeighbor)
+        {
+            if (mostRecentSender == this.leftNeighbor) neighborToSendTo = rightNeighbor;
+            if (mostRecentSender == this.rightNeighbor) neighborToSendTo = leftNeighbor;
+            if (neighborToSendTo != null) sendMessage(m, neighborToSendTo);
+            //Only one instance of this message needed because only one instance is being sent out.
+        }
+        else
+        {
+            if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+            printNeighborError(m.type.toString());
+        }
+    }
+    
+    /**
+     * @param m Message of messageType.RESERVE_ROUTE
+     * RESERVE_ROUTE
+     *          Checks if this RailTrack is already reserved. If it is, reverses the route list in m and changes the
+     *          type to ABORT_RESERVE_ROUTE. Also clones the message, makes it type WAIT_FOR_CLEAR_ROUTE, and forwards
+     *          it in the direction of the original message, back to the train.
      *          If RailTrack is not reserved, it reserves itself and its light, if applicable.
      *          Then pops the next member off the route list in Message m and forwards the message to that Rail component
      *          IF it is a neighbor of this track. If it is not, an error message is printed and the message is dropped.
-     *          WAIT_FOR_CLEAR_ROUTE
-     *          Forwards the message to the next route list neighbor.
-     *          ABORT_REVERSE_ROUTE
-     *          If this track is reserved on behalf of the train who first made this message, unreserve yourself and
-     *          pass on the message to the next track, one of your neighbors, that needs to be unreserved. (Obtained from the Route List.)
-     *          REQUEST_NEXT_TRACK
-     *          Pulls train from the route list
-     *          Pops the next sender, which is the track the train was previously on
-     *          Pushes itself and then the next track the train should be going to to the route list
-     *          Sends the message back to the train.
-     *          TRAIN_GOODBYE_UNRESERVE
-     *          If the first sender is a train, it calls 'unreserve' on itself. To be sent when the train leaves the track.
-     *          else, prints to System.err
      */
-    private void readMessage(Message m)
+    private void readMessageReserveRoute(Message m)
     {
-        //SEARCH_FOR_ROUTE
-        if (m.type == MessageType.SEARCH_FOR_ROUTE)
-        {
-            IMessagable mostRecentSender = m.peekRouteList();
-            IMessagable neighborToSendTo = null;
-            m.pushRouteList(this); //sign before you pass it on.
-
-            //look for which neighbor sent this message. Send this message to your other neighbors.
-
-            //If the message came from your right, send it to your left, and vis versa.
-            if (mostRecentSender == leftNeighbor || mostRecentSender == rightNeighbor)
-            {
-                if (mostRecentSender == this.leftNeighbor) neighborToSendTo = rightNeighbor;
-                if (mostRecentSender == this.rightNeighbor) neighborToSendTo = leftNeighbor;
-                if (neighborToSendTo != null) sendMessage(m, neighborToSendTo);
-                    //Only one instance of this message needed because only one instance is being sent out.
-            }
-            else
-            {
-                if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
-                printNeighborError(m.type.toString());
-            }
-        }
-
-        //RESERVE_ROUTE
-        else if (m.type == MessageType.RESERVE_ROUTE)
-        {
-            //If the track is already reserved, this new route must be aborted and tried again later.
-            if(reserved)
-            {
-                Message waitMessage = m.clone();
-                
-                //ABORT_RESERVE_ROUTE message
-                m.type = MessageType.ABORT_RESERVE_ROUTE;
-                m.reverseRouteList();
-                m.popRouteList(); //pop yourself off so that you don't cause bugs.
-                
-                //will now go backwards to the Rail component that just sent this message.
-                IMessagable nextIMessagableToInform = m.popRouteList();
-                
-                if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
-                else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
-                else
-                {
-                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
-                    printNeighborError(m.type.toString());
-                }
-                
-                //WAIT_FOR_CLEAR_ROUTE message
-                waitMessage.type = MessageType.WAIT_FOR_CLEAR_ROUTE;
-                //Continue sending on the message in the direction it was going. This will eventually get to the train.
-                nextIMessagableToInform = waitMessage.popRouteList();
-                
-                if(nextIMessagableToInform == leftNeighbor) sendMessage(waitMessage, leftNeighbor);
-                else if(nextIMessagableToInform == rightNeighbor) sendMessage(waitMessage, rightNeighbor);
-                else
-                {
-                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
-                    printNeighborError(waitMessage.type.toString());
-                }
-                return;
-            }
-
-            //Actually pop the sender this time. It will be either the right or left neighbor.
-            IMessagable nextIMessagableToReserve = m.popRouteList();
-            if (nextIMessagableToReserve == leftNeighbor)
-            {
-                //the train will be coming from the left to the right; The light should be green facing the left.
-                reserve(Direction.LEFT, m.TRAIN);
-                sendMessage(m, leftNeighbor);
-            }
-            else if (nextIMessagableToReserve == rightNeighbor)
-            {
-                reserve(Direction.RIGHT, m.TRAIN);
-                sendMessage(m, rightNeighbor);
-            }
-            else
-            {
-                if (Main.DEBUG) printNeighborDebug(nextIMessagableToReserve, m.type.toString());
-                printNeighborError(m.type.toString());
-            }
-        }
-        
-        //WAIT_FOR_CLEAR_ROUTE
-        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
-        {
-            //Continue sending on the message in the direction it was going. This will eventually get to the train.
-            IMessagable nextIMessagableToInform = m.popRouteList();
+        //If the track is already reserved, this new route must be aborted and tried again later.
+        if(reserved) initiateAbortReserve(m);
     
+        //Actually pop the sender this time. It will be either the right or left neighbor.
+        IMessagable nextIMessagableToReserve = m.popRouteList();
+        if (nextIMessagableToReserve == leftNeighbor)
+        {
+            //the train will be coming from the left to the right; The light should be green facing the left.
+            reserve(Direction.LEFT, m.TRAIN);
+            sendMessage(m, leftNeighbor);
+        }
+        else if (nextIMessagableToReserve == rightNeighbor)
+        {
+            reserve(Direction.RIGHT, m.TRAIN);
+            sendMessage(m, rightNeighbor);
+        }
+        else
+        {
+            if (Main.DEBUG) printNeighborDebug(nextIMessagableToReserve, m.type.toString());
+            printNeighborError(m.type.toString());
+        }
+    }
+    
+    /**
+     * @param m Message of MessageType.RESERVE_ROUTE
+     *   Called if message of type RESERVE_ROUTE is received but the track is already reserved.
+     *   Does two things:
+     *          1) Changes Message m to type ABORT_RESERVE_ROUTE, reverses the route list, and sends the message
+     *             'backward' (to the component that sent the message most recently.
+     *          2) Takes a clone of Message m (before the route list was reversed)  and changes its type to
+     *             WAIT_FOR_CLEAR_ROUTE, then sends it to the next sender on that list. (to arrive at the train.)
+     */
+    private void initiateAbortReserve(Message m)
+    {
+        Message waitMessage = m.clone();
+    
+        //ABORT_RESERVE_ROUTE message
+        m.type = MessageType.ABORT_RESERVE_ROUTE;
+        m.reverseRouteList();
+        m.popRouteList(); //pop yourself off so that you don't cause bugs.
+    
+        //will now go backwards to the Rail component that just sent this message.
+        IMessagable nextIMessagableToInform = m.popRouteList();
+    
+        if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
+        else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
+        else
+        {
+            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
+            printNeighborError(m.type.toString());
+        }
+    
+        //WAIT_FOR_CLEAR_ROUTE message
+        waitMessage.type = MessageType.WAIT_FOR_CLEAR_ROUTE;
+        //Continue sending on the message in the direction it was going. This will eventually get to the train.
+        nextIMessagableToInform = waitMessage.popRouteList();
+    
+        if(nextIMessagableToInform == leftNeighbor) sendMessage(waitMessage, leftNeighbor);
+        else if(nextIMessagableToInform == rightNeighbor) sendMessage(waitMessage, rightNeighbor);
+        else
+        {
+            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
+            printNeighborError(waitMessage.type.toString());
+        }
+        return;
+    }
+    
+    /**
+     * readMessageWaitForClearRoute(Message m)
+     * @param m Message of MessageType.WAIT_FOR_CLEAR_ROUTE
+     * WAIT_FOR_CLEAR_ROUTE
+     *          Forwards the message to the next route list neighbor.
+     */
+    private void readMessageWaitForClearRoute(Message m)
+    {
+        //Continue sending on the message in the direction it was going. This will eventually get to the train.
+        IMessagable nextIMessagableToInform = m.popRouteList();
+    
+        if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
+        else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
+        else
+        {
+            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
+            printNeighborError(m.type.toString());
+        }
+    }
+    
+    /**
+     * readMessageAbortReserveRoute(Message m)
+     * @param m Message of MessageType.ABORT_RESERVE_ROUTE
+     * ABORT_RESERVE_ROUTE
+     *          If this track is reserved on behalf of the train who first made this message, unreserve yourself and
+     *          pass on the message to the next track, one of your neighbors, that needs to be unreserved.
+     *          (Obtained from the Route List.)
+     */
+    private void readMessageAbortReserveRoute(Message m)
+    {
+        if(reserved && trainReservedFor.equals(m.TRAIN))
+        {
+            unreserve();
+            //should be the next track to be unreserved
+            IMessagable nextIMessagableToInform = m.popRouteList();
             if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
             else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
             else
@@ -326,70 +386,67 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 printNeighborError(m.type.toString());
             }
         }
-        
-        //ABORT_RESERVE_ROUTE
-        else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
+        else
         {
-            //todo: implement heading?
-            if(reserved && trainReservedFor.equals(m.TRAIN))
+            if(!reserved)
             {
-                unreserve();
-                //should be the next track to be unreserved
-                IMessagable nextIMessagableToInform = m.popRouteList();
-                if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
-                else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
-                else
-                {
-                    if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
-                    printNeighborError(m.type.toString());
-                }
-            }
-            else
-            {
-                if(!reserved)
-                {
-                    if (Main.DEBUG) System.out.println(this.toString() + " received an ABORT_RESERVE_ROUTE from " +
-                        m.getMostRecentSender().toString() + "while unreserved. No message sent.");
-                    System.err.println(this.toString() + " received an ABORT_RESERVE_ROUTE when unreserved.");
-                }
+                if (Main.DEBUG) System.out.println(this.toString() + " received an ABORT_RESERVE_ROUTE from " +
+                    m.getMostRecentSender().toString() + "while unreserved. No message sent.");
+                System.err.println(this.toString() + " received an ABORT_RESERVE_ROUTE when unreserved.");
             }
         }
-
-        //REQUEST_NEXT_TRACK
-        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
+    }
+    
+    /**
+     * readMessageRequestNextTrack(Message m)
+     * @param m Message of MessageType.REQUEST_NEXT_TRACK
+     * REQUEST_NEXT_TRACK
+     *          Pulls train from the route list
+     *          Pops the next sender, which is the track the train was previously on
+     *          Pushes itself and then the next track the train should be going to to the route list
+     *          Sends the message back to the train.
+     */
+    private void readMessageRequestNextTrack(Message m)
+    {
+        if (m.peekRouteList() instanceof Train)
         {
-            if (m.peekRouteList() instanceof Train)
-            {
-                Train train = (Train) m.popRouteList();
-                IMessagable trainPrevTrack = m.popRouteList();
-                IMessagable nextForTrain = null;
-                if (trainPrevTrack == leftNeighbor) nextForTrain = rightNeighbor;
-                else if (trainPrevTrack == rightNeighbor) nextForTrain = leftNeighbor;
-                else
-                {
-                    System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
-                }
-                m.pushRouteList(this);
-                m.pushRouteList(nextForTrain);
-                sendMessage(m, train);
-            }
+            Train train = (Train) m.popRouteList();
+            IMessagable trainPrevTrack = m.popRouteList();
+            IMessagable nextForTrain = null;
+            if (trainPrevTrack == leftNeighbor) nextForTrain = rightNeighbor;
+            else if (trainPrevTrack == rightNeighbor) nextForTrain = leftNeighbor;
             else
             {
-                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
-                        + " is not a train.");
+                System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
             }
+            m.pushRouteList(this);
+            m.pushRouteList(nextForTrain);
+            sendMessage(m, train);
         }
-        else if(m.type == MessageType.TRAIN_GOODBYE_UNRESERVE)
+        else
         {
-            if(m.peekRouteList() instanceof Train)
-            {
-                unreserve();
-            }
-            else
-            {
-                System.err.println(toString()+ "got a message of type TRAIN_GOODBYE_UNRESERVE from "+
-                    m.peekRouteList().toString()+", which is not a Train.");
-            }
+            System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
+                + " is not a train.");
+        }
+    }
+    
+    /**
+     * readMessageTrainGoodbyeUnreserve(Message m)
+     * @param m Message of MessageType.TRAIN_GOODBYE_UNRESERVE
+     * TRAIN_GOODBYE_UNRESERVE
+     *          If the first sender is a train, it calls 'unreserve' on itself. To be sent when the train leaves the track.
+     *          else, prints to System.err
+     */
+    private void readMessageTrainGoodbyeUnreserve(Message m)
+    {
+        if(m.peekRouteList() instanceof Train)
+        {
+            unreserve();
+        }
+        else
+        {
+            System.err.println(toString()+ "got a message of type TRAIN_GOODBYE_UNRESERVE from "+
+                m.peekRouteList().toString()+", which is not a Train.");
         }
     }
     
