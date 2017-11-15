@@ -167,7 +167,6 @@ public class Station extends Thread implements IMessagable, IDrawable
             if (m.peekRouteList() instanceof Train)
             {
                 m.pushRouteList(this);
-                m.setHeading(neighborSide);
                 sendMessage(m, neighbor);
                 //todo: How should we handle if a train requests a route to a station it's ON?
             }
@@ -177,8 +176,6 @@ public class Station extends Thread implements IMessagable, IDrawable
                 if (Main.DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
                 m.pushRouteList(this);
                 m.type = MessageType.RESERVE_ROUTE;
-                if (neighborSide == Direction.RIGHT) m.setHeading(Direction.RIGHT);
-                else m.setHeading(Direction.LEFT);
                 IMessagable mostRecentSender = m.getMostRecentSender();
                 if (mostRecentSender == neighbor)
                 {
@@ -289,6 +286,7 @@ public class Station extends Thread implements IMessagable, IDrawable
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         message.setMostRecentSender(this);
+        message.setHeading(neighborSide);
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);

@@ -241,21 +241,10 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             //If the message came from your right, send it to your left, and vis versa.
             if (mostRecentSender == leftNeighbor || mostRecentSender == rightNeighbor)
             {
-                if (mostRecentSender == this.leftNeighbor)
-                {
-                    m.setHeading(Direction.RIGHT);
-                    neighborToSendTo = rightNeighbor;
-                }
-                if (mostRecentSender == this.rightNeighbor)
-                {
-                    m.setHeading(Direction.LEFT);
-                    neighborToSendTo = leftNeighbor;
-                }
-                if (neighborToSendTo != null)
-                {
-                    sendMessage(m, neighborToSendTo);
+                if (mostRecentSender == this.leftNeighbor) neighborToSendTo = rightNeighbor;
+                if (mostRecentSender == this.rightNeighbor) neighborToSendTo = leftNeighbor;
+                if (neighborToSendTo != null) sendMessage(m, neighborToSendTo);
                     //Only one instance of this message needed because only one instance is being sent out.
-                }
             }
             else
             {
@@ -309,13 +298,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             {
                 //the train will be coming from the left to the right; The light should be green facing the left.
                 reserve(Direction.LEFT, m.TRAIN);
-                m.setHeading(Direction.LEFT);
                 sendMessage(m, leftNeighbor);
             }
             else if (nextIMessagableToReserve == rightNeighbor)
             {
                 reserve(Direction.RIGHT, m.TRAIN);
-                m.setHeading(Direction.RIGHT);
                 sendMessage(m, rightNeighbor);
             }
             else
@@ -376,16 +363,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 Train train = (Train) m.popRouteList();
                 IMessagable trainPrevTrack = m.popRouteList();
                 IMessagable nextForTrain = null;
-                if (trainPrevTrack == leftNeighbor)
-                {
-                    nextForTrain = rightNeighbor;
-                    m.setHeading(Direction.RIGHT);
-                }
-                else if (trainPrevTrack == rightNeighbor)
-                {
-                    nextForTrain = leftNeighbor;
-                    m.setHeading(Direction.LEFT);
-                }
+                if (trainPrevTrack == leftNeighbor) nextForTrain = rightNeighbor;
+                else if (trainPrevTrack == rightNeighbor) nextForTrain = leftNeighbor;
                 else
                 {
                     System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
@@ -412,6 +391,17 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                     m.peekRouteList().toString()+", which is not a Train.");
             }
         }
+    }
+    
+    /**
+     * getNeighborSide()
+     * @param trackNeighbor The neighbor that you are checking
+     * @return The direction that this neighbor is on.
+     */
+    private Direction getNeighborSide(IMessagable trackNeighbor)
+    {
+        if (trackNeighbor == rightNeighbor) return Direction.RIGHT;
+        else return Direction.LEFT;
     }
 
     /**
@@ -450,6 +440,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         message.setMostRecentSender(this);
+        message.setHeading(getNeighborSide(neighbor));
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);

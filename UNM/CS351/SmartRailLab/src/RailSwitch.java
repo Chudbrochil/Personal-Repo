@@ -1,6 +1,7 @@
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -11,6 +12,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * <p>
  * To use this class, you MUST call setNeighbors with all four parameters OR setNeighbors with two parameters
  * and setSwitchNeighbor to set its neighbor and a direction.
+ * Every switchNeighbor MUST be an instance of Switch.
+ * If the Switch is of
  */
 public class RailSwitch extends Thread implements IMessagable, IDrawable
 {
@@ -19,13 +22,20 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private Queue<Message> pendingMessages = new ConcurrentLinkedQueue<>(); //list of all messages, held in order of receiving them, to be acknowledged.
     IMessagable leftNeighbor;      //any track piece
     IMessagable rightNeighbor;     //any track piece
-    IMessagable switchNeighbor;    //another switch with the opposite Direction switchSide
-    private Direction switchSide;  //if LEFT, this is a 'down' switch. if RIGHT, this is a 'up' switch.
+    IMessagable switchNeighbor;    //another switch with the opposite Direction switchDirection
+    private Direction switchDirection;  //if LEFT, this is a 'down' switch. if RIGHT, this is a 'up' switch.
     //This also determines whiether the 'switch' neighbor functions as a second
     //right neighbor or a second left neighbor.
     private boolean switchEngaged; //is the switch currently connected to its other switch neighbor, or lying flat left to right?
     private boolean reserved;
     private String trainReservedFor = ""; //The Train name for which this route is reserved
+    
+    /** If this switch clones a REQUESTS_ROUTE message, it creates a key in this map with null stored under it.
+     * Then if a 'NO_ROUTE_FOUND' message is received and a key exists for that train (which means the request message was cloned by this switch),
+     * if the IMessagable under that key is null, it sets it to the getMostRecentSender() of the message. If it is not null, that means
+     * no route is found from this switch, so the switch forwards the NO_ROUTE_FOUND to the next neighbor.
+     */
+    private HashMap<Train, IMessagable> routeRequestsSent;
 
     private GraphicsContext gcDraw;
     private int canvasX;
@@ -49,9 +59,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      * @param gcDraw Graphics context to draw on
      * @param x x-coord to draw on
      * @param y y-coord to draw on
-     * @param switchSide Direction side of the switch the connection is on.
+     * @param switchDirection Direction side of the switch the connection is on.
+     *                        LEFT is changed to DOWNLEFT and RIGHT is changed to UPRIGHT
      */
-    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchSide)
+    public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchDirection)
     {
         NAME = "RailSwitch" + switchIncrement;
         switchIncrement++;
@@ -80,18 +91,18 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         this.trackLight = trackLight;
 
         this.gcDraw = gcDraw;
-        this.switchSide = switchSide;
+        this.switchDirection = switchDirection;
         canvasX = x;
         canvasY = y;
 
 
-        if (switchSide == Direction.RIGHT || switchSide == Direction.UPRIGHT)
+        if (switchDirection == Direction.RIGHT)
         {
-            this.switchSide = Direction.UPRIGHT;
+            this.switchDirection = Direction.UPRIGHT;
         }
-        else
+        else if (switchDirection == Direction.LEFT)
         {
-            this.switchSide = Direction.DOWNLEFT;
+            this.switchDirection = Direction.DOWNLEFT;
         }
     }
 
@@ -103,27 +114,29 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     public void draw()
     {
         // Various ways in which a switch should paint itself.
-        if (switchSide == Direction.UPRIGHT && switchEngaged && reserved)
+        if (switchDirection == Direction.UPRIGHT && switchEngaged && reserved)
         {
             gcDraw.drawImage(switchDiagonalReserveImg, canvasX, canvasY - 70);
         }
-        else if (switchSide == Direction.UPRIGHT && reserved)
+        else if (switchDirection == Direction.UPRIGHT && reserved)
         {
             gcDraw.drawImage(switchRegularReserveImg, canvasX, canvasY - 70);
         }
-        else if (switchSide == Direction.UPRIGHT)
+        else if (switchDirection == Direction.UPRIGHT)
         {
             gcDraw.drawImage(switchImg, canvasX, canvasY - 70);
         }
         // A DOWNLEFT switch is drawn as a regular track
-        else if (switchSide == Direction.DOWNLEFT && reserved)
+        else if (switchDirection == Direction.DOWNLEFT && reserved)
         {
             gcDraw.drawImage(reserveTrackImg, canvasX, canvasY);
         }
-        else if (switchSide == Direction.DOWNLEFT)
+        else if (switchDirection == Direction.DOWNLEFT)
         {
             gcDraw.drawImage(trackImg, canvasX, canvasY);
         }
+        
+        //TODO: add drawing of DOWNRIGHT and UPLEFT
 
     }
 
@@ -257,12 +270,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         IMessagable aloneNeighbor;
 
         //Find out which side the 'switchNeighbor' is on. Adjust which neighbor is its 'partner' in direction accordingly.
-        if (switchSide == Direction.UPRIGHT)
+        if (switchDirection == Direction.UPRIGHT || switchDirection == Direction.DOWNRIGHT)
         {
             switchSideOtherNeighbor = rightNeighbor;
             aloneNeighbor = leftNeighbor;
         }
-        else //switchSide == Direction.DOWNLEFT
+        else //switchDirection == Direction.DOWNLEFT || switchDirection == Direction.UPLEFT
         {
             switchSideOtherNeighbor = leftNeighbor;
             aloneNeighbor = rightNeighbor;
@@ -280,7 +293,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             {
                 if (aloneNeighbor != null)
                 {
-                    m.setHeading(getNeighborSide(aloneNeighbor));
                     sendMessage(m, aloneNeighbor);
                 }
             }
@@ -289,12 +301,10 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 Message mClone = m.clone();
                 if (switchSideOtherNeighbor != null)
                 {
-                    m.setHeading(getNeighborSide(switchSideOtherNeighbor));
                     sendMessage(m, switchSideOtherNeighbor);
                 }
                 if (switchNeighbor != null)
                 {
-                    m.setHeading(switchSide);
                     sendMessage(mClone, switchNeighbor);
                 }
             }
@@ -354,13 +364,11 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 {
                     //don't need the switch neighbor
                     reserve(false, getNeighborSide(switchSideOtherNeighbor), m.TRAIN);
-                    m.setHeading(getNeighborSide(switchSideOtherNeighbor));
                     sendMessage(m, switchSideOtherNeighbor);
                 }
                 else if (goingTo == switchNeighbor)
                 {
-                    reserve(true, switchSide, m.TRAIN);
-                    m.setHeading(switchSide);
+                    reserve(true, switchDirection, m.TRAIN);
                     sendMessage(m, switchNeighbor);
                 }
                 else
@@ -373,7 +381,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 if (goingTo == aloneNeighbor)
                 {
                     reserve(false, getNeighborSide(aloneNeighbor), m.TRAIN);
-                    m.setHeading(getNeighborSide(aloneNeighbor));
                     sendMessage(m, aloneNeighbor);
                 }
                 else
@@ -385,8 +392,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             {
                 if (goingTo == aloneNeighbor)
                 {
-                    reserve(true, switchSide, m.TRAIN);
-                    m.setHeading(getNeighborSide(switchNeighbor));
+                    reserve(true, switchDirection, m.TRAIN);
                     sendMessage(m, aloneNeighbor);
                 }
                 else
@@ -456,7 +462,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                     if (switchEngaged)
                     {
                         nextForTrain = switchNeighbor;
-                        headingForTrain = switchSide;
+                        headingForTrain = switchDirection;
                     }
                     else
                     {
@@ -500,7 +506,6 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     }
 
     /**
-     * TODO: I'm not sure if I'm commenting this right.
      * getNeighborSide()
      * @param trackNeighbor The neighbor that you are checking
      * @return The direction that this neighbor is on.
@@ -508,7 +513,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private Direction getNeighborSide(IMessagable trackNeighbor)
     {
         if (trackNeighbor == rightNeighbor) return Direction.RIGHT;
-        else return Direction.LEFT;
+        else if(trackNeighbor == leftNeighbor) return Direction.LEFT;
+        else return switchDirection;
     }
     
     /**
@@ -521,6 +527,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         message.setMostRecentSender(this);
+        message.setHeading(getNeighborSide(neighbor));
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
