@@ -86,9 +86,6 @@ public class Conductor
 
     }
 
-
-    // TODO: I could make this able to be drag and dropped onto the station instead...
-
     /**
      * attemptTrainSelect()
      * Attempts to select a station based on users click. This will set the currentTrain if clicking on a train.

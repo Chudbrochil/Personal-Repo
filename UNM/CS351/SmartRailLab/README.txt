@@ -23,10 +23,21 @@ Known Bugs:
 
 
 List of Extra Features:
+Sounds for station arrival and train "GO".
+Ability to create LOTS(30 is current max..., could even go higher) of trains
+Ability to click on the trains and move them into stations dynamically
+
 
 
 
 Possible Future Features and Optimizations:
+
+Dragging and dropping trains into stations.
+    - This wouldn't be difficult to do, however bugs and requirements add up 
+        quick so it isn't added in this time.
+
+
+        
 
 
 

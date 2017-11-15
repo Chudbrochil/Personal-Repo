@@ -47,16 +47,18 @@ public class Controller
     private void userSelectConfig()
     {
         ArrayList<String> configs = new ArrayList<>();
-        configs.add("SimpleOneTrack.txt");
-        configs.add("SimpleTwoTrack.txt");
-        configs.add("SwitchTwoTrack.txt");
-        configs.add("LightThreeTrack.txt");
-        configs.add("SimpleFourTrack.txt");
-        configs.add("LightFourTrack.txt");
-        configs.add("SwitchFourTrack.txt");
-        configs.add("FancyFiveTrack.txt");
-        configs.add("FancyFiveTrack2.txt");
-        configs.add("SwitchSixTrack.txt");
+
+        // TODO: Reading in the configurations folder is a bit challenging in a jar
+        configs.add("1-Simple.txt");
+        configs.add("2-Simple.txt");
+        configs.add("2-Switch.txt");
+        configs.add("3-Lights.txt");
+        configs.add("4-Lights.txt");
+        configs.add("4-Simple.txt");
+        configs.add("4-Switches.txt");
+        configs.add("5-MoreLeft.txt");
+        configs.add("5-MoreLeft2.txt");
+        configs.add("6-Switches.txt");
         configs.add("8-BothSwitches.txt");
         configs.add("8-MoreRight.txt");
         configs.add("8-MoreLeft.txt");

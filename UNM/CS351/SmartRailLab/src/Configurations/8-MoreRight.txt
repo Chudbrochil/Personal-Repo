@@ -1,3 +1,40 @@
+//If you want to use your own components/configurations, please be aware of some limitations:
+//
+//    I will refer to the set of classes RailConfiguration/RailConfigurationLoader and TrackLine as the "loader".
+//
+//    RailConfigurationLoader loads the actual file. TrackLine is a data structure for holding a single line and
+//    creating all the necessary objects that are defined by that line. RailConfiguration composes the consumable data
+//    structures that are used by the program to actually draw and run.
+//
+//    1. For every 3 switch there must be a 4 above it.
+//    2. For every 5 switch there must be a 6 above it.
+//    3. 0 is currently not in use and is an experimental character.
+//
+//    4. The loader easily terminates on left-aligned lines like:
+//    Tijuana,1,3,
+//    In this situation the loader knows where to draw the components and the termination of the station.
+//
+//    5. This loader does not easily terminate on right-aligned lines like:
+//    5,1,1,2,Detroit
+//    This will not work and is not expected behavior of the loader. It is a limitation, albeit a
+//    known one.
+//    To make a track like this you will want it to look like:
+//    1,1,1,5,1,1,2,Detroit
+//
+//    6. The loader does not care about spaces (they are trimed) so we can conveniently make tracks
+//    that align nicely for switch placement and aesthetics.
+//    LA,1,1,2,1,1,4,Miami
+//    Seattle,1,2,1,1,4,3,WashDC
+//
+//    Legend for components:
+//    0 reserved
+//    1 is track
+//    2 is track + light
+//    3 is track + light + switch UpRight
+//    4 is track + light + switch DownLeft
+//    5 is track + light + switch UpLeft
+//    6 is track + light + switch DownRight
+//    Any CSV entry starting with a non-digit character will become a Station
        LA,1,1,2,1,1,4,Miami
   Seattle,1,2,1,1,4,3,WashDC
     Albuq,1,1,2,4,3,1,Boston

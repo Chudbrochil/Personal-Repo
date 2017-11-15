@@ -1,4 +1,0 @@
-     LA,1,1,1,1,2,1,Miami
-Seattle,1,1,2,1,1,1,WashDC
-  Albuq,1,1,2,1,1,1,Boston
-SanFran,1,1,1,1,1,1,NewYork

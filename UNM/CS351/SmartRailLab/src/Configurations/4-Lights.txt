@@ -35,11 +35,7 @@
 //    5 is track + light + switch UpLeft
 //    6 is track + light + switch DownRight
 //    Any CSV entry starting with a non-digit character will become a Station
-       LA,1,1,2,1,1,4,Miami
-  Seattle,1,2,1,1,4,3,WashDC
-    Albuq,1,1,2,4,3,1,Boston
-  SanFran,2,1,4,3,1,2,NewYork
-  Tijuana,1,4,3,1,1,1,Newark
- Portland,4,3,1,1,2,1,Chicago
-Vancouver,3,1,6,1,1,2,Galveston
-   Denver,1,2,5,1,1,2,Detroit
+     LA,1,1,1,1,2,1,Miami
+Seattle,1,1,2,1,1,1,WashDC
+  Albuq,1,1,2,1,1,1,Boston
+SanFran,1,1,1,1,1,1,NewYork

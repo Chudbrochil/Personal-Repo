@@ -1,13 +1,10 @@
 import javafx.scene.canvas.GraphicsContext;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-// Class to interface with some structure to load the initial rail configuration
-// Should be able to load a file, XML or a hard coded constructor, imo use hard coded at first
 public class RailConfigurationLoader
 {
     private ArrayList<TrackLine> trackLines;
@@ -46,10 +43,14 @@ public class RailConfigurationLoader
             int trackLineNum = 0; // Tells us what trackLine we are working on. 0 is the first trackLine, 3 is the 4th... etc.
             while ((line = reader.readLine()) != null)
             {
-                String[] components = line.split(",");
-                TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
-                trackLines.add(tl);
-                trackLineNum++;
+                // This allows for commenting in the files.
+                if(!line.startsWith("//"))
+                {
+                    String[] components = line.split(",");
+                    TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
+                    trackLines.add(tl);
+                    trackLineNum++;
+                }
             }
         }
         catch (IOException e)
