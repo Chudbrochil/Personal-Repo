@@ -276,7 +276,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private void readMessageReserveRoute(Message m)
     {
         //If the track is already reserved, this new route must be aborted and tried again later.
-        if(reserved) initiateAbortReserve(m);
+        if(reserved)
+        {
+            initiateAbortReserve(m);
+            return;
+        }
     
         //Actually pop the sender this time. It will be either the right or left neighbor.
         IMessagable nextIMessagableToReserve = m.popRouteList();
@@ -339,7 +343,6 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
             printNeighborError(waitMessage.type.toString());
         }
-        return;
     }
     
     /**
