@@ -120,6 +120,18 @@ public class Station extends Thread implements IMessagable, IDrawable
         gcDraw.setFill(Color.BLACK);
         gcDraw.fillText(this.toString(), canvasX + 30, canvasY + 30);
     }
+    
+    /**
+     * recvMessage()
+     * This is where a the IMessagable receives a message and then is notified to process it.
+     * @param message Message to be added to pendingMessages
+     */
+    public synchronized void recvMessage(Message message)
+    {
+        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
+        pendingMessages.add(message);
+        this.notify();
+    }
 
     /**
      * toString()
@@ -250,15 +262,14 @@ public class Station extends Thread implements IMessagable, IDrawable
                         + " is not a train.");
             }
         }
-        
-        //Does not implement ABORT_RESERVE_ROUTE.
     }
 
     /**
      * printNeighborDebug()
-     * TODO: Comment(Anna)
-     * @param mostRecentSender
-     * @param messageType
+     * @param mostRecentSender Sender that was not a neighbor that sent a message to this piece
+     * @param messageType type of message received
+     * Prints a debug message about which piece received a message from whom and of what type.
+     * To be used when a track piece receives a message from another track piece that isn't a neighbor.
      */
     private void printNeighborDebug(IMessagable mostRecentSender, String messageType)
     {
@@ -268,8 +279,9 @@ public class Station extends Thread implements IMessagable, IDrawable
 
     /**
      * printNeighborError()
-     * TODO: Comment(Anna)
-     * @param type
+     * @param type type of message received
+     * Prints a standard error message.
+     * To be used when a track piece receives a message from another track piece that isn't a neighbor.
      */
     private void printNeighborError(String type)
     {
@@ -292,16 +304,6 @@ public class Station extends Thread implements IMessagable, IDrawable
         neighbor.recvMessage(message);
     }
 
-    /**
-     * recvMessage()
-     * TODO: Comment(Anna)
-     * @param message
-     */
-    public synchronized void recvMessage(Message message)
-    {
-        if (Main.DEBUG) System.out.println(this.toString() + " received a message. Message is: " + message.toString());
-        pendingMessages.add(message);
-        this.notify();
-    }
+    
 
 }

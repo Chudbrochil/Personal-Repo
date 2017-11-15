@@ -122,11 +122,11 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             gcDraw.drawImage(trackImg, canvasX, canvasY);
         }
     }
-
+    
     /**
      * recvMessage()
-     * This is where a RailTrack receives a message and then notifies to process it.
-     * @param message Message that was sent to railswitch
+     * This is where a the IMessagable receives a message and then is notified to process it.
+     * @param message Message to be added to pendingMessages
      */
     public synchronized void recvMessage(Message message)
     {

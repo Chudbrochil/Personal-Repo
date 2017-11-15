@@ -139,8 +139,8 @@ public class Train extends Thread implements IMessagable, IDrawable
 
     /**
      * recvMessage()
-     * This is where a Train receives a message and then notifies to process it.
-     * @param message Message that was sent to railswitch
+     * This is where a the IMessagable receives a message and then is notified to process it.
+     * @param message Message to be added to pendingMessages
      */
     public synchronized void recvMessage(Message message)
     {
