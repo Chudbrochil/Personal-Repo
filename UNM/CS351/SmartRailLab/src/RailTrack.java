@@ -206,30 +206,21 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
      */
     private void readMessage(Message m)
     {
-
-        if (m.type == MessageType.SEARCH_FOR_ROUTE)
+        switch(m.type)
         {
-            readMessageSearchForRoute(m);
-        }
-        else if (m.type == MessageType.RESERVE_ROUTE)
-        {
-            readMessageReserveRoute(m);
-        }
-        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
-        {
-            readMessageWaitForClearRoute(m);
-        }
-        else if(m.type == MessageType.ABORT_RESERVE_ROUTE)
-        {
-            readMessageAbortReserveRoute(m);
-        }
-        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
-        {
-            readMessageRequestNextTrack(m);
-        }
-        else if(m.type == MessageType.TRAIN_GOODBYE_UNRESERVE)
-        {
-            readMessageTrainGoodbyeUnreserve(m);
+            case SEARCH_FOR_ROUTE:  readMessageSearchForRoute(m);
+                break;
+            case RESERVE_ROUTE: readMessageReserveRoute(m);
+                break;
+            case WAIT_FOR_CLEAR_ROUTE:  readMessageWaitForClearRoute(m);
+                break;
+            case ABORT_RESERVE_ROUTE:   readMessageAbortReserveRoute(m);
+                break;
+            case REQUEST_NEXT_TRACK: readMessageRequestNextTrack(m);
+                break;
+            case TRAIN_GOODBYE_UNRESERVE: readMessageTrainGoodbyeUnreserve(m);
+                break;
+            default: break;
         }
     }
     
@@ -252,8 +243,16 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
         //If the message came from your right, send it to your left, and vis versa.
         if (mostRecentSender == leftNeighbor || mostRecentSender == rightNeighbor)
         {
-            if (mostRecentSender == this.leftNeighbor) neighborToSendTo = rightNeighbor;
-            if (mostRecentSender == this.rightNeighbor) neighborToSendTo = leftNeighbor;
+            if (mostRecentSender == this.leftNeighbor)
+            {
+                m.setHeading(Direction.RIGHT);
+                neighborToSendTo = rightNeighbor;
+            }
+            if (mostRecentSender == this.rightNeighbor)
+            {
+                m.setHeading(Direction.LEFT);
+                neighborToSendTo = leftNeighbor;
+            }
             if (neighborToSendTo != null) sendMessage(m, neighborToSendTo);
             //Only one instance of this message needed because only one instance is being sent out.
         }
@@ -413,8 +412,16 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             Train train = (Train) m.popRouteList();
             IMessagable trainPrevTrack = m.popRouteList();
             IMessagable nextForTrain = null;
-            if (trainPrevTrack == leftNeighbor) nextForTrain = rightNeighbor;
-            else if (trainPrevTrack == rightNeighbor) nextForTrain = leftNeighbor;
+            if (trainPrevTrack == leftNeighbor)
+            {
+                nextForTrain = rightNeighbor;
+                m.setHeading(Direction.RIGHT);
+            }
+            else if (trainPrevTrack == rightNeighbor)
+            {
+                nextForTrain = leftNeighbor;
+                m.setHeading(Direction.LEFT);
+            }
             else
             {
                 System.err.println(toString() + "got a request from a train that didn't just come from its neighbor.");
@@ -497,7 +504,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     private synchronized void sendMessage(Message message, IMessagable neighbor)
     {
         message.setMostRecentSender(this);
-        message.setHeading(getNeighborSide(neighbor));
+        //***message.setHeading(getNeighborSide(neighbor));
         if (Main.DEBUG)
             System.out.println(this.toString() + " sending message to " + neighbor.toString() + ". Message is: " + message.toString());
         neighbor.recvMessage(message);
