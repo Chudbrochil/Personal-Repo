@@ -73,7 +73,7 @@ public class TrackLine
 
     /**
      * initializeComponents()
-     * 0 station
+     * 0 dummy piece
      * 1 is track
      * 2 is track + light
      * 3 is track + light + switch UpRight
