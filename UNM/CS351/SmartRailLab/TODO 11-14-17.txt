@@ -3,16 +3,15 @@ TO-DOs 11-14-17:
 *MUST(Anna): Break message methods into smaller bite-sized methods, perhaps some comments on what's different
 *MUST(Anthony): Make it so that more stations on one side can happen on right side also.
 *MUST(Anna): Document why Messaging is thread-safe
-*MUST(Anthony): Make the canvas capable of 8 lanes
 *MUST(Anthony): Prove that there is some sort of verification done when loading a config file....
-(Anna): Make opposite side switches
-(Anna): Draw train when upper-left, down-right switch directions
-(Anthony): Make 2 new images for switches 
+                (Check for crossings...)
+(Anna): Make drawing more smooth on switches
 (US): Look at the commits, and find dirty ones that don't compile.
 (US): Make a jar...
 
 Optional:
-Anthony: More options for the textfield output
-Anna: send no route to station message when train is requesting a station
+Anthony: More options for the textfield output (simstatus and useralert)
+Anna: send no route to station message when train is requesting a station (Includes hook for no route to display to user)
 Anthony: Remove the trains when they arrive at the station?
-Anna: Need some sort of hook that lets me know if there is no route to the station
+
+

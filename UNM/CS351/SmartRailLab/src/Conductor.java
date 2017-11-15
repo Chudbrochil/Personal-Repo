@@ -152,7 +152,7 @@ public class Conductor
                     drawableList.get(i).draw();
                 }
             }
-        }, 0, 25, TimeUnit.MILLISECONDS);
+        }, 0, 40, TimeUnit.MILLISECONDS);
 
     }
 

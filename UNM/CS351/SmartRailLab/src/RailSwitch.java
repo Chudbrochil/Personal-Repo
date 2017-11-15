@@ -43,11 +43,15 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
 
     private RailLight trackLight;
 
-    private static Image switchImg;
+    private static Image switchUpRightImg;
+    private static Image switchUpLeftImg;
     private static Image trackImg;
     private static Image reserveTrackImg;
-    private static Image switchRegularReserveImg;
-    private static Image switchDiagonalReserveImg;
+    private static Image switchUprightDiagonalReserveImg;
+    private static Image switchUprightRegularReserveImg;
+    private static Image switchUpLeftDiagonalReserveImg;
+    private static Image switchUpLeftRegularReserveImg;
+
 
     /**
      * RailSwitch constructor
@@ -60,7 +64,8 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      * @param x x-coord to draw on
      * @param y y-coord to draw on
      * @param switchDirection Direction side of the switch the connection is on.
-     *                        LEFT is changed to DOWNLEFT and RIGHT is changed to UPRIGHT
+     *                        As a default, LEFT is changed to DOWNLEFT and RIGHT is changed to UPRIGHT.
+     *                        A switch should either be upright, upleft, downleft, or downright.
      */
     public RailSwitch(RailLight trackLight, GraphicsContext gcDraw, int x, int y, Direction switchDirection)
     {
@@ -68,9 +73,13 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         switchIncrement++;
         switchEngaged = false;
         reserved = false;
-        if (switchImg == null)
+        if (switchUpRightImg == null)
         {
-            switchImg = new Image("Switch.png");
+            switchUpRightImg = new Image("Switch-UpRight.png");
+        }
+        if(switchUpLeftImg == null)
+        {
+            switchUpLeftImg = new Image("Switch-UpLeft.png");
         }
         if (trackImg == null)
         {
@@ -80,13 +89,21 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         {
             reserveTrackImg = new Image("Track-Reserve.png");
         }
-        if (switchRegularReserveImg == null)
+        if (switchUprightDiagonalReserveImg == null)
         {
-            switchRegularReserveImg = new Image("Switch-RegularReserve.png");
+            switchUprightDiagonalReserveImg = new Image("Switch-UpRightDiagonalReserve.png");
         }
-        if (switchDiagonalReserveImg == null)
+        if (switchUprightRegularReserveImg == null)
         {
-            switchDiagonalReserveImg = new Image("Switch-DiagonalReserve.png");
+            switchUprightRegularReserveImg = new Image("Switch-UpRightRegularReserve.png");
+        }
+        if(switchUpLeftDiagonalReserveImg == null)
+        {
+            switchUpLeftDiagonalReserveImg = new Image("Switch-UpLeftDiagonalReserve.png");
+        }
+        if(switchUpLeftRegularReserveImg == null)
+        {
+            switchUpLeftRegularReserveImg = new Image ("Switch-UpLeftRegularReserve.png");
         }
         this.trackLight = trackLight;
 
@@ -95,7 +112,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         canvasX = x;
         canvasY = y;
 
-
+        // This is the default setting of switch going from downleft to upright
         if (switchDirection == Direction.RIGHT)
         {
             this.switchDirection = Direction.UPRIGHT;
@@ -116,22 +133,34 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         // Various ways in which a switch should paint itself.
         if (switchDirection == Direction.UPRIGHT && switchEngaged && reserved)
         {
-            gcDraw.drawImage(switchDiagonalReserveImg, canvasX, canvasY - 70);
+            gcDraw.drawImage(switchUprightDiagonalReserveImg, canvasX, canvasY - 70);
         }
         else if (switchDirection == Direction.UPRIGHT && reserved)
         {
-            gcDraw.drawImage(switchRegularReserveImg, canvasX, canvasY - 70);
+            gcDraw.drawImage(switchUprightRegularReserveImg, canvasX, canvasY - 70);
         }
         else if (switchDirection == Direction.UPRIGHT)
         {
-            gcDraw.drawImage(switchImg, canvasX, canvasY - 70);
+            gcDraw.drawImage(switchUpRightImg, canvasX, canvasY - 70);
         }
-        // A DOWNLEFT switch is drawn as a regular track
-        else if (switchDirection == Direction.DOWNLEFT && reserved)
+        else if (switchDirection == Direction.UPLEFT && switchEngaged && reserved)
+        {
+            gcDraw.drawImage(switchUpLeftDiagonalReserveImg, canvasX, canvasY - 70);
+        }
+        else if (switchDirection == Direction.UPLEFT && reserved)
+        {
+            gcDraw.drawImage(switchUpLeftRegularReserveImg, canvasX, canvasY - 70);
+        }
+        else if (switchDirection == Direction.UPLEFT)
+        {
+            gcDraw.drawImage(switchUpLeftImg, canvasX, canvasY - 70);
+        }
+        // A DOWNLEFT and DOWNRIGHT switch is drawn as a regular track
+        else if (switchDirection == Direction.DOWNLEFT && reserved || switchDirection == Direction.DOWNRIGHT && reserved)
         {
             gcDraw.drawImage(reserveTrackImg, canvasX, canvasY);
         }
-        else if (switchDirection == Direction.DOWNLEFT)
+        else if (switchDirection == Direction.DOWNLEFT || switchDirection == Direction.DOWNRIGHT)
         {
             gcDraw.drawImage(trackImg, canvasX, canvasY);
         }
