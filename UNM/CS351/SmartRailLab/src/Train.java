@@ -350,25 +350,30 @@ public class Train extends Thread implements IMessagable, IDrawable
             if (heading == Direction.RIGHT)
             {
                 canvasX += 1;
-            } else if (heading == Direction.LEFT)
+            }
+            else if (heading == Direction.LEFT)
             {
                 canvasX -= 1;
             }
             //TODO: Note: the trains move too much if they move in the x for the switches also. For now, this is a bad but functional fix. --Anna
             //(The trains now arrive on the stations, not the 100*switchesTraveled pixels away from the station. XD
-            else if (heading == Direction.UPRIGHT)
+            else if (heading == Direction.UPRIGHT || heading == Direction.UPLEFT)
             {
                 //canvasX += 1;
                 canvasY -= 1;
-            } else if (heading == Direction.DOWNLEFT)
+            }
+            else if (heading == Direction.DOWNLEFT || heading == Direction.DOWNRIGHT)
             {
                 //canvasX -= 1;
                 canvasY += 1;
             }
+
+
             try
             {
                 Thread.sleep(40);
-            } catch (InterruptedException e)
+            }
+            catch (InterruptedException e)
             {
                 System.out.println(e.getMessage());
             }
