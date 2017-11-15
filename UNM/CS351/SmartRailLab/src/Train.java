@@ -229,64 +229,81 @@ public class Train extends Thread implements IMessagable, IDrawable
     /**
      * readMessage()
      * @param m message sent to this train from any other IMessagable object.
-     *          GO
-     *          Receives this message fom a station when a route has been successfully found for this train.
-     *          WAIT_FOR_CLEAR_ROUTE
-     *          Receiveing this message means that a route was found to the Station destination, but it is busy at this time.
-     *          So, wait for a bit, and then request the route again.
+     * Observes what type of message m is and calls the appropriate method to respond to it, if implementation
+     *          for that type of message has been written.
+     * Implementations written for: GO, WAIT_FOR_CLEAR_ROUTE, REQUEST_NEXT_TRACK.
      */
     private void readMessage(Message m)
     {
-        if (m.type == MessageType.GO)
+        switch(m.type)
         {
-            if (m.peekRouteList() == currentTrack)
-            {
-                heading = m.getHeading();
-                if (m.STATION == destination)
-                {
-                    if (Main.DEBUG)
-                        System.out.println(toString() + " has received a message from " + m.peekRouteList().toString() +
-                                " to proceed to " + m.STATION.toString());
-                    Notifications.updateSimStatus(toString() + " has received a message from " + m.peekRouteList().toString() +
-                            " to proceed to " + m.STATION.toString());
-                    Notifications.playSound("Train_Whistle.wav");
-                    going = true;
-                    sendMessage(new Message(MessageType.REQUEST_NEXT_TRACK, NAME, this, destination, heading), currentTrack);
-                }
-                else
-                {
-                    System.err.println(toString() + " received 'GO' message from currentTrack " + m.peekRouteList() + " to " +
-                            "proceed to" + m.STATION + ", which is not this train's destination, " + destination);
-                }
-            }
-            else
-            {
-                if (Main.DEBUG)
-                    System.out.println(toString() + " received a 'GO' message from " + m.peekRouteList() + ", which is " +
-                            "not a neighbor. Train remains stationary.");
-                System.err.println(toString() + " received a go signal from " + m.peekRouteList() + ", which is not a neighbor.");
-            }
-        }
-        
-        else if (m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
-        {
-            if(Main.DEBUG) System.out.println(toString()+" received a "+MessageType.WAIT_FOR_CLEAR_ROUTE.toString()+" message. ");
-            try { Thread.sleep(5000); } catch (InterruptedException e){}
-            requestRoute(destination);
-        }
-        
-        //Train should only receive this message if it sent it.
-        //Train pops the first reference off the sender list, which is the track it should be going to. Then
-        //checks the next sender list reference, which is the actual sender. This reference STAYS. The train pushes
-        //itself, then sends this message on to the new currentTrack. (The result is a sender list that contains
-        //the [PreviousTrack, Train] going to currentTrack.
-        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
-        {
-            readMessageRequestNextTrack(m);
+            case GO: readMessageGo(m);
+                break;
+            case WAIT_FOR_CLEAR_ROUTE: readMessageWaitForClearRoute(m);
+                break;
+            case REQUEST_NEXT_TRACK: readMessageRequestNextTrack(m);
+                break;
+            default: if(Main.DEBUG) System.out.println(toString()+ "received a message of type "+m.type.toString()+
+                " for which there is no implementation.");
+                break;
         }
     }
     
     /**
+     * readMessageGo(Message m)
+     * @param m
+     *      GO
+     *          Receives this message fom a station when a route has been successfully found for this train.
+     *          The Train then sends a REQUEST_NEXT_TRACK message to its currentTrack (the Station.)
+     */
+    private void readMessageGo(Message m)
+    {
+        if (m.peekRouteList() == currentTrack)
+        {
+            heading = m.getHeading();
+            if (m.STATION == destination)
+            {
+                if (Main.DEBUG)
+                    System.out.println(toString() + " has received a message from " + m.peekRouteList().toString() +
+                        " to proceed to " + m.STATION.toString());
+                Notifications.updateSimStatus(toString() + " has received a message from " + m.peekRouteList().toString() +
+                    " to proceed to " + m.STATION.toString());
+                Notifications.playSound("Train_Whistle.wav");
+                going = true;
+                sendMessage(new Message(MessageType.REQUEST_NEXT_TRACK, NAME, this, destination, heading), currentTrack);
+            }
+            else
+            {
+                System.err.println(toString() + " received 'GO' message from currentTrack " + m.peekRouteList() + " to " +
+                    "proceed to" + m.STATION + ", which is not this train's destination, " + destination);
+            }
+        }
+        else
+        {
+            if (Main.DEBUG)
+                System.out.println(toString() + " received a 'GO' message from " + m.peekRouteList() + ", which is " +
+                    "not a neighbor. Train remains stationary.");
+            System.err.println(toString() + " received a go signal from " + m.peekRouteList() + ", which is not a neighbor.");
+        }
+    }
+    
+    /**
+     * readMessageWaitForClearRoute(Message m)
+     * @param m Message of MessageType.WAIT_FOR_CLEAR_ROUTE
+     * WAIT_FOR_CLEAR_ROUTE
+     *          Receiveing this message means that a route was found to the Station destination, but it is busy at this time.
+     *          So, wait for a bit, and then request the route again.
+     */
+    private void readMessageWaitForClearRoute(Message m)
+    {
+        if(Main.DEBUG) System.out.println(toString()+" received a "+MessageType.WAIT_FOR_CLEAR_ROUTE.toString()+" message. ");
+        Notifications.updateSimStatus(toString()+" has been told to wait for the route to clear to "+destination);
+        try { Thread.sleep(5000); } catch (InterruptedException e){}
+        requestRoute(destination);
+    }
+    
+    /**
+     * readMessageRequestNextTrack(Message m)
      * @param m Message of MessageType.REQUEST_NEXT_TRACK
      * REQUEST_NEXT_TRACK
      *          Pops from the route list the nextTrack, then makes sure the current track signed the message(next in
@@ -300,6 +317,12 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     private void readMessageRequestNextTrack(Message m)
     {
+    
+        //Train should only receive this message if it sent it.
+        //Train pops the first reference off the sender list, which is the track it should be going to. Then
+        //checks the next sender list reference, which is the actual sender. This reference STAYS. The train pushes
+        //itself, then sends this message on to the new currentTrack. (The result is a sender list that contains
+        //the [PreviousTrack, Train] going to currentTrack.
         if (going)
         {
             IMessagable nextTrack = m.popRouteList();

@@ -176,16 +176,14 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
             trackLight.unreserve();
         }
     }
-
+    
     /**
      * readMessage()
-     * @param m message
-     *          input
-     *          first message in pendingMessages.
-     *          Any non-null Message.
-     *          <p>
-     *          Parses and acts on the given Message.
-     *          <p>
+     * @param m message sent to this train from any other IMessagable object.
+     * Observes what type of message m is and calls the appropriate method to respond to it, if implementation
+     *          for that type of message has been written.
+     * Implementations written for: SEARCH_FOR_ROUTE, RESERVE_ROUTE, WAIT_FOR_CLEAR_ROUTE, ABORT_ROUTE, REQUEST_NEXT_TRACK,
+     *          TRAIN_GOODBYE_UNRESERVE.
      */
     private void readMessage(Message m)
     {
@@ -203,7 +201,9 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 break;
             case TRAIN_GOODBYE_UNRESERVE: readMessageTrainGoodbyeUnreserve(m);
                 break;
-            default: break;
+            default: if(Main.DEBUG) System.out.println(toString()+ "received a message of type "+m.type.toString()+
+                " for which there is no implementation.");
+                break;
         }
     }
     
