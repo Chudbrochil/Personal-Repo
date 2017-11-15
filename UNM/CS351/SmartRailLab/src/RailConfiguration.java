@@ -86,7 +86,7 @@ public class RailConfiguration
 
             for (int j = 0; j < aTrackLine.size(); ++j)
             {
-                System.out.print(j); // TODO: Debugging having extra stations on right.
+                System.out.println("Attach switches: " + j); // TODO: Debugging having extra stations on right.
                 IMessagable currentComponent = aTrackLine.get(j);
                 if (currentComponent instanceof RailSwitch)
                 {

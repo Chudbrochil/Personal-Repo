@@ -95,47 +95,50 @@ public class TrackLine
         // Adds each component to messagable/drawable lists
         for (int i = 0; i < components.length; ++i)
         {
+            String componentString = components[i].trim();
+            System.out.println("initializeComponents: " + i + " " +  componentString); // TODO: Debug for right side extra
+
             Station stationToAdd = null;
             RailTrack trackToAdd = null;
             RailLight lightToAdd = null;
             RailSwitch switchToAdd = null;
 
             // Station - If the first character is a letter, it must be a station
-            if(Character.isLetter(components[i].charAt(0)))
+            if(Character.isLetter(componentString.charAt(0)))
             {
-                stationToAdd = new Station(components[i], gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
+                stationToAdd = new Station(componentString, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
             }
             // Track
-            else if (String.valueOf("1").equals(components[i]))
+            else if (String.valueOf("1").equals(componentString))
             {
                 trackToAdd = new RailTrack(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
             }
             // Track and Light
-            else if (String.valueOf("2").equals(components[i]))
+            else if (String.valueOf("2").equals(componentString))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
                 trackToAdd = new RailTrack(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
             }
             // Track, UpRightSwitch and its Light - UpSwitch means light goes on right-side
-            else if (String.valueOf("3").equals(components[i]))
+            else if (String.valueOf("3").equals(componentString))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
                 switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.UPRIGHT);
             }
             // Track, DownLeftSwitch and its Light - DownSwitch means light goes on left-side
-            else if (String.valueOf("4").equals(components[i]))
+            else if (String.valueOf("4").equals(componentString))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
                 switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.DOWNLEFT);
             }
             // Track, UpLeftSwitch and its Light
-            else if (String.valueOf("5").equals(components[i]))
+            else if (String.valueOf("5").equals(componentString))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
                 switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.UPLEFT);
             }
             // Track, DownRightSwitch and its Light
-            else if (String.valueOf("6").equals(components[i]))
+            else if (String.valueOf("6").equals(componentString))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
                 switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.DOWNRIGHT);
@@ -188,8 +191,7 @@ public class TrackLine
             {
                 messagableList.get(i).setNeighbors(messagableList.get(i - 1), messagableList.get(i + 1));
             }
-            // Fixes the annoying issue of threads outliving main
-            ((Thread) messagableList.get(i)).setDaemon(true);
+
             ((Thread) messagableList.get(i)).start();
         }
     }

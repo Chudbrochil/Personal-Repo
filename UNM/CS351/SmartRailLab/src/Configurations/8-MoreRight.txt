@@ -1,0 +1,8 @@
+       LA,1,1,2,1,1,4,Miami
+  Seattle,1,2,1,1,4,3,WashDC
+    Albuq,1,1,2,4,3,1,Boston
+  SanFran,2,1,4,3,1,2,NewYork
+  Tijuana,1,4,3,1,1,1,Newark
+ Portland,6,3,1,1,6,1,Chicago
+        1,5,1,6,1,5,2,Galveston
+        1,1,1,5,1,1,2,Detroit

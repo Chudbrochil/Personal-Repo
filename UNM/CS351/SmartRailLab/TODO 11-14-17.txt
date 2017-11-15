@@ -1,18 +1,20 @@
 TO-DOs 11-14-17:
 
+***BIG URGENT***(US): Bugs where train is stopping 1 track before station, trains are stopping randomly at times...
+
 *MUST(Anna): Break message methods into smaller bite-sized methods, perhaps some comments on what's different
-*MUST(Anthony): Make it so that more stations on one side can happen on right side also.
 *MUST(Anna): Document why Messaging is thread-safe
 *MUST(Anthony): Prove that there is some sort of verification done when loading a config file....
                 (Check for crossings...)
 (Anna): Make train drawing more smooth on switches
 (US): Look at the commits, and find dirty ones that don't compile.
-(US): Make a jar...
 (US): Look at all the TO-DOs in code. Most of these are comments.
 
 Optional:
+(Anthony): Make right-side more dynamic... not necessary to put in tracks/messagables on the left...
 Anthony: More options for the textfield output (simstatus and useralert)
 Anna: send no route to station message when train is requesting a station (Includes hook for no route to display to user)
 Anthony: Remove the trains when they arrive at the station?
+
 
 
