@@ -11,19 +11,7 @@ TO-DOs 11-14-17:
 
 Optional:
 Anthony: More options for the textfield output (simstatus and useralert)
-Anna: send no route to station message when train is requesting a station
+Anna: send no route to station message when train is requesting a station (Includes hook for no route to display to user)
 Anthony: Remove the trains when they arrive at the station?
-Anna: Need some sort of hook that lets me know if there is no route to the station
 
-
-
-DOWNLEFT regular track
-UPRIGHT switch going from down to up right
-
-
-
-implement:
-DOWNRIGHT regular track - regular and regularreserve
-
-UPLEFT
 

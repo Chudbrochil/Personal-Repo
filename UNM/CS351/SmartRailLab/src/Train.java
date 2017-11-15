@@ -359,12 +359,10 @@ public class Train extends Thread implements IMessagable, IDrawable
             //(The trains now arrive on the stations, not the 100*switchesTraveled pixels away from the station. XD
             else if (heading == Direction.UPRIGHT || heading == Direction.UPLEFT)
             {
-                //canvasX += 1;
                 canvasY -= 1;
             }
             else if (heading == Direction.DOWNLEFT || heading == Direction.DOWNRIGHT)
             {
-                //canvasX -= 1;
                 canvasY += 1;
             }
 
