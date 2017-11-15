@@ -47,12 +47,6 @@ public class RailConfigurationLoader
             while ((line = reader.readLine()) != null)
             {
                 String[] components = line.split(",");
-                // TODO: Debugging having extra stations on right.
-                for(int i = 0; i < components.length; ++i)
-                {
-                    System.out.print(components[i]);
-                }
-                System.out.println();
                 TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
                 trackLines.add(tl);
                 trackLineNum++;

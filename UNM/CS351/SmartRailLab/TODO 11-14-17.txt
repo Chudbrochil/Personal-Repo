@@ -1,6 +1,5 @@
 TO-DOs 11-14-17:
 
-***BIG URGENT***(US): Bugs where train is stopping 1 track before station, trains are stopping randomly at times...
 
 *MUST(Anna): Break message methods into smaller bite-sized methods, perhaps some comments on what's different
 *MUST(Anna): Document why Messaging is thread-safe

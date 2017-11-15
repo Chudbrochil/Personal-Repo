@@ -60,6 +60,10 @@ public class TrackLine
         return messagableList;
     }
 
+    /**
+     * toString()
+     * @return A string representing each messagable component in this trackline
+     */
     @Override
     public String toString()
     {
@@ -73,7 +77,7 @@ public class TrackLine
 
     /**
      * initializeComponents()
-     * 0 dummy piece
+     * 0 reserved
      * 1 is track
      * 2 is track + light
      * 3 is track + light + switch UpRight
@@ -96,7 +100,6 @@ public class TrackLine
         for (int i = 0; i < components.length; ++i)
         {
             String componentString = components[i].trim();
-            System.out.println("initializeComponents: " + i + " " +  componentString); // TODO: Debug for right side extra
 
             Station stationToAdd = null;
             RailTrack trackToAdd = null;
