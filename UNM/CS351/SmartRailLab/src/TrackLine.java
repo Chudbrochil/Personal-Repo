@@ -76,15 +76,10 @@ public class TrackLine
      * 0 station
      * 1 is track
      * 2 is track + light
-     * 3 is track + light + switch up
-     * 4 is track + light + switch down
-     * Currently we only have switches heading from 2nd track upto 1st track going left to right and the reverse
-     * e.g.
-     * ------------------------
-     *     /
-     *    /
-     *   /
-     * ------------------------
+     * 3 is track + light + switch UpRight
+     * 4 is track + light + switch DownLeft
+     * 5 is track + light + switch UpLeft
+     * 6 is track + light + switch DownRight
      *
      * This is where the majority of the objects get created. Based upon what type of configuration file was fed
      * into the simulation it will make a simulation.
@@ -121,17 +116,29 @@ public class TrackLine
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
                 trackToAdd = new RailTrack(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
             }
-            // Track, UpSwitch and its Light - UpSwitch means light goes on right-side
+            // Track, UpRightSwitch and its Light - UpSwitch means light goes on right-side
             else if (String.valueOf("3").equals(components[i]))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
-                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
+                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.UPRIGHT);
             }
-            // Track, DownSwitch and its Light - DownSwitch means light goes on left-side
+            // Track, DownLeftSwitch and its Light - DownSwitch means light goes on left-side
             else if (String.valueOf("4").equals(components[i]))
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
-                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
+                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.DOWNLEFT);
+            }
+            // Track, UpLeftSwitch and its Light
+            else if (String.valueOf("5").equals(components[i]))
+            {
+                lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.RIGHT);
+                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.UPLEFT);
+            }
+            // Track, DownRightSwitch and its Light
+            else if (String.valueOf("6").equals(components[i]))
+            {
+                lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
+                switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.DOWNRIGHT);
             }
 
             if(trackToAdd != null)
