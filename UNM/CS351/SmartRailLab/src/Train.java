@@ -229,8 +229,6 @@ public class Train extends Thread implements IMessagable, IDrawable
     /**
      * readMessage()
      * @param m message sent to this train from any other IMessagable object.
-     *          REQUEST_HEADING
-     *          Receives this message from a station to request which Direction, LEFT or RIGHT, the train is 'facing.'
      *          GO
      *          Receives this message fom a station when a route has been successfully found for this train.
      *          WAIT_FOR_CLEAR_ROUTE
@@ -284,53 +282,71 @@ public class Train extends Thread implements IMessagable, IDrawable
         //the [PreviousTrack, Train] going to currentTrack.
         else if (m.type == MessageType.REQUEST_NEXT_TRACK)
         {
-            if (going)
+            readMessageRequestNextTrack(m);
+        }
+    }
+    
+    /**
+     * @param m Message of MessageType.REQUEST_NEXT_TRACK
+     * REQUEST_NEXT_TRACK
+     *          Pops from the route list the nextTrack, then makes sure the current track signed the message(next in
+     *          the route list.) If it was the current track that sent the message, proceedTo(nextTrack) is called.
+     *          Then the train gets a new heading.
+     *          Finally, checks if it has arrived at 'destination' by comparing the toString() of the 'currentTrack'
+     *          to 'destination.' If the strings are equal, 'going' becomes false and the train has 'arrived.'
+     *
+     *          If the train has not 'arrived,' it must request the next track, so it pushes itself to the sender list
+     *          and sends the message to the currentTrack.
+     */
+    private void readMessageRequestNextTrack(Message m)
+    {
+        if (going)
+        {
+            IMessagable nextTrack = m.popRouteList();
+            if (m.peekRouteList() == currentTrack)
             {
-                IMessagable nextTrack = m.popRouteList();
-                if (m.peekRouteList() == currentTrack)
+                //If it's in the station, get the reference to the next track so that you're at the "beginning" of the track before drawing yourself.
+                heading = m.getHeading(); //get the heading so you know which way to draw yourself moving
+                proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
+            
+                //checks if it's arrived at the station name saved in destination.
+                if (currentTrack.toString().equals(destination))
                 {
-                    //If it's in the station, get the reference to the next track so that you're at the "beginning" of the track before drawing yourself.
-                    proceedTo(nextTrack); //may be a sleep in this method. currentTrack becomes nextTrack.
-                    heading = m.getHeading();
-
-                    //checks if it's arrived at the station
-                    if (currentTrack instanceof Station && ((Station) currentTrack).toString().equals(destination))
-                    {
-                        //todo: making this into a currentTrack = nextTrack makes the 'unreserves' look right, but the switches are way wrong then.
-                        proceedTo(nextTrack);
-                        System.out.println(toString() + " has arrived at destination, " + destination + "!");
-                        Notifications.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
-                        Notifications.playSound("Train_Arriving.wav");
-                        going = false;
-                        //reset heading to current station.
-                        //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
-                    }
-                    //send another message to request the NEXT track.
-                    else
-                    {
-                        m.pushRouteList(this);
-                        sendMessage(m, currentTrack);
-                    }
+                    currentTrack = nextTrack;
+                    System.out.println(toString() + " has arrived at destination, " + destination + "!");
+                    Notifications.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
+                    Notifications.playSound("Train_Arriving.wav");
+                    going = false;
+                    //reset heading to current station.
+                    //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
                 }
+                //send another message to request the NEXT track.
                 else
                 {
-                    System.err.println(toString() + " received a REQUEST_NEXT_TRACK message from " + m.peekRouteList() + ", " +
-                            "which is not a neighbor. Train is remaining stationary.");
+                    m.pushRouteList(this);
+                    sendMessage(m, currentTrack);
                 }
             }
             else
             {
-                System.err.println(toString() + " received a REQUEST_NEXT_TRACK message when 'going' status is false.");
+                System.err.println(toString() + " received a REQUEST_NEXT_TRACK message from " + m.peekRouteList() + ", " +
+                    "which is not a neighbor. Train is remaining stationary.");
             }
         }
+        else
+        {
+            System.err.println(toString() + " received a REQUEST_NEXT_TRACK message when 'going' status is false.");
+        }
     }
-
+    
     /**
      * proceedTo()
      * @param nextTrack a reference to the next track the train will be on.
      *                  This method sets currentTrack to next track.
-     *                  This is also the method where train learns where it should go on the canvas. The draw method will use this
-     *                  position to draw in the location.
+     *                  The draw method will use the current 'heading' and the current position to draw in the location.
+     *                  When this method finishes executing, the train will be drawn in the center of the NEXT component
+     *                  (nextTrack) and the currentTrack is sent an 'GOODBYE_UNRESERVE' message and currentTrack becomes
+     *                  nextTrack.
      */
     private void proceedTo(IMessagable nextTrack)
     {
@@ -340,10 +356,9 @@ public class Train extends Thread implements IMessagable, IDrawable
         
         //This allows the train to move out of the station and onto the track before doing its movement 'on that track'
         //(thus it unreserves when it leaves it.) This also allows the train to move into the station, but no further, when it arrives.
-        //todo: the 'unreserve' still looks like it happens before the train's off the track (it's when the center of the train moves from
         //one piece to another.) So this could be improved,but it is good enough for now.
         int loopIterations = 100;
-        if(currentTrack instanceof Station) loopIterations = 50;
+        //if(currentTrack instanceof Station) loopIterations = 50;
         
         for (int i = 0; i < loopIterations; ++i)
         {
@@ -355,7 +370,6 @@ public class Train extends Thread implements IMessagable, IDrawable
             {
                 canvasX -= 1;
             }
-            //TODO: Note: the trains move too much if they move in the x for the switches also. For now, this is a bad but functional fix. --Anna
             //(The trains now arrive on the stations, not the 100*switchesTraveled pixels away from the station. XD
             else if (heading == Direction.UPRIGHT || heading == Direction.UPLEFT)
             {

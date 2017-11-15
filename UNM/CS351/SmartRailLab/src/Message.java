@@ -4,12 +4,18 @@ import java.util.Stack;
  * created by Anna Carey 10/20/17
  * <p>
  * This is a data class that contains all the information all the Rail components need to communicate with each other.
- * (request routes, reserve routes, train to travel.)
+ * (request routes, reserve routes, train to travel.) Trains make all new instances of messages (Station has one exception.)
+ * Other components may change the type of messages and even clone them, but only Trains make them (with the exception of the
+ * Station creating a message of type 'GO'.)
  * <p>
  * Contains the routeList, which is a Stack. Public methods give access to most Stack methods (pop, push, isEmpty.)
- *
+ * <p>
+ * It is safe to pass the instances of this message around using sendMessage as long as the sender then drops all pointers
+ * to the message. If two copies of the message are needed (i.e., a switch needs to send a message to two components),
+ * use the clone() method. NEVER retain a copy of a Message after sending it to another component.
+ * <p>
  * Sign a message with setMostRecentSender(this) before sending it on (unless you wrote the message. Then mostRecentSender
- *   already equals you.) **This is done in the sendMessage() method of all Rail components.***
+ *   already equals you.) **This is done in the sendMessage() method of all Rail components.**
  */
  
 public class Message
@@ -25,15 +31,20 @@ public class Message
 
     /**
      * Message()
-     *
-     * TODO: Comment(Anna)
-     * @param m
-     * @param trainSender
-     * @param firstSender
-     * @param station
-     * @param direction
+     * @param mType MessageType. This parameter is the most important, as all Rail components consider this first in deciding
+     *              how to respond to the message. MessageTypes and the way Rail components react to them are detailed in the
+     *              MessageType.java file.
+     * @param trainSender Name of the Train on behalf of which this message was created. This MUST be included because
+     *                    tracks save this and check against it when reserving routes.
+     * @param firstSender A pointer to the creater of the message. This is the first thing pushed to the routeList stack
+     *                    and is also assigned to mostRecentSender.
+     * @param station The name of the station for which the Train is searching in a SEARCH_FOR_ROUTE message.
+     *                This parameter is unimportant for any other message types and can be included for debugging but is not necessary.
+     * @param direction The heading of the Train or message (whether it is headed LEFT, RIGHT, etc.) Utilized only in
+     *                  messages of type REQUEST_NEXT_TRACK for the train to be able to draw its motion accordingly.
+     *                  Unnecessary elsewhere, though can be used for debugging.
      */
-    public Message(MessageType m, String trainSender, IMessagable firstSender, String station, Direction direction)
+    public Message(MessageType mType, String trainSender, IMessagable firstSender, String station, Direction direction)
     {
         TRAIN = trainSender;
         heading = direction;
@@ -41,7 +52,7 @@ public class Message
         routeList.push(firstSender);
         poppedRouteList = new Stack<>();
         mostRecentSender = firstSender;
-        type = m;
+        type = mType;
         STATION = station;
     }
 
@@ -117,8 +128,8 @@ public class Message
     
     /**
      * getMostRecentSender()
-     * TODO: Comment...
-     * @return mostRecentSender
+     * @return mostRecentSender Can be used to obtain the mostRecentSender of this message. Primarily used
+     *         to varify where the message came from so that the next recipient of the message can be determined.
      */
     public IMessagable getMostRecentSender()
     {
@@ -163,15 +174,17 @@ public class Message
     {
         return heading;
     }
-
-    @Override
+    
     /**
      * clone()
      * Used by switches looking for a route and rail pieces when a reservation conflict is found (to make an ABORT_RESERVE_ROUTE
      * as well as a WAIT_FOR_CLEAR_ROUTE messages to send in different directions.)
      *
      * Retains the routeList information, so cloning, rather than making an new message, is important.
+     * (Also retains the poppedRouteList information, so a clone can still be 'reversed' just as the original
+     * message could.)
      */
+    @Override
     public Message clone()
     {
         return new Message(this.type, this.TRAIN, this.routeList, this.poppedRouteList, this.mostRecentSender,
