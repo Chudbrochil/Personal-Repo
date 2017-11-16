@@ -323,7 +323,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     
     /**
      * readMessageSearchForRoute()
-     * @param m message of MessageType.SEARCH_FOR_ROUTE
+     * @param m message of MessageType.SEARCH_FOR_ROUTe
      * @param switchSideOtherNeighbor IMessagable returned by the first index of getPseudoNeighbors()
      * @param aloneNeighbor IMessagable returned by the second index of getPseudoNeighbors()
      * SEARCH_FOR_ROUTE

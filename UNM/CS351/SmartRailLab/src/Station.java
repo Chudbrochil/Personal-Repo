@@ -103,9 +103,7 @@ public class Station extends Thread implements IMessagable, IDrawable
             {
                 wait();
             }
-            catch (Exception e)
-            {
-            }
+            catch (Exception e) {}
         }
     }
 
@@ -162,106 +160,145 @@ public class Station extends Thread implements IMessagable, IDrawable
         }
     }
     
-    
     /**
-     * TODO: document responses. XD
-     *
      * readMessage()
-     * ABORT_RESERVE_ROUTE
-     *   Prints a debug statement
-     * @param m
+     * @param m message sent to this train from any other IMessagable object.
+     * Observes what type of message m is and calls the appropriate method to respond to it, if implementation
+     *          for that type of message has been written.
+     * Implementations written for: SEARCH_FOR_ROUTE, RESERVE_ROUTE, WAIT_FOR_CLEAR_ROUTE, REQUEST_NEXT_TRACK,
+     *          and ABORT_RESERVE_ROUTE
      */
     private void readMessage(Message m)
     {
-        if (m.type == MessageType.SEARCH_FOR_ROUTE)
+        
+        switch(m.type)
         {
-            //If it's a train, send the message on.
-            if (m.peekRouteList() instanceof Train)
-            {
-                m.pushRouteList(this);
-                sendMessage(m, neighbor);
-                //todo: How should we handle if a train requests a route to a station it's ON?
-            }
-            //If the first sender isn't a train, it must be a track and the message is coming in.
-            else if (m.STATION.equals(this.NAME))
-            {
-                if (Main.DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
-                m.pushRouteList(this);
-                m.type = MessageType.RESERVE_ROUTE;
-                IMessagable mostRecentSender = m.getMostRecentSender();
-                if (mostRecentSender == neighbor)
-                {
-                    m.popRouteList(); //Pop yourself off the route list. Still saved in the reverse list inside m.
-                    m.popRouteList(); //Pop the neighbor you're about to send it to off the list. Still saved in the reverse list inside m.
-                    sendMessage(m, neighbor);
-                }
-                else
-                {
-                    if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
-                    printNeighborError(m.type.toString());
-                }
-            }
-            //todo: else, send a negative response?
+            case SEARCH_FOR_ROUTE: readMessageSearchForRoute(m);
+                break;
+            case RESERVE_ROUTE: readMessageReserveRoute(m);
+                break;
+            case WAIT_FOR_CLEAR_ROUTE: readMessageWaitForClearRoute(m);
+                break;
+            case ABORT_RESERVE_ROUTE: if(Main.DEBUG) {System.out.println("RESERVE_ROUTE to "+this.toString()+" by request of "+m.TRAIN+" successfully aborted.");}
+                break;
+            case REQUEST_NEXT_TRACK: readMessageRequestNextTrack(m);
+                break;
+            default: if(Main.DEBUG) {System.out.println(toString()+ "received a message of type "+m.type.toString()+
+            " for which there is no implementation.");}
+                break;
         }
-        else if (m.type == MessageType.RESERVE_ROUTE)
-        {
-            //If this message is received and the final sender is the train, then this is an answer to a SEARCH_FOR_ROUTE
-            //message that the train that is IN this station
-
-            //The first sender is who sent this message. Station doesn't care about that--just the Train it's going to.
-            //***m.popRouteList();
-            IMessagable nextSenderInList = m.popRouteList();
-            if (nextSenderInList instanceof Train)
-            {
-                Message goMessage = new Message(MessageType.GO, ((Train) nextSenderInList).NAME, this, m.STATION, neighborSide);
-                sendMessage(goMessage, nextSenderInList);
-            }
-            else
-            {
-                if (Main.DEBUG)
-                    System.out.println(this.toString() + " just got a message (type " + m.type.toString() + ") whose next " +
-                            "reference is " + nextSenderInList.toString() + ", which is not a train. No message sent.");
-                System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
-                return;
-            }
-        }
-
-        //WAIT_FOR_CLEAR_ROUTE
-        else if(m.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
-        {
-            //Continue sending on the message in the direction it was going. This will eventually get to the train.
-            IMessagable nextIMessagableToInform = m.popRouteList();
+    }
     
-            if(nextIMessagableToInform instanceof Train) sendMessage(m, nextIMessagableToInform);
-            else
-            {
-                if (Main.DEBUG) System.out.println(toString()+" received a message type "+m.type.toString()+" from "+m.getMostRecentSender().toString()+
+    /**
+     * readMessageReserveRoute()
+     * @param m Message of MessageType.RESERVE_ROUTE
+     * RESERVE_ROUTE
+     *          Pops the next member on the route list. If it's a train, that means that a SEARCH_FOR_ROUTE from the
+     *          train has come back as positive, and the Train that made this request is IN this station.
+     *          The Station then makes a GO Message and sends it to the Train.
+     *          If it is not a train, an error message is printed.
+     */
+    private void readMessageReserveRoute(Message m)
+    {
+        IMessagable nextSenderInList = m.popRouteList();
+        if (nextSenderInList instanceof Train)
+        {
+            Message goMessage = new Message(MessageType.GO, ((Train) nextSenderInList).NAME, this, m.STATION, neighborSide);
+            sendMessage(goMessage, nextSenderInList);
+        }
+        else
+        {
+            if (Main.DEBUG)
+                System.out.println(this.toString() + " just got a message (type " + m.type.toString() + ") whose next " +
+                    "reference is " + nextSenderInList.toString() + ", which is not a train. No message sent.");
+            System.err.println("RESERVE_ROUTE Message arrived at Station but next sender is not a Train.");
+            return;
+        }
+    }
+    
+    /**
+     * readMessageWaitForClearRoute()
+     * @param m Message of MessageType.WAIT_FOR_CLEAR_ROUTE
+     * WAIT_FOR_CLEAR_ROUTE
+     *          Forward the message to the train that SHOULD be next on the message list.
+     *          If it's not a train next, print an error.
+     */
+    private void readMessageWaitForClearRoute(Message m)
+    {
+        //Continue sending on the message in the direction it was going. This will eventually get to the train.
+        IMessagable nextIMessagableToInform = m.popRouteList();
+    
+        if(nextIMessagableToInform instanceof Train) sendMessage(m, nextIMessagableToInform);
+        else
+        {
+            if (Main.DEBUG) System.out.println(toString()+" received a message type "+m.type.toString()+" from "+m.getMostRecentSender().toString()+
                 ", but the last RouteList variable was "+ nextIMessagableToInform.toString()+", which is not a Train.");
-                System.err.println("Station received a message type "+ m.type.toString()+" but the next sender in the route list was not a Train.");
-            }
+            System.err.println("Station received a message type "+ m.type.toString()+" but the next sender in the route list was not a Train.");
         }
-        
-        else if (m.type == MessageType.ABORT_RESERVE_ROUTE)
+    }
+    
+    /**
+     * readMessageRequestNextTrack()
+     * @param m Message of MessageType.REQUEST_NEXT_TRACK
+     * REQUEST_NEXT_TRACK
+     *          Train requests a track.
+     *          Pop the train, push yourself, and push your neighbor. Then send message back to Train.
+     */
+    private void readMessageRequestNextTrack(Message m)
+    {
+        //Should be the first request a train makes.
+        if (m.peekRouteList() instanceof Train)
         {
-            if(Main.DEBUG) System.out.println("RESERVE_ROUTE to "+this.toString()+" by request of "+m.TRAIN+" successfully aborted.");
+            Train train = (Train) m.popRouteList();
+            m.pushRouteList(this);
+            m.pushRouteList(neighbor);
+            sendMessage(m, train);
         }
-        
-        else if (m.type == MessageType.REQUEST_NEXT_TRACK)
+        else
         {
-            //Should be the first request a train makes.
-            if (m.peekRouteList() instanceof Train)
+            System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
+                + " is not a train.");
+        }
+    }
+    
+    /**
+     * readMessageSearchForRoute()
+     * @param m Message of MessageType.SEARCH_FOR_ROUTE
+     * SEARCH_FOR_ROUTE
+     *          If the first sender is the train, send the message on.
+     *          Else, it's from the Station's neighbor. Checks to see if the route is looking for this station.
+     *          If m.STATION.equals(this.NAME), a route has been found. Switches message type to RESERVE_ROUTE
+     *          and sends it to its neighbor.
+     */
+    private void readMessageSearchForRoute(Message m)
+    {
+        //If it's a train, send the message on.
+        if (m.peekRouteList() instanceof Train)
+        {
+            m.pushRouteList(this);
+            sendMessage(m, neighbor);
+            //todo: How should we handle if a train requests a route to a station it's ON?
+        }
+        //If the first sender isn't a train, it must be a track and the message is coming in.
+        else if (m.STATION.equals(this.NAME))
+        {
+            if (Main.DEBUG) System.out.println("Route to Station " + NAME + " has been found!");
+            m.pushRouteList(this);
+            m.type = MessageType.RESERVE_ROUTE;
+            IMessagable mostRecentSender = m.getMostRecentSender();
+            if (mostRecentSender == neighbor)
             {
-                Train train = (Train) m.popRouteList();
-                m.pushRouteList(this);
-                m.pushRouteList(neighbor);
-                sendMessage(m, train);
+                m.popRouteList(); //Pop yourself off the route list. Still saved in the reverse list inside m.
+                m.popRouteList(); //Pop the neighbor you're about to send it to off the list. Still saved in the reverse list inside m.
+                sendMessage(m, neighbor);
             }
             else
             {
-                System.err.println(toString() + " got a message of type REQUEST_NEXT_TRACK from " + m.peekRouteList().toString()
-                        + " is not a train.");
+                if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                printNeighborError(m.type.toString());
             }
         }
+        //todo: else, send a negative response?
     }
 
     /**

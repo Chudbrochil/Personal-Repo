@@ -24,7 +24,6 @@ public enum MessageType
      *   Issued by a Rail component if it receives a RESERVE_ROUTE but is already reserved. This message gets sent to
      *   the train and is forwarded on by all rail pieces and indicates that the train should wait for a time and then
      *   request a route to the same destination again.
-     * NO_ROUTE_FOUND
      *
      */
     SEARCH_FOR_ROUTE, RESERVE_ROUTE, GO, REQUEST_NEXT_TRACK, TRAIN_GOODBYE_UNRESERVE, ABORT_RESERVE_ROUTE, WAIT_FOR_CLEAR_ROUTE
