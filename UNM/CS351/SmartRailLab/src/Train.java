@@ -29,7 +29,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     private static ArrayList<Image> trainImgs;
 
     private boolean isMoving = false; //True the train has received a valid 'GO' message and is proceeding along the track.
-    private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
+    private String destination = null;  //Save the name of a Station. Used by train to double check GO signals to make sure
     //the route goes to the desired location.
     private Direction heading;       //which way is the train heading?
     private GraphicsContext gcDraw;
@@ -40,6 +40,8 @@ public class Train extends Thread implements IMessagable, IDrawable
     // Details of the image gotten from the actual jpg image
     private final int knownTrainSizeX = 69;
     private final int knownTrainSizeY = 14;
+
+    private Queue<String> destinations;
 
     /**
      * Train()
@@ -57,6 +59,7 @@ public class Train extends Thread implements IMessagable, IDrawable
         this.gcDraw = gcDraw;
         canvasX = x;
         canvasY = y;
+        destinations = new ConcurrentLinkedQueue<>();
     }
 
     /**
@@ -166,9 +169,17 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     public void requestRoute(String station)
     {
-        destination = station;
-        Message message = new Message(MessageType.SEARCH_FOR_ROUTE, NAME, this, station, null);
-        sendMessage(message, currentTrack);
+        if(destination == null)
+        {
+            destination = station;
+            Message message = new Message(MessageType.SEARCH_FOR_ROUTE, NAME, this, station, null);
+            sendMessage(message, currentTrack);
+        }
+        else
+        {
+            destinations.add(station);
+        }
+
     }
 
     /**
@@ -347,6 +358,10 @@ public class Train extends Thread implements IMessagable, IDrawable
                     Notifications.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
                     Notifications.playSound("Train_Arriving.wav");
                     isMoving = false;
+
+                    // This is necessary in case the user has clicked on a moving train and wants to send it to another station
+                    destination = null;
+                    if(!destinations.isEmpty()) { requestRoute(destinations.poll()); }
                     //reset heading to current station.
                     //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
                 }

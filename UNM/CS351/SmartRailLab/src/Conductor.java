@@ -85,7 +85,7 @@ public class Conductor
         // TODO: Can we configure the messaging to handle this? Probably too late ;(
         // Because we're now able to re-select trains again, I actually don't want en-route trains to be sent to
         // new destinations. This technically works, but the reservations of components won't always behave right.
-        if (currentTrain != null && !currentTrain.getIsMoving())
+        if (currentTrain != null) //&& !currentTrain.getIsMoving())
         {
             // We want the train to go to the clicked station (i.e. request a route)
             if (currentTrain.hasAStation())
@@ -108,7 +108,7 @@ public class Conductor
         }
         else
         {
-            Notifications.updateUserAlert("You haven't selected a train or your train is moving. Please select a new train.");
+            Notifications.updateUserAlert("You haven't selected a train to send to this station. Please select a new train.");
         }
 
     }

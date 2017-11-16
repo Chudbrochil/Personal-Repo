@@ -1,10 +1,13 @@
 TO-DOs 11-14-17:
 
 **Must-Do's before submission**
-(US): Check with Joel if slide 2 of design diagram is needed or if slide 1 is adequate
 (Anna): Document why Messaging is thread-safe (Anthony: This may already be done, I'm unsure)
 (Anthony): Talk to Joel about the verification of config files, our implementation doesn't really need 
             verification given how the files are setup.
+            
+            If invalid file,
+            
+            
 (US): Look at all the TO-DOs in code. Most of these are comments.
 
 Preferred before submission:
