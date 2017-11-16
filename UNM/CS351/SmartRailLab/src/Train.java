@@ -59,6 +59,8 @@ public class Train extends Thread implements IMessagable, IDrawable
         canvasY = y;
     }
 
+    public boolean getGoing() { return going; }
+
     /**
      * hasAStation()
      * @return True if a train is in a station, false if train isn't in a station.
@@ -86,7 +88,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         canvasX = x;
         canvasY = y;
     }
-
 
     /**
      * setNeighbors()

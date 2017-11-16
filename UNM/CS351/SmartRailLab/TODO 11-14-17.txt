@@ -13,7 +13,3 @@ Optional:
 (Anthony): Canvas auto-sizing
 Anthony: More options for the textfield output (simstatus and useralert)
 Anna: send no route to station message when train is requesting a station (Includes hook for no route to display to user)
-Anthony: Remove the trains when they arrive at the station?
-
-
-

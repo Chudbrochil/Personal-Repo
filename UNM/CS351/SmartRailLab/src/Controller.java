@@ -92,8 +92,13 @@ public class Controller
         // LEFT CLICK
         if (me.getButton().name() == "PRIMARY")
         {
-            conductor.attemptTrainSelect((int) me.getX(), (int) me.getY());
-            conductor.attemptStationSelect((int) me.getX(), (int) me.getY());
+            // If clicking the canvas doesn't give you a train, look for a station.
+            if(!conductor.attemptTrainSelect((int) me.getX(), (int) me.getY()))
+            {
+                conductor.attemptStationSelect((int) me.getX(), (int) me.getY());
+            }
+
+
         }
     }
 
