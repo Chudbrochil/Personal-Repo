@@ -28,7 +28,7 @@ Main launches the UI
 Controller holds all of the UI elements in FXML. Calls userConfig to get the configuration to draw/setup.
 This configuration is loaded into the conductor that calls a series of classes to load the configuration
     file and create the corresponding objects.
-First, RailConfigurationLoader loads the file. 
+First, RailConfigurationLoader loads the file. (There are checks to verify its validity)
 RailConfiguration loads the lines (from the file) into TrackLine objects.
 The TrackLine objects ultimately make all the RailTrack, RailSwitch, RailLight, Station objects.
 RailConfiguration now has a hook on all of these and some of these are fed back into the Conductor for

@@ -383,14 +383,23 @@ public class Train extends Thread implements IMessagable, IDrawable
 
     /**
      * readMessagNoRouteFound()
+     * A train needs to know if it didn't find a route to the station it asked for.
      * @param m The message that we received
      */
     private void readMessageNoRouteFound(Message m)
     {
         Notifications.updateUserAlert("No route found to: " + m.STATION + ".");
-        checkForNewDestination();
+        if(m.STATION.equals(destination))
+        {
+            checkForNewDestination();
+        }
+        else System.err.println(toString() + " received a NO_ROUTE_FOUND message for a station that isn't it's current destination.");
     }
 
+    /**
+     * checkForNewDestination()
+     * This method looks through the list of destinations to see if there is another station to go to.
+     */
     private void checkForNewDestination()
     {
         // This is necessary in case the user has clicked on a moving train and wants to send it to another station

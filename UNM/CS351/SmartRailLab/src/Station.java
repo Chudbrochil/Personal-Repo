@@ -307,7 +307,24 @@ public class Station extends Thread implements IMessagable, IDrawable
                 printNeighborError(m.type.toString());
             }
         }
-        //todo: else, send a negative response?
+        else
+        {
+            m.pushRouteList(this);
+            m.type = MessageType.NO_ROUTE_FOUND;
+            IMessagable mostRecentSender = m.getMostRecentSender();
+            if (mostRecentSender == neighbor)
+            {
+                m.popRouteList(); //Pop yourself off the route list. Still saved in the reverse list inside m.
+                m.popRouteList(); //Pop the neighbor you're about to send it to off the list. Still saved in the reverse list inside m.
+                sendMessage(m, neighbor);
+            }
+            else
+            {
+                if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                printNeighborError(m.type.toString());
+            }
+        }
+        
     }
 
     /**
