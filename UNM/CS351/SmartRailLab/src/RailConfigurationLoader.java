@@ -37,21 +37,33 @@ public class RailConfigurationLoader
         trackLines.clear();
         try
         {
-            InputStream inputFile = getClass().getResourceAsStream("Configurations/" + configFileName);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile, "UTF-8"));
-            String line;
-            int trackLineNum = 0; // Tells us what trackLine we are working on. 0 is the first trackLine, 3 is the 4th... etc.
-            while ((line = reader.readLine()) != null)
+            if(configFileName.endsWith(".txt"))
             {
-                // This allows for commenting in the files.
-                if(!line.startsWith("//"))
+                InputStream inputFile = getClass().getResourceAsStream("Configurations/" + configFileName);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile, "UTF-8"));
+                String line;
+                int trackLineNum = 0; // Tells us what trackLine we are working on. 0 is the first trackLine, 3 is the 4th... etc.
+                while ((line = reader.readLine()) != null)
                 {
-                    String[] components = line.split(",");
-                    TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
-                    trackLines.add(tl);
-                    trackLineNum++;
+                    // This allows for commenting in the files.
+                    if(!line.startsWith("//"))
+                    {
+                        String[] components = line.split(",");
+                        for(int i = 0; i < components.length; ++i)
+                        {
+                            System.out.println(components[i] + "-");
+                        }
+                        TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
+                        trackLines.add(tl);
+                        trackLineNum++;
+                    }
                 }
             }
+            else
+            {
+
+            }
+
         }
         catch (IOException e)
         {
@@ -60,6 +72,5 @@ public class RailConfigurationLoader
 
         rc.loadTracks(trackLines);
     }
-
 
 }

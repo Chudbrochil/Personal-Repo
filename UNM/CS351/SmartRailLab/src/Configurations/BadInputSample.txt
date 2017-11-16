@@ -1,0 +1,6 @@
+// This is a sample of bad input to the program. I do a decent amount of checks to make sure that we don't make
+// a bogus track, but if you request ridiculous things to be created/drawn, then it will generally make ridiculous things.
+// Additionally, any number that is not 1-6 will be defaulted to a 1 which is just a regular track.
+111111111111111
+1,2,2,Chicago
+Station1,Station2,Station3,Station4

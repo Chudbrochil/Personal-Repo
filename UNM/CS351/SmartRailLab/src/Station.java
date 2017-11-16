@@ -275,9 +275,18 @@ public class Station extends Thread implements IMessagable, IDrawable
         //If it's a train, send the message on.
         if (m.peekRouteList() instanceof Train)
         {
-            m.pushRouteList(this);
-            sendMessage(m, neighbor);
-            //todo: How should we handle if a train requests a route to a station it's ON?
+            if(m.STATION.equals(toString()))
+            {
+                // TODO: Afterwards send a no route found to the train.
+                Notifications.updateUserAlert(m.TRAIN + " is already in " + toString()+ ".");
+                sendMessage(new Message(MessageType.NO_ROUTE_FOUND,
+                        null , this,toString(), null), m.peekRouteList());
+            }
+            else
+            {
+                m.pushRouteList(this);
+                sendMessage(m, neighbor);
+            }
         }
         //If the first sender isn't a train, it must be a track and the message is coming in.
         else if (m.STATION.equals(this.NAME))
@@ -298,7 +307,24 @@ public class Station extends Thread implements IMessagable, IDrawable
                 printNeighborError(m.type.toString());
             }
         }
-        //todo: else, send a negative response?
+        else
+        {
+            m.pushRouteList(this);
+            m.type = MessageType.NO_ROUTE_FOUND;
+            IMessagable mostRecentSender = m.getMostRecentSender();
+            if (mostRecentSender == neighbor)
+            {
+                m.popRouteList(); //Pop yourself off the route list. Still saved in the reverse list inside m.
+                m.popRouteList(); //Pop the neighbor you're about to send it to off the list. Still saved in the reverse list inside m.
+                sendMessage(m, neighbor);
+            }
+            else
+            {
+                if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
+                printNeighborError(m.type.toString());
+            }
+        }
+        
     }
 
     /**

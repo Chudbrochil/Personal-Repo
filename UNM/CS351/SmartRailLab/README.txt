@@ -28,7 +28,7 @@ Main launches the UI
 Controller holds all of the UI elements in FXML. Calls userConfig to get the configuration to draw/setup.
 This configuration is loaded into the conductor that calls a series of classes to load the configuration
     file and create the corresponding objects.
-First, RailConfigurationLoader loads the file. 
+First, RailConfigurationLoader loads the file. (There are checks to verify its validity)
 RailConfiguration loads the lines (from the file) into TrackLine objects.
 The TrackLine objects ultimately make all the RailTrack, RailSwitch, RailLight, Station objects.
 RailConfiguration now has a hook on all of these and some of these are fed back into the Conductor for
@@ -62,6 +62,7 @@ Trains are able to be re selected after arriving in a station or after being
     left for dead (i.e., put a train in station, then click a new train)
 Moving trains are able to be given new routes to go to. They will arrive at the
     first station and then reserve a new route to the next station in the queue.
+    
 
 Possible Future Features and Optimizations:
 Dragging and dropping trains into stations.

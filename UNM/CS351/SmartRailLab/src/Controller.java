@@ -64,6 +64,7 @@ public class Controller
         configs.add("8-BothSwitches.txt");
         configs.add("8-MoreRight.txt");
         configs.add("8-MoreLeft.txt");
+        configs.add("BadInputSample.txt");
 
         ChoiceDialog dialog = new ChoiceDialog(configs.get(0), configs);
         dialog.setTitle("SmartRail!");

@@ -96,8 +96,12 @@ public class TrackLine
         int xStep = 100;
         int yStep = 100;
 
+        // This is a catch so that in case some wild user decides to put in a track of length more than
+        // 8, that we won't encounter any weirdness.
+        int trackMaxLength = components.length > 8 ? 8 : components.length;
+
         // Adds each component to messagable/drawable lists
-        for (int i = 0; i < components.length; ++i)
+        for (int i = 0; i < trackMaxLength; ++i)
         {
             String componentString = components[i].trim();
 
@@ -110,11 +114,6 @@ public class TrackLine
             if(Character.isLetter(componentString.charAt(0)))
             {
                 stationToAdd = new Station(componentString, gcDraw, initialX + xStep*i, initialY + yStep*trackLineNum);
-            }
-            // Track
-            else if (String.valueOf("1").equals(componentString))
-            {
-                trackToAdd = new RailTrack(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
             }
             // Track and Light
             else if (String.valueOf("2").equals(componentString))
@@ -145,6 +144,12 @@ public class TrackLine
             {
                 lightToAdd = new RailLight(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.LEFT);
                 switchToAdd = new RailSwitch(lightToAdd, gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum, Direction.DOWNRIGHT);
+            }
+            // Track - This is the default setting in case a user put in a number that is not in the list. It'll just make
+            // a regular 'ole track. Tracks don't conflict with anything
+            else //if (String.valueOf("1").equals(componentString))
+            {
+                trackToAdd = new RailTrack(gcDraw, initialX + xStep * i, initialY + yStep * trackLineNum);
             }
 
             if(trackToAdd != null)
@@ -178,25 +183,31 @@ public class TrackLine
      */
     private void attachNeighbors()
     {
-        for (int i = 0; i < messagableList.size(); ++i)
+        // If some user decided to make a configuration file that only had 1 component in the trackline we need to
+        // try to defend against this.
+        if(messagableList.size() > 1)
         {
-            // Must be left station...
-            if (i == 0)
+            for (int i = 0; i < messagableList.size(); ++i)
             {
-                messagableList.get(i).setNeighbors(null, messagableList.get(i + 1));
-            }
-            // Must be right station...
-            else if (i == messagableList.size() - 1)
-            {
-                messagableList.get(i).setNeighbors(messagableList.get(i - 1), null);
-            }
-            else
-            {
-                messagableList.get(i).setNeighbors(messagableList.get(i - 1), messagableList.get(i + 1));
-            }
+                // Must be left station...
+                if (i == 0)
+                {
+                    messagableList.get(i).setNeighbors(null, messagableList.get(i + 1));
+                }
+                // Must be right station...
+                else if (i == messagableList.size() - 1)
+                {
+                    messagableList.get(i).setNeighbors(messagableList.get(i - 1), null);
+                }
+                else
+                {
+                    messagableList.get(i).setNeighbors(messagableList.get(i - 1), messagableList.get(i + 1));
+                }
 
-            ((Thread) messagableList.get(i)).start();
+                ((Thread) messagableList.get(i)).start();
+            }
         }
+
     }
 
 }
