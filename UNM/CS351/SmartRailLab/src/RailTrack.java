@@ -193,7 +193,7 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 break;
             case RESERVE_ROUTE: readMessageReserveRoute(m);
                 break;
-            case WAIT_FOR_CLEAR_ROUTE:  readMessageWaitForClearRoute(m);
+            case WAIT_FOR_CLEAR_ROUTE:  forwardToNextOnRoute(m);
                 break;
             case ABORT_RESERVE_ROUTE:   readMessageAbortReserveRoute(m);
                 break;
@@ -329,12 +329,12 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
     }
     
     /**
-     * readMessageWaitForClearRoute(Message m)
+     * forwardToNextOnRoute(Message m)
      * @param m Message of MessageType.WAIT_FOR_CLEAR_ROUTE
      * WAIT_FOR_CLEAR_ROUTE
      *          Forwards the message to the next route list neighbor.
      */
-    private void readMessageWaitForClearRoute(Message m)
+    private void forwardToNextOnRoute(Message m)
     {
         //Continue sending on the message in the direction it was going. This will eventually get to the train.
         IMessagable nextIMessagableToInform = m.popRouteList();
