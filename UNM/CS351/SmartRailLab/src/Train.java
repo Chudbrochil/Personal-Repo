@@ -28,7 +28,7 @@ public class Train extends Thread implements IMessagable, IDrawable
     private Image randomTrainImg;
     private static ArrayList<Image> trainImgs;
 
-    private boolean going = false; //True the train has received a valid 'GO' message and is proceeding along the track.
+    private boolean isMoving = false; //True the train has received a valid 'GO' message and is proceeding along the track.
     private String destination = "";  //Save the name of a Station. Used by train to double check GO signals to make sure
     //the route goes to the desired location.
     private Direction heading;       //which way is the train heading?
@@ -60,12 +60,12 @@ public class Train extends Thread implements IMessagable, IDrawable
     }
 
     /**
-     * getGoing()
+     * getisMoving()
      * This method is needed because trains are able to be re-selected after being given a destination.
      * A user could theoretically give orders to an already moving train. We don't want that.
-     * @return True if train is moving/going, false if in station/trainyard
+     * @return True if train is moving/isMoving, false if in station/trainyard
      */
-    public boolean getGoing() { return going; }
+    public boolean getIsMoving() { return isMoving; }
 
     /**
      * hasAStation()
@@ -276,7 +276,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                 Notifications.updateSimStatus(toString() + " has received a message from " + m.peekRouteList().toString() +
                     " to proceed to " + m.STATION.toString());
                 Notifications.playSound("Train_Whistle.wav");
-                going = true;
+                isMoving = true;
                 sendMessage(new Message(MessageType.REQUEST_NEXT_TRACK, NAME, this, destination, heading), currentTrack);
             }
             else
@@ -317,7 +317,7 @@ public class Train extends Thread implements IMessagable, IDrawable
      *          the route list.) If it was the current track that sent the message, proceedTo(nextTrack) is called.
      *          Then the train gets a new heading.
      *          Finally, checks if it has arrived at 'destination' by comparing the toString() of the 'currentTrack'
-     *          to 'destination.' If the strings are equal, 'going' becomes false and the train has 'arrived.'
+     *          to 'destination.' If the strings are equal, 'isMoving' becomes false and the train has 'arrived.'
      *
      *          If the train has not 'arrived,' it must request the next track, so it pushes itself to the sender list
      *          and sends the message to the currentTrack.
@@ -330,7 +330,7 @@ public class Train extends Thread implements IMessagable, IDrawable
         //checks the next sender list reference, which is the actual sender. This reference STAYS. The train pushes
         //itself, then sends this message on to the new currentTrack. (The result is a sender list that contains
         //the [PreviousTrack, Train] going to currentTrack.
-        if (going)
+        if (isMoving)
         {
             IMessagable nextTrack = m.popRouteList();
             if (m.peekRouteList() == currentTrack)
@@ -346,7 +346,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                     System.out.println(toString() + " has arrived at destination, " + destination + "!");
                     Notifications.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
                     Notifications.playSound("Train_Arriving.wav");
-                    going = false;
+                    isMoving = false;
                     //reset heading to current station.
                     //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
                 }
@@ -365,7 +365,7 @@ public class Train extends Thread implements IMessagable, IDrawable
         }
         else
         {
-            System.err.println(toString() + " received a REQUEST_NEXT_TRACK message when 'going' status is false.");
+            System.err.println(toString() + " received a REQUEST_NEXT_TRACK message when 'isMoving' status is false.");
         }
     }
     

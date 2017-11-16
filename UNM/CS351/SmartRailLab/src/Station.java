@@ -162,7 +162,6 @@ public class Station extends Thread implements IMessagable, IDrawable
         }
     }
     
-    
     /**
      * TODO: document responses. XD
      *
