@@ -59,6 +59,12 @@ public class Train extends Thread implements IMessagable, IDrawable
         canvasY = y;
     }
 
+    /**
+     * getGoing()
+     * This method is needed because trains are able to be re-selected after being given a destination.
+     * A user could theoretically give orders to an already moving train. We don't want that.
+     * @return True if train is moving/going, false if in station/trainyard
+     */
     public boolean getGoing() { return going; }
 
     /**

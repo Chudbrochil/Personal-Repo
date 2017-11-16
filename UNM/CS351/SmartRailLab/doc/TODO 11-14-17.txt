@@ -1,0 +1,15 @@
+TO-DOs 11-14-17:
+
+*MUST(US): Slide 2 of the Design Diagram needs to be done.
+*MUST(Anna): Break message methods into smaller bite-sized methods, perhaps some comments on what's different
+*MUST(Anna): Document why Messaging is thread-safe
+*MUST(Anthony): Prove that there is some sort of verification done when loading a config file....
+                (Check for crossings...)
+(Anna): Make train drawing more smooth on switches
+(US): Look at the commits, and find dirty ones that don't compile.
+(US): Look at all the TO-DOs in code. Most of these are comments.
+
+Optional:
+(Anthony): Canvas auto-sizing
+Anthony: More options for the textfield output (simstatus and useralert)
+Anna: send no route to station message when train is requesting a station (Includes hook for no route to display to user)

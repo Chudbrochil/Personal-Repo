@@ -1,0 +1,53 @@
+    IMessagable 
+    {
+        SendMessage();
+        ReceiveMessage();
+        ...
+        ...
+        
+    }
+    
+    public class Station;
+    
+    
+    public class Track extends Thread implements IMessagable
+    {
+        private Station myStation;
+        
+        
+        recvMsg()
+        {
+            if myStation != null && myStation.name().equals(stationparam)
+        }
+        
+        
+        
+        
+        
+    }
+    
+    sendMessage("FindRoute", "StationB",  "T12", "Track")
+    
+    
+    myClass extends Thread
+    {
+        Queue<Message> myMessageQueue;
+        
+        public void run()
+        {
+            if(queue.hasMessage())
+            {
+                receive_msg(msg);
+            }
+            
+        }
+    }
+    
+    
+    sendMessage("ChangeTrack", "T12", this.RightTrackNeighbor);
+    
+    public void changeTrack(Train theTrain)
+    {
+        Train myTrain = theTrain;
+        
+    }
