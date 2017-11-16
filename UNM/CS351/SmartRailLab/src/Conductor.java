@@ -10,7 +10,8 @@ public class Conductor
     private RailConfigurationLoader railConfigLoader;
     private ArrayList<Station> stationList;
     private ArrayList<IDrawable> drawableList;
-    private ArrayList<Train> activeTrains;
+    private ArrayList<Train> trainyardTrains; // This is the set of trains in the bottom trainyard
+    private ArrayList<Train> activeTrains; // This is trainyard trains and trains in stations/on tracks
     private int trainyardX = 100;
     private int trainyardY = 820;
     private Train currentTrain;
@@ -26,6 +27,31 @@ public class Conductor
     {
         this.gcDraw = gcDraw;
         freshInitialize();
+    }
+
+    /**
+     * attemptTrainSelect()
+     * Attempts to select a station based on users click. This will set the currentTrain if clicking on a train.
+     *
+     * @param x x-coord that was clicked
+     * @param y y-coord that was clicked
+     */
+    public boolean attemptTrainSelect(int x, int y)
+    {
+        for (int i = 0; i < activeTrains.size(); ++i)
+        {
+            if (activeTrains.get(i) != null)
+            {
+                if (activeTrains.get(i).isInClickedArea(x, y))
+                {
+                    currentTrain = activeTrains.get(i);
+                    Notifications.updateUserAlert("You selected " + activeTrains.get(i).toString() + ".");
+                    return true;
+                }
+            }
+
+        }
+        return false;
     }
 
     /**
@@ -56,7 +82,10 @@ public class Conductor
      */
     private void decideStationAction(Station stationClicked)
     {
-        if (currentTrain != null)
+        // TODO: Can we configure the messaging to handle this? Probably too late ;(
+        // Because we're now able to re-select trains again, I actually don't want en-route trains to be sent to
+        // new destinations. This technically works, but the reservations of components won't always behave right.
+        if (currentTrain != null) //&& !currentTrain.getIsMoving())
         {
             // We want the train to go to the clicked station (i.e. request a route)
             if (currentTrain.hasAStation())
@@ -64,15 +93,13 @@ public class Conductor
                 currentTrain.requestRoute(stationClicked.toString());
                 Notifications.updateUserAlert(currentTrain.toString() + " requested a route to " + stationClicked.toString());
 
-                // TODO: Weird situation where if a useer puts a train in a station, but doesn't give it a route right away
-                // then it will be stuck there forever...
                 currentTrain = null;
             }
             // We want to put the train in the station
             else
             {
                 // Setting the currentTrain's element to null so it's spot is now available, avoids redraw errors
-                activeTrains.set(activeTrains.indexOf(currentTrain), null);
+                trainyardTrains.set(trainyardTrains.indexOf(currentTrain), null);
                 currentTrain.setNeighbors(stationClicked, null);
                 Notifications.updateUserAlert(currentTrain.toString() + " has been put into " + stationClicked.toString() +
                         ". Select a destination.");
@@ -81,32 +108,9 @@ public class Conductor
         }
         else
         {
-            Notifications.updateUserAlert("You can't select a station without a train. Please make a train and select it.");
+            Notifications.updateUserAlert("You haven't selected a train to send to this station. Please select a new train.");
         }
 
-    }
-
-    /**
-     * attemptTrainSelect()
-     * Attempts to select a station based on users click. This will set the currentTrain if clicking on a train.
-     *
-     * @param x x-coord that was clicked
-     * @param y y-coord that was clicked
-     */
-    public void attemptTrainSelect(int x, int y)
-    {
-        for (int i = 0; i < activeTrains.size(); ++i)
-        {
-            if (activeTrains.get(i) != null)
-            {
-                if (activeTrains.get(i).isInClickedArea(x, y))
-                {
-                    currentTrain = activeTrains.get(i);
-                    Notifications.updateUserAlert("You selected " + activeTrains.get(i).toString() + ". Please select a station for it.");
-                }
-            }
-
-        }
     }
 
     /**
@@ -119,13 +123,14 @@ public class Conductor
         railConfig = new RailConfiguration(gcDraw);
         railConfigLoader = new RailConfigurationLoader(railConfig);
         stationList = new ArrayList<>();
-        activeTrains = new ArrayList<>();
+        trainyardTrains = new ArrayList<>();
         drawableList = new ArrayList<>();
+        activeTrains = new ArrayList<>();
         MAX_TRAINS = 30;
 
         for (int i = 0; i < MAX_TRAINS; ++i)
         {
-            activeTrains.add(null);
+            trainyardTrains.add(null);
         }
     }
 
@@ -192,7 +197,7 @@ public class Conductor
         int indexOfNullTrain = -1;
         for (int i = 0; i < MAX_TRAINS; ++i)
         {
-            if (activeTrains.get(i) == null)
+            if (trainyardTrains.get(i) == null)
             {
                 indexOfNullTrain = i;
                 break;
@@ -203,15 +208,13 @@ public class Conductor
         {
             Train aTrain = new Train(gcDraw,
                     trainyardX + (indexOfNullTrain % 10) * 75, trainyardY + (indexOfNullTrain / 10) * 30);
-            activeTrains.set(indexOfNullTrain, aTrain);
+            trainyardTrains.set(indexOfNullTrain, aTrain);
+            activeTrains.add(aTrain);
             drawableList.add(aTrain);
-            // This way trains won't outlive Main.
-            aTrain.setDaemon(true);
             aTrain.start();
         }
 
     }
-
 
 
 }

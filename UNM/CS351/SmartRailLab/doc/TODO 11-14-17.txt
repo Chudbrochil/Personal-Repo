@@ -1,0 +1,21 @@
+TO-DOs 11-14-17:
+
+**Must-Do's before submission**
+(Anna): Document why Messaging is thread-safe (Anthony: This may already be done, I'm unsure)
+(Anthony): Talk to Joel about the verification of config files, our implementation doesn't really need 
+            verification given how the files are setup.
+            
+            If invalid file,
+            
+            
+(US): Look at all the TO-DOs in code. Most of these are comments.
+
+Preferred before submission:
+(Anna): Station Message methods broke up just like RailTrack/RailSwitch/Train
+(Anna): Make train drawing more smooth on switches
+(US): Look at the commits, and find dirty ones that don't compile.
+
+Optional:
+(Anthony): Canvas auto-sizing
+(Anthony): More options for the textfield output (simstatus and useralert)
+(Anna): send no route to station message when train is requesting a station (Includes hook for no route to display to user)

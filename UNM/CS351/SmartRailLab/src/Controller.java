@@ -4,10 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -96,8 +92,13 @@ public class Controller
         // LEFT CLICK
         if (me.getButton().name() == "PRIMARY")
         {
-            conductor.attemptTrainSelect((int) me.getX(), (int) me.getY());
-            conductor.attemptStationSelect((int) me.getX(), (int) me.getY());
+            // If clicking the canvas doesn't give you a train, look for a station.
+            if(!conductor.attemptTrainSelect((int) me.getX(), (int) me.getY()))
+            {
+                conductor.attemptStationSelect((int) me.getX(), (int) me.getY());
+            }
+
+
         }
     }
 
