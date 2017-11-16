@@ -47,6 +47,10 @@ public class RailConfigurationLoader
                 if(!line.startsWith("//"))
                 {
                     String[] components = line.split(",");
+                    for(int i = 0; i < components.length; ++i)
+                    {
+                        System.out.println(components[i] + "-");
+                    }
                     TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
                     trackLines.add(tl);
                     trackLineNum++;
@@ -60,6 +64,5 @@ public class RailConfigurationLoader
 
         rc.loadTracks(trackLines);
     }
-
 
 }

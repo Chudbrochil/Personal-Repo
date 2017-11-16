@@ -5,8 +5,7 @@ TO-DOs 11-14-17:
 (Anthony): Talk to Joel about the verification of config files, our implementation doesn't really need 
             verification given how the files are setup.
             
-            If invalid file,
-            
+            If invalid file, do a popup and restart
             
 (US): Look at all the TO-DOs in code. Most of these are comments.
 

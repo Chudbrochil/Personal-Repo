@@ -275,9 +275,17 @@ public class Station extends Thread implements IMessagable, IDrawable
         //If it's a train, send the message on.
         if (m.peekRouteList() instanceof Train)
         {
-            m.pushRouteList(this);
-            sendMessage(m, neighbor);
-            //todo: How should we handle if a train requests a route to a station it's ON?
+            if(m.STATION.equals(toString()))
+            {
+                // TODO: Afterwards send a no route found to the train.
+                Notifications.updateUserAlert(m.TRAIN + " is already in " + toString()+ ".");
+                sendMessage(new Message(MessageType.NO_ROUTE_FOUND, null , this,toString(), null));
+            }
+            else
+            {
+                m.pushRouteList(this);
+                sendMessage(m, neighbor);
+            }
         }
         //If the first sender isn't a train, it must be a track and the message is coming in.
         else if (m.STATION.equals(this.NAME))

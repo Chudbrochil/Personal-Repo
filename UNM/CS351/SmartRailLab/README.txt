@@ -62,6 +62,7 @@ Trains are able to be re selected after arriving in a station or after being
     left for dead (i.e., put a train in station, then click a new train)
 Moving trains are able to be given new routes to go to. They will arrive at the
     first station and then reserve a new route to the next station in the queue.
+    
 
 Possible Future Features and Optimizations:
 Dragging and dropping trains into stations.

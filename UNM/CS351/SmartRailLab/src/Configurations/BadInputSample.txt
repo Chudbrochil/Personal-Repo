@@ -1,0 +1,6 @@
+// This is a sample of bad input to the program. I do a decent amount of checks
+
+
+111111111111111
+1,2,2,Chicago
+Station1,Station2,Station3,Station4

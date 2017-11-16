@@ -112,7 +112,6 @@ public class Train extends Thread implements IMessagable, IDrawable
         {
             currentTrack = right;
         }
-        //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
     }
 
 
@@ -261,6 +260,8 @@ public class Train extends Thread implements IMessagable, IDrawable
                 break;
             case REQUEST_NEXT_TRACK: readMessageRequestNextTrack(m);
                 break;
+            case NO_ROUTE_FOUND: readMessageNoRouteFound(m);
+                break;
             default: if(Main.DEBUG) System.out.println(toString()+ "received a message of type "+m.type.toString()+
                 " for which there is no implementation.");
                 break;
@@ -359,11 +360,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                     Notifications.playSound("Train_Arriving.wav");
                     isMoving = false;
 
-                    // This is necessary in case the user has clicked on a moving train and wants to send it to another station
-                    destination = null;
-                    if(!destinations.isEmpty()) { requestRoute(destinations.poll()); }
-                    //reset heading to current station.
-                    //sendMessage(new Message(NAME, this, MessageType.REQUEST_HEADING, null, null),currentTrack);
+                    checkForNewDestination();
                 }
                 //send another message to request the NEXT track.
                 else
@@ -382,6 +379,23 @@ public class Train extends Thread implements IMessagable, IDrawable
         {
             System.err.println(toString() + " received a REQUEST_NEXT_TRACK message when 'isMoving' status is false.");
         }
+    }
+
+    /**
+     * readMessagNoRouteFound()
+     * @param m The message that we received
+     */
+    private void readMessageNoRouteFound(Message m)
+    {
+        Notifications.updateUserAlert("No route found to: " + m.STATION + ".");
+        checkForNewDestination();
+    }
+
+    private void checkForNewDestination()
+    {
+        // This is necessary in case the user has clicked on a moving train and wants to send it to another station
+        destination = null;
+        if(!destinations.isEmpty()) { requestRoute(destinations.poll()); }
     }
     
     /**
@@ -403,8 +417,7 @@ public class Train extends Thread implements IMessagable, IDrawable
         //(thus it unreserves when it leaves it.) This also allows the train to move into the station, but no further, when it arrives.
         //one piece to another.) So this could be improved,but it is good enough for now.
         int loopIterations = 100;
-        //if(currentTrack instanceof Station) loopIterations = 50;
-        
+
         for (int i = 0; i < loopIterations; ++i)
         {
             if (heading == Direction.RIGHT)
