@@ -26,6 +26,7 @@ public class Main extends Application
         primaryStage.setTitle("SmartRail!");
         primaryStage.setScene(new Scene(root, 800, 1000));
         primaryStage.show();
+        primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(e -> System.exit(0));
     }
 

@@ -22,6 +22,12 @@ Known Bugs:
 
 
 
+Program Flow:
+
+
+
+
+
 List of Extra Features:
 Sounds for station arrival and train "GO".
 Ability to create LOTS(30 is current max..., could go even higher) of trains
@@ -46,7 +52,8 @@ Dynamic filename population of configuration file names rather than hard-coded f
         
 Making the configuration file able to handle "right-aligned" tracks better
     - I spent some time making this somewhat possible, but the refactor is too large.
-        The program is capable of having a station on the right and not one on the left.
+        The program is capable of having a station on the right and not one on the left, but
+        it requires having leading components leading upto the station only on the right.
         
         
         

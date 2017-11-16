@@ -11,7 +11,6 @@ TO-DOs 11-14-17:
 
 Optional:
 (Anthony): Canvas auto-sizing
-(Anthony): Make right-side more dynamic... not necessary to put in tracks/messagables on the left...
 Anthony: More options for the textfield output (simstatus and useralert)
 Anna: send no route to station message when train is requesting a station (Includes hook for no route to display to user)
 Anthony: Remove the trains when they arrive at the station?
