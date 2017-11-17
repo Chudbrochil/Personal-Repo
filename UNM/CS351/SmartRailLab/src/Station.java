@@ -177,11 +177,13 @@ public class Station extends Thread implements IMessagable, IDrawable
                 break;
             case RESERVE_ROUTE: readMessageReserveRoute(m);
                 break;
-            case WAIT_FOR_CLEAR_ROUTE: readMessageWaitForClearRoute(m);
+            case WAIT_FOR_CLEAR_ROUTE: forwardToNextOnRoute(m);
                 break;
             case ABORT_RESERVE_ROUTE: if(Main.DEBUG) {System.out.println("RESERVE_ROUTE to "+this.toString()+" by request of "+m.TRAIN+" successfully aborted.");}
                 break;
             case REQUEST_NEXT_TRACK: readMessageRequestNextTrack(m);
+                break;
+            case NO_ROUTE_FOUND: forwardToNextOnRoute(m);
                 break;
             default: if(Main.DEBUG) {System.out.println(toString()+ "received a message of type "+m.type.toString()+
             " for which there is no implementation.");}
@@ -217,13 +219,13 @@ public class Station extends Thread implements IMessagable, IDrawable
     }
     
     /**
-     * readMessageWaitForClearRoute()
+     * forwardToNextOnRoute()
      * @param m Message of MessageType.WAIT_FOR_CLEAR_ROUTE
      * WAIT_FOR_CLEAR_ROUTE
      *          Forward the message to the train that SHOULD be next on the message list.
      *          If it's not a train next, print an error.
      */
-    private void readMessageWaitForClearRoute(Message m)
+    private void forwardToNextOnRoute(Message m)
     {
         //Continue sending on the message in the direction it was going. This will eventually get to the train.
         IMessagable nextIMessagableToInform = m.popRouteList();

@@ -201,6 +201,8 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 break;
             case TRAIN_GOODBYE_UNRESERVE: readMessageTrainGoodbyeUnreserve(m);
                 break;
+            case NO_ROUTE_FOUND: forwardToNextOnRoute(m);
+                break;
             default: if(Main.DEBUG) System.out.println(toString()+ "received a message of type "+m.type.toString()+
                 " for which there is no implementation.");
                 break;
