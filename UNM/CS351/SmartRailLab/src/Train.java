@@ -358,7 +358,7 @@ public class Train extends Thread implements IMessagable, IDrawable
                 if (currentTrack.toString().equals(destination))
                 {
                     currentTrack = nextTrack;
-                    System.out.println(toString() + " has arrived at destination, " + destination + "!");
+                    if(Main.DEBUG) System.out.println(toString() + " has arrived at destination, " + destination + "!");
                     Notifications.updateSimStatus(toString() + " has arrived at destination, " + destination + "!");
                     Notifications.playSound("Train_Arriving.wav");
                     isMoving = false;

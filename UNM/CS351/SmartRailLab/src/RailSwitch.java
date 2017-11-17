@@ -392,7 +392,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
             if(routeRequestsSent.get(m.TRAIN) == null)
             {
                 routeRequestsSent.put(m.TRAIN, m);
-                System.out.println(toString()+" just stored a message of type "+ m.type.toString());
+                if(Main.DEBUG) { System.out.println(toString()+" just stored a message of type "+ m.type.toString()); }
             }
             else //compare the messages. Send the best.
             {
