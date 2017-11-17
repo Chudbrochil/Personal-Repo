@@ -318,7 +318,10 @@ public class Train extends Thread implements IMessagable, IDrawable
         if(Main.DEBUG) System.out.println(toString()+" received a "+MessageType.WAIT_FOR_CLEAR_ROUTE.toString()+" message. ");
         Notifications.updateSimStatus(toString()+" has been told to wait for the route to clear to "+destination);
         try { Thread.sleep(5000); } catch (InterruptedException e){}
-        requestRoute(destination);
+        //We have to clear the current destination so that this method won't just add it to the queue.
+        String tempDest = destination;
+        destination = null;
+        requestRoute(tempDest);
     }
     
     /**

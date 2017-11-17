@@ -35,7 +35,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
      * if the IMessagable under that key is null, it sets it to the getMostRecentSender() of the message. If it is not null, that means
      * no route is found from this switch, so the switch forwards the NO_ROUTE_FOUND to the next neighbor.
      */
-    private HashMap<Train, IMessagable> routeRequestsSent;
+    private HashMap<String, Message> routeRequestsSent = new HashMap<>();
 
     private GraphicsContext gcDraw;
     private int canvasX;
@@ -305,15 +305,17 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         {
             case SEARCH_FOR_ROUTE:  readMessageSearchForRoute(m, switchSideOtherNeighbor, aloneNeighbor);
                 break;
-            case RESERVE_ROUTE: readMessageReserveRoute(m, switchSideOtherNeighbor, aloneNeighbor);
+            case RESERVE_ROUTE: checkForBranchedMessages(m, switchSideOtherNeighbor, aloneNeighbor);
                 break;
-            case WAIT_FOR_CLEAR_ROUTE:  readMessageWaitForClearRoute(m);
+            case WAIT_FOR_CLEAR_ROUTE:  checkForBranchedMessages(m, switchSideOtherNeighbor, aloneNeighbor);
                 break;
             case ABORT_RESERVE_ROUTE:   readMessageAbortReserveRoute(m);
                 break;
             case REQUEST_NEXT_TRACK: readMessageRequestNextTrack(m, switchSideOtherNeighbor, aloneNeighbor);
                 break;
             case TRAIN_GOODBYE_UNRESERVE: readMessageTrainGoodbyeUnreserve(m);
+                break;
+            case NO_ROUTE_FOUND: checkForBranchedMessages(m, switchSideOtherNeighbor, aloneNeighbor);
                 break;
             default: if(Main.DEBUG) System.out.println(toString()+ "received a message of type "+m.type.toString()+
                 " for which there is no implementation.");
@@ -352,6 +354,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         else if (mostRecentSender == aloneNeighbor)
         {
             Message mClone = m.clone();
+            if(switchSideOtherNeighbor!=null && switchNeighbor!=null)
+            {
+                //store if we're waiting for two replies. If not, treat as normal.
+                routeRequestsSent.put(m.TRAIN, null);
+            }
+            
             if (switchSideOtherNeighbor != null)
             {
                 m.setHeading(getNeighborSide(switchSideOtherNeighbor));
@@ -367,6 +375,81 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         {
             if (Main.DEBUG) printNeighborDebug(mostRecentSender, m.type.toString());
             printNeighborError(m.type.toString());
+        }
+    }
+    
+    /**
+     * checkForBranchedMessages()
+     * @param m message of MessageType.RESERVE_ROUTE, WAIT_FOR_CLEAR_ROUTE, or NO_ROUTE_FOUND
+     * @param switchSideOtherNeighbor IMessagable returned by the first index of getPseudoNeighbors()
+     * @param aloneNeighbor IMessagable returned by the second index of getPseudoNeighbors()
+     */
+    private void checkForBranchedMessages(Message m, IMessagable switchSideOtherNeighbor, IMessagable aloneNeighbor)
+    {
+        if(routeRequestsSent.containsKey(m.TRAIN))
+        {
+            //If this is the first of the two messages you've gotten back for this train, add it.
+            if(routeRequestsSent.get(m.TRAIN) == null)
+            {
+                routeRequestsSent.put(m.TRAIN, m);
+                System.out.println(toString()+" just stored a message of type "+ m.type.toString());
+            }
+            else //compare the messages. Send the best.
+            {
+                Message mOne = routeRequestsSent.get(m.TRAIN);
+                Message mTwo = m;
+                if(mOne.type == MessageType.RESERVE_ROUTE && mTwo.type == MessageType.RESERVE_ROUTE)
+                {
+                    readMessageReserveRoute(mOne, switchSideOtherNeighbor, aloneNeighbor);
+                    //Only abort the route. Don't send a WAIT
+                    mTwo.type = MessageType.ABORT_RESERVE_ROUTE;
+                    mTwo.reverseRouteList();
+                    mTwo.popRouteList(); //pop yourself off so that you don't cause bugs.
+                    //will now go backwards to the Rail component that just sent this message.
+                    forwardToNextOnRoute(mTwo);
+                }
+                else if(mOne.type == MessageType.RESERVE_ROUTE)
+                {
+                    readMessageReserveRoute(mOne, switchSideOtherNeighbor, aloneNeighbor);
+                }
+                else if(mTwo.type == MessageType.RESERVE_ROUTE)
+                {
+                    readMessageReserveRoute(mTwo, switchSideOtherNeighbor, aloneNeighbor);
+                }
+                else if(mOne.type == MessageType.WAIT_FOR_CLEAR_ROUTE || mTwo.type == MessageType.WAIT_FOR_CLEAR_ROUTE)
+                {
+                    if(mOne.type == MessageType.WAIT_FOR_CLEAR_ROUTE) forwardToNextOnRoute(mOne);
+                    else forwardToNextOnRoute(mTwo);
+                }
+                else if(mOne.type == MessageType.NO_ROUTE_FOUND && mTwo.type == MessageType.NO_ROUTE_FOUND)//BOTH of them are NO_ROUTE_FOUND
+                {
+                    forwardToNextOnRoute(mOne);
+                }
+                else
+                {
+                    System.err.println("checkForBranchedMessages fell into the Else.");
+                }
+            
+                routeRequestsSent.remove(m.TRAIN);
+            }
+        }
+        
+        else
+        {
+            switch (m.type)
+            {
+                case RESERVE_ROUTE:
+                    readMessageReserveRoute(m, switchSideOtherNeighbor, aloneNeighbor);
+                    break;
+                case WAIT_FOR_CLEAR_ROUTE:
+                    forwardToNextOnRoute(m);
+                    break;
+                case NO_ROUTE_FOUND:
+                    forwardToNextOnRoute(m);
+                    break;
+                default:
+                    break;
+            }
         }
     }
     
@@ -463,43 +546,29 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         m.reverseRouteList();
         m.popRouteList(); //pop yourself off so that you don't cause bugs.
         //will now go backwards to the Rail component that just sent this message.
-        IMessagable nextIMessagableToInform = m.popRouteList();
-    
-        if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
-        else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
-        else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);
-        else
-        {
-            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
-            printNeighborError(m.type.toString());
-        }
+        forwardToNextOnRoute(m);
     
         //WAIT_FOR_CLEAR_ROUTE message
         waitMessage.type = MessageType.WAIT_FOR_CLEAR_ROUTE;
         //Continue sending on the message in the direction it was going. This will eventually get to the train.
-        nextIMessagableToInform = waitMessage.popRouteList();
-    
-        if(nextIMessagableToInform == leftNeighbor) sendMessage(waitMessage, leftNeighbor);
-        else if(nextIMessagableToInform == rightNeighbor) sendMessage(waitMessage, rightNeighbor);
-        else if(nextIMessagableToInform == switchNeighbor) sendMessage(waitMessage, switchNeighbor);
-        else
-        {
-            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
-            printNeighborError(waitMessage.type.toString());
-        }
+        forwardToNextOnRoute(waitMessage);
     }
     
     /**
-     * readMessageWaitForClearRoute()
+     * forwardToNextOnRoute()
      * @param m message of type MessageType.WAIT_FOR_CLEAR_ROUTE
      * WAIT_FOR_CLEAR_ROUTE
      *          Forwards the message to the next route list neighbor.
      */
-    private void readMessageWaitForClearRoute(Message m)
+    private void forwardToNextOnRoute(Message m)
     {
         //Continue sending on the message in the direction it was going. This will eventually get to the train.
         IMessagable nextIMessagableToInform = m.popRouteList();
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> ac172eaf708cc0036064a62751a1a533c1517293
         if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
         else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
         else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);
@@ -523,15 +592,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         {
             unreserve();
             //should be the next track to be unreserved
-            IMessagable nextIMessagableToInform = m.popRouteList();
-            if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
-            else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
-            else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);
-            else
-            {
-                if (Main.DEBUG) printNeighborDebug(m.getMostRecentSender(), m.type.toString());
-                printNeighborError(m.type.toString());
-            }
+            forwardToNextOnRoute(m);
         }
         else
         {
