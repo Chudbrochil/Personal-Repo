@@ -391,7 +391,7 @@ public class Train extends Thread implements IMessagable, IDrawable
      */
     private void readMessageNoRouteFound(Message m)
     {
-        Notifications.updateSimStatus("No route found to: " + m.STATION + ".");
+        Notifications.updateSimStatus("No route found to " + m.STATION + " for "+toString()+".");
         if(m.STATION.equals(destination))
         {
             checkForNewDestination();

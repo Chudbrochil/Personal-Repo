@@ -239,6 +239,12 @@ public class RailTrack extends Thread implements IMessagable, IDrawable
                 neighborToSendTo = leftNeighbor;
             }
             if (neighborToSendTo != null) sendMessage(m, neighborToSendTo);
+            else
+            {
+                m.type = MessageType.NO_ROUTE_FOUND;
+                m.popRouteList(); //pop yourself off the route list so you don't send the message to yourself
+                forwardToNextOnRoute(m);
+            }
             //Only one instance of this message needed because only one instance is being sent out.
         }
         else
