@@ -401,8 +401,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
                 if(mOne.type == MessageType.RESERVE_ROUTE && mTwo.type == MessageType.RESERVE_ROUTE)
                 {
                     readMessageReserveRoute(mOne, switchSideOtherNeighbor, aloneNeighbor);
-                    //todo: only abort the route. Don't send a WAIT
-                    //readMessageAbortReserveRoute(mTwo);
+                    //Only abort the route. Don't send a WAIT
+                    mTwo.type = MessageType.ABORT_RESERVE_ROUTE;
+                    mTwo.reverseRouteList();
+                    mTwo.popRouteList(); //pop yourself off so that you don't cause bugs.
+                    //will now go backwards to the Rail component that just sent this message.
+                    forwardToNextOnRoute(mTwo);
                 }
                 else if(mOne.type == MessageType.RESERVE_ROUTE)
                 {
@@ -542,30 +546,12 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         m.reverseRouteList();
         m.popRouteList(); //pop yourself off so that you don't cause bugs.
         //will now go backwards to the Rail component that just sent this message.
-        IMessagable nextIMessagableToInform = m.popRouteList();
-    
-        if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
-        else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
-        else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);
-        else
-        {
-            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, m.type.toString());
-            printNeighborError(m.type.toString());
-        }
+        forwardToNextOnRoute(m);
     
         //WAIT_FOR_CLEAR_ROUTE message
         waitMessage.type = MessageType.WAIT_FOR_CLEAR_ROUTE;
         //Continue sending on the message in the direction it was going. This will eventually get to the train.
-        nextIMessagableToInform = waitMessage.popRouteList();
-    
-        if(nextIMessagableToInform == leftNeighbor) sendMessage(waitMessage, leftNeighbor);
-        else if(nextIMessagableToInform == rightNeighbor) sendMessage(waitMessage, rightNeighbor);
-        else if(nextIMessagableToInform == switchNeighbor) sendMessage(waitMessage, switchNeighbor);
-        else
-        {
-            if (Main.DEBUG) printNeighborDebug(nextIMessagableToInform, waitMessage.type.toString());
-            printNeighborError(waitMessage.type.toString());
-        }
+        forwardToNextOnRoute(waitMessage);
     }
     
     /**
@@ -602,15 +588,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
         {
             unreserve();
             //should be the next track to be unreserved
-            IMessagable nextIMessagableToInform = m.popRouteList();
-            if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
-            else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
-            else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);
-            else
-            {
-                if (Main.DEBUG) printNeighborDebug(m.getMostRecentSender(), m.type.toString());
-                printNeighborError(m.type.toString());
-            }
+            forwardToNextOnRoute(m);
         }
         else
         {
