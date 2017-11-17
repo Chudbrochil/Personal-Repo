@@ -499,8 +499,7 @@ public class RailSwitch extends Thread implements IMessagable, IDrawable
     {
         //Continue sending on the message in the direction it was going. This will eventually get to the train.
         IMessagable nextIMessagableToInform = m.popRouteList();
-    
-        //todo: if time, extract to 'forward message' method. Used in a few places.
+
         if(nextIMessagableToInform == leftNeighbor) sendMessage(m, leftNeighbor);
         else if(nextIMessagableToInform == rightNeighbor) sendMessage(m, rightNeighbor);
         else if(nextIMessagableToInform == switchNeighbor) sendMessage(m, switchNeighbor);

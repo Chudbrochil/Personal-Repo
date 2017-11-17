@@ -37,6 +37,7 @@ public class RailConfigurationLoader
         trackLines.clear();
         try
         {
+            // Check for if the file loaded is a text file
             if(configFileName.endsWith(".txt"))
             {
                 InputStream inputFile = getClass().getResourceAsStream("Configurations/" + configFileName);
@@ -49,10 +50,6 @@ public class RailConfigurationLoader
                     if(!line.startsWith("//"))
                     {
                         String[] components = line.split(",");
-                        for(int i = 0; i < components.length; ++i)
-                        {
-                            System.out.println(components[i] + "-");
-                        }
                         TrackLine tl = new TrackLine(components, gcDraw, trackLineNum);
                         trackLines.add(tl);
                         trackLineNum++;
@@ -61,7 +58,7 @@ public class RailConfigurationLoader
             }
             else
             {
-
+                System.err.println("Invalid file format given. Isn't a .txt file.");
             }
 
         }

@@ -277,7 +277,6 @@ public class Station extends Thread implements IMessagable, IDrawable
         {
             if(m.STATION.equals(toString()))
             {
-                // TODO: Afterwards send a no route found to the train.
                 Notifications.updateUserAlert(m.TRAIN + " is already in " + toString()+ ".");
                 sendMessage(new Message(MessageType.NO_ROUTE_FOUND,
                         null , this,toString(), null), m.peekRouteList());
@@ -324,7 +323,7 @@ public class Station extends Thread implements IMessagable, IDrawable
                 printNeighborError(m.type.toString());
             }
         }
-        
+
     }
 
     /**

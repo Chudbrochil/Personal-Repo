@@ -35,7 +35,6 @@ RailConfiguration now has a hook on all of these and some of these are fed back 
     initial setup. The conductor needs the station to be able to place trains into them and request
     routes to them.
 
-    
 There are two types of Interfaces that allow grouping of objects to happen for drawing
 and setting up messaging. IDrawable and IMessagable.
 
