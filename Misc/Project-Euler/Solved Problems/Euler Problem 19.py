@@ -23,8 +23,6 @@ for year in range(1900, 2001):
         daysInMonths[1] = 29
     else:
         daysInMonths[1] = 28
-
-    print("Year: %d Days in Feb: %d" % (year, daysInMonths[1]))
     
     for days in daysInMonths:
         for day in range(1, days + 1):
@@ -33,7 +31,6 @@ for year in range(1900, 2001):
             # If we aren't on first year(not included), it's the first of the month
             # and it's a sunday, we have a Sunday on the 1st.
             if year != 1900 and day == 1 and currentDay % 7 == 0:
-                print("Year: %d Current Day: %d" % (year, currentDay))
                 sundaysOnFirst += 1
 
 print(sundaysOnFirst)
