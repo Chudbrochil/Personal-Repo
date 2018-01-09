@@ -1,0 +1,62 @@
+Personal Repo for Anthony Galczak
+
+Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico. I have worked at Sandia National Labs since September 2015.
+
+**HEADER**
+CNM
+**HEADER**
+
+
+This directory corresponds to the classes I took at Central New Mexico College where I obtained an AAS in Computer Information Systems with a concentration in Computer Programming. I also acquired a multitude of other degrees and certificates at CNM, but the CIS degree is most relevant to my career and git repo. I formally graduated from CNM in Fall 2016 with honors (3.9 GPA).
+
+Relevant classes taken:
+
+CIS 1250 - Python Programming
+CIS 1513 - DB Design/SQL I
+CIS 1680 - Linux Essentials
+CIS 1275 - C++ Programming I
+CIS 2520 - Intro to SQL / SQL II
+CIS 1280 - .NET / C# I
+CIS 2275 - C++ Programming II
+CIS 2521 - Database Programming With PL/SQL
+	- Learned PL/SQL
+CIS 2096 - Computer Game and Simulation Development
+	- Used Unity and cutting-edge technologies like Oculus and HoloLens
+CIS 2235 - Java Programming I
+CIS 2237 - Android App Development with Java
+	- Made multiple Android apps, including latest Android 6 features.
+CIS 2284 - .NET / C# II
+	- Used MVC and ASP.NET. Made multiple websites using C#/HTML/Javascript
+
+I also took math upto Calculus III at CNM.
+
+
+**HEADER**
+UNM
+**HEADER**
+
+This directory corresponds to the classes I took at University of New Mexico where I am still attending. I started UNM in Fall of 2016 major'ing in Computer Science. I then found myself drawn towards Mathematics and decided to double major in Math as of Fall 2017. I am planned to graduate UNM with a Bachelor's of Science in Computer Science and Bachelor's of Science in Mathematics with a concentration in Mathematics of Computation in Spring 2019. As of Fall 2017 I have been accepted into the "Shared Credit Program" that allows me to take Graduate level electives while continuing my undergraduate degree. I will be taking my first graduate courses this Spring 2018. I plan to complete my MS in Spring 2020. My current GPA is 4.17.
+
+Relevant classes taken:
+
+CS 152L - Computer Programming Fundamentals (Java)
+CS 241L - Data Organization (C)
+CS 251L - Intermediate Programming (Java)
+CS 261 - Mathematical Foundations of CS (Discrete Math)
+CS 293 - Social and Ethical Issues in CS
+ECE238L - Computer Logic Design (VHDL)
+MATH 314 - Linear Algebra
+CS 351L - Design of Large Programs (Java)
+CS 361L - Data Structures and Algorithms
+MATH 316 - Applied Ordinary Differential Equations (MatLab)
+STAT 345 - Elements of Math Statistics and Probability Theory (R)
+
+
+**HEADER**
+MISC
+**HEADER**
+
+I competed with a group I led at the "RSI Hack-A-Thon" in November 2016 where we got 2nd place. We collected $400 prize money for this project. This Android app is in this folder as well other miscellaneous projects that aren't big enough to warrant their own repo.
+
+
+
