@@ -11,6 +11,11 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
+'''
+Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+CS527 HW0 addition.py
+'''
+
 
 """
 Run python autograder.py

@@ -12,6 +12,12 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
+'''
+Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+CS527 HW0 buyLotsOfFruit.py
+'''
+
+
 """
 To run this script, type
 
@@ -34,13 +40,13 @@ def buyLotsOfFruit(orderList):
     """
     totalCost = 0.0
     for fruit_order in orderList:
-		fruit_name = fruit_order[0]
-		fruit_pounds = fruit_order[1]
+	fruit_name = fruit_order[0]
+	fruit_pounds = fruit_order[1]
 
-		if fruit_name not in fruitPrices:
-			print "Error: Didn't find your fruit."
-		else:
-			totalCost += fruitPrices[fruit_name] * fruit_pounds
+	if fruit_name not in fruitPrices:
+		print "Error: Didn't find your fruit."
+	else:
+		totalCost += fruitPrices[fruit_name] * fruit_pounds
     return totalCost
 
 # Main Method

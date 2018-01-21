@@ -12,6 +12,12 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
+'''
+Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+CS527 HW0 shopSmart.py
+'''
+
+
 """
 Here's the intended output of this script, once you fill it in:
 
@@ -30,6 +36,8 @@ def shopSmart(orderList, fruitShops):
     """
     orderCost = float('inf')
     cheapestShop = ""
+    # Iterate over all the shops, if the cost of the order is cheaper
+    # then set orderCost and cheapestShop to the one we found
     for shop in fruitShops:
         if shop.getPriceOfOrder(orderList) < orderCost:
             orderCost = shop.getPriceOfOrder(orderList)
