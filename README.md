@@ -1,5 +1,12 @@
 Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico. I have worked as an intern at Sandia National Labs since September 2015. I was previously an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
+Spring 2018 UNM Schedule:
+MATH 311 - Vector Analysis
+CS 341 - Computer Architecture & Organization (C & Assembly)
+CS 357 - Declarative Programming (Haskell)
+CS 362 - Data Structures & Algorithms II
+CS 527 - Intro to AI Machines (Python)
+
 ## CNM ##
 This directory corresponds to the classes I took at Central New Mexico College where I obtained an AAS in Computer Information Systems with a concentration in Computer Programming. I also acquired a multitude of other degrees and certificates at CNM, but the CIS degree is most relevant to my career and git repo. I formally graduated from CNM in Fall 2016 with honors (3.9 GPA).
 
