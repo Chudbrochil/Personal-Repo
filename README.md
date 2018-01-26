@@ -3,6 +3,7 @@ Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics stude
 Spring 2018 UNM Schedule:
 
 MATH 311 - Vector Analysis
+
 CS 341 - Computer Architecture & Organization (C & Assembly)
 
 CS 357 - Declarative Programming (Haskell)
