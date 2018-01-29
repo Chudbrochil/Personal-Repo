@@ -1,3 +1,10 @@
+'''
+Anthony Galczak - WGalczak@gmail.com - agalczak@unm.edu
+CS362 - Algorithms & Data Structures II
+Homework 1 - Quick Search and Median of Medians Algorithms
+'''
+
+
 import random
 
 Verbosity = 1 # 0 for none, 1 for minimal, 2 for verbose
@@ -6,10 +13,11 @@ Verbosity = 1 # 0 for none, 1 for minimal, 2 for verbose
 # TODO LIST:
 # The comparisons count done in momSearch is wrong. I need to also be counting the comparisons being done
 # when getting medians of blocks and then the median of medians.
+# Also clean up momSearch after fixing comparisons...
 #
 # Generate stats for:
-#     How often quickSearch is "faster" than momSearch()
-#     Average Ratio of QS/MoM
+#     (DONE? Maybe he wants an analysis of each run vs. momSearch)How often quickSearch is "faster" than momSearch()
+#     (DONE)Average Ratio of QS/MoM
 #     (DONE)Avg Cost for QS
 #     10th percentile compare
 #     90th percentile compare
@@ -49,6 +57,7 @@ def quickSearch(array, index):
     elif index > len(leftSide) + 1:
         return quickSearch(rightSide, index - (len(leftSide) + 1))
 
+
 # momSearch
 # Takes a random array and calculates using the deterministic "median-of-medians" algorithm
 # the i'th smallest element from the sorted array.
@@ -74,9 +83,6 @@ def momSearch(array, index, blockSize):
         else:
             blockOfElements.append(choppableArray.pop())
 
-
-
-
     # TODO: Shelving this manual sort for now... going to use python's sorted()
     # for block in blockList:
     #     # "Sort" the list and find the median of each block and add it to listOfMedians
@@ -101,7 +107,6 @@ def momSearch(array, index, blockSize):
         print("List of Medians: %s" % listOfMedians[:])
 
     # Inspired by https://brilliant.org/wiki/median-finding-algorithm/
-
     if len(listOfMedians) <= blockSize:
         medianOfMedians = sorted(listOfMedians)[len(listOfMedians)/2]
     else:
@@ -151,6 +156,7 @@ def createListOfRandomLists(firstListValue, lastListValue, howManyLists):
 
     return listOfShuffledLists
 
+
 # normalizedQuickSearchRun
 # Runs quickSearch on all of our shuffled lists iterations(int) times.
 # Returns a list of list of comparisons for use in statistics roll-up.
@@ -174,6 +180,9 @@ def normalizedQuickSearchRun(listOfShuffledLists, iterations, index):
     return quickSearchComparisons
 
 
+# momSearchRun
+# Runs momSearch on all of our shuffled lists.
+# Returns a list of comparisons for each list we processed.
 def momSearchRun(listOfShuffledLists, index, blockSize):
 
     if Verbosity > 0:
@@ -189,32 +198,46 @@ def momSearchRun(listOfShuffledLists, index, blockSize):
     return momSearchComparisons
 
 
+# generateStatistics
+# Runs statistics and uses data from the two algorithm runs to produce
+# ratios and comparisons between quickSearch and momSearch
 def generateStatistics(quickSearchComparisons, momSearchComparisons):
-    # Generate stats per list
+
     listIndex = 0
     sumOfQSAvgs = 0
+    sumOfRatios = 0
+    qsFaster = 0
 
     if len(quickSearchComparisons) != len(momSearchComparisons):
         raise Exception("A different amount of lists were ran for quick-search and median-of-medians. Crashing...")
 
-    for list in quickSearchComparisons:
-        # sum(list, 0.0) makes this list into a floating point list, slick way to get more precise values without python 3
-        avgOfList = sum(list, 0.0) / len(list)
-        sumOfQSAvgs += avgOfList
+    listSize = len(quickSearchComparisons)
+
+    for qsList in quickSearchComparisons:
+        # sum(qsList, 0.0) makes this list into a floating point list, slick way to get more precise values without python 3
+        avgOfQSList = sum(qsList, 0.0) / len(qsList)
+        sumOfQSAvgs += avgOfQSList
+        momComparison = momSearchComparisons[listIndex]
+        qsMomRatio = momComparison / avgOfQSList
+        sumOfRatios += qsMomRatio
+
+        if avgOfQSList < momComparison:
+            qsFaster += 1
+
 
         if Verbosity > 0:
-            print("#%d Comparisons Quick-Search Max: %d Min: %d Avg: %0.2f MoM-Search: %d"
-                  % (listIndex, max(list), min(list), avgOfList, momSearchComparisons[listIndex]))
-            listIndex += 1
+            print("#%d Comparisons Quick-Search Max: %d Min: %d Avg: %0.2f MoM-Search: %d QS/MoM Ratio: %0.2f"
+                  % (listIndex, max(qsList), min(qsList), avgOfQSList, momComparison, qsMomRatio))
+        listIndex += 1
 
-
-    quickSearchAvg = sumOfQSAvgs / len(quickSearchComparisons)
+    quickSearchAvg = sumOfQSAvgs / listSize
+    qsMomAvgRatio = sumOfRatios / listSize
 
     if Verbosity > 0:
-        print("Average comparisons of all quick search runs on all %d lists: %0.2f" % (len(quickSearchComparisons), quickSearchAvg))
-
-
-
+        print("Average comparisons of all quick search runs on all %d lists: %0.2f" % (listSize, quickSearchAvg))
+        print("Average ratio between MoM Search and Quick Search on %d lists is: %0.2f" % (listSize, qsMomAvgRatio))
+        print("Over %d lists, Quick Search is fastest %d times, Mom Search fastest %d times."
+              % (listSize, qsFaster, listSize - qsFaster))
 
 
 def main():
@@ -226,18 +249,9 @@ def main():
     indexToFind = 50 # Index we were told to find
     blockSize = 5 # How big we want our blocks on deterministic median-of-median search
 
-
-    # List of all of the shuffled lists
     listOfShuffledLists = createListOfRandomLists(firstListValue, lastListValue, howManyLists)
-
-    # List of all the lists of comparisons taken by quick search to find the given value
     quickSearchComparisons = normalizedQuickSearchRun(listOfShuffledLists, iterations, indexToFind)
-
-    # List of how many comparisons each list took to process with mom search, only 1 iteration per list
-    # as momSearch is deterministic
     momSearchComparisons = momSearchRun(listOfShuffledLists, indexToFind, blockSize)
-
-
     generateStatistics(quickSearchComparisons, momSearchComparisons)
 
 if __name__ == "__main__":
