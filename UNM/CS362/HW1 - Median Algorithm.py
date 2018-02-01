@@ -15,14 +15,7 @@ Verbosity = 1 # 0 for none, 1 for minimal, 2 for verbose
 # when getting medians of blocks and then the median of medians.
 # Also clean up momSearch after fixing comparisons...
 #
-# Generate stats for:
-#     (DONE? Maybe he wants an analysis of each run vs. momSearch)How often quickSearch is "faster" than momSearch()
-#     (DONE)Average Ratio of QS/MoM
-#     (DONE)Avg Cost for QS
-#     10th percentile compare
-#     90th percentile compare
-#
-# Ask about formal definition of a comparison, also some advice on implementing this in momsearch would help
+# Bug in quickSearch that goes out of index when trying to do quickSearch(array, 10) and quickSearch(array, 90)
 #
 # Second half of quickSearch and momSearch looks almost exactly the same...
 
@@ -35,6 +28,8 @@ def quickSearch(array, index):
 
     leftSide = [] # Less than index
     rightSide = [] # More than index
+
+    #print("Array size: %d, index looking for: %d " % (len(array), index))
 
     # Getting a random number from the array
     pivot = array[random.randint(0, len(array) - 1)]
@@ -50,11 +45,14 @@ def quickSearch(array, index):
 
     # If the index is smaller than left side size then recurse on left side, otherwise recurse on
     # right side. Of course, if we found the element we want, return it.
-    if index <= len(leftSide):
-        return quickSearch(leftSide, index)
-    elif index == len(leftSide) + 1:
+    if index == (len(leftSide) + 1):
+        #print("Pivot being returned: %d" % pivot)
         return pivot
+    elif index <= len(leftSide):
+        #print("Left side...")
+        return quickSearch(leftSide, index)
     elif index > len(leftSide) + 1:
+        #print("Right side...")
         return quickSearch(rightSide, index - (len(leftSide) + 1))
 
 
@@ -83,18 +81,6 @@ def momSearch(array, index, blockSize):
         else:
             blockOfElements.append(choppableArray.pop())
 
-    # TODO: Shelving this manual sort for now... going to use python's sorted()
-    # for block in blockList:
-    #     # "Sort" the list and find the median of each block and add it to listOfMedians
-    #
-    #     # TODO: ONLY DOING THIS FOR 5 OR LESS FOR NOW
-    #     #if len(block) <= blockSize:
-    #         # Breaking into pairs
-    #         for x in range(0, len(block), 2):
-    #             print("Blocksize: %d Index: %d" % (len(block), x))
-    #             if x+1 < len(block) and block[x] > block[x+1]:
-    #                 block[x], block[x+1] = block[x+1], block[x] # in place swap
-
     # Find median in each block of 5...
     listOfMedians = []
     for block in blockList:
@@ -102,11 +88,21 @@ def momSearch(array, index, blockSize):
         median = sorted(block)[len(block)/2]
         listOfMedians.append(median)
 
+        # The comparisons here are an educated guess based upon Knuth's Art of Programming algorithm
+        if len(block) == 5:
+            momSearch.counter += 7
+        elif len(block) == 4:
+            momSearch.counter += 3
+        elif len(block) == 3:
+            momSearch.counter += 2
+        else:
+            momSearch.counter += 1
+
+
     if Verbosity > 1:
         print("Full array: %s" % array[:])
         print("List of Medians: %s" % listOfMedians[:])
 
-    # Inspired by https://brilliant.org/wiki/median-finding-algorithm/
     if len(listOfMedians) <= blockSize:
         medianOfMedians = sorted(listOfMedians)[len(listOfMedians)/2]
     else:
@@ -127,6 +123,20 @@ def momSearch(array, index, blockSize):
     elif index > len(leftSide) + 1:
         return momSearch(rightSide, index - (len(leftSide) + 1) , blockSize)
 
+
+def medianOfFive(block):
+    # TODO: Shelving this manual sort for now... going to use python's sorted()
+    # for block in blockList:
+    #     # "Sort" the list and find the median of each block and add it to listOfMedians
+    #
+    #     # TODO: ONLY DOING THIS FOR 5 OR LESS FOR NOW
+    #     #if len(block) <= blockSize:
+    #         # Breaking into pairs
+    #         for x in range(0, len(block), 2):
+    #             print("Blocksize: %d Index: %d" % (len(block), x))
+    #             if x+1 < len(block) and block[x] > block[x+1]:
+    #                 block[x], block[x+1] = block[x+1], block[x] # in place swap
+    return block[2]
 
 # shuffle
 # Takes in an array and returns it shuffled.
@@ -206,7 +216,10 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
     listIndex = 0
     sumOfQSAvgs = 0
     sumOfRatios = 0
-    qsFaster = 0
+    qsFasterTotal = 0
+    sum10th = 0
+    sum90th = 0
+    iterations = len(quickSearchComparisons[0])
 
     if len(quickSearchComparisons) != len(momSearchComparisons):
         raise Exception("A different amount of lists were ran for quick-search and median-of-medians. Crashing...")
@@ -214,6 +227,7 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
     listSize = len(quickSearchComparisons)
 
     for qsList in quickSearchComparisons:
+        qsFaster = 0
         # sum(qsList, 0.0) makes this list into a floating point list, slick way to get more precise values without python 3
         avgOfQSList = sum(qsList, 0.0) / len(qsList)
         sumOfQSAvgs += avgOfQSList
@@ -221,23 +235,43 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
         qsMomRatio = momComparison / avgOfQSList
         sumOfRatios += qsMomRatio
 
-        if avgOfQSList < momComparison:
-            qsFaster += 1
+        #percentile10th = quickSearch(qsList, 10)
+        #percentile90th = quickSearch(qsList, 90)
+        percentile10th = sorted(qsList)[9]
+        percentile90th = sorted(qsList)[89]
+
+        #print("QS10th: %d Sorted10th: %d" % (percentile10th, sorted(qsList)[9]))
+        sum10th += percentile10th
+        sum90th += percentile90th
+
+        for qsRun in qsList:
+            if qsRun < momComparison:
+                qsFaster += 1
+
+        qsFasterTotal += qsFaster
 
 
         if Verbosity > 0:
-            print("#%d Comparisons Quick-Search Max: %d Min: %d Avg: %0.2f MoM-Search: %d QS/MoM Ratio: %0.2f"
-                  % (listIndex, max(qsList), min(qsList), avgOfQSList, momComparison, qsMomRatio))
+            print("#%d Comparisons Q-S Max:%d Min:%d Avg:%0.2f 10th:%d, 90th:%d Mom-Search:%d QS/MoM Ratio:%0.2f QS-Faster:%d/%d"
+                  % (listIndex, max(qsList), min(qsList), avgOfQSList, percentile10th, percentile90th,
+                     momComparison, qsMomRatio, qsFaster, len(qsList)))
+
         listIndex += 1
 
+
+
+    # Roll up of all the data for all lists
     quickSearchAvg = sumOfQSAvgs / listSize
     qsMomAvgRatio = sumOfRatios / listSize
+    avg10th = sum10th / listSize
+    avg90th = sum90th / listSize
 
     if Verbosity > 0:
-        print("Average comparisons of all quick search runs on all %d lists: %0.2f" % (listSize, quickSearchAvg))
-        print("Average ratio between MoM Search and Quick Search on %d lists is: %0.2f" % (listSize, qsMomAvgRatio))
-        print("Over %d lists, Quick Search is fastest %d times, Mom Search fastest %d times."
-              % (listSize, qsFaster, listSize - qsFaster))
+        print("Average comparisons of all quick search runs on %d lists: %0.2f" % (listSize, quickSearchAvg))
+        print("Average percentiles on quick search: 10th: %0.2f 90th: %0.2f" % (avg10th, avg90th))
+        print("Average ratio between MoM Search and Quick Search on %d lists: %0.2f" % (listSize, qsMomAvgRatio))
+        print("Over %d*%d (%d) iterations, Quick Search is fastest %d time(s), Mom Search fastest %d time(s)."
+              % (iterations, listSize, iterations*listSize, qsFasterTotal, iterations*listSize - qsFasterTotal))
 
 
 def main():
