@@ -173,6 +173,8 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
     sum10th = 0
     sum90th = 0
     iterations = len(quickSearchComparisons[0])
+    qsOverallMin = 1000000
+    qsOverallMax = 0
 
     if len(quickSearchComparisons) != len(momSearchComparisons):
         raise Exception("A different amount of lists were ran for quick-search and median-of-medians. Crashing...")
@@ -182,6 +184,7 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
     if Verbosity > 0:
         print("\nQuick-Search and MoM Comparison Individual List Statistics")
 
+    # Processing statistics for each list of quick search comparisons
     for qsList in quickSearchComparisons:
         qsFaster = 0
         avgOfQSList = sum(qsList) / (len(qsList) * 1.0)
@@ -192,8 +195,6 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
 
         percentile10th = sorted(qsList)[9]
         percentile90th = sorted(qsList)[89]
-        #percentile10th = quickSearch(qsList, 10)
-        #percentile90th = quickSearch(qsList, 90)
         sum10th += percentile10th
         sum90th += percentile90th
 
@@ -203,6 +204,11 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
 
         qsFasterTotal += qsFaster
 
+        if min(qsList) < qsOverallMin:
+            qsOverallMin = min(qsList)
+        if max(qsList) > qsOverallMax:
+            qsOverallMax = max(qsList)
+
         if Verbosity > 0:
             print("#%04d Comparisons Q-S Min:%03d Max:%03d Avg:%0.2f 10th:%d 90th:%d | Mom-Search:%d MoM/QS Ratio:%0.2f QS-Faster:%d/%d"
                   % (listIndex, min(qsList), max(qsList), avgOfQSList, percentile10th, percentile90th,
@@ -211,18 +217,23 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
         listIndex += 1
 
     # Roll up of all the data for all lists
-    quickSearchAvg = sumOfQSAvgs / listSize
+    qsAvg = sumOfQSAvgs / listSize
     qsMomAvgRatio = sumOfRatios / listSize
-    avg10th = sum10th / (listSize * 1.0)
-    avg90th = sum90th / (listSize * 1.0)
+    qsAvg10th = sum10th / (listSize * 1.0)
+    qsAvg90th = sum90th / (listSize * 1.0)
+    mom10th = sorted(momSearchComparisons)[9]
+    mom90th = sorted(momSearchComparisons)[89]
+    momAvg = sum(momSearchComparisons) / listSize * 1.0
 
     if Verbosity > 0:
         print("\nTotal run statistics:\n%d*%d(%d) quick-search iterations, %d total lists."
               % (iterations, listSize, iterations*listSize, listSize))
-        print("Average over all Q-S runs:%0.2f avg 10th:%0.2f avg 90th:%0.2f, avg ratio MoM/QS:%0.2f"
-              % (quickSearchAvg, avg10th, avg90th, qsMomAvgRatio))
-        print("Quick Search is fastest %d time(s), Mom Search fastest %d time(s)."
-              % (qsFasterTotal, iterations*listSize - qsFasterTotal))
+        print("Average over all Q-S runs:%0.2f Min:%d Avg 10th:%0.2f Avg 90th:%0.2f Max:%d"
+              % (qsAvg, qsOverallMin, qsAvg10th, qsAvg90th, qsOverallMax))
+        print("Average over all MoM runs:%0.2f Min:%d 10th:%d 90th:%d Max:%d"
+              % (momAvg, min(momSearchComparisons), mom10th, mom90th, max(momSearchComparisons)))
+        print("Quick Search is fastest %d time(s), Mom Search fastest %d time(s). Ratio between MoM/QS:%0.2f."
+              % (qsFasterTotal, iterations*listSize - qsFasterTotal, qsMomAvgRatio))
 
 
 def main():
