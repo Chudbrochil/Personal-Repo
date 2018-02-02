@@ -240,8 +240,8 @@ def main():
     # Initial values to main, could be passed in as arguments from CLI
     firstListValue = 1 # Value we are starting our random lists at
     lastListValue = 100 # Value we are ending our random lists at
-    howManyLists = 100 # How many random lists to make
-    iterations = 100 # How many times to run quickSearch to normalize stats
+    howManyLists = 10000 # How many random lists to make
+    iterations = 1000 # How many times to run quickSearch to normalize stats
     indexToFind = 50 # Index we were told to find
 
     listOfShuffledLists = createListOfRandomLists(firstListValue, lastListValue, howManyLists)
