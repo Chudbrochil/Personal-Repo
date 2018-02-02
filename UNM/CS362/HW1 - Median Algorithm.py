@@ -179,10 +179,12 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
 
     listSize = len(quickSearchComparisons)
 
+    if Verbosity > 0:
+        print("\nQuick-Search and MoM Comparison Individual List Statistics")
+
     for qsList in quickSearchComparisons:
         qsFaster = 0
-        # sum(qsList, 0.0) makes this list into a floating point list, slick way to get more precise values without python 3
-        avgOfQSList = sum(qsList, 0.0) / len(qsList)
+        avgOfQSList = sum(qsList) / (len(qsList) * 1.0)
         sumOfQSAvgs += avgOfQSList
         momComparison = momSearchComparisons[listIndex]
         qsMomRatio = momComparison / avgOfQSList
@@ -202,8 +204,8 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
         qsFasterTotal += qsFaster
 
         if Verbosity > 0:
-            print("#%05d Comparisons Q-S Min:%03d Max:%03d Avg:%0.2f 10th:%d 90th:%d | Mom-Search:%d MoM/QS Ratio:%0.2f QS-Faster:%d/%d"
-                  % (listIndex, max(qsList), min(qsList), avgOfQSList, percentile10th, percentile90th,
+            print("#%04d Comparisons Q-S Min:%03d Max:%03d Avg:%0.2f 10th:%d 90th:%d | Mom-Search:%d MoM/QS Ratio:%0.2f QS-Faster:%d/%d"
+                  % (listIndex, min(qsList), max(qsList), avgOfQSList, percentile10th, percentile90th,
                      momComparison, qsMomRatio, qsFaster, len(qsList)))
 
         listIndex += 1
