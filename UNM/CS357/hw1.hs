@@ -4,23 +4,44 @@ CS357 Homework 1
 -}
 
 
-
--- 1.1
+-- 1.1 test
 test :: Int -> Int -> Bool
 test n m = n `mod` 2 == 1 && m `mod` 2 == 1
 
-
-
--- 1.2 # 1
+-- 1.2 # 1 stutter
 stutter :: [Char] -> [Char]
 stutter [] = []
 stutter (x:xs) = x : x : stutter(xs)
 
 
--- 1.2 # 2
+-- 1.2 # 2 TODO: NOT DONE
 compress :: [Char] -> [Char]
 compress [] = []
-compress (x:y:xs) = if x == y then compress (x:xs) else x:compress (xs)
+compress (x:y:xs) = if x == y then compress (y:xs) else compress (y:xs)
+
+-- 1.2 # 3 zipSum
+zipSum :: [Int] -> [Int] -> [Int]
+zipSum [] [] = []
+zipSum (x:xs) [] = (x:xs)
+zipSum [] (x:xs) = (x:xs)
+zipSum (x:xs) (y:ys) = (x+y) : zipSum xs ys
+
+
+-- 1.3 # 1 setUnion TODO: NOT DONE
+setUnion :: [Integer] -> [Integer] -> [Integer]
+setUnion [] [] = []
+setUnion (x:xs) [] = (x:xs)
+setUnion [] (x:xs) = (x:xs)
+setUnion (x:xs) (y:ys) = if x == y then x : setUnion xs ys else setUnion (x:xs) ys
+
+
+-- 1.3 # 2 setIntersection
+
+-- 1.3 # 3 setDifference
+
+-- 1.3 # 4 setEqual
+
+-- 1.4 # 1 dr
 
 
 
@@ -33,15 +54,5 @@ take' 0 _ = []
 take' _ [] = []
 take' n (x:xs) = x : take' (n-1) xs
 
-
--- My failed attempt at take
-{-
-
-take1 :: Int -> [a] -> [a]
-take1 n [] = []
-take1 0 (x:xs) = x:xs
-take1 n (x:xs) = take1 (n-1) xs
-
--}
 
 
