@@ -175,6 +175,11 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
     iterations = len(quickSearchComparisons[0])
     qsOverallMin = 1000000
     qsOverallMax = 0
+    qsMinLessThanMom = 0
+    qs10thLessThanMom = 0
+    qsAvgLessThanMom = 0
+    qs90thLessThanMom = 0
+    qsMaxLessThanMom = 0
 
     if len(quickSearchComparisons) != len(momSearchComparisons):
         raise Exception("A different amount of lists were ran for quick-search and median-of-medians. Crashing...")
@@ -209,6 +214,17 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
         if max(qsList) > qsOverallMax:
             qsOverallMax = max(qsList)
 
+        if min(qsList) < momComparison:
+            qsMinLessThanMom += 1
+        if percentile10th < momComparison:
+            qs10thLessThanMom += 1
+        if avgOfQSList < momComparison:
+            qsAvgLessThanMom += 1
+        if percentile90th < momComparison:
+            qs90thLessThanMom += 1
+        if max(qsList) < momComparison:
+            qsMaxLessThanMom += 1
+
         if Verbosity > 0:
             print("#%04d Comparisons Q-S Min:%03d Max:%03d Avg:%0.2f 10th:%d 90th:%d | Mom-Search:%d QS/MoM Ratio:%0.4f QS-Faster:%d/%d"
                   % (listIndex, min(qsList), max(qsList), avgOfQSList, percentile10th, percentile90th,
@@ -234,6 +250,9 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
               % (momAvg, min(momSearchComparisons), mom10th, mom90th, max(momSearchComparisons)))
         print("Quick Search is fastest %d time(s), Mom Search fastest %d time(s). Ratio between QS/MoM:%0.4f"
               % (qsFasterTotal, iterations*listSize - qsFasterTotal, qsMomAvgRatio))
+        print("Over all lists, how many are below MoM? QS-Min:%d/%d QS-10th:%d/%d QS-Avg:%d/%d QS-90th:%d/%d QS-Max:%d/%d " 
+              % (qsMinLessThanMom, listSize, qs10thLessThanMom, listSize, qsAvgLessThanMom, listSize, qs90thLessThanMom, listSize, qsMaxLessThanMom, listSize))
+
 
 
 def main():
