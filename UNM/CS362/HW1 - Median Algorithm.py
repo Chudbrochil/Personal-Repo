@@ -74,7 +74,7 @@ def partitionAndCall(selectAlgo, index, array, pivot):
 # Adds the corresponding "correct" amount of comparisons to a given sort on an array size <= 5
 # This is used anytime I used python's "sorted" in Median-of-Medians
 #
-# The comparisons here are educated guesses based upon Knuth's Art of Programming algorithm
+# The comparisons here are educated guesses based upon Knuth's Art of Programming algorithmsxsxxxsxsxsxsxssssssssssssssssss
 # This is in lieu of manually implementing this "comparison sort", which I was told isn't necessary
 def addComparisons(array):
     if len(array) == 5:
@@ -190,7 +190,7 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
         avgOfQSList = sum(qsList) / (len(qsList) * 1.0)
         sumOfQSAvgs += avgOfQSList
         momComparison = momSearchComparisons[listIndex]
-        qsMomRatio = momComparison / avgOfQSList
+        qsMomRatio = avgOfQSList / momComparison
         sumOfRatios += qsMomRatio
 
         percentile10th = sorted(qsList)[9]
@@ -210,7 +210,7 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
             qsOverallMax = max(qsList)
 
         if Verbosity > 0:
-            print("#%04d Comparisons Q-S Min:%03d Max:%03d Avg:%0.2f 10th:%d 90th:%d | Mom-Search:%d MoM/QS Ratio:%0.2f QS-Faster:%d/%d"
+            print("#%04d Comparisons Q-S Min:%03d Max:%03d Avg:%0.2f 10th:%d 90th:%d | Mom-Search:%d QS/MoM Ratio:%0.4f QS-Faster:%d/%d"
                   % (listIndex, min(qsList), max(qsList), avgOfQSList, percentile10th, percentile90th,
                      momComparison, qsMomRatio, qsFaster, len(qsList)))
 
@@ -232,7 +232,7 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
               % (qsAvg, qsOverallMin, qsAvg10th, qsAvg90th, qsOverallMax))
         print("Average over all MoM runs:%0.2f Min:%d 10th:%d 90th:%d Max:%d"
               % (momAvg, min(momSearchComparisons), mom10th, mom90th, max(momSearchComparisons)))
-        print("Quick Search is fastest %d time(s), Mom Search fastest %d time(s). Ratio between MoM/QS:%0.2f."
+        print("Quick Search is fastest %d time(s), Mom Search fastest %d time(s). Ratio between QS/MoM:%0.4f"
               % (qsFasterTotal, iterations*listSize - qsFasterTotal, qsMomAvgRatio))
 
 
@@ -240,8 +240,8 @@ def main():
     # Initial values to main, could be passed in as arguments from CLI
     firstListValue = 1 # Value we are starting our random lists at
     lastListValue = 100 # Value we are ending our random lists at
-    howManyLists = 10000 # How many random lists to make
-    iterations = 1000 # How many times to run quickSearch to normalize stats
+    howManyLists = 100 # How many random lists to make
+    iterations = 100 # How many times to run quickSearch to normalize stats
     indexToFind = 50 # Index we were told to find
 
     listOfShuffledLists = createListOfRandomLists(firstListValue, lastListValue, howManyLists)
