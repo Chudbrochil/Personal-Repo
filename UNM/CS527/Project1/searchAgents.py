@@ -288,24 +288,18 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
 
-        # This will keep track of whether or not we have visited a corner
-        self.visitedCorners = (False, False, False, False) # BotLeft, TopLeft, BotRight, TopRight
-
-        "*** YOUR CODE HERE ***"
-
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return self.startingPosition
+        return (self.startingPosition, (False, False, False, False))
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        return self.corners[0] and self.corners[1] and self.corners[2] and self.corners[3]
-
+        return state[1][0] and state[1][1] and state[1][2] and state[1][3]
 
     def getSuccessors(self, state):
         """
@@ -327,25 +321,23 @@ class CornersProblem(search.SearchProblem):
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
 
-            x, y = state
+            ((x, y), visitedCorners) = state
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             hitsWall = self.walls[nextx][nexty]
 
-            successor = ((nextx, nexty), action, 0)
+            # If we visit a corner, change the bool for that corner
+            cornerQuadruple = list(state[1])
+            for x in range(0, 4):
+                if (nextx, nexty) == self.corners[x]:
+                    cornerQuadruple[x] = True
+
+            cornerQuadruple = tuple(cornerQuadruple)
+
+            successor = (((nextx, nexty), cornerQuadruple), action, 1)
             # If we didn't hit a wall, then change our coords accordingly
             if not hitsWall:
                 successors.append(successor)
-                #if state == self.corners[0]:
-                #    self.visitedCorners
-
-
-
-
-
-
-
-            "*** YOUR CODE HERE ***"
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -380,8 +372,15 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+
+    # Going to first calculate a super trivial calculation based on going to corner0->1->2->3
+    totalDistance = 0
+    totalDistance += util.manhattanDistance(problem.getStartState()[0], corners[0])
+    totalDistance += util.manhattanDistance(corners[0], corners[1])
+    totalDistance += util.manhattanDistance(corners[1], corners[2])
+    totalDistance += util.manhattanDistance(corners[2], corners[3])
+
+    return totalDistance
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
