@@ -72,6 +72,7 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -86,32 +87,95 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
 
+    # Initializing the data structures including starting state and its successors
+    closed = set()
+    fringe = util.Stack()
+    startingNode = Node(problem.getStartState(), None, 0, 0, None)
+    fringe.push(startingNode)
 
+    # Implementing DFS
+    while True:
+        if fringe.isEmpty():
+            return []
+        node = fringe.pop()
 
-    #Implementing DFS
-    closed = {}
+        # We found the goal state, return the list of actions it took to get there
+        if problem.isGoalState(node.state):
+            goalList = []
+            while node.parentNode != None:
+                goalList.insert(0, node.action)
+                node = node.parentNode
+            return goalList
 
+        if node.state not in closed:
+            closed.add(node.state)
 
+            for successor in problem.getSuccessors(node.state):
+                childNode = Node(successor[0], successor[1], successor[2], node.costSoFar, node)
+                fringe.push(childNode)
 
-
-
-
-    "*** YOUR CODE HERE ***"
-    #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    # Initializing the data structures including starting state and its successors
+    closed = set()
+    fringe = util.Queue()
+    startingNode = Node(problem.getStartState(), None, 0, 0, None)
+    fringe.push(startingNode)
+
+    # Implementing BFS
+    while True:
+        if fringe.isEmpty():
+            return []
+        node = fringe.pop()
+
+        # We found the goal state, return the list of actions it took to get there
+        if problem.isGoalState(node.state):
+            goalList = []
+            while node.parentNode != None:
+                goalList.insert(0, node.action)
+                node = node.parentNode
+            return goalList
+
+        if node.state not in closed:
+            closed.add(node.state)
+
+            for successor in problem.getSuccessors(node.state):
+                childNode = Node(successor[0], successor[1], successor[2], node.costSoFar, node)
+                fringe.push(childNode)
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    # Initializing the data structures including starting state and its successors
+    closed = set()
+    fringe = util.PriorityQueue()
+    startingNode = Node(problem.getStartState(), None, 0, 0, None)
+    fringe.push(startingNode, 0)
+
+    # Implementing BFS
+    while True:
+        if fringe.isEmpty():
+            return []
+        node = fringe.pop()
+
+        # We found the goal state, return the list of actions it took to get there
+        if problem.isGoalState(node.state):
+            goalList = []
+            while node.parentNode != None:
+                goalList.insert(0, node.action)
+                node = node.parentNode
+            return goalList
+
+        if node.state not in closed:
+            closed.add(node.state)
+
+            for successor in problem.getSuccessors(node.state):
+                childNode = Node(successor[0], successor[1], successor[2], node.costSoFar, node)
+                fringe.push(childNode, childNode.costSoFar)
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -120,10 +184,37 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+def manhattanHeuristic(state):
+    return 20
+
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+        # Initializing the data structures including starting state and its successors
+    closed = set()
+    fringe = util.PriorityQueue()
+    startingNode = Node(problem.getStartState(), None, 0, 0, None)
+    fringe.push(startingNode, 0 + heuristic(startingNode.state, problem))
+
+    # Implementing BFS
+    while True:
+        if fringe.isEmpty():
+            return []
+        node = fringe.pop()
+
+        # We found the goal state, return the list of actions it took to get there
+        if problem.isGoalState(node.state):
+            goalList = []
+            while node.parentNode != None:
+                goalList.insert(0, node.action)
+                node = node.parentNode
+            return goalList
+
+        if node.state not in closed:
+            closed.add(node.state)
+
+            for successor in problem.getSuccessors(node.state):
+                childNode = Node(successor[0], successor[1], successor[2], node.costSoFar, node)
+                fringe.push(childNode, childNode.costSoFar + heuristic(childNode.state, problem))
 
 
 # Abbreviations
@@ -131,3 +222,14 @@ bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+
+class Node:
+
+    def __init__(self, state = (), action = "", cost = -1, costSoFar = -100000000, parentNode = None):
+        self.state = state
+        self.action = action
+        self.cost = cost
+        self.costSoFar = costSoFar + cost # costSoFar coming in is the parent's costSoFar
+        self.parentNode = parentNode
+
+

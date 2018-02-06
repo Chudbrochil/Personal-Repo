@@ -287,6 +287,10 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
+
+        # This will keep track of whether or not we have visited a corner
+        self.visitedCorners = (False, False, False, False) # BotLeft, TopLeft, BotRight, TopRight
+
         "*** YOUR CODE HERE ***"
 
     def getStartState(self):
@@ -294,15 +298,14 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.startingPosition
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.corners[0] and self.corners[1] and self.corners[2] and self.corners[3]
+
 
     def getSuccessors(self, state):
         """
@@ -323,6 +326,24 @@ class CornersProblem(search.SearchProblem):
             #   dx, dy = Actions.directionToVector(action)
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
+
+            x, y = state
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            hitsWall = self.walls[nextx][nexty]
+
+            successor = ((nextx, nexty), action, 0)
+            # If we didn't hit a wall, then change our coords accordingly
+            if not hitsWall:
+                successors.append(successor)
+                #if state == self.corners[0]:
+                #    self.visitedCorners
+
+
+
+
+
+
 
             "*** YOUR CODE HERE ***"
 
