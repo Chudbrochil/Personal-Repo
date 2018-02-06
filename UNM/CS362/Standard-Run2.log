@@ -1,0 +1,112 @@
+Generating 100 shuffled lists of values between 1 and 100
+Running 100 quick search runs on 100 lists looking for 50'th smallest element.
+Running median-of-median search on 100 lists looking for 50'th smallest element with block size of 5.
+
+Quick-Search and MoM Comparison Individual List Statistics
+#0000 Comparisons Q-S Min:099 Max:594 Avg:308.85 10th:197 90th:425 | Mom-Search:565 QS/MoM Ratio:0.5466 QS-Faster:99/100
+#0001 Comparisons Q-S Min:099 Max:563 Avg:304.31 10th:197 90th:434 | Mom-Search:597 QS/MoM Ratio:0.5097 QS-Faster:100/100
+#0002 Comparisons Q-S Min:152 Max:543 Avg:314.22 10th:201 90th:428 | Mom-Search:583 QS/MoM Ratio:0.5390 QS-Faster:100/100
+#0003 Comparisons Q-S Min:099 Max:553 Avg:305.38 10th:183 90th:436 | Mom-Search:633 QS/MoM Ratio:0.4824 QS-Faster:100/100
+#0004 Comparisons Q-S Min:099 Max:622 Avg:329.82 10th:210 90th:467 | Mom-Search:627 QS/MoM Ratio:0.5260 QS-Faster:100/100
+#0005 Comparisons Q-S Min:099 Max:512 Avg:289.97 10th:201 90th:389 | Mom-Search:608 QS/MoM Ratio:0.4769 QS-Faster:100/100
+#0006 Comparisons Q-S Min:099 Max:549 Avg:310.30 10th:194 90th:421 | Mom-Search:642 QS/MoM Ratio:0.4833 QS-Faster:100/100
+#0007 Comparisons Q-S Min:099 Max:549 Avg:286.26 10th:172 90th:392 | Mom-Search:607 QS/MoM Ratio:0.4716 QS-Faster:100/100
+#0008 Comparisons Q-S Min:099 Max:687 Avg:307.80 10th:193 90th:433 | Mom-Search:539 QS/MoM Ratio:0.5711 QS-Faster:98/100
+#0009 Comparisons Q-S Min:099 Max:526 Avg:291.75 10th:177 90th:403 | Mom-Search:538 QS/MoM Ratio:0.5423 QS-Faster:100/100
+#0010 Comparisons Q-S Min:099 Max:551 Avg:301.83 10th:191 90th:426 | Mom-Search:608 QS/MoM Ratio:0.4964 QS-Faster:100/100
+#0011 Comparisons Q-S Min:099 Max:576 Avg:310.23 10th:195 90th:430 | Mom-Search:595 QS/MoM Ratio:0.5214 QS-Faster:100/100
+#0012 Comparisons Q-S Min:154 Max:683 Avg:316.26 10th:216 90th:402 | Mom-Search:628 QS/MoM Ratio:0.5036 QS-Faster:99/100
+#0013 Comparisons Q-S Min:099 Max:674 Avg:294.12 10th:181 90th:407 | Mom-Search:595 QS/MoM Ratio:0.4943 QS-Faster:99/100
+#0014 Comparisons Q-S Min:099 Max:628 Avg:306.71 10th:185 90th:460 | Mom-Search:319 QS/MoM Ratio:0.9615 QS-Faster:59/100
+#0015 Comparisons Q-S Min:099 Max:580 Avg:301.76 10th:202 90th:425 | Mom-Search:616 QS/MoM Ratio:0.4899 QS-Faster:100/100
+#0016 Comparisons Q-S Min:099 Max:683 Avg:310.69 10th:202 90th:398 | Mom-Search:597 QS/MoM Ratio:0.5204 QS-Faster:98/100
+#0017 Comparisons Q-S Min:099 Max:553 Avg:311.85 10th:196 90th:444 | Mom-Search:289 QS/MoM Ratio:1.0791 QS-Faster:45/100
+#0018 Comparisons Q-S Min:099 Max:653 Avg:298.39 10th:181 90th:426 | Mom-Search:603 QS/MoM Ratio:0.4948 QS-Faster:99/100
+#0019 Comparisons Q-S Min:156 Max:590 Avg:303.83 10th:184 90th:453 | Mom-Search:567 QS/MoM Ratio:0.5359 QS-Faster:98/100
+#0020 Comparisons Q-S Min:099 Max:665 Avg:311.94 10th:197 90th:440 | Mom-Search:626 QS/MoM Ratio:0.4983 QS-Faster:99/100
+#0021 Comparisons Q-S Min:099 Max:534 Avg:321.53 10th:196 90th:447 | Mom-Search:606 QS/MoM Ratio:0.5306 QS-Faster:100/100
+#0022 Comparisons Q-S Min:099 Max:554 Avg:305.67 10th:181 90th:433 | Mom-Search:652 QS/MoM Ratio:0.4688 QS-Faster:100/100
+#0023 Comparisons Q-S Min:160 Max:536 Avg:293.96 10th:207 90th:399 | Mom-Search:569 QS/MoM Ratio:0.5166 QS-Faster:100/100
+#0024 Comparisons Q-S Min:099 Max:620 Avg:314.27 10th:191 90th:450 | Mom-Search:590 QS/MoM Ratio:0.5327 QS-Faster:99/100
+#0025 Comparisons Q-S Min:099 Max:638 Avg:319.63 10th:186 90th:463 | Mom-Search:595 QS/MoM Ratio:0.5372 QS-Faster:99/100
+#0026 Comparisons Q-S Min:099 Max:580 Avg:310.14 10th:205 90th:435 | Mom-Search:581 QS/MoM Ratio:0.5338 QS-Faster:100/100
+#0027 Comparisons Q-S Min:099 Max:563 Avg:305.32 10th:198 90th:427 | Mom-Search:594 QS/MoM Ratio:0.5140 QS-Faster:100/100
+#0028 Comparisons Q-S Min:099 Max:516 Avg:308.31 10th:192 90th:437 | Mom-Search:570 QS/MoM Ratio:0.5409 QS-Faster:100/100
+#0029 Comparisons Q-S Min:099 Max:623 Avg:310.63 10th:171 90th:436 | Mom-Search:635 QS/MoM Ratio:0.4892 QS-Faster:100/100
+#0030 Comparisons Q-S Min:099 Max:631 Avg:302.25 10th:189 90th:430 | Mom-Search:565 QS/MoM Ratio:0.5350 QS-Faster:99/100
+#0031 Comparisons Q-S Min:164 Max:518 Avg:307.81 10th:211 90th:415 | Mom-Search:612 QS/MoM Ratio:0.5030 QS-Faster:100/100
+#0032 Comparisons Q-S Min:099 Max:536 Avg:293.05 10th:184 90th:415 | Mom-Search:289 QS/MoM Ratio:1.0140 QS-Faster:57/100
+#0033 Comparisons Q-S Min:099 Max:567 Avg:314.93 10th:201 90th:436 | Mom-Search:638 QS/MoM Ratio:0.4936 QS-Faster:100/100
+#0034 Comparisons Q-S Min:154 Max:600 Avg:309.01 10th:192 90th:425 | Mom-Search:617 QS/MoM Ratio:0.5008 QS-Faster:100/100
+#0035 Comparisons Q-S Min:099 Max:575 Avg:321.85 10th:189 90th:438 | Mom-Search:591 QS/MoM Ratio:0.5446 QS-Faster:100/100
+#0036 Comparisons Q-S Min:099 Max:535 Avg:294.95 10th:184 90th:400 | Mom-Search:317 QS/MoM Ratio:0.9304 QS-Faster:58/100
+#0037 Comparisons Q-S Min:099 Max:591 Avg:305.98 10th:188 90th:432 | Mom-Search:572 QS/MoM Ratio:0.5349 QS-Faster:99/100
+#0038 Comparisons Q-S Min:099 Max:515 Avg:301.52 10th:196 90th:427 | Mom-Search:611 QS/MoM Ratio:0.4935 QS-Faster:100/100
+#0039 Comparisons Q-S Min:099 Max:635 Avg:325.40 10th:206 90th:450 | Mom-Search:619 QS/MoM Ratio:0.5257 QS-Faster:99/100
+#0040 Comparisons Q-S Min:161 Max:542 Avg:299.08 10th:182 90th:418 | Mom-Search:616 QS/MoM Ratio:0.4855 QS-Faster:100/100
+#0041 Comparisons Q-S Min:099 Max:604 Avg:319.50 10th:189 90th:431 | Mom-Search:606 QS/MoM Ratio:0.5272 QS-Faster:100/100
+#0042 Comparisons Q-S Min:099 Max:628 Avg:310.07 10th:172 90th:426 | Mom-Search:586 QS/MoM Ratio:0.5291 QS-Faster:99/100
+#0043 Comparisons Q-S Min:099 Max:563 Avg:309.38 10th:196 90th:433 | Mom-Search:619 QS/MoM Ratio:0.4998 QS-Faster:100/100
+#0044 Comparisons Q-S Min:099 Max:566 Avg:308.51 10th:186 90th:436 | Mom-Search:613 QS/MoM Ratio:0.5033 QS-Faster:100/100
+#0045 Comparisons Q-S Min:099 Max:601 Avg:305.93 10th:188 90th:419 | Mom-Search:586 QS/MoM Ratio:0.5221 QS-Faster:98/100
+#0046 Comparisons Q-S Min:166 Max:670 Avg:316.11 10th:201 90th:426 | Mom-Search:630 QS/MoM Ratio:0.5018 QS-Faster:99/100
+#0047 Comparisons Q-S Min:099 Max:557 Avg:311.72 10th:198 90th:445 | Mom-Search:597 QS/MoM Ratio:0.5221 QS-Faster:100/100
+#0048 Comparisons Q-S Min:153 Max:501 Avg:310.03 10th:195 90th:433 | Mom-Search:589 QS/MoM Ratio:0.5264 QS-Faster:100/100
+#0049 Comparisons Q-S Min:165 Max:570 Avg:317.02 10th:202 90th:427 | Mom-Search:289 QS/MoM Ratio:1.0970 QS-Faster:46/100
+#0050 Comparisons Q-S Min:154 Max:562 Avg:307.63 10th:196 90th:418 | Mom-Search:532 QS/MoM Ratio:0.5783 QS-Faster:99/100
+#0051 Comparisons Q-S Min:099 Max:514 Avg:303.04 10th:190 90th:417 | Mom-Search:615 QS/MoM Ratio:0.4927 QS-Faster:100/100
+#0052 Comparisons Q-S Min:099 Max:576 Avg:299.60 10th:181 90th:433 | Mom-Search:612 QS/MoM Ratio:0.4895 QS-Faster:100/100
+#0053 Comparisons Q-S Min:099 Max:617 Avg:316.36 10th:198 90th:437 | Mom-Search:600 QS/MoM Ratio:0.5273 QS-Faster:99/100
+#0054 Comparisons Q-S Min:099 Max:568 Avg:308.85 10th:167 90th:458 | Mom-Search:602 QS/MoM Ratio:0.5130 QS-Faster:100/100
+#0055 Comparisons Q-S Min:099 Max:533 Avg:303.00 10th:183 90th:417 | Mom-Search:654 QS/MoM Ratio:0.4633 QS-Faster:100/100
+#0056 Comparisons Q-S Min:099 Max:570 Avg:304.58 10th:211 90th:421 | Mom-Search:583 QS/MoM Ratio:0.5224 QS-Faster:100/100
+#0057 Comparisons Q-S Min:099 Max:553 Avg:310.97 10th:196 90th:460 | Mom-Search:607 QS/MoM Ratio:0.5123 QS-Faster:100/100
+#0058 Comparisons Q-S Min:099 Max:589 Avg:295.81 10th:182 90th:418 | Mom-Search:617 QS/MoM Ratio:0.4794 QS-Faster:100/100
+#0059 Comparisons Q-S Min:099 Max:591 Avg:321.18 10th:199 90th:444 | Mom-Search:648 QS/MoM Ratio:0.4956 QS-Faster:100/100
+#0060 Comparisons Q-S Min:099 Max:507 Avg:310.53 10th:203 90th:443 | Mom-Search:289 QS/MoM Ratio:1.0745 QS-Faster:42/100
+#0061 Comparisons Q-S Min:099 Max:515 Avg:302.09 10th:192 90th:425 | Mom-Search:602 QS/MoM Ratio:0.5018 QS-Faster:100/100
+#0062 Comparisons Q-S Min:099 Max:705 Avg:304.79 10th:195 90th:411 | Mom-Search:587 QS/MoM Ratio:0.5192 QS-Faster:99/100
+#0063 Comparisons Q-S Min:099 Max:649 Avg:306.84 10th:189 90th:445 | Mom-Search:586 QS/MoM Ratio:0.5236 QS-Faster:99/100
+#0064 Comparisons Q-S Min:099 Max:502 Avg:312.80 10th:197 90th:417 | Mom-Search:341 QS/MoM Ratio:0.9173 QS-Faster:62/100
+#0065 Comparisons Q-S Min:151 Max:525 Avg:306.83 10th:184 90th:433 | Mom-Search:635 QS/MoM Ratio:0.4832 QS-Faster:100/100
+#0066 Comparisons Q-S Min:099 Max:686 Avg:308.33 10th:189 90th:445 | Mom-Search:610 QS/MoM Ratio:0.5055 QS-Faster:98/100
+#0067 Comparisons Q-S Min:099 Max:558 Avg:315.65 10th:204 90th:450 | Mom-Search:602 QS/MoM Ratio:0.5243 QS-Faster:100/100
+#0068 Comparisons Q-S Min:162 Max:705 Avg:307.51 10th:188 90th:423 | Mom-Search:585 QS/MoM Ratio:0.5257 QS-Faster:97/100
+#0069 Comparisons Q-S Min:148 Max:564 Avg:306.62 10th:187 90th:424 | Mom-Search:612 QS/MoM Ratio:0.5010 QS-Faster:100/100
+#0070 Comparisons Q-S Min:099 Max:648 Avg:309.01 10th:200 90th:433 | Mom-Search:574 QS/MoM Ratio:0.5383 QS-Faster:99/100
+#0071 Comparisons Q-S Min:099 Max:494 Avg:287.98 10th:195 90th:386 | Mom-Search:605 QS/MoM Ratio:0.4760 QS-Faster:100/100
+#0072 Comparisons Q-S Min:149 Max:589 Avg:319.92 10th:187 90th:439 | Mom-Search:626 QS/MoM Ratio:0.5111 QS-Faster:100/100
+#0073 Comparisons Q-S Min:152 Max:624 Avg:307.70 10th:192 90th:433 | Mom-Search:618 QS/MoM Ratio:0.4979 QS-Faster:99/100
+#0074 Comparisons Q-S Min:156 Max:670 Avg:310.17 10th:194 90th:419 | Mom-Search:662 QS/MoM Ratio:0.4685 QS-Faster:99/100
+#0075 Comparisons Q-S Min:099 Max:527 Avg:301.42 10th:188 90th:403 | Mom-Search:602 QS/MoM Ratio:0.5007 QS-Faster:100/100
+#0076 Comparisons Q-S Min:155 Max:600 Avg:300.67 10th:194 90th:425 | Mom-Search:594 QS/MoM Ratio:0.5062 QS-Faster:99/100
+#0077 Comparisons Q-S Min:163 Max:615 Avg:315.47 10th:188 90th:436 | Mom-Search:548 QS/MoM Ratio:0.5757 QS-Faster:97/100
+#0078 Comparisons Q-S Min:152 Max:620 Avg:324.34 10th:217 90th:467 | Mom-Search:328 QS/MoM Ratio:0.9888 QS-Faster:61/100
+#0079 Comparisons Q-S Min:150 Max:558 Avg:320.39 10th:211 90th:424 | Mom-Search:338 QS/MoM Ratio:0.9479 QS-Faster:63/100
+#0080 Comparisons Q-S Min:099 Max:763 Avg:311.52 10th:191 90th:436 | Mom-Search:574 QS/MoM Ratio:0.5427 QS-Faster:99/100
+#0081 Comparisons Q-S Min:099 Max:618 Avg:311.39 10th:188 90th:449 | Mom-Search:589 QS/MoM Ratio:0.5287 QS-Faster:97/100
+#0082 Comparisons Q-S Min:154 Max:535 Avg:314.29 10th:208 90th:449 | Mom-Search:613 QS/MoM Ratio:0.5127 QS-Faster:100/100
+#0083 Comparisons Q-S Min:099 Max:570 Avg:303.47 10th:188 90th:422 | Mom-Search:588 QS/MoM Ratio:0.5161 QS-Faster:100/100
+#0084 Comparisons Q-S Min:099 Max:508 Avg:289.76 10th:182 90th:385 | Mom-Search:581 QS/MoM Ratio:0.4987 QS-Faster:100/100
+#0085 Comparisons Q-S Min:099 Max:589 Avg:295.33 10th:178 90th:433 | Mom-Search:317 QS/MoM Ratio:0.9316 QS-Faster:65/100
+#0086 Comparisons Q-S Min:151 Max:552 Avg:320.89 10th:184 90th:454 | Mom-Search:660 QS/MoM Ratio:0.4862 QS-Faster:100/100
+#0087 Comparisons Q-S Min:099 Max:522 Avg:293.20 10th:194 90th:406 | Mom-Search:584 QS/MoM Ratio:0.5021 QS-Faster:100/100
+#0088 Comparisons Q-S Min:099 Max:636 Avg:306.60 10th:181 90th:474 | Mom-Search:624 QS/MoM Ratio:0.4913 QS-Faster:99/100
+#0089 Comparisons Q-S Min:099 Max:526 Avg:303.36 10th:195 90th:398 | Mom-Search:593 QS/MoM Ratio:0.5116 QS-Faster:100/100
+#0090 Comparisons Q-S Min:099 Max:542 Avg:308.46 10th:194 90th:410 | Mom-Search:585 QS/MoM Ratio:0.5273 QS-Faster:100/100
+#0091 Comparisons Q-S Min:099 Max:533 Avg:295.37 10th:190 90th:411 | Mom-Search:586 QS/MoM Ratio:0.5040 QS-Faster:100/100
+#0092 Comparisons Q-S Min:099 Max:573 Avg:305.21 10th:190 90th:453 | Mom-Search:588 QS/MoM Ratio:0.5191 QS-Faster:100/100
+#0093 Comparisons Q-S Min:099 Max:482 Avg:294.81 10th:193 90th:409 | Mom-Search:566 QS/MoM Ratio:0.5209 QS-Faster:100/100
+#0094 Comparisons Q-S Min:159 Max:609 Avg:318.74 10th:189 90th:502 | Mom-Search:575 QS/MoM Ratio:0.5543 QS-Faster:98/100
+#0095 Comparisons Q-S Min:149 Max:531 Avg:306.04 10th:202 90th:421 | Mom-Search:591 QS/MoM Ratio:0.5178 QS-Faster:100/100
+#0096 Comparisons Q-S Min:156 Max:580 Avg:319.89 10th:203 90th:476 | Mom-Search:591 QS/MoM Ratio:0.5413 QS-Faster:100/100
+#0097 Comparisons Q-S Min:099 Max:631 Avg:312.75 10th:205 90th:435 | Mom-Search:644 QS/MoM Ratio:0.4856 QS-Faster:100/100
+#0098 Comparisons Q-S Min:099 Max:605 Avg:316.92 10th:191 90th:442 | Mom-Search:330 QS/MoM Ratio:0.9604 QS-Faster:53/100
+#0099 Comparisons Q-S Min:099 Max:570 Avg:295.07 10th:175 90th:407 | Mom-Search:618 QS/MoM Ratio:0.4775 QS-Faster:100/100
+
+Total run statistics:
+100*100(10000) quick-search iterations, 100 total lists.
+Average over all Q-S runs:307.63 Min:99 Avg 10th:192.49 Avg 90th:430.04 Max:763
+Average over all MoM runs:569.00 Min:289 10th:338 90th:633 Max:662
+Quick Search is fastest 9468 time(s), Mom Search fastest 532 time(s). Ratio between QS/MoM:0.5649
+Over all lists, how many are below MoM? QS-Min:100/100 QS-10th:100/100 QS-Avg:96/100 QS-90th:89/100 QS-Max:58/100 

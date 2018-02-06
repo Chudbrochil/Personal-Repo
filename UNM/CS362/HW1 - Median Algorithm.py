@@ -254,7 +254,6 @@ def generateStatistics(quickSearchComparisons, momSearchComparisons):
               % (qsMinLessThanMom, listSize, qs10thLessThanMom, listSize, qsAvgLessThanMom, listSize, qs90thLessThanMom, listSize, qsMaxLessThanMom, listSize))
 
 
-
 def main():
     # Initial values to main, could be passed in as arguments from CLI
     firstListValue = 1 # Value we are starting our random lists at
