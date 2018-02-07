@@ -371,46 +371,40 @@ def cornersHeuristic(state, problem):
     admissible (as well as consistent).
     """
     corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    # Going to first calculate a super trivial calculation based on going to corner0->1->2->3
+    # We only want to investigate nodes (corners) that haven't been explored yet
     totalDistance = 0
-
-    distanceToCorners = []
+    nodes = []
     for x in range (0, 4):
         if state[1][x] == False:
-            distanceToCorners.append([(util.manhattanDistance(state[0], corners[x])), corners[x]])
+            nodes.append(corners[x])
 
+    # Adding the pacman's position to our nodes. Specifically at the front of the list
+    nodes.insert(0, state[0])
 
-    # Sorting my list of corners distances'
-    sortedDistanceList = sorted(distanceToCorners, key=lambda x:x[0])
-    sortedDistanceList.insert(0, [0, state[0]])
-
-    numNodes = len(sortedDistanceList)
+    numNodes = len(nodes)
     if numNodes > 1:
-        #print(sortedDistanceList)
         closedNodes = []
 
         # x ends at -1 as we don't need to go "from" the last node (the goal)
         for x in range(0, numNodes-1):
-            #print(x)
-            minDistance = 100000000000
-            fromNode = sortedDistanceList[x]
+            minDistance = 100000000000000000 # Let's hope we don't have an obnoxiously huge grid, I don't want to import sys
+            fromNode = nodes[x]
 
             # y starts at 1 as we don't need to go "to" the first node (the pac-man)
             for y in range(1, numNodes):
-                toNode = sortedDistanceList[y]
-                #print("from: %s to: %s" % (fromNode[1], toNode[1]))
-                possibleDistance = util.manhattanDistance(fromNode[1], toNode[1])
+                toNode = nodes[y]
+
+                # Calculating the distance from x to y and finding if it's the shortest one
+                possibleDistance = util.manhattanDistance(fromNode, toNode)
                 if possibleDistance != 0 and possibleDistance < minDistance and y not in closedNodes:
-                    coordToRemove = fromNode[1]
+                    coordToRemove = fromNode
                     minDistance = possibleDistance
             totalDistance += minDistance
             closedNodes.append(coordToRemove)
     else:
         totalDistance = 0
 
-    #print("state:%s totalDistance: %s len(distanceList): %d" % (state, totalDistance, len(sortedDistanceList)))
     return totalDistance
 
 class AStarCornersAgent(SearchAgent):
@@ -504,6 +498,46 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+
+    # We only want to investigate nodes (food) that haven't been explored yet
+    totalDistance = 0
+    nodes = foodGrid.asList()
+
+    # Adding the pacman's position to our nodes. Specifically at the front of the list
+    nodes.insert(0, position)
+
+    numNodes = len(nodes)
+    if numNodes > 1:
+        closedNodes = []
+
+        # x ends at -1 as we don't need to go "from" the last node (the goal)
+        for x in range(0, numNodes-1):
+            minDistance = 100000000000000000 # Let's hope we don't have an obnoxiously huge grid, I don't want to import sys
+            fromNode = nodes[x]
+
+            # y starts at 1 as we don't need to go "to" the first node (the pac-man)
+            for y in range(1, numNodes):
+                toNode = nodes[y]
+
+                # Calculating the distance from x to y and finding if it's the shortest one
+                possibleDistance = util.manhattanDistance(fromNode, toNode)
+                if possibleDistance != 0 and possibleDistance < minDistance and y not in closedNodes:
+                    coordToRemove = fromNode
+                    minDistance = possibleDistance
+            totalDistance += minDistance
+            closedNodes.append(coordToRemove)
+    else:
+        totalDistance = 0
+
+    return totalDistance
+
+
+
+
+
+
+
+
     "*** YOUR CODE HERE ***"
     return 0
 
