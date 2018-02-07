@@ -335,6 +335,7 @@ class CornersProblem(search.SearchProblem):
             cornerQuadruple = tuple(cornerQuadruple)
 
             successor = (((nextx, nexty), cornerQuadruple), action, 1)
+
             # If we didn't hit a wall, then change our coords accordingly
             if not hitsWall:
                 successors.append(successor)
@@ -372,13 +373,92 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-
     # Going to first calculate a super trivial calculation based on going to corner0->1->2->3
     totalDistance = 0
-    totalDistance += util.manhattanDistance(problem.getStartState()[0], corners[0])
-    totalDistance += util.manhattanDistance(corners[0], corners[1])
-    totalDistance += util.manhattanDistance(corners[1], corners[2])
-    totalDistance += util.manhattanDistance(corners[2], corners[3])
+
+    distanceToCorners = []
+    for x in range (0, 4):
+        if state[1][x] == False:
+            distanceToCorners.append([(util.manhattanDistance(state[0], corners[x])), corners[x], state[1][x]])
+
+    #print(distanceToCorners)
+    # Sorting my list of corners distances'
+    sortedDistanceList = sorted(distanceToCorners, key=lambda x:x[0])
+    #print(sortedDistanceList)
+
+    # sortedDistanceList = []
+    # for corner in sortedDistanceToCorners:
+    #     if corner[2] == False:
+    #         sortedDistanceList.append(corner)
+
+    # firstCorner = []
+    # for corner in sortedDistanceList:
+    #     # Eliminating found corners
+    #     #if corner[2] == True:
+    #     #    sortedDistanceList.remove(corner)
+    #     # Finding the closest corner to us currently
+    #     #if corner[2] == False and firstCorner == None:
+    #     if firstCorner == None:
+    #         totalDistance += corner[0]
+    #         firstCorner = corner
+
+    # If everything is found, we reached the goal
+    #if len(sortedDistanceList) == 0:
+    #    return 0
+
+    #totalDistance += sortedDistanceList[0][0]
+
+    # Iterating over the corners that are left to find the min distances
+    minDistance = 100000000000
+    if len(sortedDistanceList) > 1:
+        for x in range(0, len(sortedDistanceList)):
+            #print(x)
+            corner = sortedDistanceList[x]
+            for y in range(x+1, len(sortedDistanceList)):
+                corner2 = sortedDistanceList[y]
+                possibleDistance = 100000000000
+                if corner != corner2:
+                    possibleDistance = util.manhattanDistance(corner[1], corner2[1])
+                if possibleDistance < minDistance:
+                    minDistance = possibleDistance
+            totalDistance += minDistance
+        totalDistance -= 1
+    elif len(sortedDistanceList) == 0:
+        totalDistance = 0
+    else:
+        totalDistance = sortedDistanceList[0][0]
+
+
+    # for x in range(0, len(sortedDistanceList) - 1):
+    #     #if x == 0:
+    #     #    distanceToAdd = sortedDistanceList[0][0]
+    #     #else:
+    #     distanceToAdd = util.manhattanDistance(sortedDistanceList[x][1], sortedDistanceList[x+1][1])
+    #     print("distanceToAdd: %d" % distanceToAdd)
+    #     totalDistance += distanceToAdd
+
+    #
+    # indexOfFirstCorner = sortedDistanceList.index(firstCorner)
+    #
+    # totalDistance += firstCorner[0]
+    # for x in range(indexOfFirstCorner, 3):
+    #     #print(x)
+    #     distanceBetweenCorners = util.manhattanDistance(sortedDistanceList[x][1], sortedDistanceList[x+1][1])
+    #     #print(distanceBetweenCorners)
+    #     totalDistance += distanceBetweenCorners
+
+
+    # if cornersVisited[0] == False:
+    #     totalDistance += util.manhattanDistance(problem.getStartState()[0], corners[0])
+    # if cornersVisited[1] == False:
+    #     totalDistance += util.manhattanDistance(corners[0], corners[1])
+    # if cornersVisited[2] == False:
+    #     totalDistance += util.manhattanDistance(corners[1], corners[2])
+    # if cornersVisited[3] == False:
+    #     totalDistance += util.manhattanDistance(corners[2], corners[3])
+
+    #distanceToCorner0 = util.manhattanDistance()
+    print("state:%s totalDistance: %s len(distanceList): %d" % (state, totalDistance, len(sortedDistanceList)))
 
     return totalDistance
 

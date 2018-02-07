@@ -155,7 +155,7 @@ def uniformCostSearch(problem):
     startingNode = Node(problem.getStartState(), None, 0, 0, None)
     fringe.push(startingNode, 0)
 
-    # Implementing BFS
+    # Implementing UCS
     while True:
         if fringe.isEmpty():
             return []
@@ -189,13 +189,13 @@ def manhattanHeuristic(state):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-        # Initializing the data structures including starting state and its successors
+    # Initializing the data structures including starting state and its successors
     closed = set()
     fringe = util.PriorityQueue()
     startingNode = Node(problem.getStartState(), None, 0, 0, None)
     fringe.push(startingNode, 0 + heuristic(startingNode.state, problem))
 
-    # Implementing BFS
+    # Implementing AStar
     while True:
         if fringe.isEmpty():
             return []
@@ -223,6 +223,8 @@ dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
 
+# Node
+# Class to hold data about a given node
 class Node:
 
     def __init__(self, state = (), action = "", cost = -1, costSoFar = -100000000, parentNode = None):
