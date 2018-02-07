@@ -379,11 +379,12 @@ def cornersHeuristic(state, problem):
     distanceToCorners = []
     for x in range (0, 4):
         if state[1][x] == False:
-            distanceToCorners.append([(util.manhattanDistance(state[0], corners[x])), corners[x], state[1][x]])
+            distanceToCorners.append([(util.manhattanDistance(state[0], corners[x])), corners[x]])
 
     #print(distanceToCorners)
     # Sorting my list of corners distances'
     sortedDistanceList = sorted(distanceToCorners, key=lambda x:x[0])
+    sortedDistanceList.insert(0, [0, state[0]])
     #print(sortedDistanceList)
 
     # sortedDistanceList = []
@@ -409,24 +410,31 @@ def cornersHeuristic(state, problem):
     #totalDistance += sortedDistanceList[0][0]
 
     # Iterating over the corners that are left to find the min distances
-    minDistance = 100000000000
-    if len(sortedDistanceList) > 1:
-        for x in range(0, len(sortedDistanceList)):
+
+    numNodes = len(sortedDistanceList)
+    if numNodes > 1:
+        #print(sortedDistanceList)
+        closedNodes = []
+        for x in range(0, numNodes-1):
             #print(x)
-            corner = sortedDistanceList[x]
-            for y in range(x+1, len(sortedDistanceList)):
-                corner2 = sortedDistanceList[y]
-                possibleDistance = 100000000000
-                if corner != corner2:
-                    possibleDistance = util.manhattanDistance(corner[1], corner2[1])
-                if possibleDistance < minDistance:
+            minDistance = 100000000000
+            fromNode = sortedDistanceList[x]
+            for y in range(1, numNodes):
+                toNode = sortedDistanceList[y]
+                #print("from: %s to: %s" % (fromNode[1], toNode[1]))
+                possibleDistance = util.manhattanDistance(fromNode[1], toNode[1])
+                if possibleDistance != 0 and possibleDistance < minDistance and y not in closedNodes:
+                    coordToRemove = fromNode[1]
                     minDistance = possibleDistance
             totalDistance += minDistance
-        totalDistance -= 1
-    elif len(sortedDistanceList) == 0:
-        totalDistance = 0
+            closedNodes.append(coordToRemove)
+        #totalDistance -= 1
+    #elif len(sortedDistanceList) == 0:
+    #    totalDistance = 0
+    #else:
+    #    totalDistance = sortedDistanceList[0][0]
     else:
-        totalDistance = sortedDistanceList[0][0]
+        totalDistance = 0
 
 
     # for x in range(0, len(sortedDistanceList) - 1):
