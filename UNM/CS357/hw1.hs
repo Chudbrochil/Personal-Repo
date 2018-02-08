@@ -14,10 +14,10 @@ stutter [] = []
 stutter (x:xs) = x : x : stutter(xs)
 
 
--- 1.2 # 2 TODO: NOT DONE
+-- 1.2 # 2 compress TODO: Get explanation on why I needed [a] as a base case... because I'm doing x:y:xs?
 compress :: [Char] -> [Char]
-compress [] = []
-compress (x:y:xs) = if x == y then compress (y:xs) else compress (y:xs)
+compress [a] = [a]
+compress (x:y:xs) = if x /= y then x : compress (y:xs) else compress (y:xs)
 
 -- 1.2 # 3 zipSum
 zipSum :: [Int] -> [Int] -> [Int]
@@ -32,7 +32,7 @@ setUnion :: [Integer] -> [Integer] -> [Integer]
 setUnion [] [] = []
 setUnion (x:xs) [] = (x:xs)
 setUnion [] (x:xs) = (x:xs)
-setUnion (x:xs) (y:ys) = if x == y then x : setUnion xs ys else setUnion (x:xs) ys
+setUnion (x:xs) (y:ys) = if x == y then x : setUnion xs ys else setUnion xs (y:ys)
 
 
 -- 1.3 # 2 setIntersection
@@ -40,6 +40,10 @@ setUnion (x:xs) (y:ys) = if x == y then x : setUnion xs ys else setUnion (x:xs) 
 -- 1.3 # 3 setDifference
 
 -- 1.3 # 4 setEqual
+
+
+
+
 
 -- 1.4 # 1 dr
 
