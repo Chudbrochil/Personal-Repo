@@ -402,8 +402,6 @@ def cornersHeuristic(state, problem):
                     minDistance = possibleDistance
             totalDistance += minDistance
             closedNodes.append(coordToRemove)
-    else:
-        totalDistance = 0
 
     return totalDistance
 
@@ -526,8 +524,6 @@ def foodHeuristic(state, problem):
                     minDistance = possibleDistance
             totalDistance += minDistance
             closedNodes.append(coordToRemove)
-    else:
-        totalDistance = 0
 
     return totalDistance
 
