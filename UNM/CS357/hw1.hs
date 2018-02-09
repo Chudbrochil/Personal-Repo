@@ -3,6 +3,7 @@ Anthony Galczak - WGalczak@gmail.com - agalczak@unm.edu
 CS357 Homework 1
 -}
 
+import Data.List
 
 -- 1.1 test
 test :: Int -> Int -> Bool
@@ -13,11 +14,12 @@ stutter :: [Char] -> [Char]
 stutter [] = []
 stutter (x:xs) = x : x : stutter(xs)
 
--- 1.2 # 2 compress TODO: Get explanation on why I needed [a] as a base case... because I'm doing x:y:xs?
+-- 1.2 # 2 compress 
 compress :: [Char] -> [Char]
 compress [] = [] -- Need this base case for case in which you call compress ""
 compress [a] = [a]
-compress (x:y:xs) = if x /= y then x : compress (y:xs) else compress (y:xs)
+compress (x:y:xs) = if x == y then x : compress xs else x : y : compress xs
+
 
 -- 1.2 # 3 zipSum
 zipSum :: [Int] -> [Int] -> [Int]
@@ -33,13 +35,18 @@ zipSum (x:xs) (y:ys) = (x+y) : zipSum xs ys
 -- Everything below this hasn't been rigorously tested
 
 
--- 1.3 # 1 setUnion TODO: NOT DONE
+-- 1.3 # 1 setUnion TODO: I should re-do this accounting for increasing values
+-- nub eliminates duplicates in a list, we want duplicates gone for 2 lists together
 setUnion :: [Integer] -> [Integer] -> [Integer]
-setUnion [] _ = []
-setUnion _ [] = []
-setUnion (x:xs) (y:ys) = if notElem x (y:ys) then setUnion xs (y:ys) else x : setUnion (xs) (y:ys)
+setUnion xs ys = nub (xs ++ ys)
+--setUnion (x:xs) (y:ys)
+--	| x == y = x : setUnion xs (y:ys)
+--	| x < y = x : setUnion xs (y:ys)
+--	| x > y = y : setUnion (x:xs) ys
+
 
 -- 1.3 # 2 setIntersection
+-- list comprehension makes this easier to understand
 setIntersection :: [Integer] -> [Integer] -> [Integer]
 setIntersection [] _ = []
 setIntersection _ [] = []
@@ -47,16 +54,20 @@ setIntersection xs ys = [x | x <- xs, y <- ys, x == y]
 
 -- 1.3 # 3 setDifference (anti-union) TODO: Does not work for two distinct lists, just returns (x:xs)
 setDifference :: [Integer] -> [Integer] -> [Integer]
-setDifference [] _ = []
 setDifference _ [] = []
-setDifference (x:xs) (y:ys) = if elem x (y:ys) then setDifference xs (y:ys) else x : setDifference (xs) (y:ys)
+setDifference [] _ = []
+setDifference (x:xs) (y:ys)
+	| x < y = x : setDifference xs (y:ys)
+	| x == y = setDifference xs (y:ys)
+	| x > y = setDifference (x:xs) ys
 
 
 -- 1.3 # 4 setEqual
+-- == returns a bool
 setEqual :: [Integer] -> [Integer] -> Bool
-setEqual [] _ = False
-setEqual _ [] = False
-setEqual xs ys = xs == ys -- == returns a bool...
+setEqual [] _ = False -- Is this case necessary?
+setEqual _ [] = False -- Is this case necessary?
+setEqual xs ys = xs == ys 
 
 -- 1.4 # 1 dr TODO: NOT DONE
 --dr :: Integer -> Int
