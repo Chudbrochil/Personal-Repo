@@ -29,48 +29,50 @@ zipSum [] (x:xs) = (x:xs)
 zipSum (x:xs) (y:ys) = (x+y) : zipSum xs ys
 
 
-
--- Above this line has been thoroughly tested an is done. 
--- So far 1.3 #1, 1.3 #3 and 1.4 not done
--- Everything below this hasn't been rigorously tested
-
-
--- 1.3 # 1 setUnion TODO: I should re-do this accounting for increasing values
--- nub eliminates duplicates in a list, we want duplicates gone for 2 lists together
+-- 1.3 # 1 setUnion
+-- Decided that iterating over the list manually was more in spirit of the 
+-- assignment, but the nub solution seems more concise
 setUnion :: [Integer] -> [Integer] -> [Integer]
-setUnion xs ys = nub (xs ++ ys)
---setUnion (x:xs) (y:ys)
---	| x == y = x : setUnion xs (y:ys)
---	| x < y = x : setUnion xs (y:ys)
---	| x > y = y : setUnion (x:xs) ys
+--setUnion xs ys = nub (xs ++ ys) -- This requires no base case, slick...
+setUnion xs [] = xs
+setUnion [] ys = ys
+setUnion (x:xs) (y:ys)
+	| x < y = x : setUnion xs (y:ys)
+	| x == y = setUnion xs (y:ys)
+	| x > y = y : setUnion (x:xs) ys
 
 
 -- 1.3 # 2 setIntersection
 -- list comprehension makes this easier to understand
 setIntersection :: [Integer] -> [Integer] -> [Integer]
 setIntersection [] _ = []
-setIntersection _ [] = []
 setIntersection xs ys = [x | x <- xs, y <- ys, x == y]
-
--- 1.3 # 3 setDifference (anti-union) TODO: Does not work for two distinct lists, just returns (x:xs)
-setDifference :: [Integer] -> [Integer] -> [Integer]
-setDifference _ [] = []
-setDifference [] _ = []
-setDifference (x:xs) (y:ys)
-	| x < y = x : setDifference xs (y:ys)
-	| x == y = setDifference xs (y:ys)
-	| x > y = setDifference (x:xs) ys
 
 
 -- 1.3 # 4 setEqual
 -- == returns a bool
 setEqual :: [Integer] -> [Integer] -> Bool
-setEqual [] _ = False -- Is this case necessary?
-setEqual _ [] = False -- Is this case necessary?
 setEqual xs ys = xs == ys 
 
+
+
+-- Above this line has been thoroughly tested an is done. 
+-- So far 1.3 #3 and 1.4 not done
+-- Everything below this hasn't been rigorously tested
+
+-- 1.3 # 3 setDifference (anti-union) TODO: Does not work for two distinct lists, just returns (x:xs)
+setDifference :: [Integer] -> [Integer] -> [Integer]
+setDifference xs [] = xs
+setDifference [] ys = ys
+setDifference (x:xs) (y:ys)
+	| x < y = x : setDifference xs (y:ys)
+	| x == y = setDifference xs (y:ys)
+	| x > y = y : setDifference (x:xs) ys
+
+
+
 -- 1.4 # 1 dr TODO: NOT DONE
---dr :: Integer -> Int
+--dr :: Integer -> Int`
 --dr a =  if a < 10 then a else a `mod` 10 + dr a -- I don't think base case catches everything
 
 
