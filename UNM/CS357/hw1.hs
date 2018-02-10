@@ -20,14 +20,12 @@ compress [] = [] -- Need this base case for case in which you call compress ""
 compress [a] = [a]
 compress (x:y:xs) = if x == y then x : compress xs else x : y : compress xs
 
-
 -- 1.2 # 3 zipSum
 zipSum :: [Int] -> [Int] -> [Int]
 zipSum [] [] = []
 zipSum (x:xs) [] = (x:xs)
 zipSum [] (x:xs) = (x:xs)
 zipSum (x:xs) (y:ys) = (x+y) : zipSum xs ys
-
 
 -- 1.3 # 1 setUnion
 -- Decided that iterating over the list manually was more in spirit of the 
@@ -41,33 +39,31 @@ setUnion (x:xs) (y:ys)
 	| x == y = setUnion xs (y:ys)
 	| x > y = y : setUnion (x:xs) ys
 
-
 -- 1.3 # 2 setIntersection
 -- list comprehension makes this easier to understand
 setIntersection :: [Integer] -> [Integer] -> [Integer]
 setIntersection [] _ = []
 setIntersection xs ys = [x | x <- xs, y <- ys, x == y]
 
+-- 1.3 # 3 setDifference (anti-union)
+-- Only difference here between setUnion is we skip both x and y on ==
+setDifference :: [Integer] -> [Integer] -> [Integer]
+setDifference xs [] = xs
+setDifference [] ys = ys
+setDifference (x:xs) (y:ys)
+	| x < y = x : setDifference xs (y:ys)
+	| x == y = setDifference xs ys
+	| x > y = y : setDifference (x:xs) ys
 
 -- 1.3 # 4 setEqual
 -- == returns a bool
 setEqual :: [Integer] -> [Integer] -> Bool
 setEqual xs ys = xs == ys 
 
-
-
 -- Above this line has been thoroughly tested an is done. 
 -- So far 1.3 #3 and 1.4 not done
 -- Everything below this hasn't been rigorously tested
 
--- 1.3 # 3 setDifference (anti-union) TODO: Does not work for two distinct lists, just returns (x:xs)
-setDifference :: [Integer] -> [Integer] -> [Integer]
-setDifference xs [] = xs
-setDifference [] ys = ys
-setDifference (x:xs) (y:ys)
-	| x < y = x : setDifference xs (y:ys)
-	| x == y = setDifference xs (y:ys)
-	| x > y = y : setDifference (x:xs) ys
 
 
 
