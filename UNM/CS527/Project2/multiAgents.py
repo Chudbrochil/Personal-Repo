@@ -92,11 +92,10 @@ class ReflexAgent(Agent):
                 closestFoodDistance = distanceToFood
 
         # Calculations for food
-        baseDistance = 50
         if currentGameState.hasFood(newPos[0], newPos[1]):
             theScore += 75
         else:
-            theScore += (baseDistance - closestFoodDistance)
+            theScore += (50 - closestFoodDistance)
 
         # Analysis of score for distance to ghost will be simple at first
         if closestGhostDistance == 0:
@@ -163,8 +162,36 @@ class MinimaxAgent(MultiAgentSearchAgent):
           gameState.getNumAgents():
             Returns the total number of agents in the game
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        howManyPlaying = gameState.getNumAgents()
+
+        # gameState, playerIndex, howManyPlaying
+        #max(gameState, 0, howManyPlaying)
+
+        # Start max...
+        for x in range(0, howManyPlaying + 1):
+
+            # If we're on 0, doing max on pac-man...
+            if x == 0:
+                self.maxValue(gameState)
+            else:
+                self.minValue(gameState)
+
+    def maxValue(self, gameState):
+        v = -10000000000
+        actions = gameState.getLegalActions()
+        for action in actions:
+            successor = gameState.generateSuccessor(0, action)
+            v = max(v, self.evaluationFunction(successor))
+
+
+    def minValue(self, gameState):
+        v = 10000000000
+        actions = gameState.getLegalActions()
+        for action in actions:
+            successor = gameState.generateSuccessor(0, action)
+            v = min(v, self.evaluationFunction(successor))
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
