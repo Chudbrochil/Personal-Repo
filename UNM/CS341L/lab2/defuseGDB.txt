@@ -1,0 +1,127 @@
+Anthony Galczak - WGalczak@gmail.com - agalczak@unm.edu
+CS341 Lab 2 defuseGDB.txt
+
+The string to defuse the first phase is '5'. To differentiate from different types of strings this is tickmark5tickmark. Not just "5". Another representation is "'5'" .
+^^^^ This is incorrect. "'5'" is referencing the pointer to the user input
+The correct string is "You can Russia from land here in Alaska."
+
+
+Explanation of how I got to this answer:
+Well first we were given a hint to investigate phase_1 as a starting point for defusing the bomb.
+The first thing I tried doing was going into main and reading a few instructions behind the phase_1 call. The phase_1 call was at 400e07, I started looking at 400df5. This was a mov into the %edi register. I scoured around in this area looking for meaningful data as my assumption was that entering the phase_1 method would instantly blow the bomb. After stepping a few times through main and getting upto the phase_1 call, I realized that the bomb didn't trigger upon entering phase_1.
+
+After realizing I could step into phase_1 without triggering the bomb immediately was a big step in the right direction. The instruction "mov $0x401fa0,%esi"(400e44) is the main offender. This changes what was originally two equals strings %rsi and %rdi from 0x603560 both to %rsi now being 0x401fa0. These two strings get fed into the strings_not_equal method. Looks like if they aren't equal, we blow up.
+
+The way to fundamentally test (and fix...) this is to set rsi back to the original string it was and then step through strings_not_equal and back into phas_1. I used "set $rsi = 0x603560" before entering the strings_not_equal method. After we exit the strings_not_equal method we hit the jump equals that figures out if we jump past the "explode_bomb" call. If the strings were equal, we get past it.
+
+I have attached a readout of a somewhat more succinct path to victory that I achieved in gdb.
+It amounted to:
+gdb someFile.txt
+break *0x0000000000400e44 (Breakpoint at the mov)
+info reg (Check if registers %rdi and %rsi are same, they are...)
+stepi (Move to strings_not_equal call)
+info reg (Check registers again, %rsi is different)
+set $rsi = 0x0603650 (Put the string back)
+break *0x0000000000400e50 (Breakpoint on je after strings_not_equal method... Don't want to step through that method ever again...)
+continue (Hit the je)
+continue (See our phase 1 defuse)
+
+
+--- NOTE I DIDNT ACTUALLY FIND THE REAL STRING IN THE "SOLUTION" ABOVE ---
+
+I spoke with Sheng to talk about the details of how I came to defusing phase_1. I now realize that I was just pointing both registers at the same address that was given by the user input. Regardless of what the input was the string comparison succeeded because they both pointed at the same address.
+
+Afterwards, I looked at the legitimate string that we were supposed to compare against which was found in the memory address 0x401fa0.
+The string found at this address is "You can Russia from land here in Alaska."
+This is the string we want to enter on the command line to pass phase 1. I kind of missed the nuance of actually entering something on the command line to the program.
+
+
+Here's the actual execution of what I did (for the hack):
+
+agalczak@prospero:~/cs341/lab2$ gdb someFile.txt
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from someFile.txt...done.
+(gdb) break *0x0000000000400e44
+Breakpoint 1 at 0x400e44
+(gdb) run
+Starting program: /nfs/student/student/a/agalczak/cs341/lab2/someFile.txt
+Welcome to my fiendish little bomb. You have 3 phases with
+which to blow yourself up. Have a nice day!
+info reg
+
+Breakpoint 1, 0x0000000000400e44 in phase_1 ()
+(gdb) info reg
+rax            0x603560 6305120
+rbx            0x0      0
+rcx            0x8      8
+rdx            0x1      1
+rsi            0x603560 6305120
+rdi            0x603560 6305120
+rbp            0x401df0 0x401df0 <__libc_csu_init>
+rsp            0x7fffffffea40   0x7fffffffea40
+r8             0x604429 6308905
+r9             0x7ffff7fac700   140737353795328
+r10            0x519    1305
+r11            0x7ffff7a3b0f0   140737348088048
+r12            0x400c80 4197504
+r13            0x7fffffffeb30   140737488350000
+r14            0x0      0
+r15            0x0      0
+rip            0x400e44 0x400e44 <phase_1+4>
+eflags         0x202    [ IF ]
+cs             0x33     51
+ss             0x2b     43
+ds             0x0      0
+es             0x0      0
+fs             0x0      0
+gs             0x0      0
+(gdb) stepi
+0x0000000000400e49 in phase_1 ()
+(gdb) info reg
+rax            0x603560 6305120
+rbx            0x0      0
+rcx            0x8      8
+rdx            0x1      1
+rsi            0x401fa0 4202400
+rdi            0x603560 6305120
+rbp            0x401df0 0x401df0 <__libc_csu_init>
+rsp            0x7fffffffea40   0x7fffffffea40
+r8             0x604429 6308905
+r9             0x7ffff7fac700   140737353795328
+r10            0x519    1305
+r11            0x7ffff7a3b0f0   140737348088048
+r12            0x400c80 4197504
+r13            0x7fffffffeb30   140737488350000
+r14            0x0      0
+r15            0x0      0
+rip            0x400e49 0x400e49 <phase_1+9>
+eflags         0x202    [ IF ]
+cs             0x33     51
+ss             0x2b     43
+ds             0x0      0
+es             0x0      0
+fs             0x0      0
+gs             0x0      0
+(gdb) set $rsi = 0x603560
+(gdb) break *0x0000000000400e50
+Breakpoint 2 at 0x400e50
+(gdb) continue
+Continuing.
+
+Breakpoint 2, 0x0000000000400e50 in phase_1 ()
+(gdb) continue
+Continuing.
+Phase 1 defused. How about the next one?
