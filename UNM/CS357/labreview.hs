@@ -1,6 +1,6 @@
 
 
-
+{-
 [1,2,3,4,5] :: [Int]
 
 ['a', 'b'] :: [Char]
@@ -46,7 +46,7 @@ add x = \y -> x + y
 (\x y z -> myEven ((x*y*z) `div` (x-y-z))) :: Int -> Int -> Int -> Bool
 
 
-
+-}
 
 -- In class take replacement
 take' :: Int -> [a] -> [a]
@@ -54,6 +54,20 @@ take' 0 _ = []
 take' _ [] = []
 take' n (x:xs) = x : take' (n-1) xs
 
+
+
+-- 02-13-17
+
+concat' :: [[a]] -> [a]
+concat' xss = [ x | xs <- xss, x <- xs]
+
+positions :: Int -> [Int] -> [Int]
+positions n xs = [ y | (x,y) <- zip xs [0..], x == n]
+
+scalarMult :: Int -> [[Int]] -> [[Int]]
+scalarMult s xss = [ map (*s) xs | xs <- xss]
+-- scalarMult s xss = (map . map) (*s) xss
+-- scalarMult s xss = [[ x*s | x <- xs | xs <- xss ]
 
 
 
