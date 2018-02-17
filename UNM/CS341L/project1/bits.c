@@ -192,6 +192,11 @@ The return tells us if it is equal to the number 0x55555555
  *   Rating: 4
  */
 int bitParity(int x) {
+  
+  
+
+
+
   return 2;
 }
 /* 
@@ -202,7 +207,7 @@ int bitParity(int x) {
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return (x | y) & (~x | ~y); // TODO: Doesn't work....
+  return (x | y) & (~x | ~y);
 }
 /* 
  * replaceByte(x,n,c) - Replace byte n in x with c
@@ -214,6 +219,15 @@ int bitXor(int x, int y) {
  *   Rating: 3
  */
 int replaceByte(int x, int n, int c) {
+
+  int mask = (0xFF << n*8);
+  int numOfOneByte = (mask & x);
+  numOfOneByte = ~numOfOneByte;
+  int byteToInject = (c << n*8);
+  //int numWithByteZeroed = (
+
+
+
   return 2;
 }
 /* 
@@ -223,7 +237,13 @@ int replaceByte(int x, int n, int c) {
  *   Rating: 1
  */
 int tmax(void) {
-  return (0x7f << 24) + (0xff << 16) + (0xff << 8) + 0xff; // TODO: Using too many ops, 8?
+/*
+1 << 31 gives us the number right outside the bounds of 2s complement
+and then subtracting 1 gives us the absolute maximum.
+Note that 1 << 31 technically gives us the sign bit, but as we subtract
+1 right away we get the maximum non-negative value.
+*/
+  return (1 << 31) - 1;
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -255,23 +275,13 @@ int isEqual(int x, int y) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  printf("Testing: %d\n", x);
-
-  int mask = (1 << 31);
-  int signBit = (mask & x);
- 
-   
-
-  printf("num: %04x\n", signBit);
-
-  signBit = (signBit >> 31);
-
-  //int signBit = ~((1 << 31) & x);
-  // The 31 shift to right in two's complement will keep our sign bit sticky,
-  // multiplying by -1 removes this. If the sign bit was 0 to begin with, no effect.
-  //signBit = (signBit >> 31) * -1 ;
-  printf("num: %04x\n", signBit);
-  return !signBit;
+/*
+Frustratingly enough, !((1 << 31) & x) easily checks for negative
+numbers, but we also have to check the "zero case". In order to do
+that we have to also | with !x. This catches the zero case as we are
+or'ing with !x (in this case all 0x7fffffff).
+*/
+  return !(((1 << 31) & x) | !x);  
 }
 /* 
  * subOK - Determine if can compute x-y without overflow
@@ -282,7 +292,7 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int subOK(int x, int y) {
-  return 2;
+  return 0;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
