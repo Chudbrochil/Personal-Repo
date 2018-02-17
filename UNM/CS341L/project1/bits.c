@@ -192,7 +192,9 @@ The return tells us if it is equal to the number 0x55555555
  *   Rating: 4
  */
 int bitParity(int x) {
-  
+  int mask = 0xFF;
+  int doubleMask = mask + (mask << 8);
+  x = (x & doubleMask) ^ (x >> 16); // Checking top 16 bits
   
 
 
@@ -207,7 +209,17 @@ int bitParity(int x) {
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return (x | y) & (~x | ~y);
+/*
+Implementation takes 7 ops.
+Logically, xor can be expresesd as:
+p ^ q = (p | q) & ~(p & q)
+DeMorgan's allows us to change first term from (p | q) to:
+~(~p & ~q)
+results in p ^ q = ~(~p & ~q) & ~(p & q)
+
+And that is what we have in this function.
+*/
+  return ~(~x & ~y) & ~(x & y);
 }
 /* 
  * replaceByte(x,n,c) - Replace byte n in x with c
@@ -219,16 +231,20 @@ int bitXor(int x, int y) {
  *   Rating: 3
  */
 int replaceByte(int x, int n, int c) {
-
-  int mask = (0xFF << n*8);
-  int numOfOneByte = (mask & x);
-  numOfOneByte = ~numOfOneByte;
-  int byteToInject = (c << n*8);
-  //int numWithByteZeroed = (
-
-
-
-  return 2;
+/*
+Implementation takes 7 ops.
+n << 3 gives the actual amount of bits we want to shift, e.g.
+1 << 3 -> 8, 8 bytes to shift.
+Build a mask to mask the byte we are changing.
+Make a byte representation with the byte we want to inject
+of only the new byte(c).
+x & ~mask gives the bytes we want to save then or'ed with
+the byte we want to replace.
+*/
+  int mask = (0xFF << (n << 3));        // Of form 0x0000FF00
+  int byteToInject = (c << (n << 3));    // Of form 0x0000ab00
+  int newX = (x & ~mask) | byteToInject;    // Of form 0x1234ab78
+  return newX;
 }
 /* 
  * TMax - return maximum two's complement integer 
@@ -238,12 +254,14 @@ int replaceByte(int x, int n, int c) {
  */
 int tmax(void) {
 /*
+Implementation takes 2 ops.
+Have to use (+ -1) as - isn't a "legal op".
 1 << 31 gives us the number right outside the bounds of 2s complement
 and then subtracting 1 gives us the absolute maximum.
 Note that 1 << 31 technically gives us the sign bit, but as we subtract
 1 right away we get the maximum non-negative value.
 */
-  return (1 << 31) - 1;
+  return (1 << 31) + -1;
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -265,6 +283,11 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int isEqual(int x, int y) {
+/*
+Implementation takes 2 ops.
+If you xor the same two numbers you will get 0.
+Taking the ! of 0 gives 1.
+*/
   return !(x ^ y);
 }
 /* 
@@ -276,6 +299,7 @@ int isEqual(int x, int y) {
  */
 int isPositive(int x) {
 /*
+Implementation takes 5 ops.
 Frustratingly enough, !((1 << 31) & x) easily checks for negative
 numbers, but we also have to check the "zero case". In order to do
 that we have to also | with !x. This catches the zero case as we are
@@ -321,7 +345,25 @@ int howManyBits(int x) {
  *   Rating: 2
  */
 unsigned float_abs(unsigned uf) {
-  return 2;
+/*
+Implementation takes 6 ops.
+First we check if the number is over Infinity, if so just return it.
+Remember the details on floats:
+8 bits for exponent, if all 8 are set (7F8 gives this) then the first
+value is infinity and remaining values are NaN.
+Otherwise, just eliminate the sign bit to give absolute value.
+*/
+  unsigned nanBound = 0x7F800000;
+  unsigned possibleReturn = uf & ((1 << 31) - 1);
+  if (possibleReturn > nanBound)
+  {
+    return uf;
+  }
+  else
+  {
+    return possibleReturn;
+  }
+
 }
 /* 
  * float_twice - Return bit-level equivalent of expression 2*f for
@@ -351,3 +393,8 @@ int trueFiveEighths(int x)
 {
     return 2;
 }
+
+
+
+
+
