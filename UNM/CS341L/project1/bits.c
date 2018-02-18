@@ -1,7 +1,9 @@
 /* 
  * CS:APP Data Lab 
  * 
- * <Please put your name and userid here>
+ * Anthony Galczak
+ * CS341 - Project 1 
+ * WGalczak@gmail.com - agalczak@unm.edu
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -363,7 +365,45 @@ int subOK(int x, int y) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  
+
+  // Getting first 16bits, next 8bits, next 4 bits, next 2 bits, and next 1 bit
+  // to  chop the number into equal binary parts. Similar to logic for bitParity.
+  // We will account for the very last bit in the return.
+  int chop1 = 1 << 1;
+  int chop2 = 3 << 2;
+  int chop3 = 0xF << 4;
+  int chop4 = 0xFF << 8;
+  int chop5 = 0xFFFF << 16;
+
+  // Make the number positive, we will capture sign bit in chops
+  x = x ^ (x >> 31);
+
+  // If there is a bit in the first 16 bits then we know our sum will be +16
+  int foundBit = !!(x & chop5);
+  int chopResult = foundBit << 4;
+  x >>= chopResult;
+  int chopResultSum = chopResult;
+  // Looking for bit in next segment of 8
+  foundBit = !!(x & chop4);
+  chopResult = foundBit << 3;
+  x >>= chopResult;
+  chopResultSum += chopResult;
+  // And so on... (4 bits)
+  foundBit = !!(x & chop3);
+  chopResult = foundBit << 2;
+  x >>= chopResult;
+  chopResultSum += chopResult;
+  foundBit = !!(x & chop2);
+  chopResult = foundBit << 1;
+  x >>= chopResult;
+  chopResultSum += chopResult;
+  foundBit = !!(x & chop1);
+  chopResult = foundBit;
+  x >>= chopResult;
+  chopResultSum += chopResult;
+
+  // 1 is a bit of a magic number here, was always off by 1 in calculations... 
+  return chopResultSum + (x & 1) + 1;
 }
 /* 
  * float_abs - Return bit-level equivalent of absolute value of f for
@@ -483,8 +523,4 @@ Add it all together an shift the signbit by 3 to get x * 5/8.
   int signBit = x >> 31 & 7; // Gives us the negative number rounding toward zero
   return eighthsBy5 + (shiftedAwayBy5 + signBit >> 3);
 }
-
-
-
-
 
