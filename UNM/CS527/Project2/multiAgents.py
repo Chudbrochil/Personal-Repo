@@ -163,34 +163,68 @@ class MinimaxAgent(MultiAgentSearchAgent):
             Returns the total number of agents in the game
         """
 
-        howManyPlaying = gameState.getNumAgents()
+        pacmanMove = Directions.STOP
+        evaluation = float("-inf")
+        agentIndex = 0
 
-        # gameState, playerIndex, howManyPlaying
-        #max(gameState, 0, howManyPlaying)
+        # This is basically pacman's first move being looped over and starting minimax
+        # This is useful for capturing the actual directional move gotten from the analysis
+        # of states. Eliminates the need to keep track of actual actions inside min/max.
+        for action in gameState.getLegalActions(agentIndex):
+            successor = gameState.generateSuccessor(agentIndex, action)
+            oldEval = evaluation
+            evaluation = max(evaluation, self.minimax(successor, self.depth, agentIndex + 1))
+            if evaluation > oldEval:
+                pacmanMove = action
 
-        # Start max...
-        for x in range(0, howManyPlaying + 1):
+        return pacmanMove
 
-            # If we're on 0, doing max on pac-man...
-            if x == 0:
-                self.maxValue(gameState)
-            else:
-                self.minValue(gameState)
 
-    def maxValue(self, gameState):
-        v = -10000000000
-        actions = gameState.getLegalActions()
+    def minimax(self, gameState, depth, agentIndex):
+
+        # If we have iterated the agent index to more than the amount of players, we now
+        # want to switch to player0 (max) and reduce depth by 1
+        if agentIndex >= gameState.getNumAgents():
+            agentIndex = 0
+            depth -= 1
+
+        # Generating actions for current game state
+        actions = gameState.getLegalActions(agentIndex)
+
+        # If we reached our depth or lost or won or no legal actions are left(terminal), we are done
+        if depth == 0 or gameState.isLose() or gameState.isWin() or len(actions) < 0:
+            return self.evaluationFunction(gameState)
+
+        # First index is a player(max) move, other indices are ghost(min) moves
+        if agentIndex == 0:
+            return self.maxValue(gameState, depth, agentIndex, actions)
+        else:
+            return self.minValue(gameState, depth, agentIndex, actions)
+
+    def maxValue(self, gameState, depth, agentIndex, actions):
+        v = float("-inf")
         for action in actions:
-            successor = gameState.generateSuccessor(0, action)
-            v = max(v, self.evaluationFunction(successor))
+
+            # Getting the value of the following successor
+            successor = gameState.generateSuccessor(agentIndex, action)
+            stateValue = self.minimax(successor, depth, agentIndex + 1)
+
+            # If it's higher than our current value, store the value and action
+            if stateValue > v:
+                v = stateValue
+
+        return v
 
 
-    def minValue(self, gameState):
-        v = 10000000000
-        actions = gameState.getLegalActions()
+    def minValue(self, gameState, depth, agentIndex, actions):
+        v = float("inf")
         for action in actions:
-            successor = gameState.generateSuccessor(0, action)
-            v = min(v, self.evaluationFunction(successor))
+            successor = gameState.generateSuccessor(agentIndex, action)
+            stateValue = self.minimax(successor, depth, agentIndex + 1)
+            if stateValue < v:
+                v = stateValue
+
+        return v
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
