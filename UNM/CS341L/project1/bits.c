@@ -192,14 +192,19 @@ The return tells us if it is equal to the number 0x55555555
  *   Rating: 4
  */
 int bitParity(int x) {
-  int mask = 0xFF;
-  int doubleMask = mask + (mask << 8);
-  x = (x & doubleMask) ^ (x >> 16); // Checking top 16 bits
-  
-
-
-
-  return 2;
+/*
+Doing a log based xor for the number.
+Continuously halving the number with each xor retains the
+parity of the number as a whole. Do this for each power of 2
+until we are at the last bit. At that point if x == 1 then
+it had an odd number of 0's, otherwise even number. 
+*/
+  x = x ^ (x >> 16);
+  x = x ^ (x >> 8);
+  x = x ^ (x >> 4);
+  x = x ^ (x >> 2);
+  x = x ^ (x >> 1);
+  return x & 1;
 }
 /* 
  * bitXor - x^y using only ~ and & 
@@ -273,7 +278,19 @@ Note that 1 << 31 technically gives us the sign bit, but as we subtract
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+/*
+Implementation is 12 ops.
+First, we want to check if the number is negative. If it's negative
+then we have another bit to be able to use in our n.
+Shifting the number the appropriate amount of times to see if there
+is a remainder.
+*/
+
+  int isNegative = !!(x & (1 << 31));
+  int mask = ~(isNegative + ~0);
+  x ^= mask;
+  x >>= (n + ~0);
+  return !x;
 }
 /* 
  * isEqual - return 1 if x == y, and 0 otherwise 
@@ -316,7 +333,22 @@ or'ing with !x (in this case all 0x7fffffff).
  *   Rating: 3
  */
 int subOK(int x, int y) {
-  return 0;
+
+  int difference = x + (~y + 1);
+
+  // Find out if x y and difference are negative, this will be useful for
+  // figring out if we have an oveflow.
+  int sizeX = (x >> 31) & 1;
+  int sizeY = (y >> 31) & 1;
+  int sizeDifference = (difference >> 31) & 1;
+  
+  // We are doing x - y
+  // case1: Positive number - negative number = negative number CAN be overflow
+  // case2: Negative num - positive number = positive number IS overflow
+  int case1 = !sizeX & sizeY & sizeDifference;
+  int case2 = sizeX & !sizeY & !sizeDifference;
+
+  return !(case1 | case2);
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
@@ -331,7 +363,7 @@ int subOK(int x, int y) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+  
 }
 /* 
  * float_abs - Return bit-level equivalent of absolute value of f for
@@ -377,7 +409,49 @@ Otherwise, just eliminate the sign bit to give absolute value.
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-  return 2;
+/*
+Implementation is 18 ops. (Roughly?)
+Breakdown your unsigned integer into an exponent portion and 
+fractional portion. Exponent is 8 bits, fractional is 23 bits.
+There are special cases close to boundary of NaN/Inf, at exponent
+0xFE and 0xFF. Also special case for de-normalized as the mantissa
+scales differently at this exponent of 0.
+Return the original sign bit, exponent and fractional part for 2*uf.
+*/
+
+  int exponent = (uf & 0x7F800000) >> 23; // 23 fractional bits
+  int fractional = (uf & 0x007FFFFF);
+
+  // Going beyond nan bounds
+  if(exponent == 0xFF && fractional >= 0)
+  {
+    return uf;
+  }
+  // De-normalized floats because exp = 0
+  else if(exponent == 0)
+  {
+    fractional = fractional << 1;
+    
+    // If our number is at max fractional, it will transition to next exponent
+    if(fractional & (1 << 23))
+    {
+      exponent = 1;
+    }
+    fractional = fractional & 0x7FFFFF;
+  }
+  // Infinity
+  else if(exponent == 0xFE)
+  {
+    exponent = 0xFF;
+    fractional = 0;
+  }
+  // Easy case, not denormalized or near NaN boundaries, just give it *(2^1) 
+  else
+  {
+    exponent = exponent + 1;
+  }
+
+  return (uf & (1 << 31)) | (exponent << 23) | fractional;
 }
 /*
  * trueFiveEighths - multiplies by 5/8 rounding toward 0,
@@ -391,7 +465,23 @@ unsigned float_twice(unsigned uf) {
  */
 int trueFiveEighths(int x)
 {
-    return 2;
+/*
+Implementation is 10 ops.
+Idea is to shift the number by 3 to right which is equivalent to
+a division by 8. Create another number that holds the bits that
+you shifted away. Then take your number that was divided by 8
+and multiply it by 5. Great, we have a x * 5/8 now.
+In order to recover what we lost by shifting 3 bits, calculate
+those shifted bits * 5.
+Use a negative sign bit mask to round those numbers toward 0.
+Add it all together an shift the signbit by 3 to get x * 5/8.
+*/
+  int eighths = x >> 3; // Divide by 8
+  int shiftedAway = x & 7; // Capture the bits we shifted off
+  int eighthsBy5 = (eighths << 2) + eighths;
+  int shiftedAwayBy5 = (shiftedAway << 2) + shiftedAway;
+  int signBit = x >> 31 & 7; // Gives us the negative number rounding toward zero
+  return eighthsBy5 + (shiftedAwayBy5 + signBit >> 3);
 }
 
 
