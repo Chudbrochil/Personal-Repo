@@ -14,8 +14,6 @@
 
 from util import manhattanDistance
 from game import Directions
-from game import Actions
-import search
 import random, util
 
 from game import Agent
@@ -452,7 +450,7 @@ def betterEvaluationFunction(currentGameState):
     # If the ghost is scared, we want to minimize the distance to the ghost
     ghostScared = scaredTimes[0]
     if ghostScared > 0:
-        if closestGhost < ghostScared:
+        if closestGhost <= ghostScared:
             theScore += 1.0 / closestGhost
     # Otherwise we do not want to minimize distance to the ghost
     else:
@@ -462,3 +460,7 @@ def betterEvaluationFunction(currentGameState):
             theScore += 1.0 / closestGhost
 
     return theScore + scoreEvaluationFunction(currentGameState)
+
+# Abbreviation
+better = betterEvaluationFunction
+
