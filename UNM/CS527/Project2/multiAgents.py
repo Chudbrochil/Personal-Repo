@@ -396,7 +396,52 @@ def betterEvaluationFunction(currentGameState):
       DESCRIPTION: <write something here so we know what you did>
     """
 
-    
+
+    # Copied from the reflex agent evaluation function
+    newPos = currentGameState.getPacmanPosition()
+    newFood = currentGameState.getFood()
+    newGhostStates = currentGameState.getGhostStates()
+    newScaredTimes = [ghostState.scaredTimer for ghostState in newGhostStates]
+
+    theScore = 0
+
+    closestGhostDistance = float("inf")
+    closestFoodDistance = float("inf")
+
+    # Getting all ghosts
+    for x in range(1, len(newGhostStates) + 1):
+        aGhost = currentGameState.getGhostPosition(x)
+        distanceToGhost = util.manhattanDistance(newPos, aGhost)
+        if distanceToGhost < closestGhostDistance:
+            closestGhostDistance = distanceToGhost
+
+    # Getting all food
+    for food in newFood.asList():
+        distanceToFood = util.manhattanDistance(newPos, food)
+        if distanceToFood < closestFoodDistance:
+            closestFoodDistance = distanceToFood
+
+    # Calculations for food
+    if currentGameState.hasFood(newPos[0], newPos[1]):
+        theScore += 75
+    else:
+        theScore += (50 - closestFoodDistance)
+
+    # Analysis of score for distance to ghost will be simple at first
+    if closestGhostDistance == 0:
+        theScore = 0
+    elif closestGhostDistance == 1:
+        theScore += 0  # Do nothing...
+    else:
+        theScore += 100
+
+    #print("theScore: %s, scoreEval: %s", (theScore, scoreEvaluationFunction(currentGameState)))
+
+    return theScore + scoreEvaluationFunction(currentGameState)
+    #return scoreEvaluationFunction(currentGameState)
+
+
+
 
 
 
