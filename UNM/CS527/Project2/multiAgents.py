@@ -239,20 +239,32 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
           Returns the minimax action using self.depth and self.evaluationFunction
         """
         pacmanMove = Directions.STOP
-        evaluation = float("-inf")
         agentIndex = 0
+        v = float("-inf")
         alpha = float("-inf")
         beta = float("inf")
+
+        # returnValue = self.minimax(gameState, self.depth, agentIndex, alpha, beta, pacmanMove)
 
         # This is basically pacman's first move being looped over and starting minimax
         # This is useful for capturing the actual directional move gotten from the analysis
         # of states. Eliminates the need to keep track of actual actions inside min/max.
         for action in gameState.getLegalActions(agentIndex):
             successor = gameState.generateSuccessor(agentIndex, action)
-            oldEval = evaluation
-            evaluation = max(evaluation, self.minimax(successor, self.depth, agentIndex + 1, alpha, beta))
-            if evaluation > oldEval:
+
+
+            stateValue = max(v, self.minimax(successor, self.depth, agentIndex + 1, alpha, beta))
+            # If it's higher than our current value, store the value and action
+            if stateValue > v:
+                v = stateValue
                 pacmanMove = action
+
+            # Early terminating this actions loop, this is how we are pruning results
+            if v > beta:
+                return action
+
+            alpha = max(alpha, v)
+
 
         return pacmanMove
 
