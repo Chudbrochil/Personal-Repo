@@ -70,5 +70,32 @@ scalarMult s xss = [ map (*s) xs | xs <- xss]
 -- scalarMult s xss = [[ x*s | x <- xs | xs <- xss ]
 
 
+-- 02-20-17 lab
+
+foldRight :: (a -> b -> b) -> b -> [a] -> b
+foldRight f z [] = z
+foldRight f z (x:xs) = f x (foldRight f z xs)
+
+sum' :: [Int] -> Int
+sum' xs = foldRight (\x ys -> x + ys) 0 xs
+-- sum' xs = foldRight (+) 0 xs
+-- sum = foldRight (+) 0
+-- Think of 1 : (2 : (3 : []))
+
+
+
+const' :: a -> b -> a
+const' x y = x
+
+length' :: [a] -> Int
+length' xs = foldRight (\x ys -> 1 + ys) 0 xs
+
+length'' :: [a] -> Int
+length'' xs = foldRight((+) . (const 1)) 0 xs
+
+filter' p xs = foldRight (\x ys -> if p x then x : ys else ys) []
+
+
+
 
 
