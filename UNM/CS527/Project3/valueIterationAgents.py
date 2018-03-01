@@ -44,7 +44,27 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.values = util.Counter() # A Counter is a dict with default 0
 
         # Write value iteration code here
-        "*** YOUR CODE HERE ***"
+
+        while(iterations):
+
+            valuesToCopy = self.values.copy() # Do I need a copy here?
+            for state in self.mdp.getStates():
+
+                possibleActions = self.mdp.getPossibleActions(state)
+
+                # Getting the best choice in looping over all actions' q-values
+                qValue = float("-inf")
+                for action in possibleActions:
+                    actionQValue = self.computeQValueFromValues(state, action)
+                    if actionQValue > qValue:
+                        qValue = actionQValue
+
+                # If we are in a terminal state, no need to update values
+                if not self.mdp.isTerminal(state):
+                    valuesToCopy[state] = qValue
+
+            self.values = valuesToCopy
+            iterations -= 1
 
 
     def getValue(self, state):
@@ -59,8 +79,24 @@ class ValueIterationAgent(ValueEstimationAgent):
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        # possibleOutcomes come in form [((Coords), Probability)]
+        possibleOutcomes = self.mdp.getTransitionStatesAndProbs(state, action)
+        qValueSum = 0
+        gamma = self.discount
+
+        # Calculating the sum of all possible outcomes
+        # sum(prob(state)*(reward(newState) + gamma*value(newState)))
+        for move in possibleOutcomes:
+            newState = move[0] # Where we ended up moving
+            probability = move[1] # Probability we ended up on this coord
+            reward = self.mdp.getReward(state, action, newState) # Reward at the new state
+
+            qValueSum += probability*(reward + gamma*self.values[newState])
+
+        return qValueSum
+
+
 
     def computeActionFromValues(self, state):
         """
@@ -71,8 +107,24 @@ class ValueIterationAgent(ValueEstimationAgent):
           there are no legal actions, which is the case at the
           terminal state, you should return None.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        possibleActions = self.mdp.getPossibleActions(state)
+
+        # If we don't have any actions, we are at a terminal state
+        if len(possibleActions) == 0:
+            return None
+        else:
+            bestAction = ""
+            bestActionVal = float("-inf")
+            # Loop over all the actions and pick the highest valued one
+            for action in possibleActions:
+                actionQValue = self.computeQValueFromValues(state, action)
+                if actionQValue > bestActionVal:
+                    bestActionVal = actionQValue
+                    bestAction = action
+
+            return bestAction
+
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
