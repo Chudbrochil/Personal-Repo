@@ -47,7 +47,7 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         while(iterations):
 
-            valuesToCopy = self.values.copy() # Do I need a copy here?
+            valuesToCopy = self.values.copy()
             for state in self.mdp.getStates():
 
                 possibleActions = self.mdp.getPossibleActions(state)

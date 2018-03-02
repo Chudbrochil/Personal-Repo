@@ -203,15 +203,32 @@ class ApproximateQAgent(PacmanQAgent):
           Should return Q(state,action) = w * featureVector
           where * is the dotProduct operator
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        featureList = self.featExtractor.getFeatures(state, action)
+
+        weightFeatureSum = 0
+
+        # Returning the sum of the wi*fi list. i.e. Dot product of weights and feature values
+        for feature, value in featureList.items():
+            weightFeatureSum += (self.weights[feature] * value)
+
+        return weightFeatureSum
+
 
     def update(self, state, action, nextState, reward):
         """
            Should update your weights based on transition
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        featureList = self.featExtractor.getFeatures(state, action)
+
+        # Changing each individual weight given the formula from the prompt
+        # Wi <- Wi + alpha*difference*(feature-value)
+        # difference = (r + gamma*max-act(Q(s',a')) - Q(s,a)
+        difference = (reward + self.discount * self.computeValueFromQValues(nextState)) - self.getQValue(state, action)
+        for feature, value in featureList.items():
+            self.weights[feature] += self.alpha*difference*value
+
 
     def final(self, state):
         "Called at the end of each game."
@@ -221,5 +238,5 @@ class ApproximateQAgent(PacmanQAgent):
         # did we finish training?
         if self.episodesSoFar == self.numTraining:
             # you might want to print your weights here for debugging
-            "*** YOUR CODE HERE ***"
+            print(self.weights) # DEBUG
             pass
