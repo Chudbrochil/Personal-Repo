@@ -60,10 +60,13 @@ def question3e():
     # If not possible, return 'NOT POSSIBLE'
 
 def question6():
-    answerEpsilon = .75
-    answerLearningRate = .8
-    return answerEpsilon, answerLearningRate
+    #answerEpsilon = .9
+    #answerLearningRate = 0
+    #return answerEpsilon, answerLearningRate
     # If not possible, return 'NOT POSSIBLE'
+    # Note: with super randomized behavior, i.e. high epsilon I did get it
+    # to cross the bridge a few times.
+    return 'NOT POSSIBLE'
 
 if __name__ == '__main__':
     print 'Answers to analysis questions:'
