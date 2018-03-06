@@ -26,7 +26,10 @@ specialSuffix xs ys = isSuffixOf xs [y | y <- ys, not (elem y " ")]
 
 --2.3
 select :: (t -> Bool) -> [t] -> [a] -> [a]
+-- Think of select even [1..26] "abcdef..." -> "bdfhjlnprtvxz"
 select = undefined
+--select p nums xs = [xs !! num | num <- newNums]
+	where newNums = (filter p nums)
 
 --2.4
 prefixSum :: [Int] -> [Int]
