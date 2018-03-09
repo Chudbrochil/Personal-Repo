@@ -8,7 +8,29 @@ import Data.List
 
 --2.1
 collatz :: [Int] -> Int
-collatz = undefined
+collatz xs = fst (findMax (collatzNums xs) (0,0))
+
+-- Returns the max tuple
+findMax :: [(Int, Int)] -> (Int, Int) -> (Int, Int)
+findMax [] max = max
+findMax (x:xs) max -- = if snd x >= snd max then findMax xs x else findMax xs max
+	-- If # of terms is higher, set max to x
+	| snd x > snd max = findMax xs x
+	-- If # of terms is equal, set max to x if the num itself is higher
+	| (snd x >= snd max) && (fst x > fst max) = findMax xs x
+	| otherwise = findMax xs max
+
+-- Returns a tuple of (num, collatzHelper num)
+collatzNums :: [Int] -> [(Int, Int)]
+collatzNums [] = []
+collatzNums (x:xs) = (x, collatzHelper x) : collatzNums xs
+
+-- Returns the collatz value of a given number
+collatzHelper :: Int -> Int
+collatzHelper 1 = 1
+collatzHelper n
+	| n `mod` 2 == 0 = 1 + (collatzHelper (n `div` 2))
+	| otherwise = 1 + (collatzHelper (n*3 + 1))
 
 --2.2
 haskellFileNames :: [String] -> [String]
@@ -29,7 +51,7 @@ select :: (t -> Bool) -> [t] -> [a] -> [a]
 -- Think of select even [1..26] "abcdef..." -> "bdfhjlnprtvxz"
 select = undefined
 --select p nums xs = [xs !! num | num <- newNums]
-	where newNums = (filter p nums)
+--	where newNums = (filter p nums)
 
 --2.4
 prefixSum :: [Int] -> [Int]
