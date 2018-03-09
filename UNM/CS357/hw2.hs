@@ -45,13 +45,13 @@ specialSuffix xs [] = False
 specialSuffix xs ys = isSuffixOf xs [y | y <- ys, not (elem y " ")]
 
 
-
 --2.3
 select :: (t -> Bool) -> [t] -> [a] -> [a]
--- Think of select even [1..26] "abcdef..." -> "bdfhjlnprtvxz"
-select = undefined
---select p nums xs = [xs !! num | num <- newNums]
---	where newNums = (filter p nums)
+select p [] _ = []
+select p _ [] = []
+-- If the predicate of num is true, add x to our list
+select p (num:nums) (x:xs) = if p num then x : select p nums xs else select p nums xs
+
 
 --2.4
 prefixSum :: [Int] -> [Int]
@@ -59,7 +59,9 @@ prefixSum xs = scanl1 (+) xs
 
 --2.5
 numbers :: [Int] -> Int
-numbers = undefined
+-- Point-free add each element of the list with *10
+numbers = foldl ( (+) . (*10) ) 0
+
 
 --2.6
 type Numeral = (Int, [Int])
