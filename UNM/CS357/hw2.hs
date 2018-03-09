@@ -11,7 +11,7 @@ collatz :: [Int] -> Int
 collatz xs = fst (findMax (collatzNums xs) (0,0))
 
 -- Returns the max tuple
-findMax :: [(Int, Int)] -> (Int, Int) -> (Int, Int)
+findMax :: [(Int, Integer)] -> (Int, Integer) -> (Int, Integer)
 findMax [] max = max
 findMax (x:xs) max -- = if snd x >= snd max then findMax xs x else findMax xs max
 	-- If # of terms is higher, set max to x
@@ -21,12 +21,12 @@ findMax (x:xs) max -- = if snd x >= snd max then findMax xs x else findMax xs ma
 	| otherwise = findMax xs max
 
 -- Returns a tuple of (num, collatzHelper num)
-collatzNums :: [Int] -> [(Int, Int)]
+collatzNums :: [Int] -> [(Int, Integer)]
 collatzNums [] = []
 collatzNums (x:xs) = (x, collatzHelper x) : collatzNums xs
 
 -- Returns the collatz value of a given number
-collatzHelper :: Int -> Int
+collatzHelper :: Int -> Integer
 collatzHelper 1 = 1
 collatzHelper n
 	| n `mod` 2 == 0 = 1 + (collatzHelper (n `div` 2))
@@ -70,7 +70,20 @@ example = (10, [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0])
 
 --2.6 1
 makeLongInt :: Integer -> Int -> Numeral
-makeLongInt = undefined
+--makeLongInt n r = n `mod` toInteger r : makeLongInt (n `div` toInteger r) r
+makeLongInt n r = (r, reverse(fixInts (getList n r)))
+
+-- TODO: Eliminate this method
+fixInts :: [Integer] -> [Int]
+fixInts xs = map fromIntegral xs
+
+
+
+getList :: Integer -> Int -> [Integer]
+getList 0 r = []
+getList n r = n `mod` toInteger r : getList (n `div` toInteger r) r
+
+
 
 --2.6 2
 evaluateLongInt :: Numeral -> Integer
