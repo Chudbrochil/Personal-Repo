@@ -55,7 +55,7 @@ select = undefined
 
 --2.4
 prefixSum :: [Int] -> [Int]
-prefixSum = undefined
+prefixSum xs = scanl1 (+) xs
 
 --2.5
 numbers :: [Int] -> Int
