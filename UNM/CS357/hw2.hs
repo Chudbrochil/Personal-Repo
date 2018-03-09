@@ -59,8 +59,8 @@ prefixSum xs = scanl1 (+) xs
 
 --2.5
 numbers :: [Int] -> Int
--- Point-free add each element of the list with *10
-numbers = foldl ( (+) . (*10) ) 0
+-- Add each element of the list with *10
+numbers nums = foldl ( (+) . (*10) ) 0 nums
 
 
 --2.6
@@ -70,24 +70,21 @@ example = (10, [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0])
 
 --2.6 1
 makeLongInt :: Integer -> Int -> Numeral
---makeLongInt n r = n `mod` toInteger r : makeLongInt (n `div` toInteger r) r
 makeLongInt n r = (r, reverse(fixInts (getList n r)))
 
 -- TODO: Eliminate this method
 fixInts :: [Integer] -> [Int]
 fixInts xs = map fromIntegral xs
 
-
-
 getList :: Integer -> Int -> [Integer]
 getList 0 r = []
 getList n r = n `mod` toInteger r : getList (n `div` toInteger r) r
 
 
-
 --2.6 2
 evaluateLongInt :: Numeral -> Integer
-evaluateLongInt = undefined
+-- Almost exact same as 2.5
+evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
 
 --2.6 3
 changeRadixLongInt :: Numeral -> Int -> Numeral 
