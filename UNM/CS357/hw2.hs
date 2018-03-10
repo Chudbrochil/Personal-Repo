@@ -58,8 +58,8 @@ prefixSum :: [Int] -> [Int]
 prefixSum xs = scanl1 (+) xs
 
 --2.5
-numbers :: [Int] -> Int
 -- Add each element of the list with *10
+numbers :: [Int] -> Int
 numbers nums = foldl ( (+) . (*10) ) 0 nums
 
 
@@ -81,19 +81,28 @@ getList 0 r = []
 getList n r = n `mod` toInteger r : getList (n `div` toInteger r) r
 
 
---2.6 2
-evaluateLongInt :: Numeral -> Integer
+--2.6 
 -- Almost exact same as 2.5
+evaluateLongInt :: Numeral -> Integer
 evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
 
 --2.6 3
+-- TODO: Remove integer arithmetic
 changeRadixLongInt :: Numeral -> Int -> Numeral 
-changeRadixLongInt = undefined
+changeRadixLongInt (r1, ds1) r2 = makeLongInt (evaluateLongInt (r1, ds1)) r2
 
 --2.6 4
+-- TODO: Remove integer arithmetic
 addLongInts :: Numeral -> Numeral -> Numeral
-addLongInts = undefined
+addLongInts (r1, ds1) (r2, ds2)
+	| r1 == r2 = makeLongInt (evaluateLongInt (r1, ds1) + evaluateLongInt (r2, ds2)) r1
+	| r1 < r2 = addLongInts (changeRadixLongInt (r1, ds1) r2) (r2, ds2)
+	| r1 > r2 = addLongInts (r1, ds1) (changeRadixLongInt (r2, ds2) r1)
 
 --2.6 5
+-- TODO: Remove integer arithmetic
 mulLongInts :: Numeral -> Numeral -> Numeral
-mulLongInts = undefined
+mulLongInts (r1, ds1) (r2, ds2)
+	| r1 == r2 = makeLongInt (evaluateLongInt (r1, ds1) * evaluateLongInt (r2, ds2)) r1
+	| r1 < r2 = mulLongInts (changeRadixLongInt (r1, ds1) r2) (r2, ds2) 
+	| r1 > r2 = mulLongInts (r1, ds1) (changeRadixLongInt (r2, ds2) r1)
