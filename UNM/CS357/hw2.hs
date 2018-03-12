@@ -115,6 +115,79 @@ radixHelper (x:xs) r1 r2 rem
 	| otherwise = sum : radixHelper xs r1 r2 0        -- no overflow
 	where sum = x + rem
 
+{-
+listMult :: [Int] -> [Int] -> Int -> [Int]
+listMult xs ys r = reverse (fixBaseCarrys r 0 (reverse (multListOfInts (normalizeLists (length xs) ys) (normalizeLists (length ys) xs))))
+
+multListOfInts :: [Int] -> [Int] -> [Int]
+multListOfInts xs ys = zipWith (*) xs ys
+
+--test xs ys r = reverse (multListOfInts (normalizeLists (length xs) ys) (normalizeLists (length ys) xs))
+
+
+listMultByBase :: Int -> Int -> Int -> [Int] -> [Int]
+listMultByBase r1 r2 rem [] = if rem == 0 then [] else [rem]
+listMultByBase r1 r2 rem (x:xs)
+	| sum >= r2 = (sum `mod` r2) : listMultByBase r1 r2 (sum - r2) xs
+	| otherwise = sum : listMultByBase r1 r2 0 xs
+	where sum = (x * r1) + rem
+
+--test :: Int -> Int -> [Int] -> [Int]
+--test r1 r2 xs = reverse (fixBaseCarrys r1 0 (listMultByBase r1 r2 0 (reverse xs)))
+
+
+-}
+
+
+-- NEW MULTIPLICATION TRY
+
+
+-- First is the number we are multiplying, 2nd is baseFrom, 3rd is baseTo
+listMult :: [Int] -> Int -> Int -> [Int]
+listMult xs r1 r2 = fixBaseCarrys r2 0 (multByBase xs (reverse (splitBaseIntoList r1 r2)))
+
+
+-- Example, f 7 5 = [1,2], f 5 7 = [5]
+splitBaseIntoList :: Int -> Int -> [Int]
+splitBaseIntoList rFrom rTo = if rFrom <= rTo then [rFrom] else (rFrom `mod` rTo) : splitBaseIntoList (rFrom `div` rTo) rTo
+
+
+
+
+-- TODO: Make sure to do base -> nums
+multByBase :: [Int] -> [Int] -> [Int]
+multByBase [] _ = []
+-- TODO: There is a leaner way to do this
+multByBase (x:xs) ys =  sum (map (*x) ys) : multByBase xs ys
+
+
+
+
+
+-- TODO: SUPER CLOSE ON LISTMULTIPLICATION....
+
+
+
+
+-- Allows me to add lists of ints, i.e. list+ [1,2] [5] 7 = [2,0]  (Think: [1,2] + [5] = [2,0])
+listAdd :: [Int] -> [Int] -> Int -> [Int]
+listAdd xs ys r = reverse (fixBaseCarrys r 0 (reverse (addListOfInts (normalizeLists (length xs) ys) (normalizeLists (length ys) xs))))
+
+-- We will likely have carries when adding two lists together. Fixing the bases 
+-- rem - remainder, r - radix
+fixBaseCarrys :: Int -> Int -> [Int] -> [Int]
+fixBaseCarrys r rem [] = if rem == 0 then [] else [rem]
+fixBaseCarrys r rem (x:xs)
+	| sum >= r = (sum `mod` r) : fixBaseCarrys r (sum - r) xs
+	| otherwise = sum : fixBaseCarrys r 0 xs
+	where sum = x + rem
+
+normalizeLists :: Int -> [Int] -> [Int]
+normalizeLists otherLen nums = take (otherLen - (length nums)) (repeat 0) ++ nums
+
+addListOfInts :: [Int] -> [Int] -> [Int]
+addListOfInts xs ys = zipWith (+) xs ys
+
 
 
 
