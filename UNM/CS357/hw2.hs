@@ -88,17 +88,35 @@ evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
 -- Reverse that and put it in a tuple with the new base
 -- 
 -- All operations are done with strictly Int arithmetic
-changeRadixLongInt :: Numeral -> Int -> Numeral 
-changeRadixLongInt (r1, ds1) r2 = (r2, reverse (newBaseList r2 (makeInt (r1, ds1))))
+--changeRadixLongInt :: Numeral -> Int -> Numeral 
+--changeRadixLongInt (r1, ds1) r2 = (r2, reverse (newBaseList r2 (makeInt (r1, ds1))))
 
 -- Makes an int number out of our initial base and nums
-makeInt :: (Int, [Int]) -> Int
-makeInt (r, nums) = foldl ((+) . (*r)) 0 nums
+--makeInt :: (Int, [Int]) -> Int
+--makeInt (r, nums) = foldl ((+) . (*r)) 0 nums
 
 -- Divides our new int by the 2nd base given
-newBaseList :: Int -> Int -> [Int]
-newBaseList _ 0 = []
-newBaseList r num = num `mod` r : newBaseList r (num `div` r) 
+--newBaseList :: Int -> Int -> [Int]
+--newBaseList _ 0 = []
+--newBaseList r num = num `mod` r : newBaseList r (num `div` r) 
+
+
+
+-- new changeRadix
+changeRadixLongInt :: Numeral -> Int -> Numeral
+changeRadixLongInt (r1, ds1) r2 = (r2, radixHelper ds1 r1 r2 0)
+
+
+-- rem is remainder, r1 old radix, r2 new radix, 
+radixHelper :: [Int] -> Int -> Int -> Int -> [Int]
+radixHelper [] r1 r2 rem = if rem == 0 then [] else [rem]
+radixHelper (x:xs) r1 r2 rem
+	| sum >= r2 = (sum `mod` r2) : radixHelper xs r1 r2 (sum - r2)  -- overflow
+	| otherwise = sum : radixHelper xs r1 r2 0        -- no overflow
+	where sum = x + rem
+
+
+
 
 
 --2.6 4
