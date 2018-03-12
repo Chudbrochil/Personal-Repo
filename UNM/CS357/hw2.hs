@@ -81,15 +81,29 @@ getList 0 r = []
 getList n r = n `mod` toInteger r : getList (n `div` toInteger r) r
 
 
---2.6 
+--2.6 2
 -- Almost exact same as 2.5
 evaluateLongInt :: Numeral -> Integer
 evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
 
 --2.6 3
 -- TODO: Remove integer arithmetic
+-- First, make an int out our given list of ints.
+-- Second, make a new list of ints with our new base
+-- Reverse that and put it in a tuple with the new base
+-- NOTE: THIS IS ALL DONE WITH JUST INT MATH, NOT INTEGER
 changeRadixLongInt :: Numeral -> Int -> Numeral 
-changeRadixLongInt (r1, ds1) r2 = makeLongInt (evaluateLongInt (r1, ds1)) r2
+changeRadixLongInt (r1, ds1) r2 = (r2, reverse (newBaseList r2 (makeInt (r1, ds1))))
+
+-- Makes an int number out of our initial base and nums
+makeInt :: (Int, [Int]) -> Int
+makeInt (r, nums) = foldl ((+) . (*r)) 0 nums
+
+-- Divides our new int by the 2nd base given
+newBaseList :: Int -> Int -> [Int]
+newBaseList _ 0 = []
+newBaseList r num = num `mod` r : newBaseList r (num `div` r) 
+
 
 --2.6 4
 -- TODO: Remove integer arithmetic
