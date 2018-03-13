@@ -123,7 +123,9 @@ listMult (x:xs) ys r zeros = listAdd (normalizeLists (length(list2)) list1) (nor
 -- reverse inputs and then reverse outputs
 oneByList :: Int -> [Int] -> Int -> Int -> [Int]
 oneByList x [] r carry = if carry == 0 then [] else [carry]
-oneByList x (y:ys) r carry = (prod `mod` r) : oneByList x ys r (prod `div` r)
+oneByList x (y:ys) r carry
+	| r <= 50 = (prod `mod` r) : oneByList x ys r (prod `div` r) -- Base 10 or under is standard multiplication
+	| otherwise = []
 	where prod = (x * y) + carry
 
 addZeros :: [Int] -> Int -> [Int]
