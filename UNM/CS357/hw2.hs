@@ -112,16 +112,7 @@ radixHelper (x:xs) r1 r2 tally = radixHelper xs r1 r2 newTally
 	where newTally = listMult (listAdd tally [x] r2) (reverse(splitBaseIntoList r1 r2)) r2 0
 
 
-addZeros :: [Int] -> Int -> [Int]
-addZeros num howMany = num ++ (take howMany) (repeat 0)
-
-
--- reverse inputs and then reverse outputs
-oneByList :: Int -> [Int] -> Int -> Int -> [Int]
-oneByList x [] r carry = if carry == 0 then [] else [carry]
-oneByList x (y:ys) r carry = (prod `mod` r) : oneByList x ys r (prod `div` r)
-	where prod = (x * y) + carry
-
+-- LISTMULT
 listMult :: [Int] -> [Int] -> Int -> Int -> [Int]
 listMult [] ys r zeros = []
 -- Literal magic happens here
@@ -129,15 +120,18 @@ listMult (x:xs) ys r zeros = listAdd (normalizeLists (length(list2)) list1) (nor
 	where list1 = (addZeros (reverse (oneByList (last (x:xs)) (reverse ys) r 0)) zeros)
 	      list2 = (listMult (tail(reverse (x:xs))) ys r (zeros + 1))
 
+-- reverse inputs and then reverse outputs
+oneByList :: Int -> [Int] -> Int -> Int -> [Int]
+oneByList x [] r carry = if carry == 0 then [] else [carry]
+oneByList x (y:ys) r carry = (prod `mod` r) : oneByList x ys r (prod `div` r)
+	where prod = (x * y) + carry
 
-
-
+addZeros :: [Int] -> Int -> [Int]
+addZeros num howMany = num ++ (take howMany) (repeat 0)
 
 -- Example, f 7 5 = [1,2], f 5 7 = [5]
 splitBaseIntoList :: Int -> Int -> [Int]
 splitBaseIntoList rFrom rTo = if rFrom <= rTo then [rFrom] else (rFrom `mod` rTo) : splitBaseIntoList (rFrom `div` rTo) rTo
-
-
 
 
 --LISTADD
@@ -160,52 +154,6 @@ normalizeLists otherLen nums = take (otherLen - (length nums)) (repeat 0) ++ num
 addListOfInts :: [Int] -> [Int] -> [Int]
 addListOfInts xs ys = zipWith (+) xs ys
 
-
-
-
-
-
-
--- new changeRadix
-{-changeRadixLongInt :: Numeral -> Int -> Numeral
-changeRadixLongInt (r1, ds1) r2 = (r2, radixHelper ds1 r1 r2 0)
-
-
--- rem is remainder, r1 old radix, r2 new radix, 
-radixHelper :: [Int] -> Int -> Int -> Int -> [Int]
-radixHelper [] r1 r2 rem = if rem == 0 then [] else [rem]
-radixHelper (x:xs) r1 r2 rem
-	| sum >= r2 = (sum `mod` r2) : radixHelper xs r1 r2 (sum - r2)  -- overflow
-	| otherwise = sum : radixHelper xs r1 r2 0        -- no overflow
-	where sum = x + rem
-
--}
-
-
-
-
-{-
-listMult :: [Int] -> [Int] -> Int -> [Int]
-listMult xs ys r = reverse (fixBaseCarrys r 0 (reverse (multListOfInts (normalizeLists (length xs) ys) (normalizeLists (length ys) xs))))
-
-multListOfInts :: [Int] -> [Int] -> [Int]
-multListOfInts xs ys = zipWith (*) xs ys
-
---test xs ys r = reverse (multListOfInts (normalizeLists (length xs) ys) (normalizeLists (length ys) xs))
-
-spli
-listMultByBase :: Int -> Int -> Int -> [Int] -> [Int]
-listMultByBase r1 r2 rem [] = if rem == 0 then [] else [rem]
-listMultByBase r1 r2 rem (x:xs)
-	| sum >= r2 = (sum `mod` r2) : listMultByBase r1 r2 (sum - r2) xs
-	| otherwise = sum : listMultByBase r1 r2 0 xs
-	where sum = (x * r1) + rem
-
---test :: Int -> Int -> [Int] -> [Int]
---test r1 r2 xs = reverse (fixBaseCarrys r1 0 (listMultByBase r1 r2 0 (reverse xs)))
-
-
--}
 
 
 
