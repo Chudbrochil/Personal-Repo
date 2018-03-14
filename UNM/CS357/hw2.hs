@@ -3,6 +3,21 @@ Anthony Galczak
 agalczak@unm.edu
 -}
 
+module Homework2
+( collatz, 
+  haskellFileNames, 
+  select, 
+  prefixSum, 
+  numbers, 
+  Numeral, 
+  makeLongInt, 
+  evaluateLongInt, 
+  changeRadixLongInt, 
+  addLongInts, 
+  mulLongInts
+) where
+
+
 --No other imports are allowed
 import Data.List
 
@@ -80,7 +95,10 @@ getList n r = n `mod` toInteger r : getList (n `div` toInteger r) r
 --2.6 2
 -- Almost exact same as 2.5
 evaluateLongInt :: Numeral -> Integer
-evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
+evaluateLongInt (base, nums) = foldl (evaluate' base) 0 nums
+
+evaluate' :: Int -> Integer -> Int -> Integer
+evaluate' base v x = (v * toInteger base) + (toInteger x)
 
 --2.6 3
 -- It took me somewhere around 15 hours to do 2.6.3-2.6.5
@@ -90,23 +108,23 @@ evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
 -- My addition of lists is the "old style" which is rather reverse heavy. I got this working very early on and
 -- have decided not to "fix it".
 changeRadixLongInt :: Numeral -> Int -> Numeral
-changeRadixLongInt (r1, ds1) r2 = (r2, radixHelper ds1 r1 r2 [0])
+changeRadixLongInt (r1, ds1) r2 = (r2, dropWhile (==0) (radixHelper ds1 r1 r2 [0]))
 
 -- This is ultimately the "horner method" in code
 radixHelper :: [Int] -> Int -> Int -> [Int] -> [Int]
 radixHelper [x] r1 r2 tally = listAdd tally [x] r2
 radixHelper (x:xs) r1 r2 tally = radixHelper xs r1 r2 newTally
-	where newTally = multiByNum (listAdd tally [x] r2) r1 r2
+    where newTally = multiByNum (listAdd tally [x] r2) r1 r2
 
 -- Recursive method for multiplying a single digit by a list of ints
 -- This is useful for multiplying a list of ints by a given base or in a combined method
 -- of multiplying a single int of a list of ints by a list of ints.
 multiByNum :: [Int] -> Int -> Int -> [Int]
 multiByNum (x:[]) y r2 = xy `div` r2 : [xy `mod` r2] -- We will reach this as the bottom (most right) digit of the multi
-	where xy = x*y
+    where xy = x*y
 multiByNum (x:xs) y r2 = xy `div` r2 : xy `mod` r2 : digit
-	where (carry:digit) = multiByNum xs y r2
-	      xy = x*y + carry
+    where (carry:digit) = multiByNum xs y r2
+          xy = x*y + carry
 
 -- Allows me to add lists of ints, i.e. list+ [1,2] [5] 7 = [2,0]  (Think: [1,2] + [5] = [2,0])
 listAdd :: [Int] -> [Int] -> Int -> [Int]
@@ -116,9 +134,9 @@ listAdd xs ys r = reverse (fixBaseCarrys r 0 (reverse (addListOfInts (normalizeL
 fixBaseCarrys :: Int -> Int -> [Int] -> [Int]
 fixBaseCarrys r rem [] = if rem == 0 then [] else [rem]
 fixBaseCarrys r rem (x:xs)
-	| sum >= r = (sum `mod` r) : fixBaseCarrys r (sum `div` r) xs
-	| otherwise = sum : fixBaseCarrys r (sum `div` r) xs
-	where sum = x + rem
+    | sum >= r = (sum `mod` r) : fixBaseCarrys r (sum `div` r) xs
+    | otherwise = sum : fixBaseCarrys r (sum `div` r) xs
+    where sum = x + rem
 
 -- Padding a given list with 0's on the left
 normalizeLists :: Int -> [Int] -> [Int]
@@ -153,7 +171,7 @@ addTwoSameBase r (x:xs) (y:ys) carry = if sum >= r then (sum `mod` r) : addTwoSa
 --2.6 5
 mulLongInts :: Numeral -> Numeral -> Numeral
 mulLongInts (r1, ds1) (r2, ds2)
-    | r1 == r2 = (r1, (multTwoSameBase ds1 ds2 r1 0))
+    | r1 == r2 = (r1, dropWhile (==0) (multTwoSameBase ds1 ds2 r1 0))
     | r1 < r2 = mulLongInts (changeRadixLongInt (r1, ds1) r2) (r2, ds2) 
     | r1 > r2 = mulLongInts (r1, ds1) (changeRadixLongInt (r2, ds2) r1)
 
@@ -163,8 +181,8 @@ mulLongInts (r1, ds1) (r2, ds2)
 multTwoSameBase :: [Int] -> [Int] -> Int -> Int -> [Int]
 multTwoSameBase [] ys r zeros = []
 multTwoSameBase (x:xs) ys r zeros = listAdd list1 list2 r
-	where list1 = addZeros (multiByNum ys (last (x:xs)) r) zeros
-	      list2 = multTwoSameBase (reverse((tail(reverse(x:xs))))) ys r (zeros + 1)
+    where list1 = addZeros (multiByNum ys (last (x:xs)) r) zeros
+          list2 = multTwoSameBase (reverse((tail(reverse(x:xs))))) ys r (zeros + 1)
 
 -- Adds arbitrary amount of zeros to end of a list, useful for doing the list multiplication
 addZeros :: [Int] -> Int -> [Int]
