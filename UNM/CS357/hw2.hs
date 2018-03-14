@@ -83,66 +83,36 @@ evaluateLongInt :: Numeral -> Integer
 evaluateLongInt (base, nums) = toInteger(foldl ( (+) . (*base) ) 0 nums)
 
 --2.6 3
--- First, make an int out our given list of ints.
--- Second, make a new list of ints with our new base
--- Reverse that and put it in a tuple with the new base
--- 
--- All operations are done with strictly Int arithmetic
---changeRadixLongInt :: Numeral -> Int -> Numeral 
---changeRadixLongInt (r1, ds1) r2 = (r2, reverse (newBaseList r2 (makeInt (r1, ds1))))
-
--- Makes an int number out of our initial base and nums
---makeInt :: (Int, [Int]) -> Int
---makeInt (r, nums) = foldl ((+) . (*r)) 0 nums
-
--- Divides our new int by the 2nd base given
---newBaseList :: Int -> Int -> [Int]
---newBaseList _ 0 = []
---newBaseList r num = num `mod` r : newBaseList r (num `div` r) 
-
-
-
-
+-- It took me somewhere around 15 hours to do 2.6.3-2.6.5
+-- This results in a mixture of styles as I've approached this problem from different angles...
+-- My multiplication is the "new style" that is leaner, "better", and was ultimately the only way I figured
+-- out how to do multiplication of ints by a base.
+-- My addition of lists is the "old style" which is rather reverse heavy. I got this working very early on and
+-- have decided not to "fix it".
 changeRadixLongInt :: Numeral -> Int -> Numeral
 changeRadixLongInt (r1, ds1) r2 = (r2, radixHelper ds1 r1 r2 [0])
 
+-- This is ultimately the "horner method" in code
 radixHelper :: [Int] -> Int -> Int -> [Int] -> [Int]
 radixHelper [x] r1 r2 tally = listAdd tally [x] r2
 radixHelper (x:xs) r1 r2 tally = radixHelper xs r1 r2 newTally
-	where newTally = listMult (listAdd tally [x] r2) (reverse(splitBaseIntoList r1 r2)) r2 0
+	where newTally = multiByNum (listAdd tally [x] r2) r1 r2
 
+-- Recursive method for multiplying a single digit by a list of ints
+-- This is useful for multiplying a list of ints by a given base or in a combined method
+-- of multiplying a single int of a list of ints by a list of ints.
+multiByNum :: [Int] -> Int -> Int -> [Int]
+multiByNum (x:[]) y r2 = xy `div` r2 : [xy `mod` r2] -- We will reach this as the bottom (most right) digit of the multi
+	where xy = x*y
+multiByNum (x:xs) y r2 = xy `div` r2 : xy `mod` r2 : digit
+	where (carry:digit) = multiByNum xs y r2
+	      xy = x*y + carry
 
--- LISTMULT
-listMult :: [Int] -> [Int] -> Int -> Int -> [Int]
-listMult [] ys r zeros = []
--- Literal magic happens here
-listMult (x:xs) ys r zeros = listAdd (normalizeLists (length(list2)) list1) (normalizeLists (length(list1)) list2) r
-	where list1 = (addZeros (reverse (oneByList (last (x:xs)) (reverse ys) r 0)) zeros)
-	      list2 = (listMult (tail(reverse (x:xs))) ys r (zeros + 1))
-
--- reverse inputs and then reverse outputs
-oneByList :: Int -> [Int] -> Int -> Int -> [Int]
-oneByList x [] r carry = if carry == 0 then [] else [carry]
-oneByList x (y:ys) r carry
-	| r <= 50 = (prod `mod` r) : oneByList x ys r (prod `div` r) -- Base 10 or under is standard multiplication
-	| otherwise = []
-	where prod = (x * y) + carry
-
-addZeros :: [Int] -> Int -> [Int]
-addZeros num howMany = num ++ (take howMany) (repeat 0)
-
--- Example, f 7 5 = [1,2], f 5 7 = [5]
-splitBaseIntoList :: Int -> Int -> [Int]
-splitBaseIntoList rFrom rTo = if rFrom <= rTo then [rFrom] else (rFrom `mod` rTo) : splitBaseIntoList (rFrom `div` rTo) rTo
-
-
---LISTADD
 -- Allows me to add lists of ints, i.e. list+ [1,2] [5] 7 = [2,0]  (Think: [1,2] + [5] = [2,0])
 listAdd :: [Int] -> [Int] -> Int -> [Int]
 listAdd xs ys r = reverse (fixBaseCarrys r 0 (reverse (addListOfInts (normalizeLists (length xs) ys) (normalizeLists (length ys) xs))))
 
 -- We will likely have carries when adding two lists together. Fixing the bases 
--- rem - remainder, r - radix
 fixBaseCarrys :: Int -> Int -> [Int] -> [Int]
 fixBaseCarrys r rem [] = if rem == 0 then [] else [rem]
 fixBaseCarrys r rem (x:xs)
@@ -150,14 +120,12 @@ fixBaseCarrys r rem (x:xs)
 	| otherwise = sum : fixBaseCarrys r (sum `div` r) xs
 	where sum = x + rem
 
+-- Padding a given list with 0's on the left
 normalizeLists :: Int -> [Int] -> [Int]
 normalizeLists otherLen nums = take (otherLen - (length nums)) (repeat 0) ++ nums
 
 addListOfInts :: [Int] -> [Int] -> [Int]
 addListOfInts xs ys = zipWith (+) xs ys
-
-
-
 
 --2.6 4
 -- This is loosely based on the specification that was given to us. I have removed any semblance of Integer arithmetic via
@@ -183,19 +151,23 @@ addTwoSameBase r (x:xs) (y:ys) carry = if sum >= r then (sum `mod` r) : addTwoSa
                        where sum = x + y + carry
 
 --2.6 5
---TODO: Put some comments here. This is almost a carbon copy of 2.6.4, I need to fix changeRadix
 mulLongInts :: Numeral -> Numeral -> Numeral
 mulLongInts (r1, ds1) (r2, ds2)
-    | r1 == r2 = (r1, (reverse (multTwoSameBase r1 (reverseAndFix (length ds2) ds1) (reverseAndFix (length ds1) ds2) 0)))
+    | r1 == r2 = (r1, (multTwoSameBase ds1 ds2 r1 0))
     | r1 < r2 = mulLongInts (changeRadixLongInt (r1, ds1) r2) (r2, ds2) 
     | r1 > r2 = mulLongInts (r1, ds1) (changeRadixLongInt (r2, ds2) r1)
 
+-- Multiplies two lists of ints of the same base together. This uses the multiByNum from 2.6.3 to multiply a single
+-- digit by a list of ints. Zeros keeps a running tally of where we are in our multiplications. When we move over
+-- one more digit, we'll need to pad more zeros to the right. Just like grade-school multiplication
+multTwoSameBase :: [Int] -> [Int] -> Int -> Int -> [Int]
+multTwoSameBase [] ys r zeros = []
+multTwoSameBase (x:xs) ys r zeros = listAdd list1 list2 r
+	where list1 = addZeros (multiByNum ys (last (x:xs)) r) zeros
+	      list2 = multTwoSameBase (reverse((tail(reverse(x:xs))))) ys r (zeros + 1)
 
-multTwoSameBase :: Int -> [Int] -> [Int] -> Int -> [Int]
-multTwoSameBase r _ [] carry = if carry == 0 then [] else [carry]
-multTwoSameBase r [] _ carry = if carry == 0 then [] else [carry]
-multTwoSameBase r (x:xs) (y:ys) carry = if sum >= r then (sum `mod` r) : multTwoSameBase r xs ys 1
-                       else sum : addTwoSameBase r xs ys 0
-                       where sum = (x * y) + carry
+-- Adds arbitrary amount of zeros to end of a list, useful for doing the list multiplication
+addZeros :: [Int] -> Int -> [Int]
+addZeros num howMany = num ++ (take howMany) (repeat 0)
 
 
