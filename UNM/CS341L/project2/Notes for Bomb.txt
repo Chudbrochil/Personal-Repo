@@ -1,0 +1,90 @@
+
+phase 1 string:
+I used "x /25c 0x4026f0" to get this...
+
+The future will be better tomorrow.
+
+Safety break points
+break *0x40174a
+break *0x40174e
+break *0x401767
+
+Phase 2:
+break *0x400f49
+
+first number is 1 via the cmpl $0x1,(%rsp) on 0x400f67
+rax is 2, second number is 2
+We are in a loop, we popped back upto *0x400f7a
+comparing value at *0x400f8c again, %rax is 4, third number is 4
+
+Had to restart gdb as my initial 1 2 3 4 5 6 didn't work...
+Based on 1 2 4, I'm guessing it is 1 2 4 8 16 32
+
+This is indeed correct, passed through to phase 3...
+
+
+Phase 3:
+break *0x400fad
+
+3 inputs expected
+
+happened upon 1 as the first number,
+
+looking for the 2nd...
+
+%rax at 0x401021 is 0x41 or 4*16 + 1 = 65
+
+enter 65 as 2nd digit later...
+
+go until *0x40101c
+
+this soon jumps to *0x4010f2 which does a cmp to %al
+
+this value is 0x76..., which is 7*16 + 6 = 118
+
+Turns out it is looking for it in character form, 118 in ASCII is v
+
+So we need to enter 1 v 65
+
+Phase 4:
+break *0x40114a
+
+
+Explain how did you defuse phases 4, 5, or 6 of your bomb. Make sure you show the assembly code of
+the relevant functions analyzed. For the purpose of the explanation, here are some examples of what
+you might use:
+(a) Where was the relevant data to determine the defusing string stored?
+
+
+(b) How was the defusing string generated, produced or assembled?
+
+
+(c) How and where did the program compare the input provided by the user with the expected input?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

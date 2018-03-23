@@ -1,4 +1,0 @@
-phase 1 string:
-I used "x /25c 0x4026f0" to get this...
-
-The future will be better tomorrow.

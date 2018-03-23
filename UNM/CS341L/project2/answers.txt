@@ -1,0 +1,3 @@
+The future will be better tomorrow.
+1 2 4 8 16 32
+1 v 65
