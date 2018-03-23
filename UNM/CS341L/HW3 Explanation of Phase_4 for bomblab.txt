@@ -1,54 +1,55 @@
+HW3 Explanation of Phase_4 solution:
 
-phase 1 string:
-I used "x /25c 0x4026f0" to get this...
+There are two sections given here. Section 1 gives the more formal, succinct answer to the question that was
+asked in homework 3 of explaining how you did a phase.
 
-The future will be better tomorrow.
+Section 2 is more detailed and "train of thought" of how I actually solved the phase. If you'd like an insight
+into the finer details feel free to read it, but section 1 should properly sum up the process.
 
-Safety break points
-break *0x40174a
-break *0x40174e
-break *0x401767
-
-Phase 2:
-break *0x400f49
-
-first number is 1 via the cmpl $0x1,(%rsp) on 0x400f67
-rax is 2, second number is 2
-We are in a loop, we popped back upto *0x400f7a
-comparing value at *0x400f8c again, %rax is 4, third number is 4
-
-Had to restart gdb as my initial 1 2 3 4 5 6 didn't work...
-Based on 1 2 4, I'm guessing it is 1 2 4 8 16 32
-
-This is indeed correct, passed through to phase 3...
+-------------------------------------------------------------------------------------------------------------------
+Explain how did you defuse phases 4, 5, or 6 of your bomb. Make sure you show the assembly code of
+the relevant functions analyzed. For the purpose of the explanation, here are some examples of what
+you might use:
 
 
-Phase 3:
-break *0x400fad
+The first thing to figure out is that the phase_4 sscanf was requiring 2 arguments.
+I was able to figure this out by 0x401170 "cmp $0x2,%eax" after the sscanf call.
+The %eax that was returned from sscanf told us our argument count.
 
-3 inputs expected
+The next hurdle was 0x401175 "cmpl $0xe,(%rsp)", I found this was comparing against our first
+given argument. I initially thought that the first argument should be 14, but that was incorrect.
 
-happened upon 1 as the first number,
+We then start loading arguments for a call to func4: %edx as 14, %esi as 0, %edi as my first arg.
+Then we call the func4 at 0x40118d.
 
-looking for the 2nd...
+Inside func4 is a recursive function that adds prime numbers. I don't have the super exact behavior,
+but I know in this case the numbers added to my argument given were 7, 11, and 13.
+I was able to figure that out via following the jumps at:
 
-%rax at 0x401021 is 0x41 or 4*16 + 1 = 65
+0x40112a "jle 401138" compares against our given argument
+0x401136 "jmp 401148" (ends recursion)
+0x40113c "jge 401148" (ends recursion)
 
-enter 65 as 2nd digit later...
+We end up popping all of our values at the end of the recursive calls which gives me the 12->25->36->43
+that I want to have the return value of this function return 43.
 
-go until *0x40101c
+0x401192 is the "cmp 0x2b,%eax" after the func4 return. 0x2b is 43.
+0x401197 is "cmpl $0x2b,0x4(%rsp)" %rsp is pointing at my input. 0x4(%rsp) is pointing to my 2nd arg of my input
+From here the function finishes up and completes.
 
-this soon jumps to *0x4010f2 which does a cmp to %al
+The complicated value to obtain was the first value: 12
+From there, we can easily see that we are comparing the 2nd arg of my input against 43.
 
-this value is 0x76..., which is 7*16 + 6 = 118
+So the end input for victory on phase_4 was: 12 43
+-------------------------------------------------------------------------------------------------------------------
 
-Turns out it is looking for it in character form, 118 in ASCII is v
 
-So we need to enter 1 v 65
 
-Phase 4:
-break *0x40114a
 
+LONG NOTES MADE WHILE DEBUGGING/FIGURING IT OUT
+ONLY READ IF INTERESTED IN THOUGHT PROCESS AND FINER DETAILS
+
+-------------------------------------------------------------------------------------------------------------------
 1st run of phase_4:
 
 First part I found to block me up was 0x401170 which is a "cmp $0x2,%eax" which has a corresponding
@@ -232,56 +233,4 @@ Sweet, carefully ran stepi after the cmp's and jumps at the bottom. I made it th
 
 Long story short, We are calling a function that adds the primes 7, 11, 13 to a number and we
 want it to equal 43.
-
-
-Phase 5:
-break *0x4011bd
-
-
-of the form 1 2 3 4 5 6 
-
-
-
-14 6 15 
-
-It's expecting numbers.... 
-
-0x4011ed, moves my first number into rax
-0x4011f0, performs an and with 15 and my number
-0x4011f3, moves rax into address of %rsp (my num?)
-
-
-je does a jump if not equal, they're equal so it keeps going
-
-
-
-
-4 * rax 
-
-is it 4 * num - a CONSTANT (9)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-------------------------------------------------------------------------------------------------------------------
