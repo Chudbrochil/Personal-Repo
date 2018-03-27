@@ -260,6 +260,23 @@ je does a jump if not equal, they're equal so it keeps going
 
 is it 4 * num - a CONSTANT (9)
 
+I went into lab and found that this is a linked list of values starting at address 0x4027a0.
+
+The values here are 10 2 14 7 8 12 15 11 0 4 1 13 3 9 6 5
+
+The linked list is corresponding to index values so I want to iterate over all values.
+Do this by starting from the value that gives 15 which is 5. Work your way through the linked list via:
+5 -> 12 -> 3 -> 7 -> 11 -> 13 -> 9 -> 4 -> 8 -> 0 -> 10 -> 1 -> 2 -> 14,
+
+This iterates you over all the values and the comparison to the sum is done at
+401224: 3b 4c 24 04           cmp    0x4(%rsp),%ecx
+
+So we need to start at index 5 and the sum will be 115.
+
+Therefore, our values are 5 115
+
+
+
 
 
 
