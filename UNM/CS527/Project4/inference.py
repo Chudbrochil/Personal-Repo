@@ -74,7 +74,14 @@ class DiscreteDistribution(dict):
         >>> empty
         {}
         """
-        "*** YOUR CODE HERE ***"
+
+        # Re-assigning every value to value / total, so
+        # [('a',5),('b',7),('c',1)] becomes
+        # [('a',5/13),('b',7/13),('c',1/13)]
+        originalTotal = self.total()
+        for key, value in self.iteritems():
+            self[key] = value / originalTotal
+
 
     def sample(self):
         """
@@ -97,7 +104,20 @@ class DiscreteDistribution(dict):
         >>> round(samples.count('d') * 1.0/N, 1)
         0.0
         """
-        "*** YOUR CODE HERE ***"
+
+
+        # We need the values to be normalized so that we can randomly pick between 0 and 1
+        self.normalize()
+        randNum = random.random()
+        tally = 0
+
+        # Think of all of these values as a range, if our random number was between the end of
+        # the range of the last value and the end of the range of our new value, return the key
+        # of our new value
+        for key, value in self.iteritems():
+            tally += value
+            if randNum < tally:
+                return key
 
 
 class InferenceModule:
