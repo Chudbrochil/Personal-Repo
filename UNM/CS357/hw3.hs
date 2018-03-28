@@ -107,9 +107,47 @@ checkList p (x:xs)
 
 eval :: (Int -> Bool) -> Expr -> Bool
 eval _ [] = True
-eval p (xs:xss) = checkList p xs && eval p xss
+eval p (x:xs) = checkList p x && eval p xs
 
--- TODO: I don't know how to write this...
--- I see cases of [[1],[-1]] that aren't satisfiable, but what are all the cases...
+
+
+
 satisfiable :: Expr -> Bool
-satisfiable = undefined
+satisfiable [] = False
+-- x is a list of ints
+--satisfiable (x:xs) = eval (>=0) (clauses x)
+--satisfiable (x:xs) = eval (elem )
+--satisfiable xs = eval (tval row) xs
+satisfiable xs = or [True | row <- tableGen xs, eval (tval row) xs]
+
+
+tval :: [Int] -> Int -> Bool
+tval xs i = specialElem i xs
+
+
+tableGen :: [[Int]] -> [[Int]]
+tableGen xs = clauses (nub (map abs (concat xs)))
+
+specialElem :: Int -> [Int] -> Bool
+specialElem e xs = elem e xs || elem (-e) xs
+
+
+
+-- We want to make a list of all permutations, so a list of lists for each clause
+-- [1,2] = [[1,2],[-1,2],[1,-2],[-1,-2]]
+
+-- Input looks like [1,2], outputs [[1,-1],[2,-2]]. This is a very natural segway
+-- into using sequence to grab 1 element from each list
+negAndPos :: [Int] -> [[Int]]
+negAndPos [] = []
+negAndPos (x:xs) = [x, -x] : negAndPos xs
+
+-- Generates all of our possible permutations for a given clause
+clauses :: [Int] -> [[Int]]
+clauses xs = [clause | clause <- sequence (negAndPos xs), length (clause) == length(xs)]
+
+
+-- The memory cost on this will be huge... scales something like 2^(n^k), ew, n length of clause, k number of clauses
+--allClauses :: [[Int]] -> [[[Int]]]
+--allClauses xss = undefined
+-- So I won't do it...
