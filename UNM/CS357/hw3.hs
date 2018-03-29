@@ -4,6 +4,17 @@ Anthony Galczak
 agalczak@unm.edu
 -}
 
+module Homework3
+( balance,
+  goldbach,
+	church,
+	powerset,
+	makeCommand,
+	allpaths,
+	eval,
+	satisfiable
+	) where
+
 import Data.List
 
 --3.1
