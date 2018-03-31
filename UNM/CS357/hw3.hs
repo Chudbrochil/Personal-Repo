@@ -102,10 +102,6 @@ data T = Leaf | Node T T deriving (Eq, Show)
 data P = GoLeft P | GoRight P | This deriving (Eq, Show)
 
 allpaths :: T -> [P]
---allpaths = undefined
---allpaths Leaf = This
-
---allpaths Node T1 T2 = GoLeft allpaths T1
 allpaths Leaf = [This]
 allpaths (Node t1 t2) = [This] ++ (map GoLeft (allpaths t1)) ++ (map GoRight (allpaths t2))
 
@@ -117,23 +113,16 @@ checkList p [] = False -- Only one value has to be true, if we get to base case,
 checkList p (x:xs)
 	| x < 0 = if p x == False then True else checkList p xs    -- Negative numbers are "not's"
 	| otherwise = if p x then True else checkList p xs
+    
 
 eval :: (Int -> Bool) -> Expr -> Bool
 eval _ [] = True
 eval p (x:xs) = checkList p x && eval p xs
 
 
-
-
 satisfiable :: Expr -> Bool
 satisfiable [] = False
 satisfiable xs = or [True | row <- tableGen xs, eval (tval row) xs]
-
-
---reIndex :: [[Int]] -> [[Int]]
---reIndex [] = []
---reIndex (x:xs) = 
-
 
 
 tval :: [Bool] -> Int -> Bool
@@ -162,5 +151,3 @@ int2Bool :: [[Int]] -> [[Bool]]
 int2Bool [] = [] 
 int2Bool (x:xs) = map (>=0) x : int2Bool xs
 
---specialElem :: Int -> [Int] -> Bool
---specialElem e xs = elem e xs || elem (-e) xs
