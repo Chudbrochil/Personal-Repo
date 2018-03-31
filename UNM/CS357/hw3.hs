@@ -103,9 +103,12 @@ data T = Leaf | Node T T deriving (Eq, Show)
 data P = GoLeft P | GoRight P | This deriving (Eq, Show)
 
 allpaths :: T -> [P]
-allpaths = undefined
+--allpaths = undefined
 --allpaths Leaf = This
---allpaths Node T1 T2 = This : (GoLeft allpaths T1)
+
+--allpaths Node T1 T2 = GoLeft allpaths T1
+allpaths Leaf = [This]
+allpaths (Node t1 t2) = [This] ++ (map GoLeft (allpaths t1)) ++ (map GoRight (allpaths t2))
 
 --3.7 Logic (25pts)
 type Expr = [[Int]]
@@ -125,23 +128,22 @@ eval p (x:xs) = checkList p x && eval p xs
 
 satisfiable :: Expr -> Bool
 satisfiable [] = False
--- x is a list of ints
---satisfiable (x:xs) = eval (>=0) (clauses x)
---satisfiable (x:xs) = eval (elem )
---satisfiable xs = eval (tval row) xs
 satisfiable xs = or [True | row <- tableGen xs, eval (tval row) xs]
 
 
-tval :: [Int] -> Int -> Bool
-tval xs i = specialElem i xs
+--reIndex :: [[Int]] -> [[Int]]
+--reIndex [] = []
+--reIndex (x:xs) = 
 
 
-tableGen :: [[Int]] -> [[Int]]
-tableGen xs = clauses (nub (map abs (concat xs)))
 
-specialElem :: Int -> [Int] -> Bool
-specialElem e xs = elem e xs || elem (-e) xs
+tval :: [Bool] -> Int -> Bool
+tval xs i = xs !! (abs(i) - 1)
 
+
+-- This will give a truth table from our x1,x2,..,xn
+tableGen :: [[Int]] -> [[Bool]]
+tableGen xs = int2Bool (clauses (nub (map abs (concat xs))))
 
 
 -- We want to make a list of all permutations, so a list of lists for each clause
@@ -157,8 +159,9 @@ negAndPos (x:xs) = [x, -x] : negAndPos xs
 clauses :: [Int] -> [[Int]]
 clauses xs = [clause | clause <- sequence (negAndPos xs), length (clause) == length(xs)]
 
+int2Bool :: [[Int]] -> [[Bool]]
+int2Bool [] = [] 
+int2Bool (x:xs) = map (>=0) x : int2Bool xs
 
--- The memory cost on this will be huge... scales something like 2^(n^k), ew, n length of clause, k number of clauses
---allClauses :: [[Int]] -> [[[Int]]]
---allClauses xss = undefined
--- So I won't do it...
+--specialElem :: Int -> [Int] -> Bool
+--specialElem e xs = elem e xs || elem (-e) xs
