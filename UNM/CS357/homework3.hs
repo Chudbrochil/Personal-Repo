@@ -4,15 +4,20 @@ agalczak@unm.edu
 -}
 
 module Homework3
-( balance,
+( Tree(..),
+  balance,
   goldbach,
-	church,
-	powerset,
-	makeCommand,
-	allpaths,
-	eval,
-	satisfiable
-	) where
+  church,
+  Set,
+  powerset,
+  makeCommand,
+  T(..),
+  P(..),
+  allpaths,
+  Expr,
+  eval,
+  satisfiable
+) where
 
 import Data.List
 
@@ -113,18 +118,21 @@ checkList p [] = False -- Only one value has to be true, if we get to base case,
 checkList p (x:xs)
 	| x < 0 = if p x == False then True else checkList p xs    -- Negative numbers are "not's"
 	| otherwise = if p x then True else checkList p xs
-    
+
 
 eval :: (Int -> Bool) -> Expr -> Bool
 eval _ [] = True
 eval p (x:xs) = checkList p x && eval p xs
 
 
+-- Will fail on cases where index variables start at something other than
+-- 1 or skips numbers. i.e. 1,2,3,6,7 and 3,4,5,6
 satisfiable :: Expr -> Bool
 satisfiable [] = False
 satisfiable xs = or [True | row <- tableGen xs, eval (tval row) xs]
 
 
+-- Gets a single row from our truth table
 tval :: [Bool] -> Int -> Bool
 tval xs i = xs !! (abs(i) - 1)
 
@@ -133,9 +141,6 @@ tval xs i = xs !! (abs(i) - 1)
 tableGen :: [[Int]] -> [[Bool]]
 tableGen xs = int2Bool (clauses (nub (map abs (concat xs))))
 
-
--- We want to make a list of all permutations, so a list of lists for each clause
--- [1,2] = [[1,2],[-1,2],[1,-2],[-1,-2]]
 
 -- Input looks like [1,2], outputs [[1,-1],[2,-2]]. This is a very natural segway
 -- into using sequence to grab 1 element from each list
@@ -147,7 +152,8 @@ negAndPos (x:xs) = [x, -x] : negAndPos xs
 clauses :: [Int] -> [[Int]]
 clauses xs = [clause | clause <- sequence (negAndPos xs), length (clause) == length(xs)]
 
-int2Bool :: [[Int]] -> [[Bool]]
-int2Bool [] = [] 
-int2Bool (x:xs) = map (>=0) x : int2Bool xs
 
+-- Converts our ints to bools
+int2Bool :: [[Int]] -> [[Bool]]
+int2Bool [] = []
+int2Bool (x:xs) = map (>=0) x : int2Bool xs
