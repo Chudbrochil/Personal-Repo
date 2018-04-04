@@ -402,7 +402,34 @@ class ParticleFilter(InferenceModule):
         be reinitialized by calling initializeUniformly. The total method of
         the DiscreteDistribution may be useful.
         """
-        "*** YOUR CODE HERE ***"
+
+        pacmanPos = gameState.getPacmanPosition()
+        jailPos = self.getJailPosition()
+        zeroWeights = True
+        dist = DiscreteDistribution()
+
+        # Looping over all the particles and constructing a new weight distribution
+        for particle in self.particles:
+            obsProb = self.getObservationProb(observation, pacmanPos, particle, jailPos)
+            dist[particle] += obsProb
+
+            # If we calculated a non-zero belief, then don't re-initialize
+            if (zeroWeights == True and dist[particle] != 0):
+                zeroWeights = False
+
+        # If all the weights are zero, re-initialize
+        if zeroWeights:
+            self.initializeUniformly(gameState)
+        # Otherwise, proceed as normal and resample
+        # NOTE: I've noticed that I can pass the test cases without normalizing, but
+        # my inclination is to normalize here.
+        else:
+            dist.normalize()
+            self.beliefs = dist
+            for particle in self.particles:
+                indexOfParticle = self.particles.index(particle)
+                self.particles[indexOfParticle] = dist.sample()
+
 
     def elapseTime(self, gameState):
         """
@@ -494,7 +521,11 @@ class JointParticleFilter(ParticleFilter):
         be reinitialized by calling initializeUniformly. The total method of
         the DiscreteDistribution may be useful.
         """
-        "*** YOUR CODE HERE ***"
+
+
+
+
+
 
     def elapseTime(self, gameState):
         """
