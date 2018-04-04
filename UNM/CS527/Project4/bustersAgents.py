@@ -145,7 +145,8 @@ class GreedyBustersAgent(BustersAgent):
         shortestDistanceToGhost = float("inf")
         closestProbableGhostPos = (0,0)
 
-        # TODO: I May want to keep track of all ghost pos's, as the greedy algo could update next move...
+        # TODO: I May want to keep track of all ghost pos's, as the greedy algo could be ideal to move
+        # towards a different ghost. Meh, I pass the test cases as is.
 
         # Loop over the distribution for each ghost, getting the highest probability square and 
         # checking if it's closest in distance to pacman. If so, that's where we're going.
@@ -158,12 +159,9 @@ class GreedyBustersAgent(BustersAgent):
                 shortestDistanceToGhost = distToPos
                 closestProbableGhostPos = highestProbPos
 
-
+        # Checking all possible moves for the pacman and picking the one that gets us closest to our ghost pos
         bestAction = None
         bestDistance = float("inf")
-
-
-        # Checking all possible moves for the pacman and picking the one that gets us closest to our ghost pos
         for move in legal:
             successorPosition = Actions.getSuccessor(pacmanPosition, move)
             distToGhostAfterAction = self.distancer.getDistance(successorPosition, closestProbableGhostPos)
@@ -171,7 +169,6 @@ class GreedyBustersAgent(BustersAgent):
             if distToGhostAfterAction < bestDistance:
                 bestAction = move
                 bestDistance = distToGhostAfterAction
-
 
         return bestAction
 

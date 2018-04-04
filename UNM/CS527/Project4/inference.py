@@ -377,7 +377,18 @@ class ParticleFilter(InferenceModule):
         self.particles for the list of particles.
         """
         self.particles = []
-        "*** YOUR CODE HERE ***"
+
+        # Loop over all numParticles, adding positions until there are no more particles to add
+        #
+        # NOTE: This will tend to give the numParticles % #pos's surplus to the
+        # positions at the beginning of the legalPositions
+        particlesLeft = self.numParticles
+        while particlesLeft > 0:
+
+            for pos in self.legalPositions:
+                self.particles.append(pos)
+                particlesLeft -= 1
+
 
     def observeUpdate(self, observation, gameState):
         """
@@ -406,7 +417,25 @@ class ParticleFilter(InferenceModule):
         locations conditioned on all evidence and time passage. This method
         essentially converts a list of particles into a belief distribution.
         """
-        "*** YOUR CODE HERE ***"
+
+        # I knew that this method would be used a lot so I did some research
+        # to figure out a pythonic way to count elements of a list quickly and put
+        # them into a dictionary. This line will output something like:
+        # {(5, 4): 625, (3, 4): 625, (1, 4): 625, (7, 4): 625, (9, 4): 625, (5, 2): 625, (2, 4): 625, (8, 4): 625}
+        # This should operate in O(n) (+ constant for count) time and without sorting the list
+        # I have a decent understanding of the list comprehension as I'm in CS357 (Haskell) right now, but I
+        # did see it on stack overflow
+        # https://stackoverflow.com/questions/2870466/python-histogram-one-liner
+        dist = DiscreteDistribution()
+        countDict = {x: self.particles.count(x) for x in set(self.particles)}
+
+        # Need this, otherwise 1/2 is 0 and not 0.5
+        floatNumParticles = self.numParticles * 1.0
+
+        for key, value in countDict.items():
+            dist[key] = value / floatNumParticles
+
+        return dist
 
 
 class JointParticleFilter(ParticleFilter):
