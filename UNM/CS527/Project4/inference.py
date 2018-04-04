@@ -80,7 +80,12 @@ class DiscreteDistribution(dict):
         # [('a',5/13),('b',7/13),('c',1/13)]
         originalTotal = self.total()
         for key, value in self.iteritems():
-            self[key] = value / originalTotal
+
+            #Catching div by 0
+            if originalTotal == 0:
+                self[key] = 0
+            else:
+                self[key] = value / originalTotal
 
 
     def sample(self):
@@ -307,7 +312,18 @@ class ExactInference(InferenceModule):
         current position. However, this is not a problem, as Pacman's current
         position is known.
         """
-        "*** YOUR CODE HERE ***"
+
+        pacmanPos = gameState.getPacmanPosition()
+        jailPos = self.getJailPosition()
+
+        # Checking every possible ghost position, getting an observation based on pacman's
+        # sonar and multiplying it by the old belief of that state
+        for ghostPos in self.allPositions:
+            obs = self.getObservationProb(observation, pacmanPos, ghostPos, jailPos)
+            oldBelief = self.beliefs[ghostPos]
+            self.beliefs[ghostPos] = oldBelief * obs
+
+
         self.beliefs.normalize()
 
     def elapseTime(self, gameState):
@@ -319,7 +335,18 @@ class ExactInference(InferenceModule):
         Pacman's current position. However, this is not a problem, as Pacman's
         current position is known.
         """
-        "*** YOUR CODE HERE ***"
+
+        # For every possible ghost position, update new beliefs based upon the game moving
+        # one time step. We get this new information via getPositionDistribution
+        for pos in self.allPositions:
+            newPosDist = self.getPositionDistribution(gameState, pos)
+            #print("TEST")
+            #print(newPosDist)
+            oldPosDist = self.beliefs[pos]
+
+            for newPos in newPosDist:
+                newBelief = oldPosDist * newPosDist[newPos]
+                self.beliefs[newPos] += newBelief
 
     def getBeliefDistribution(self):
         return self.beliefs
