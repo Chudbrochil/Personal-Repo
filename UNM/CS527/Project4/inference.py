@@ -338,15 +338,20 @@ class ExactInference(InferenceModule):
 
         # For every possible ghost position, update new beliefs based upon the game moving
         # one time step. We get this new information via getPositionDistribution
+        newDist = DiscreteDistribution()
         for pos in self.allPositions:
             newPosDist = self.getPositionDistribution(gameState, pos)
-            #print("TEST")
-            #print(newPosDist)
-            oldPosDist = self.beliefs[pos]
+            oldProb = self.beliefs[pos]
 
+            # Iterating over all the possible moves the ghost could've taken, (up, down, left, etc.)
             for newPos in newPosDist:
-                newBelief = oldPosDist * newPosDist[newPos]
-                self.beliefs[newPos] += newBelief
+                newBelief = oldProb * newPosDist[newPos]
+                newDist[newPos] += newBelief
+
+        # We can't do inline replacement because when we get to the next position in all positions
+        # then we'll be basing our calculations for the old probability based on what we just added
+        # to that probability
+        self.beliefs = newDist
 
     def getBeliefDistribution(self):
         return self.beliefs
