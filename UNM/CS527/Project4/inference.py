@@ -473,7 +473,6 @@ class ParticleFilter(InferenceModule):
         for key, value in countDict.items():
             dist[key] = value / floatNumParticles
 
-        #print(dist)
         return dist
 
 
@@ -501,7 +500,18 @@ class JointParticleFilter(ParticleFilter):
         uniform prior.
         """
         self.particles = []
-        "*** YOUR CODE HERE ***"
+
+
+        particlesLeft = self.numParticles
+        while particlesLeft > 0:
+
+            for pos in self.legalPositions:
+
+                #ghostProbSum = sorted(itertools.product(self.ghostAgents))
+                self.particles.append(ghostProbSum)
+                particlesLeft -= 1
+
+
 
     def addGhostAgent(self, agent):
         """
