@@ -436,7 +436,18 @@ class ParticleFilter(InferenceModule):
         Sample each particle's next state based on its current state and the
         gameState.
         """
-        "*** YOUR CODE HERE ***"
+
+        newParticleList = []
+
+        # For every particle, get a new possible position distribution
+        # Do a re-sample and then append it to my new list of particles
+        for particle in self.particles:
+            newObs = self.getPositionDistribution(gameState, particle)
+            newSample = newObs.sample()
+            newParticleList.append(newSample)
+
+        self.particles = newParticleList
+
 
     def getBeliefDistribution(self):
         """
@@ -462,6 +473,7 @@ class ParticleFilter(InferenceModule):
         for key, value in countDict.items():
             dist[key] = value / floatNumParticles
 
+        #print(dist)
         return dist
 
 
