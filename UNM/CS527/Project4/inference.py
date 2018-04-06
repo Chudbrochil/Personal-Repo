@@ -467,13 +467,8 @@ class ParticleFilter(InferenceModule):
         dist = DiscreteDistribution()
         countDict = {x: self.particles.count(x) for x in set(self.particles)}
 
-        # Need this, otherwise 1/2 is 0 and not 0.5
-        floatNumParticles = self.numParticles * 1.0
-
-        # TODO: Instead do float(var)
-
         for key, value in countDict.items():
-            dist[key] = value / floatNumParticles
+            dist[key] = value / float(self.numParticles)
 
         return dist
 
@@ -516,8 +511,6 @@ class JointParticleFilter(ParticleFilter):
 
             for posTuple in possibleGhostPositions:
                 self.particles.append(posTuple)
-                #i = self.numParticles - particlesLeft
-                #self.particles[i] = posTuple
                 particlesLeft -= 1
 
 
