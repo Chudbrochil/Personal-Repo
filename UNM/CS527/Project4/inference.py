@@ -501,16 +501,20 @@ class JointParticleFilter(ParticleFilter):
         """
         self.particles = []
 
-
+        # Line 548 in itertools.py corresponds to "repeat" which is how many elements in the
+        # tuple of combinations. This corresponds to how many ghosts are still alive.
+        # We will want to keep the same elements as alive ghosts.
+        possibleGhostPositions = list(itertools.product(self.legalPositions, repeat = self.numGhosts))
+        random.shuffle(possibleGhostPositions)
         particlesLeft = self.numParticles
+
+        # Instead of looping over a list of legal positions for the single ghost,
+        # we will use the possibleGhostPositions, (Think of 4 ghosts in 4 coords)
         while particlesLeft > 0:
 
-            for pos in self.legalPositions:
-
-                #ghostProbSum = sorted(itertools.product(self.ghostAgents))
-                self.particles.append(ghostProbSum)
+            for posTuple in possibleGhostPositions:
+                self.particles.append(posTuple)
                 particlesLeft -= 1
-
 
 
     def addGhostAgent(self, agent):
