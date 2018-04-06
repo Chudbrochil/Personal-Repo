@@ -516,6 +516,8 @@ class JointParticleFilter(ParticleFilter):
 
             for posTuple in possibleGhostPositions:
                 self.particles.append(posTuple)
+                #i = self.numParticles - particlesLeft
+                #self.particles[i] = posTuple
                 particlesLeft -= 1
 
 
@@ -574,7 +576,7 @@ class JointParticleFilter(ParticleFilter):
             self.initializeUniformly(gameState)
         # Otherwise, proceed as normal, normalize and resample
         else:
-            dist.normalize()
+            #dist.normalize()
             numParticles = len(self.particles)
             for i in range(numParticles):
                 self.particles[i] = dist.sample()
@@ -589,14 +591,12 @@ class JointParticleFilter(ParticleFilter):
         for oldParticle in self.particles:
             newParticle = list(oldParticle)  # A list of ghost positions
 
-            oldParticleList = list(oldParticle)
             # now loop through and update each entry in newParticle...
             "*** YOUR CODE HERE ***"
 
             for i in range(self.numGhosts):
-                newObs = self.getPositionDistribution(gameState, oldParticleList, i, self.ghostAgents[i])
-                newSample = newObs.sample()
-                newParticle[i] = newSample
+                newObs = self.getPositionDistribution(gameState, oldParticle, i, self.ghostAgents[i])
+                newParticle[i] = newObs.sample()
 
             """*** END YOUR CODE HERE ***"""
             newParticles.append(tuple(newParticle))
