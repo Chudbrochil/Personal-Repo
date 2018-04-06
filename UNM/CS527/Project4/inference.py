@@ -513,6 +513,11 @@ class JointParticleFilter(ParticleFilter):
                 self.particles.append(posTuple)
                 particlesLeft -= 1
 
+                # Make sure that while we're iterating over position if we run out of
+                # particles that we stop. This caused some bugs in elapseTime
+                if particlesLeft == 0:
+                    break
+
 
     def addGhostAgent(self, agent):
         """
