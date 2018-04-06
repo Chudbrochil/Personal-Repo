@@ -470,6 +470,8 @@ class ParticleFilter(InferenceModule):
         # Need this, otherwise 1/2 is 0 and not 0.5
         floatNumParticles = self.numParticles * 1.0
 
+        # TODO: Instead do float(var)
+
         for key, value in countDict.items():
             dist[key] = value / floatNumParticles
 
@@ -548,9 +550,34 @@ class JointParticleFilter(ParticleFilter):
         the DiscreteDistribution may be useful.
         """
 
+        pacmanPos = gameState.getPacmanPosition()
+        zeroWeights = True
+        dist = DiscreteDistribution()
 
+        # Looping over all the particles and constructing a new weight distribution
+        for particle in self.particles:
 
+            probProduct = 1 # Multiplication identity
 
+            for i in range(self.numGhosts):
+                obsProb = self.getObservationProb(observation[i], pacmanPos, particle[i], self.getJailPosition(i))
+                probProduct = obsProb * probProduct
+
+            dist[particle] += probProduct
+
+            # If we calculated a non-zero belief, then don't re-initialize
+            if (zeroWeights == True and dist[particle] != 0):
+                zeroWeights = False
+
+        # If all the weights are zero, re-initialize
+        if zeroWeights:
+            self.initializeUniformly(gameState)
+        # Otherwise, proceed as normal, normalize and resample
+        else:
+            dist.normalize()
+            numParticles = len(self.particles)
+            for i in range(numParticles):
+                self.particles[i] = dist.sample()
 
 
     def elapseTime(self, gameState):
