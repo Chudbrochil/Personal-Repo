@@ -64,7 +64,7 @@ bananas = ("Bananas, raw", f5Price, 89.0, 0.1, 1.0, 8.7, 64 * iuToMcg, 1.1)
 
 foods = [broccoli, egg, chicken, rice, bananas]
 
-
+# TODO: Make a food object
 
 
 
