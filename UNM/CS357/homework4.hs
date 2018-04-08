@@ -26,7 +26,11 @@ isort [] = []
 isort (x:xs) = insert x (isort xs)
 
 fileisort :: String -> String -> IO ()
-fileisort = undefined
+fileisort fn1 fn2 = do
+	let sortedFile = L.intercalate "\n" (isort (lines fn1))
+	--putStrLn newFile fn2
+	writeFile fn2 sortedFile
+
 
 --4.3 Game Trees (40pts)
 data Field = B | R | G
