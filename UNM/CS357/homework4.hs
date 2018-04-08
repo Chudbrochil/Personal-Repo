@@ -8,13 +8,25 @@ insertions :: String -> [String]
 insertions = undefined
 
 deletions :: String -> [String]
-deletions = undefined
+--deletions xs = [num <- [0..maxNum], deleteHelper num xs]
+deletions xs = map (deleteHelper xs) indices
+	where indices = [0..((length xs) - 1)]
+
+
+deleteHelper :: String -> Int -> String
+deleteHelper xs index = ys ++ zs
+	where (ys, z:zs) = splitAt index xs
+
+
+
 
 substitutions :: String -> [String]
 substitutions = undefined
 
 transpositions :: String -> [String]
 transpositions = undefined
+
+
 
 --4.2 Sorting (20pts)
 insert :: Ord a => a -> [a] -> [a]
@@ -25,11 +37,16 @@ isort :: Ord a => [a] -> [a]
 isort [] = []
 isort (x:xs) = insert x (isort xs)
 
-fileisort :: String -> String -> IO ()
-fileisort fn1 fn2 = do
-	let sortedFile = L.intercalate "\n" (isort (lines fn1))
+--fileisort :: String -> String -> IO ()
+--fileisort fn1 fn2 = do
+--	let sortedFile = L.intercalate "\n" (isort (lines fn1))
 	--putStrLn newFile fn2
-	writeFile fn2 sortedFile
+--	writeFile fn2 sortedFile
+
+-- Lines gives each line, we sort all the lines and then concat+intersperse
+-- "\n" (called intercalate). Lastly, we write to the file fn2.
+fileisort :: String -> String -> IO ()
+fileisort fn1 fn2 = writeFile fn2 (L.intercalate "\n" (isort (lines fn1)))
 
 
 --4.3 Game Trees (40pts)
