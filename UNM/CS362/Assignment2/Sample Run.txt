@@ -1,0 +1,53 @@
+-----------------------------
+SIMPLE DAILY FOOD INFORMATION
+-----------------------------
+1 serving of Bananas
+1 serving of Broccoli
+0 serving of Chicken
+3 serving of Egg
+5 serving of Rice
+Total daily cost of diet: $1.73
+-------------------------------
+DETAILED DAILY FOOD INFORMATION
+-------------------------------
+1.0 100 grams of Broccoli Calories: 34.0 SatFat: 0.0g Sodium: 33.0mg VitC: 89.2mg VitA: 311.5mcg Protein: 2.8g
+3.0 Egg Calories: 214.5 SatFat: 4.5g Sodium: 210.0mg VitC: 0.0mg VitA: 366.0mcg Protein: 18.9g
+5.0 100 grams of Rice Calories: 1825.0 SatFat: 1.0g Sodium: 25.0mg VitC: 0.0mg VitA: 0.0mcg Protein: 35.5g
+1.0 100 grams of Bananas Calories: 89.0 SatFat: 0.1g Sodium: 1.0mg VitC: 8.7mg VitA: 32.0mcg Protein: 1.1g
+
+Total nutritients for this daily diet:
+Calories: 2162.5 SatFat: 5.6g Sodium: 269.0mg VitC: 97.9mg VitA: 709.5mcg Protein: 58.3g
+--------------------
+ALL FOOD INFORMATION
+--------------------
+Broccoli, raw: Price: $0.403660 per 100grams Calories: 34.0 Sat. Fat: 0.0g Sodium: 33.0mg Vit C: 89.2mg Vit A: 311.5mcg Protein: 2.8g
+Egg, whole, raw, fresh: Price: $0.146250 per Egg Calories: 71.5 Sat. Fat: 1.5g Sodium: 70.0mg Vit C: 0.0mg Vit A: 122.0mcg Protein: 6.3g
+Chicken, broilers or fryers, leg, meat and skin, raw: Price: $0.309083 per 100grams Calories: 187 Sat. Fat: 3.4g Sodium: 79.0mg Vit C: 2.5mg Vit A: 61.5mcg Protein: 18.2g
+Rice, white, long-grain, regular, cooked: Price: $0.152337 per 100grams Calories: 365 Sat. Fat: 0.2g Sodium: 5.0mg Vit C: 0.0mg Vit A: 0.0mcg Protein: 7.1g
+Bananas, raw: Price: $0.126543 per 100grams Calories: 89.0 Sat. Fat: 0.1g Sodium: 1.0mg Vit C: 8.7mg Vit A: 32.0mcg Protein: 1.1g
+------------------------
+PuLP LINEAR PROGRAM INFO
+------------------------
+Food LP:
+MINIMIZE
+0.126543209877*Bananas + 0.403659611993*Broccoli + 0.309082892416*Chicken + 0.14625*Egg + 0.15233686067*Rice + 0.0
+SUBJECT TO
+Calories: 89 Bananas + 34 Broccoli + 187 Chicken + 71.5 Egg + 365 Rice >= 2000
+
+Saturated_Fat: 0.1 Bananas + 3.4 Chicken + 1.5 Egg + 0.2 Rice <= 20
+
+Sodium: Bananas + 33 Broccoli + 79 Chicken + 70 Egg + 5 Rice <= 2400
+
+Vitamin_C: 8.7 Bananas + 89.2 Broccoli + 2.5 Chicken >= 90
+
+Vitamin_A: 32 Bananas + 311.5 Broccoli + 61.5 Chicken + 122 Egg >= 700
+
+Protein: 1.1 Bananas + 2.8 Broccoli + 18.2 Chicken + 6.3 Egg + 7.1 Rice >= 56
+
+VARIABLES
+0 <= Bananas Integer
+0 <= Broccoli Integer
+0 <= Chicken Integer
+0 <= Egg Integer
+0 <= Rice Integer
+

@@ -15,3 +15,44 @@ Rice nutrition - http://nutritiondata.self.com/facts/cereal-grains-and-pasta/571
 Bananas nutrition - http://nutritiondata.self.com/facts/fruits-and-fruit-juices/1846/2
 
 
+We are told in this document to report totals of each nutrient and total cost. This is available
+via my output, but I will duplicate those details here.
+
+--------------------------------------------------------------------------------------------------------------
+1.0 100 grams of Broccoli Calories: 34.0 SatFat: 0.0g Sodium: 33.0mg VitC: 89.2mg VitA: 311.5mcg Protein: 2.8g
+3.0 Egg Calories: 214.5 SatFat: 4.5g Sodium: 210.0mg VitC: 0.0mg VitA: 366.0mcg Protein: 18.9g
+5.0 100 grams of Rice Calories: 1825.0 SatFat: 1.0g Sodium: 25.0mg VitC: 0.0mg VitA: 0.0mcg Protein: 35.5g
+1.0 100 grams of Bananas Calories: 89.0 SatFat: 0.1g Sodium: 1.0mg VitC: 8.7mg VitA: 32.0mcg Protein: 1.1g
+
+Total nutritients for this daily diet:
+Calories: 2162.5 SatFat: 5.6g Sodium: 269.0mg VitC: 97.9mg VitA: 709.5mcg Protein: 58.3g
+Total daily cost of diet: $1.73
+--------------------------------------------------------------------------------------------------------------
+
+The "brief English description" is if you eat 100 grams of raw broccoli, 3 eggs, 500 grams of white rice, and
+100 grams of banana your dietary requirements will be fulfilled.
+
+If we look at the data displayed here it looks like our limiting constraints were vitC at 97.9mg(90 min), vitA
+at 709.5mcg(700 min) and protein at 58.3g(56 min). We overshot the calories by a decent amount and undershot the
+saturated fat and sodium by quite a bit.
+
+A sample menu for the day could be:
+
+Breakfast:
+1 banana (small banana is 101g)
+1 cup of rice (cup of rice is 158g)
+1 egg
+
+Lunch:
+1 cup of rice
+1 egg
+
+Dinner:
+1 cup of rice (Make this cup a heaping scoop, 3*158 is 474, we'll need 25 more grams)
+1 egg
+1 cup of broccoli (Little overflow is preferred, 1 cup of broccoli is 91g)\
+
+Of course, you could just use a food scale and get exact grams for all of these, but this is a sample diet
+without using some fancy food scale or non-freedom units.
+
+
