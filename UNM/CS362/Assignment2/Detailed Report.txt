@@ -1,0 +1,17 @@
+I limited myself to 5 foods found on:
+https://www.bls.gov/regions/mid-atlantic/data/AverageRetailFoodAndEnergyPrices_USandMidwest_Table.htm
+Otherwise, I might end up down quite the rabbit hole of the millions of foods on www.myfitnesspal.com.
+
+The February 2018 pricing information found on the bls link above is where I sourced all my prices.
+
+I initially picked broccoli, eggs, chicken, rice, bananas. Inspired by some version of a "bodybuilder" diet.
+
+I gathered my nutrition information from www.nutritiondata.self.com.
+
+Broccoli nutrition - http://nutritiondata.self.com/facts/vegetables-and-vegetable-products/2356/2
+Eggs nutrition - http://nutritiondata.self.com/facts/dairy-and-egg-products/111/2
+Chicken nutrition - http://nutritiondata.self.com/facts/poultry-products/714/2
+Rice nutrition - http://nutritiondata.self.com/facts/cereal-grains-and-pasta/5712/2
+Bananas nutrition - http://nutritiondata.self.com/facts/fruits-and-fruit-juices/1846/2
+
+

@@ -1,74 +1,131 @@
+# Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+# CS362 - Data Structures & Algorithms II
+# Lab 2 - Food Linear Programming
+
 import pulp
 
-# Future enhancements:
-# Plug into a RESTful API and pull down all of the data live and optimize it
+'''
+Random Notes
 
+Vitamin A and C are typically measured in IU's.
+Conversion for vitamin A is 1 UI is 0.3mcg retinol or 0.6 mcg beta-carotene.
+Conversion for vitamin C is 1 UI is 50 mcg L-ascorbic acid.
 
-# Random note: Granularity on food units is a weird topic to visit.
-# I will have to decide what units to use (cup, ounce, pound...)
+Food units are a bit weird to think about. You can become very granular and it is dependent
+on the source of your pricing and nutrition data.
 
-# Another random note:
-# Vitamin A and C is typically measured in IU
-# Conversion for vitamin A is 1 UI is 0.3mcg retinol or 0.6 mcg beta-carotene
-# Conversion for vitamin C is 1 UI is 50 mcg L-ascorbic acid
+I've decided to normalize everything I can to 100 grams. Some foods don't tend towards 
+grams however (eggs).
 
+Possible future enhancements for a program like this:
+Plug into one of the many nutrition sites RESTful API and pull down the nutrition and price
+data live to be able to get the most ideal foods possible.
+'''
 
-foodLP = pulp.LpProblem("Food LP", pulp.minimize)
+# Food inner class
+class Food(object):
 
-# Let's start with broccoli, eggs, chicken, rice, bananas
+    # Conversions for vitamin A is: 1 IU = 0.3mcg retinol or 0.6mcg beta-carotene. We will use 0.5 mcg per 1 IU
+    iuToMcg = 0.5
 
+    # If a food is discrete (think eggs) then I will be dividing price by a dozen. Otherwise all other foods
+    # will be normalized to 100 grams.
+    lbsTo100Grams = 100.0 / 453.6
 
-# Costs
-# https://www.bls.gov/regions/mid-atlantic/data/AverageRetailFoodAndEnergyPrices_USandMidwest_Table.htm
-# I took prices for Feb 2018
-
-# Each food (except eggs) will be measured in 100 grams for nutrition, this is the conversion
-# for getting a pound of food in grams.
-lbsTo100Grams = 100.0 / 453.6
-
-# Broccoli, per lb. is $1.831, gives $/100g
-f1Price = 1.831 * lbsTo100Grams
-
-# Eggs, per dozen (awkward) is $1.755, gives $/1 large egg
-f2Price = 1.755 / 12
-
-# Chicken (legs), per lb. is $1.402, gives $/100g
-f3Price = 1.402 * lbsTo100Grams
-
-# Rice, per lb. is $0.691, gives $/100g
-f4Price = 0.691 * lbsTo100Grams
-
-# Bananas, per lb. is $0.574, gives $/100g
-f5Price = 0.574 * lbsTo100Grams
-
-# Nutrition
-# (label, cost, cals, sat fat(in grams), sodium(in mg), vit c(in mg), vit a(in mcg), protein(in grams))
-
-# Conversions for vitamin A is: 1 IU = 0.3mcg retinol or 0.6mcg beta-carotene. We will use 0.5 mcg per 1 IU
-iuToMcg = 0.5
-
-# Broccoli nutrition - http://nutritiondata.self.com/facts/vegetables-and-vegetable-products/2356/2
-broccoli = ("Broccoli, raw", f1Price, 34.0, 0.0, 33.0, 89.2, 623 * iuToMcg, 2.8)
-
-# Eggs nutrition - http://nutritiondata.self.com/facts/dairy-and-egg-products/111/2
-egg = ("Egg, whole, raw, fresh", f2Price, 71.5, 1.5, 70.0, 0.0, 244 * iuToMcg, 6.3)
-
-# Chicken nutrition - http://nutritiondata.self.com/facts/poultry-products/714/2
-chicken = ("Chicken leg, raw", f3Price, 187, 3.4, 79.0, 2.5, 123 * iuToMcg, 18.2)
-
-# Rice nutrition - http://nutritiondata.self.com/facts/cereal-grains-and-pasta/5712/2
-rice = ("Rice, white, long-grain", f4Price, 365, 0.2, 5.0, 0.0, 0.0, 7.1)
-
-# Bananas nutrition - http://nutritiondata.self.com/facts/fruits-and-fruit-juices/1846/2
-bananas = ("Bananas, raw", f5Price, 89.0, 0.1, 1.0, 8.7, 64 * iuToMcg, 1.1)
-
-foods = [broccoli, egg, chicken, rice, bananas]
-
-# TODO: Make a food object
+    def __init__(self, shortLabel, longLabel, price, cals, satFat, sodium, vitC, vitA, protein, isDiscrete):
 
 
 
+        self.shortLabel = shortLabel # Short name for food
+        self.longLabel = longLabel # Full name for food
+        self.price = price # Price of food (typically in $/100grams)
+        self.cals = cals # Calories
+        self.satFat = satFat # Saturated fat in grams
+        self.sodium = sodium # Sodium in mg
+        self.vitC = vitC # Vitamin C in mg
+        self.vitA = vitA # Vitamin A in mcg
+        self.protein = protein # Protein in grams
+        self.isDiscrete = isDiscrete # If true, then we're dealing with 1 egg, 1 avocado. Otherwise it is 100grams
+
+        self.fixMeasurements()
+
+
+        print(self.price)
+
+    def fixMeasurements(self):
+        self.vitA *= self.iuToMcg
+        if self.isDiscrete:
+            self.price /= 12.0
+            print("Test")
+        else:
+            self.price *= self.lbsTo100Grams
+
+    def getFoodString(self):
+        costDivisor = ""
+        if self.isDiscrete: costDivisor = "%s" % self.shortLabel
+        else: costDivisor = "100grams"
+        return ("%s: Price:$%f per %s Calories:%s Sat. Fat:%s g Sodium:%s mg Vit C:%s mg Vit A:%s mcg Protein:%s g" %
+                (self.longLabel, self.price, costDivisor, self.cals, self.satFat, self.sodium, self.vitC, self.vitA, self.protein))
+
+# Food object data entry
+foods = []
+foods.append(Food("Broccoli", "Broccoli, raw", 1.831, 34.0, 0.0, 33.0, 89.2, 623, 2.8, False))
+foods.append(Food("Egg", "Egg, whole, raw, fresh", 1.755, 71.5, 1.5, 70.0, 0.0, 244, 6.3, True))
+foods.append(Food("Chicken", "Chicken, broilers or fryers, leg, meat and skin, raw", 1.402, 187, 3.4, 79.0, 2.5, 123, 18.2, False))
+foods.append(Food("Rice", "Rice, white, long-grain, regular, cooked", 0.691, 365, 0.2, 5.0, 0.0, 0.0, 7.1, False))
+foods.append(Food("Bananas", "Bananas, raw", 0.574, 89.0, 0.1, 1.0, 8.7, 64, 1.1, False))
+
+# Now for the details of the linear program.
+# My constraints are given via the prompt:
+# 2000 cals, satFat <= 20g, sodium <= 2400mg, vitC >= 90mg, vitA >= 700mcg, protein >= 56g
+foodLP = pulp.LpProblem("Food LP", pulp.LpMinimize)
+
+pulpVars = []
+totalPrice = 0.0
+totalCals = 0
+totalSatFat = 0
+totalSodium = 0
+totalVitC = 0
+totalVitA = 0
+totalProtein = 0
+
+# Making a constraint variable for each food and putting them into a list
+for food in foods:
+    pulpVars.append(pulp.LpVariable(food.shortLabel, lowBound = 0, cat='Integer'))
+
+# Getting the dot product of
+#for food in foods:
+for i in range(len(foods)):
+    currentFood = foods[i]
+    foodLPVar = pulpVars[i]
+    totalPrice += (currentFood.price * foodLPVar)
+    totalCals += (currentFood.cals * foodLPVar)
+    totalSatFat += (currentFood.satFat * foodLPVar)
+    totalSodium += (currentFood.sodium * foodLPVar)
+    totalVitC += (currentFood.vitC * foodLPVar)
+    totalVitA += (currentFood.vitA * foodLPVar)
+    totalProtein += (currentFood.protein * foodLPVar)
+
+
+foodLP += totalPrice, "Total Cost for a Day"
+foodLP += totalCals >= 2000, "Calories"
+foodLP += totalSatFat <= 20, "Saturated Fat"
+foodLP += totalSodium <= 2400, "Sodium"
+foodLP += totalVitC >= 90, "Vitamin C"
+foodLP += totalVitA >= 700, "Vitamin A"
+foodLP += totalProtein >= 56, "Protein"
+
+foodLP.solve()
+
+print(foodLP)
+print("Your optimized daily diet will consist of:")
+for food in foodLP.variables():
+    print("%s %s" % (food.varValue, food.name))
+print "Total cost of diet: ${:.2f}".format(pulp.value(foodLP.objective))
 
 
 
+print("\nAll Foods Breakdown:")
+for food in foods:
+    print(food.getFoodString())
 
