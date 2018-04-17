@@ -65,19 +65,26 @@ fileisort fn1 fn2 = writeFile fn2 (L.intercalate "\n" (isort (lines fn1)))
 
 --4.3 Game Trees (40pts)
 -- Instead of X and O, we use (R)ed and (G)reen
-data Field = B | R | G
+data Field = B | R | G -- TODO: This is the right one...
+--data Field = R | G | B
+--data Field = G | B | R
              deriving (Eq, Ord, Show)
 type Board = [Field]
+
+--class myOrd Field where
 
 --type Grid = [[Player]]
 --type Player = O | B | X
 --							deriving (Eq, Ord, Show)
 
 strategyForRed :: Board -> Int
-strategyForRed = undefined
+strategyForRed board = bestMoveIndex board R
 
 strategyForGreen :: Board -> Int
-strategyForGreen = undefined
+strategyForGreen board = bestMoveIndex board G
+
+-- TODO: I have a 0 indexing issue, when calculating the move it is picking 1..9 somehow
+-- Wins and won correctly identify a top row win
 
 
 -- Adding a ton of code from the book below
@@ -85,9 +92,9 @@ size :: Int
 size = 3
 
 next :: Field -> Field
-next R = G
 next G = R
 next B = B
+next R = G
 
 
 empty :: Board
@@ -107,7 +114,6 @@ wins p g = any line (rows ++ cols ++ dias)
 	where
 		line = all (== p)
 		rows = [[g !! (offset + (n * size)) | offset <- [0..size-1]  ] | n <- [0..size-1]]
-		-- Made something that limits this to 3x3 here... -1,0,1... fix later.
 		cols = [[g !! ((n * size) + offset) | n <- [0..size-1]] | offset <- [0..size-1]]
 		dias = [diag g, diag (reverse g)]
 
@@ -170,19 +176,47 @@ bestmove g p = head [g' | Node (g', p') _ <- ts, p' == best]
 								tree = prune depth (gametree g p)
 								Node (_,best) ts = minimax tree
 
+-- Best move is great because it gives us the board with the best move,
+-- but what if I just want the index of the best move?
+bestMoveIndex :: Board -> Field -> Int
+bestMoveIndex oldB f = diffIndex oldB newB
+	where newB = bestmove oldB f
+
+-- Takes 2 boards, finds the element that is different and returns it's index
+diffIndex :: Board -> Board -> Int
+diffIndex (x:xs) (y:ys) = if x /= y then 0 else 1 + diffIndex xs ys
+
 
 
 -- Below here is extra GUI and visualization code
 -- Grid => Board
 -- Player => Field
 
---putBoard :: Board -> IO()
---putBoard =
---	putStrLn . unlines . concat . interleave bar . map showRow
---	where bar = [replicate (size*4-1) '-']
+{-
+putBoard :: Board -> IO()
+putBoard =
+	putStrLn . unlines . concat . interleave bar . map showRow
+	where bar = [replicate (size*4-1) '-']
 
---showRow ::
 
+-- TODO: Show run consumes a row, but I'm giving it all elements
+showRow :: [Field] -> [String]
+showRow = beside . interleave bar . map showField
+	where
+		beside = foldr1 (zipWith (++))
+		bar = replicate 3 "|"
+
+
+showField :: Field -> [String]
+showField R = ["   ", " R ", "   "]
+showField B = ["   ", "   ", "   "]
+showField G = ["   ", " G ", "   "]
+
+interleave :: a -> [a] -> [a]
+interleave x [] = []
+interleave x [y] = [y]
+interleave x (y:ys) = y : x : interleave x ys
+-}
 
 
 
