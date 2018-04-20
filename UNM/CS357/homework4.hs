@@ -65,26 +65,15 @@ fileisort fn1 fn2 = writeFile fn2 (L.intercalate "\n" (isort (lines fn1)))
 
 --4.3 Game Trees (40pts)
 -- Instead of X and O, we use (R)ed and (G)reen
-data Field = B | R | G -- TODO: This is the right one...
---data Field = R | G | B
---data Field = G | B | R
+data Field = B | R | G
              deriving (Eq, Ord, Show)
 type Board = [Field]
-
---class myOrd Field where
-
---type Grid = [[Player]]
---type Player = O | B | X
---							deriving (Eq, Ord, Show)
 
 strategyForRed :: Board -> Int
 strategyForRed board = bestMoveIndex board R
 
 strategyForGreen :: Board -> Int
 strategyForGreen board = bestMoveIndex board G
-
--- TODO: I have a 0 indexing issue, when calculating the move it is picking 1..9 somehow
--- Wins and won correctly identify a top row win
 
 
 -- Adding a ton of code from the book below
@@ -185,56 +174,6 @@ bestMoveIndex oldB f = diffIndex oldB newB
 -- Takes 2 boards, finds the element that is different and returns it's index
 diffIndex :: Board -> Board -> Int
 diffIndex (x:xs) (y:ys) = if x /= y then 0 else 1 + diffIndex xs ys
-
-
-
--- Below here is extra GUI and visualization code
--- Grid => Board
--- Player => Field
-
-{-
-putBoard :: Board -> IO()
-putBoard =
-	putStrLn . unlines . concat . interleave bar . map showRow
-	where bar = [replicate (size*4-1) '-']
-
-
--- TODO: Show run consumes a row, but I'm giving it all elements
-showRow :: [Field] -> [String]
-showRow = beside . interleave bar . map showField
-	where
-		beside = foldr1 (zipWith (++))
-		bar = replicate 3 "|"
-
-
-showField :: Field -> [String]
-showField R = ["   ", " R ", "   "]
-showField B = ["   ", "   ", "   "]
-showField G = ["   ", " G ", "   "]
-
-interleave :: a -> [a] -> [a]
-interleave x [] = []
-interleave x [y] = [y]
-interleave x (y:ys) = y : x : interleave x ys
--}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 --4.4 (Optional) Drawing Game Trees and Strategies (30pts EC)
