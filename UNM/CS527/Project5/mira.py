@@ -14,6 +14,7 @@
 
 # Mira implementation
 import util
+import random
 PRINT = True
 
 class MiraClassifier:
@@ -60,8 +61,55 @@ class MiraClassifier:
         datum is a counter from features to values for those features
         representing a vector of values.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+
+        print(Cgrid)
+
+        tau = 1
+
+        # tau is defined as T = min (C, bigFun)
+        # bigFun = ((self.weights[possibleLabel] - self.weights[realLabel]) * feature + 1) / (2 * (f * f))
+
+
+        for iteration in range(self.max_iterations):
+
+            for i in range(len(trainingData)):
+
+                highScore = None
+                possibleLabel = None
+                feature = trainingData[i]
+
+                # They told us classification would improve if we randomized the training examples,
+                # This gives approximately +10 improvement (55->62 and 48->59)
+                randLabels = self.legalLabels
+                random.shuffle(randLabels)
+
+                # Go through all the labels and find out which one scores the highest
+                for label in randLabels:
+                    score = feature * self.weights[label]
+                    if score > highScore:
+                        highScore = score
+                        possibleLabel = label
+
+
+
+                # If we didn't get a correct classification, then update the weights
+                realLabel = trainingLabels[i]
+                tau = min(Cgrid[0], ((self.weights[possibleLabel] - self.weights[realLabel]) * feature + 1) /
+                          (2 * (feature * feature)))
+                if possibleLabel != trainingLabels[i]:
+                    self.weights[realLabel] += feature*tau # Reinforce
+                    self.weights[possibleLabel] -= feature*tau # Penalize
+
+
+
+
+
+
+
+
+
+
 
     def classify(self, data ):
         """

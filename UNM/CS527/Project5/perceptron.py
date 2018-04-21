@@ -58,7 +58,7 @@ class PerceptronClassifier:
 
                 highScore = None
                 possibleLabel = None
-                f = trainingData[i]
+                feature = trainingData[i]
 
                 # They told us classification would improve if we randomized the training examples,
                 # This gives approximately +10 improvement (55->62 and 48->59)
@@ -67,7 +67,7 @@ class PerceptronClassifier:
 
                 # Go through all the labels and find out which one scores the highest
                 for label in randLabels:
-                    score = f * self.weights[label]
+                    score = feature * self.weights[label]
                     if score > highScore:
                         highScore = score
                         possibleLabel = label
@@ -75,8 +75,8 @@ class PerceptronClassifier:
                 # If we didn't get a correct classification, then update the weights
                 realLabel = trainingLabels[i]
                 if possibleLabel != trainingLabels[i]:
-                    self.weights[realLabel] += f # Reinforce
-                    self.weights[possibleLabel] -= f # Penalize
+                    self.weights[realLabel] += feature # Reinforce
+                    self.weights[possibleLabel] -= feature # Penalize
 
 
     def classify(self, data ):
