@@ -14,6 +14,7 @@
 
 # Perceptron implementation
 import util
+import random
 PRINT = True
 
 class PerceptronClassifier:
@@ -54,8 +55,29 @@ class PerceptronClassifier:
         for iteration in range(self.max_iterations):
             print "Starting iteration ", iteration, "..."
             for i in range(len(trainingData)):
-                "*** YOUR CODE HERE ***"
-                util.raiseNotDefined()
+
+                highScore = None
+                possibleLabel = None
+                f = trainingData[i]
+
+                # They told us classification would improve if we randomized the training examples,
+                # This gives approximately +10 improvement (55->62 and 48->59)
+                randLabels = self.legalLabels
+                random.shuffle(randLabels)
+
+                # Go through all the labels and find out which one scores the highest
+                for label in randLabels:
+                    score = f * self.weights[label]
+                    if score > highScore:
+                        highScore = score
+                        possibleLabel = label
+
+                # If we didn't get a correct classification, then update the weights
+                realLabel = trainingLabels[i]
+                if possibleLabel != trainingLabels[i]:
+                    self.weights[realLabel] += f # Reinforce
+                    self.weights[possibleLabel] -= f # Penalize
+
 
     def classify(self, data ):
         """
@@ -77,9 +99,9 @@ class PerceptronClassifier:
         """
         Returns a list of the 100 features with the greatest weight for some label
         """
-        featuresWeights = []
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # Sorts the dictionary by top-valued keys and takes top 100 of them
+        labelWeights = self.weights[label]
+        return labelWeights.sortedKeys()[:100]
 
-        return featuresWeights
+
