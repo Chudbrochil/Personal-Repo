@@ -304,8 +304,30 @@ struct Cache makeCache(struct CacheParams cacheParams)
     }
 
   }
-
   return cache;
+}
+
+
+// Freeing the memory we malloc'ed
+void cleanUp(struct Cache cache, int s, int e)
+{
+  int bigS = 1 << s;
+
+  // Freeing all the lines
+  for(int i = 0; i < bigS; ++i)
+  {
+    struct CacheSet set = cache.sets[i];
+    if(set.lines != NULL)
+    {
+      free(set.lines);
+    }
+  }
+
+  // Freeing all the sets
+  if(cache.sets != NULL)
+  {
+    free(cache.sets);
+  }
 
 }
 
@@ -329,6 +351,8 @@ int main(int argc, char **argv)
   stats = processTraceFile(cacheParams.traceFile, cache, cacheParams, stats, cacheParams.verbose); 
 
   printSummary(stats.hits, stats.misses, stats.evictions);
+
+  cleanUp(cache, cacheParams.s, cacheParams.e);
   return 0;
 }
 
