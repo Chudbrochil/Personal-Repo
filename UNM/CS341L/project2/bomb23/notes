@@ -1,0 +1,289 @@
+
+ se 1 string:
+I used "x /25c 0x4026f0" to get this...
+
+The future will be better tomorrow.
+
+Safety break points
+break *0x40174a
+break *0x40174e
+break *0x401767
+
+Phase 2:
+break *0x400f49
+
+first number is 1 via the cmpl $0x1,(%rsp) on 0x400f67
+rax is 2, second number is 2
+We are in a loop, we popped back upto *0x400f7a
+comparing value at *0x400f8c again, %rax is 4, third number is 4
+
+Had to restart gdb as my initial 1 2 3 4 5 6 didn't work...
+Based on 1 2 4, I'm guessing it is 1 2 4 8 16 32
+
+This is indeed correct, passed through to phase 3...
+
+
+Phase 3:
+break *0x400fad
+
+3 inputs expected
+
+happened upon 1 as the first number,
+
+looking for the 2nd...
+
+%rax at 0x401021 is 0x41 or 4*16 + 1 = 65
+
+enter 65 as 2nd digit later...
+
+go until *0x40101c
+
+this soon jumps to *0x4010f2 which does a cmp to %al
+
+this value is 0x76..., which is 7*16 + 6 = 118
+
+Turns out it is looking for it in character form, 118 in ASCII is v
+
+So we need to enter 1 v 65
+
+Phase 4:
+break *0x40114a
+
+1st run of phase_4:
+
+First part I found to block me up was 0x401170 which is a "cmp $0x2,%eax" which has a corresponding
+jne after it that leads to explode_bomb. My %rax was 1, I did "set $rax = 2" just to get past this
+to see more logic in the assembly... I will investigate this difference later.
+
+2 lines down is 0x401175 which does "cmpl $0xe,(%rsp)". I know 0xe is 14 comparing to what is in
+%rsp, again with a nasty jump after this line.
+%rsp apparently is my input value, which I entered a 1. This won't be equal to the 14.
+Again, setting a register (%rsp) to 14 to continue to investigate...
+
+gdb/bomb didn't like this. I seg fault'ed.
+
+Just for fun when I enter a value for phase_4, I'm going to use 14... (0xE)
+
+Alright, 2nd run of phase_4:
+immediately I'm going to run "until *0x401170" to find out what's going on there.
+
+Looks like the 'ole %rax is still at 0x1. Setting this to 2 to continue again and I will do
+something different at the next compare (or my value is right?)
+
+Now, at 0x401175, a "x/d $rsp" outputs 14...
+Let's try to keep stepping after the compare...
+
+Okay, success. the "jbe 401180" at 0x401179 jumped over the explode_bomb and now I'm at 0x401180.
+
+I step until the func4 call. I'm going to immediately exit this as I don't care what it does for now.
+I want to see if I can "hack" the registers to get past the bomb at the end or see what output it is
+expecting from the function first.
+
+We come out of the function at 0x401192 which is "cmp $0x2b, %eax".
+We want our return value of the function to be 0x2b, which is 2*16 + 11 = 43.
+Upon checking %rax, it is 45... Strange, it is very close to the right answer.
+
+Let's set $rax to 43 and see where this goes...
+My luck ran out, it jumped to explode_bomb at 0x40119e.
+Upon further analysis, I'm realizing that that is a "jne", so it means jump if not equal.
+I shouldn't have set $rax to be 43, whoops.
+
+Time to start over again...
+
+3rd run of phase_4:
+I'm going to experiment with entering "24" as my value. Maybe the first number is the input to 
+that first $rax that I'm jumping over by setting it's value manually.
+
+until *0x401170 again...
+
+%rax is still 1..., Let's investigate the line before the sscanf call 0x401166 "mov $0x402a59, %esi"
+That 0x402a59 address looks interesting/promising...
+
+4th run:
+Input: 14
+
+Got down to the address, couldn't read it. Looked at the register that took it's value and the value
+of the register is 622879781... Hrm. Doesn't seem promising. It's just the pointer to 0x402a59 given by
+"p/x $rsi" instead of "x/d $rsi"
+As an aside, I see this address being referenced in phase_5... looks like compiled address/library.
+Could be part of sscanf.
+
+I'm beginning to think this is a count of the length of the string being inputted or something along
+those lines...
+
+Anyways, back to the bottom half of phase_4...
+I looked at "info reg" inside func 4. I noticed that a ton of registers are set to my magic num 14.
+Did this function loop over my number? i.e. i = 14...
+Anyways, I didn't look at anything else in the function.
+
+I stepped right into explode_bomb, sigh.
+
+5th run:
+Let's experiment a bit with the input. See if I can get the first rax to change off the sscanf.
+Perhaps this is a function that takes more than 1 argument and this is an argument checker.
+
+Input: 2 14  (Inspired by 2 being expected value and the 14 getting us somewhere in bottom half)
+
+until *0x401170 again, sweet! rax is now 0x2. No more hacks of setting it.
+
+Going to be a bit careful with my stepi's now.
+Did stepi until 0x401175 where we do cmp $0xe,(%rsp). This _should_ be the comparison of my number
+to 14. Let's check.
+x/d $rsp gives 2. Damn. My first argument should be 14.
+
+Kept stepping just to experiment and indeed, I hit the bomb.
+
+6th run:
+Input: 14 2
+
+Alright, so now after getting to the compare we know that 0x40114a through 0x401173 is just making
+sure we are passing 2 inputs (arguments).
+
+stepi'ed to 0x401180.
+
+If i do some analysis on these following lines before the function I can easily tell these are arguments
+being passed in.
+mov $0xe,%edx is first arg 14
+mov $0x0,%esi is second arg 0
+mov (%rsp),%edi is third arg which is my passed in arg of 14
+
+Alright, guess it's time to look inside func4.
+I know there is a loop so I'm going to skip ahead a bit.
+
+Let's move to the first jump. 0x40112a
+%rax is 7...
+
+Continuing to step until I see 0x401148 which does not execute and we go further down to a recursive call
+at 0x401141
+
+first layer of recursion I see (I skipped a bunch of stuff however...)
+first jump
+%rax is 3...
+second jump
+%rax is 11...
+
+2nd layer
+%rax is 1
+%rax is 13
+
+I skipped ahead to the end of the recursive pops at 0x401146
+27->38->45 is the pattern I saw.
+
+Now we are back into phase_4:
+
+Going until the "cmp $0x2b,%eax" at 0x401192, setting $rax to 0x2b...
+
+K, we avoided the explode_bomb call. We want our function to return 0x2b (43)
+
+I seg fault'ed by trying "p/x 0x4($rsp)"
+
+7th run:
+Input: 14 43 (Why not?)
+
+Got through until the func4 call.
+
+Our "arguments" are: %rdx = 14, %rsi = 0, %rdi = 14 (I gave it this 14)
+
+Still getting 45 out of function, I need 43.
+
+Let's analyze recursion on func4 on next run.
+
+8th run:
+Input: 14 123
+
+func4 called with rdx,rsi,rdi 14,0,14
+
+first recursive call these change to rdx,rsi,rdi 14,8,14
+
+second 14, 12, 14
+
+third is 14, 14, 14
+
+In this third recursive call jge at 0x40113c jumps to the pop at 401148.
+Time to end the recursion... we hit 14.
+
+14->27->38->45
+
+I see difference of 13, 11, 7...
+
+Primes? Looks like primes.
+What is the first 14 primes summed?
+
+14 + 7 + 11 + 13 = 45
+
+It isn't the first 14 primes. It is the number + 3 primes (7, 11, 13)
+
+Let's try entering the number 12 first to get 12 + 7 + 11 + 13 = 43
+
+9th run:
+Input: 12 14
+
+I skipped right past the function to the compare at 0x401192. Sure enough, %rax is 43.
+I naturally make it past the jne.
+
+Next thing to worry about is 0x401197 "cmpl $0x2b,0x4(%rsp)"...
+Ah, %rsp was my original input and we are going 4 further. This is my 2nd argument.
+I believe my 2nd argument should be 43.
+
+10th run:
+Input: 12 43
+
+Sweet, carefully ran stepi after the cmp's and jumps at the bottom. I made it through.
+
+Long story short, We are calling a function that adds the primes 7, 11, 13 to a number and we
+want it to equal 43.
+
+
+Phase 5:
+break *0x4011bd
+
+
+of the form 1 2 3 4 5 6 
+
+
+
+14 6 15 
+
+It's expecting numbers.... 
+
+0x4011ed, moves my first number into rax
+0x4011f0, performs an and with 15 and my number
+0x4011f3, moves rax into address of %rsp (my num?)
+
+
+je does a jump if not equal, they're equal so it keeps going
+
+
+
+
+4 * rax 
+
+is it 4 * num - a CONSTANT (9)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* CREDITS
+ * Worked briefly with Steele Desmond, discussed concepts not exact code bits.

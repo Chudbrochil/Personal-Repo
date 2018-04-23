@@ -1,0 +1,86 @@
+Anthony Galczak
+CS341 GProf Lab
+
+1.) Copied directory of ~soraya/cs341-Spring-2018/labGprof
+    Ran "make dictionary"
+
+2.) Ran "./dictionary-pg -n 2 -file moby.txt"
+    Ran "gprof dictionary-pg > profile.txt"
+    Started doing some analysis on "profile.txt", looking at the
+    flat call profile and the call chain analysis.
+
+3.) Looking at the flat profile, dictionary spends the most time in sort_words(), 78% of the time specifically.
+    Why is it so slow? We didn't pass it the parameter to use quicksort. So it is using some
+    garbage sorting algorithm instead.
+
+
+
+Output of first few lines of flat profile in profile.txt
+  1 Flat profile:
+  2 
+  3 Each sample counts as 0.01 seconds.
+  4   %   cumulative   self              self     total           
+  5  time   seconds   seconds    calls   s/call   s/call  name    
+  6  78.00      4.73     4.73        1     4.73     4.73  sort_words
+  7  18.92      5.87     1.15   214364     0.00     0.00  find_ele_rec
+  8   1.65      5.97     0.10  2953309     0.00     0.00  Strlen
+  9   0.66      6.01     0.04                             find_ele_iter_f
+ 10   0.41      6.04     0.03   114421     0.00     0.00  save_string
+
+
+
+4.) Ran "./dictionary-pg -quicksort 1 -n 2 -file moby.txt"
+    Ran "gprof dictionary-pg > profile.txt"
+    Started doing some analysis on the new profile.txt.
+    Now find_ele_rec is 86.06% of the time spent.
+    insert_string calls "find_ele_fun" quick then calls "find_ele_rec".
+    I believe the problem is in the nested recursion inside find_ele_rec
+ 
+
+ 87 -----------------------------------------------
+ 88                              204769048             find_ele_rec [4]
+ 89                 1.23    0.06  214364/214364      insert_string [3]
+ 90 [4]     85.8    1.23    0.06  214364+204769048 find_ele_rec [4]
+ 91                 0.05    0.00  114421/114421      save_string [8]
+ 92                 0.01    0.00  114421/114421      new_ele [11]
+ 93                              204769048             find_ele_rec [4]
+ 94 -----------------------------------------------
+
+
+5.) Ran "./dictionary-pg -quicksort 1 -n 2 -file moby.txt"
+    Ran "gprof dictionary-pg > profile.txt"
+    
+
+After tons of experimentation, I have found for my machine the fastest permutation of
+parameters to be:
+
+./dictionary-pg -quicksort 1 -lower 1 -n 1 -size 10001 -find 2 -hash 2 -file moby.txt
+
+agalczak@b146-57:/nfs/student/student/a/agalczak/cs341/lab3$ ./dictionary-pg -quicksort 1 -lower 1 -n 1 -size 10001 -find 2 -hash 2 -file moby.txt
+verbose 1
+size  10001
+hash  2
+lower 1
+find  2
+ngram 1
+quicksort 1
+file  moby.txt
+N-gram size 1
+Lower case function lower2
+Hash function h_xor
+Find element function find_ele_iter_r
+14089 'the'
+214365 n-grams, 16752 unique, 7293 singletons.  Most common (14089) = 'the'.  Longest (1 have length 20) = 'uninterpenetratingly'
+Total time = 0.100608 seconds
+   
+
+
+
+
+
+
+
+
+
+
+
