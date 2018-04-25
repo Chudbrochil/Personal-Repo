@@ -63,52 +63,58 @@ class MiraClassifier:
         """
 
 
-        print(Cgrid)
-
-        tau = 1
-
         # tau is defined as T = min (C, bigFun)
-        # bigFun = ((self.weights[possibleLabel] - self.weights[realLabel]) * feature + 1) / (2 * (f * f))
+        # bigFun = ((self.weights[possibleLabel] - self.weights[realLabel]) * f + 1) / (2 * (f * f))
+        # f in our example should be "trainingData[i]"
+
+        # We are wanting to save the best weights vector via the "best c"
+        bestWeightsSoFar = None
+        newWeights = self.weights.copy()
 
 
-        for iteration in range(self.max_iterations):
+        for c in Cgrid:
 
-            for i in range(len(trainingData)):
+            # This is where we are checking how many times we had to update the weights. less is better (for c)
+            bestCWrongs = float("inf")
+            howManyWrong = 0
 
-                highScore = None
-                possibleLabel = None
-                feature = trainingData[i]
+            for iteration in range(self.max_iterations):
 
-                # They told us classification would improve if we randomized the training examples,
-                # This gives approximately +10 improvement (55->62 and 48->59)
-                randLabels = self.legalLabels
-                random.shuffle(randLabels)
+                for i in range(len(trainingData)):
 
-                # Go through all the labels and find out which one scores the highest
-                for label in randLabels:
-                    score = feature * self.weights[label]
-                    if score > highScore:
-                        highScore = score
-                        possibleLabel = label
+                    highScore = None
+                    possibleLabel = None
+                    f_value = trainingData[i]
 
+                    # They told us classification would improve if we randomized the training examples,
+                    # This gives approximately +10 improvement (55->62 and 48->59)
+                    randLabels = self.legalLabels
+                    random.shuffle(randLabels)
 
+                    # Go through all the labels and find out which one scores the highest
+                    for label in randLabels:
+                        score = f_value * newWeights[label]
+                        if score > highScore:
+                            highScore = score
+                            possibleLabel = label
 
-                # If we didn't get a correct classification, then update the weights
-                realLabel = trainingLabels[i]
-                tau = min(Cgrid[0], ((self.weights[possibleLabel] - self.weights[realLabel]) * feature + 1) /
-                          (2 * (feature * feature)))
-                if possibleLabel != trainingLabels[i]:
-                    self.weights[realLabel] += feature*tau # Reinforce
-                    self.weights[possibleLabel] -= feature*tau # Penalize
+                    # If we didn't get a correct classification, then update the weights
+                    realLabel = trainingLabels[i]
+                    if possibleLabel != realLabel:
+                        howManyWrong += 1
+                        tau = min(c, ((self.weights[possibleLabel] - self.weights[realLabel]) * f_value + 1.0) /
+                                  (2.0 * (f_value * f_value)))
 
+                        # Multiply each value in f by tau... Remember 1 / (1 / x) is same as * x
+                        f_value.divideAll(1.0 / tau)
 
+                        newWeights[realLabel] = newWeights[realLabel] + f_value
+                        newWeights[possibleLabel] = newWeights[possibleLabel] - f_value
 
+            if howManyWrong <= bestCWrongs:
+                bestWeightsSoFar = newWeights
 
-
-
-
-
-
+        self.weights = bestWeightsSoFar
 
 
     def classify(self, data ):

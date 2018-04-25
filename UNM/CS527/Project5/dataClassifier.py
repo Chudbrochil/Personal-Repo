@@ -73,12 +73,64 @@ def enhancedFeatureExtractorDigit(datum):
 
     ## DESCRIBE YOUR ENHANCED FEATURES HERE...
 
+    Pixels upper half
+    Pixels lower half
+    Non-white pixels
+
     ##
     """
     features =  basicFeatureExtractorDigit(datum)
 
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    pixels = datum.getPixels()
+    nonWhite = 0
+
+    upper = 0
+    lower = 0
+
+
+    for i in xrange(DIGIT_DATUM_HEIGHT / 2):
+        for j in xrange(DIGIT_DATUM_WIDTH):
+            if pixels[i][j] > 0:
+                upper += 1
+                nonWhite += 1
+
+    for i in xrange(DIGIT_DATUM_HEIGHT / 2, DIGIT_DATUM_HEIGHT):
+        for j in xrange(DIGIT_DATUM_WIDTH):
+            if pixels[i][j] > 0:
+                lower += 1
+                nonWhite += 1
+
+
+
+    counterIndex = 0
+
+    #print(datum.getAsciiString())
+    print("vals: %s %s %s" % (upper, lower, nonWhite))
+
+
+    # Adding features, we will want a few break points for each feature
+    # I want values of .1-.9 for x here...
+    # for x in range(1, 10):
+    #     features[counterIndex] = (x/10.0 * nonWhite) > 200
+    #     counterIndex += 1
+    #
+    # for x in range(1, 10):
+    #     features[counterIndex] = upper > (nonWhite * x/10.0)
+    #     counterIndex += 1
+    #
+    # for x in range(1, 10):
+    #     features[counterIndex] = lower > (nonWhite * x/10.0)
+    #     counterIndex += 1
+
+    features[0] = nonWhite <= 100
+    features[1] = nonWhite > 100 and nonWhite < 200
+    features[2] = nonWhite >= 200
+    features[3] = lower <= 50
+    features[4] = lower > 50 and lower < 80
+    features[5] = lower >= 80
+    features[6] = upper <= 50
+    features[7] = upper > 50 and upper < 80
+    features[8] = upper >= 80
 
     return features
 
