@@ -68,18 +68,13 @@ class MiraClassifier:
         # f in our example should be "trainingData[i]"
 
         # We are wanting to save the best weights vector via the "best c"
-        bestWeightsSoFar = None
-        newWeights = self.weights.copy()
+        best_c = Cgrid[0]
+        best_accuracy = None
+        best_weights = util.Counter()
 
 
         for c in Cgrid:
-
-            # This is where we are checking how many times we had to update the weights. less is better (for c)
-            bestCWrongs = float("inf")
-            howManyWrong = 0
-
             for iteration in range(self.max_iterations):
-
                 for i in range(len(trainingData)):
 
                     highScore = None
@@ -93,7 +88,7 @@ class MiraClassifier:
 
                     # Go through all the labels and find out which one scores the highest
                     for label in randLabels:
-                        score = f_value * newWeights[label]
+                        score = f_value * self.weights[label]
                         if score > highScore:
                             highScore = score
                             possibleLabel = label
@@ -101,20 +96,27 @@ class MiraClassifier:
                     # If we didn't get a correct classification, then update the weights
                     realLabel = trainingLabels[i]
                     if possibleLabel != realLabel:
-                        howManyWrong += 1
                         tau = min(c, ((self.weights[possibleLabel] - self.weights[realLabel]) * f_value + 1.0) /
                                   (2.0 * (f_value * f_value)))
 
                         # Multiply each value in f by tau... Remember 1 / (1 / x) is same as * x
                         f_value.divideAll(1.0 / tau)
 
-                        newWeights[realLabel] = newWeights[realLabel] + f_value
-                        newWeights[possibleLabel] = newWeights[possibleLabel] - f_value
+                        self.weights[realLabel] = self.weights[realLabel] + f_value
+                        self.weights[possibleLabel] = self.weights[possibleLabel] - f_value
 
-            if howManyWrong <= bestCWrongs:
-                bestWeightsSoFar = newWeights
+            # Finding the best c to use and setting our weights as such
+            guesses = self.classify(validationData)
+            num_accurate = 0
+            for i in range(len(guesses)):
+                if guesses[i] == validationLabels[i]:
+                    num_accurate += 1
+            if num_accurate > best_accuracy or (num_accurate == best_accuracy and c < best_c):
+                best_c = c
+                best_accuracy = num_accurate
+                best_weights = self.weights.copy()
 
-        self.weights = bestWeightsSoFar
+        self.weights = best_weights
 
 
     def classify(self, data ):

@@ -49,5 +49,17 @@ class PerceptronClassifierPacman(PerceptronClassifier):
         for iteration in range(self.max_iterations):
             print "Starting iteration ", iteration, "..."
             for i in range(len(trainingData)):
-                "*** YOUR CODE HERE ***"
-                util.raiseNotDefined()
+                # This captures pacman's move and the feature list
+                action = trainingData[i][0]
+                feature = trainingData[i][1]
+
+                # Loop over all labels in the feature list
+                for label in feature:
+                    for feature, value in action[label].items():
+
+                        # If it was right, add value to this weight. Otherwise, subtract value from the weight
+                        if label == trainingLabels[i]:
+                            self.weights[feature] += value
+                        else:
+                            self.weights[feature] -= value
+
