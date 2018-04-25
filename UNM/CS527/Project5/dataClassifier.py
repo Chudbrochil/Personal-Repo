@@ -245,26 +245,26 @@ def enhancedPacmanFeatures(state, action):
         distance = util.manhattanDistance(pacmanPos, food)
         if distance < shortestFoodDistance:
             shortestFoodDistance = distance
-    #features["food_distance"] = shortestFoodDistance * 1.0
+    features["food_distance"] = shortestFoodDistance * 1.0
 
     shortestCapsuleDistance = float("inf")
     for capsule in capsuleList:
         distance = util.manhattanDistance(pacmanPos, capsule)
         if distance < shortestCapsuleDistance:
             shortestCapsuleDistance = distance
-    #features["capsule_distance"] = shortestCapsuleDistance * 1.0
+    features["capsule_distance"] = shortestCapsuleDistance * 1.0
 
     shortestGhostDistance = float("inf")
     for ghostPos in ghosts:
         distance = util.manhattanDistance(pacmanPos, ghostPos)
         if distance < shortestGhostDistance:
             shortestGhostDistance = distance
-    #features["ghost_distance"] = shortestGhostDistance * 1.0
+    features["ghost_distance"] = shortestGhostDistance * 1.0
 
     # Valid things to check is winning, losing, overall score
-    #features["isWin"] = state.isWin()
-    #features["isLoss"] = state.isLose()
-    #features["score"] = state.getScore() ** 2
+    features["isWin"] = state.isWin()
+    features["isLoss"] = state.isLose()
+    features["score"] = state.getScore()
 
     return features
 
