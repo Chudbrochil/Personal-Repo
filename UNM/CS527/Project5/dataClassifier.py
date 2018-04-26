@@ -74,11 +74,12 @@ def enhancedFeatureExtractorDigit(datum):
 
     ## DESCRIBE YOUR ENHANCED FEATURES HERE...
 
-    Pixels upper half
-    Pixels lower half
-    Non-white pixels
-    Width of top
-    Width of bottom
+    # of lit elements in each column
+    # of lit elements in each row
+    longest horizontal stretch
+    longest vertical stretch
+    # of pixels lit
+    # of "clumps"(sets of neighbors approximately)
 
     ##
     """
@@ -89,8 +90,6 @@ def enhancedFeatureExtractorDigit(datum):
     longest_horiz = 0
     on_pixels = 0
     num_clumps = 0
-    num_h_breaks =  0
-    num_v_breaks = 0
 
     for i in range(DIGIT_DATUM_HEIGHT):
         temp_vert = 0
@@ -108,8 +107,6 @@ def enhancedFeatureExtractorDigit(datum):
             elif temp_vert > longest_vert:
                 longest_vert = temp_vert
                 temp_vert = 0
-                num_v_breaks += 1
-            else: num_v_breaks += 1
 
     for i in range(DIGIT_DATUM_WIDTH):
         temp_horiz = 0
@@ -119,9 +116,6 @@ def enhancedFeatureExtractorDigit(datum):
             elif temp_horiz > longest_horiz:
                 longest_horiz = temp_horiz
                 temp_horiz = 0
-                num_h_breaks += 1
-            else: num_h_breaks += 1
-
 
     # Time to count how many elements in each row and each column
     rowsCount = []
