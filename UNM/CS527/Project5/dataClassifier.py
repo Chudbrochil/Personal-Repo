@@ -64,6 +64,7 @@ def basicFeatureExtractorFace(datum):
                 features[(x,y)] = 0
     return features
 
+
 def enhancedFeatureExtractorDigit(datum):
     """
     Your feature extraction playground.
@@ -83,136 +84,117 @@ def enhancedFeatureExtractorDigit(datum):
     """
     features =  basicFeatureExtractorDigit(datum)
 
-    pixels = datum.getPixels()
-    lit = 0
+    feature_index = 0
+    longest_vert = 0
+    longest_horiz = 0
+    on_pixels = 0
+    num_clumps = 0
+    num_h_breaks =  0
+    num_v_breaks = 0
 
-    upper = 0
-    lower = 0
-    topMaxWidth = 0
-    botMaxWidth = 0
+    for i in range(DIGIT_DATUM_HEIGHT):
+        temp_vert = 0
+        for j in range(DIGIT_DATUM_WIDTH):
+            if datum.getPixel(i,j) == 1:
+                temp_vert += 1
+                on_pixels += 1
+                # count the number of "clumps" of on pixels
+                neighbors = get_neighbors(i, j)
+                temp_cluster = 0
+                for naybs in neighbors:
+                    if datum.getPixel(*naybs) == 1: temp_cluster += 1
+                if temp_cluster >= len(neighbors) - 1:
+                    num_clumps += 1
+            elif temp_vert > longest_vert:
+                longest_vert = temp_vert
+                temp_vert = 0
+                num_v_breaks += 1
+            else: num_v_breaks += 1
 
-    # Top half
-    for i in xrange(DIGIT_DATUM_HEIGHT / 2):
-
-        currentWidth = 0
-        lastEleLit = False
-
-        for j in xrange(DIGIT_DATUM_WIDTH):
-            if pixels[i][j] == 1:
-                upper += 1
-                lit += 1
-
-            # Does not account for multiple contiguous spaces,
-            # Hopefully isn't a big deal, washes out with taking the max
-            if pixels[i][j] > 0 and lastEleLit == False:
-                lastEleLit = True
-                currentWidth = 1
-
-            if pixels[i][j] > 0 and lastEleLit == True:
-                currentWidth += 1
-
-            if pixels[i][j] == 0 and lastEleLit == True:
-                lastEleLit = False
-
-        if currentWidth > topMaxWidth:
-            topMaxWidth = currentWidth
-
-
-    # Bottom half
-    for i in xrange(DIGIT_DATUM_HEIGHT / 2, DIGIT_DATUM_HEIGHT):
-
-        currentWidth = 0
-        lastEleLit = False
-
-        for j in xrange(DIGIT_DATUM_WIDTH):
-            if pixels[i][j] == 1:
-                lower += 1
-                lit += 1
-
-            if pixels[i][j] > 0 and lastEleLit == False:
-                lastEleLit = True
-                currentWidth = 1
-
-            if pixels[i][j] > 0 and lastEleLit == True:
-                currentWidth += 1
-
-            if pixels[i][j] == 0 and lastEleLit == True:
-                lastEleLit = False
-
-        if currentWidth > botMaxWidth:
-            botMaxWidth = currentWidth
+    for i in range(DIGIT_DATUM_WIDTH):
+        temp_horiz = 0
+        for j in range(DIGIT_DATUM_HEIGHT):
+            if datum.getPixel(i,j) == 1:
+                temp_horiz += 1
+            elif temp_horiz > longest_horiz:
+                longest_horiz = temp_horiz
+                temp_horiz = 0
+                num_h_breaks += 1
+            else: num_h_breaks += 1
 
 
-    print(datum.getAsciiString())
-    print("upper:%s lower:%s lit:%s topWid:%s botWid:%s" % (upper, lower, lit, topMaxWidth, botMaxWidth))
+    # Time to count how many elements in each row and each column
+    rowsCount = []
+    for i in range(DIGIT_DATUM_HEIGHT):
+        rowCount = 0
+        for j in range(DIGIT_DATUM_WIDTH):
+            if datum.getPixel(i, j) == 1:
+                rowCount += 1
+        rowsCount.append(rowCount)
 
+    columnsCount = []
+    for j in range(DIGIT_DATUM_WIDTH):
+        columnCount = 0
+        for i in range(DIGIT_DATUM_HEIGHT):
+            if datum.getPixel(i, j) == 1:
+                columnCount += 1
+        columnsCount.append(columnCount)
 
-    # features[0] = lit <= 100
-    # features[1] = lit > 100 and lit < 200
-    # features[2] = lit >= 200
-    # features[3] = lower <= 50
-    # features[4] = lower > 50 and lower < 80
-    # features[5] = lower >= 80
-    # features[6] = upper <= 50
-    # features[7] = upper > 50 and upper < 80
-    # features[8] = upper >= 80
-    #
-    # # width features
-    # features[9] = topMaxWidth < 10 and botMaxWidth < 10
-    # features[10] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth < 10
-    # features[11] = topMaxWidth >= 17 and botMaxWidth < 10
-    # features[12] = topMaxWidth < 10 and botMaxWidth >= 10 and botMaxWidth < 17
-    # features[13] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth >= 10 and botMaxWidth < 17
-    # features[14] = topMaxWidth >= 17 and botMaxWidth >= 10 and botMaxWidth < 17
-    # features[15] = topMaxWidth < 10 and botMaxWidth >= 17
-    # features[16] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth >= 17
-    # features[17] = topMaxWidth >= 17 and botMaxWidth >= 17
-    #
-    # # Percentage above or below middle
-    # features[18] = (float(upper) / lit) > 0.6
-    # features[19] = (float(lower) / lit) > 0.6
-
-    counterIndex = 0
-    for n in range(counterIndex, counterIndex + 5):
-        if topMaxWidth > 7:
-            features[n] = 1.0
+    for i in range(len(rowsCount)):
+        if rowsCount[i] > 4:
+            features[feature_index] = 1.0
         else:
-            features[n] = 0.0
-        counterIndex += 1
+            features[feature_index] = 0.0
+        feature_index += 1
 
-    # for n in range(counterIndex, counterIndex + 2):
-    #     if botMaxWidth > 7:
-    #         features[n] = 1.0
-    #     else:
-    #         features[n] = 0.0
-    #     counterIndex += 1
-
-    for n in range(counterIndex, counterIndex + 3):
-        if lit > 35:
-            features[n] = 1.0
+    for i in range(len(columnsCount)):
+        if columnsCount[i] > 4:
+            features[feature_index] = 1.0
         else:
-            features[n] = 0.0
-        counterIndex += 1
+            features[feature_index] = 0.0
+        feature_index += 1
 
+    ''' ALL BELOW: add calculated features to the feature list '''
+    for n in range(feature_index, feature_index + 5):
+        if longest_horiz > 6:
+            features[n] = 1.0
+        else: features[n] = 0.0
+        feature_index += 1
+
+    for n in range(feature_index, feature_index + 5):
+        if longest_vert > 7:
+            features[n] = 1.0
+        else: features[n] = 0.0
+        feature_index += 1
+
+    for n in range(feature_index, feature_index + 5):
+        if on_pixels > 35:
+            features[n] = 1.0
+        else: features[n] = 0.0
+        feature_index += 1
+
+    for n in range(feature_index, feature_index + 5):
+        if num_clumps > 0:
+            features[n] = 1.0
+        else: features[n] = 0.0
+        feature_index += 1
 
     return features
 
 
-    # Adding features, we will want a few break points for each feature
-    # I want values of .1-.9 for x here...
-    # counterIndex = 0
-    # for x in range(1, 10):
-    #     features[counterIndex] = (x/10.0 * nonWhite) > 200
-    #     counterIndex += 1
-    #
-    # for x in range(1, 10):
-    #     features[counterIndex] = upper > (nonWhite * x/10.0)
-    #     counterIndex += 1
-    #
-    # for x in range(1, 10):
-    #     features[counterIndex] = lower > (nonWhite * x/10.0)
-    #     counterIndex += 1
+def get_neighbors(x, y):
+    neighbors = []  # holds tuples of cardinal neighbors
 
+    if x < DIGIT_DATUM_WIDTH - 1:
+        neighbors.append((x + 1, y))
+    if x > 0:
+        neighbors.append((x - 1, y))
+    if y < DIGIT_DATUM_HEIGHT - 1:
+        neighbors.append((x, y + 1))
+    if y > 0:
+        neighbors.append((x, y - 1))
+
+    return neighbors
 
 
 def basicFeatureExtractorPacman(state):
@@ -261,39 +243,41 @@ def enhancedPacmanFeatures(state, action):
     # Making a move generates a sucessor
     successor = state.generateSuccessor(0, action)
     pacmanPos = successor.getPacmanPosition()
-    foodList = state.getFood().asList()
+    foodList = successor.getFood().asList()
     capsuleList = successor.getCapsules()
     ghosts = successor.getGhostPositions()
-
 
     shortestFoodDistance = float("inf")
     for food in foodList:
         distance = util.manhattanDistance(pacmanPos, food)
         if distance < shortestFoodDistance:
             shortestFoodDistance = distance
-    features["food_distance"] = shortestFoodDistance# * 1.0
+    features["food_distance"] = shortestFoodDistance > 1
 
     shortestCapsuleDistance = float("inf")
     for capsule in capsuleList:
         distance = util.manhattanDistance(pacmanPos, capsule)
         if distance < shortestCapsuleDistance:
             shortestCapsuleDistance = distance
-    #features["capsule_distance"] = shortestCapsuleDistance * 1.0
+    features["capsule_distance"] = shortestCapsuleDistance == 0
 
     shortestGhostDistance = float("inf")
     for ghostPos in ghosts:
         distance = util.manhattanDistance(pacmanPos, ghostPos)
         if distance < shortestGhostDistance:
             shortestGhostDistance = distance
-    features["ghost_distance"] = shortestGhostDistance# * 1.0
 
-    # Valid things to check is winning, losing, overall score
-    #features["isWin"] = state.isWin()
-    #features["isLoss"] = state.isLose()
-    #features["score"] = state.getScore()
+    # Lots of features for ghost distance allows the suicideAgent to hone in on death
+    features["ghost_distance"] = shortestGhostDistance == 0
+    features["ghost_distance2"] = shortestGhostDistance == 1
+    features["ghost_distance3"] = shortestGhostDistance / 15
+    features["score"] = successor.getScore > state.getScore()
+    features['food_count'] = len(foodList) > 0
+    features['capsule_count'] = len(capsuleList) > 0
 
-    features['food_count'] = state.getFood().count()
-
+    # For stop agent
+    if pacmanPos == state.getPacmanPosition():
+        features["stopped"] = 20
 
     return features
 
