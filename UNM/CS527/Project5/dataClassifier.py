@@ -98,7 +98,7 @@ def enhancedFeatureExtractorDigit(datum):
         lastEleLit = False
 
         for j in xrange(DIGIT_DATUM_WIDTH):
-            if pixels[i][j] > 0:
+            if pixels[i][j] == 1:
                 upper += 1
                 lit += 1
 
@@ -125,7 +125,7 @@ def enhancedFeatureExtractorDigit(datum):
         lastEleLit = False
 
         for j in xrange(DIGIT_DATUM_WIDTH):
-            if pixels[i][j] > 0:
+            if pixels[i][j] == 1:
                 lower += 1
                 lit += 1
 
@@ -142,32 +142,58 @@ def enhancedFeatureExtractorDigit(datum):
         if currentWidth > botMaxWidth:
             botMaxWidth = currentWidth
 
-    #print("upper:%s lower:%s lit:%s topWid:%s botWid:%s" % (upper, lower, lit, topMaxWidth, botMaxWidth))
 
-    features[0] = lit <= 100
-    features[1] = lit > 100 and lit < 200
-    features[2] = lit >= 200
-    features[3] = lower <= 50
-    features[4] = lower > 50 and lower < 80
-    features[5] = lower >= 80
-    features[6] = upper <= 50
-    features[7] = upper > 50 and upper < 80
-    features[8] = upper >= 80
+    print(datum.getAsciiString())
+    print("upper:%s lower:%s lit:%s topWid:%s botWid:%s" % (upper, lower, lit, topMaxWidth, botMaxWidth))
 
-    # width features
-    features[9] = topMaxWidth < 10 and botMaxWidth < 10
-    features[10] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth < 10
-    features[11] = topMaxWidth >= 17 and botMaxWidth < 10
-    features[12] = topMaxWidth < 10 and botMaxWidth >= 10 and botMaxWidth < 17
-    features[13] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth >= 10 and botMaxWidth < 17
-    features[14] = topMaxWidth >= 17 and botMaxWidth >= 10 and botMaxWidth < 17
-    features[15] = topMaxWidth < 10 and botMaxWidth >= 17
-    features[16] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth >= 17
-    features[17] = topMaxWidth >= 17 and botMaxWidth >= 17
 
-    # Percentage above or below middle
-    features[18] = (float(upper) / lit) > 0.6
-    features[19] = (float(lower) / lit) > 0.6
+    # features[0] = lit <= 100
+    # features[1] = lit > 100 and lit < 200
+    # features[2] = lit >= 200
+    # features[3] = lower <= 50
+    # features[4] = lower > 50 and lower < 80
+    # features[5] = lower >= 80
+    # features[6] = upper <= 50
+    # features[7] = upper > 50 and upper < 80
+    # features[8] = upper >= 80
+    #
+    # # width features
+    # features[9] = topMaxWidth < 10 and botMaxWidth < 10
+    # features[10] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth < 10
+    # features[11] = topMaxWidth >= 17 and botMaxWidth < 10
+    # features[12] = topMaxWidth < 10 and botMaxWidth >= 10 and botMaxWidth < 17
+    # features[13] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth >= 10 and botMaxWidth < 17
+    # features[14] = topMaxWidth >= 17 and botMaxWidth >= 10 and botMaxWidth < 17
+    # features[15] = topMaxWidth < 10 and botMaxWidth >= 17
+    # features[16] = topMaxWidth >= 10 and topMaxWidth < 17 and botMaxWidth >= 17
+    # features[17] = topMaxWidth >= 17 and botMaxWidth >= 17
+    #
+    # # Percentage above or below middle
+    # features[18] = (float(upper) / lit) > 0.6
+    # features[19] = (float(lower) / lit) > 0.6
+
+    counterIndex = 0
+    for n in range(counterIndex, counterIndex + 5):
+        if topMaxWidth > 7:
+            features[n] = 1.0
+        else:
+            features[n] = 0.0
+        counterIndex += 1
+
+    # for n in range(counterIndex, counterIndex + 2):
+    #     if botMaxWidth > 7:
+    #         features[n] = 1.0
+    #     else:
+    #         features[n] = 0.0
+    #     counterIndex += 1
+
+    for n in range(counterIndex, counterIndex + 3):
+        if lit > 35:
+            features[n] = 1.0
+        else:
+            features[n] = 0.0
+        counterIndex += 1
+
 
     return features
 
@@ -245,26 +271,29 @@ def enhancedPacmanFeatures(state, action):
         distance = util.manhattanDistance(pacmanPos, food)
         if distance < shortestFoodDistance:
             shortestFoodDistance = distance
-    features["food_distance"] = shortestFoodDistance * 1.0
+    features["food_distance"] = shortestFoodDistance# * 1.0
 
     shortestCapsuleDistance = float("inf")
     for capsule in capsuleList:
         distance = util.manhattanDistance(pacmanPos, capsule)
         if distance < shortestCapsuleDistance:
             shortestCapsuleDistance = distance
-    features["capsule_distance"] = shortestCapsuleDistance * 1.0
+    #features["capsule_distance"] = shortestCapsuleDistance * 1.0
 
     shortestGhostDistance = float("inf")
     for ghostPos in ghosts:
         distance = util.manhattanDistance(pacmanPos, ghostPos)
         if distance < shortestGhostDistance:
             shortestGhostDistance = distance
-    features["ghost_distance"] = shortestGhostDistance * 1.0
+    features["ghost_distance"] = shortestGhostDistance# * 1.0
 
     # Valid things to check is winning, losing, overall score
-    features["isWin"] = state.isWin()
-    features["isLoss"] = state.isLose()
-    features["score"] = state.getScore()
+    #features["isWin"] = state.isWin()
+    #features["isLoss"] = state.isLose()
+    #features["score"] = state.getScore()
+
+    features['food_count'] = state.getFood().count()
+
 
     return features
 
