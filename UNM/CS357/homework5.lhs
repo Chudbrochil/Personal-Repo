@@ -21,6 +21,15 @@ data Expr = Num Integer
           | Div Expr Expr
           deriving (Eq)
 
+instance Show Expr where
+  show (Let var value body) = "let " ++ var ++ " = " ++ show value ++ " in " ++ show body ++ " end"
+  show (Num num) = show num
+  show (Var var) = var
+  show (Add op1 op2) = (show op1) ++ " + " ++ (show op2)
+  show (Sub op1 op2) = (show op1) ++ " - " ++ (show op2)
+  show (Mul op1 op2) = (show op1) ++ " * " ++ (show op2)
+  show (Div op1 op2) = (show op1) ++ " / " ++ (show op2)
+
 type Env = Identifier -> Integer
 
 emptyEnv :: Env
@@ -30,7 +39,17 @@ extendEnv :: Env -> Identifier -> Integer -> Env
 extendEnv oldEnv s n s' = if s' == s then n else oldEnv s'
 
 evalInEnv :: Env -> Expr -> Integer
-evalInEnv = undefined
+evalInEnv env expr = eval expr
+
+eval :: Expr -> Integer
+eval e =
+  case e of
+    Let var value body -> evalInEnv (extendEnv emptyEnv var (eval value)) body
+    Num x -> x
+    Add e1 e2 -> eval e1 + eval e2
+    Sub e1 e2 -> eval e1 - eval e2
+    Mul e1 e2 -> eval e1 * eval e2
+    Div e1 e2 -> eval e1 `div` eval e2
 
 --5.3 Infinite Lists
 diag :: [[a]] -> [a]
