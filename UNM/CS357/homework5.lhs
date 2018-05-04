@@ -6,8 +6,36 @@ data Tree a = E
             | T a (Tree a) (Tree a)
             deriving (Eq, Show)
 
+\end{code}
+
+I implemented the BFS traversal in the most simple way I could imagine.
+"bfnum" seeds bfHelper with the initial level or depth of 1.
+From there bfHelper processes from left to right doing a BFS traversal
+level by level. The variable "counter" serves as a counter for what node that
+we are traversing in order. This won't correspond directly to level, but I could've
+just as easily done that by doing "depth+1" for left node and "depth+1" for right node.
+This would result in a tree with numbers corresponding to the actual depth of
+each node.
+
+We are only visiting each node once (including "E") so this run-time would be O(M)
+where M = # of edges. This is "linear" time for a graph.
+To compare this to an iterative setting, O(M) is literally the fastest this could
+perform. There is no faster traversal.
+There would be time to pop off the list of trees, but we can assume this is done
+in constant or O(1) time assuming Haskell is using an efficient data structure
+behind the "data Tree".
+
+TODO: Regular BFS runtime is O(M+N), is that the case here? I only see
+processing O(M) as edges will dominate nodes anyways.
+
+\begin{code}
+
 bfnum :: Tree a -> Tree Int
-bfnum = undefined
+bfnum tree = bfHelper tree 1
+
+bfHelper :: Tree a -> Int -> Tree Int
+bfHelper (E) counter = E -- I guess E is empty
+bfHelper (T a t1 t2) counter = T counter (bfHelper t1 (counter+1)) (bfHelper t2 (counter+2))
 
 --5.2 Expression Trees
 type Identifier = String
