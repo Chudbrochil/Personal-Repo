@@ -5,70 +5,9 @@ import Data.List
 --5.1 Trees
 data Tree a = E
             | T a (Tree a) (Tree a)
-            deriving (Eq, Show)
+            deriving (Eq, Show, Ord)
 
 \end{code}
-
-I implemented the BFS traversal in the most simple way I could imagine.
-"bfnum" seeds bfHelper with the initial level or depth of 1.
-From there bfHelper processes from left to right doing a BFS traversal
-level by level. The variable "counter" serves as a counter for what node that
-we are traversing in order. This won't correspond directly to level, but I could've
-just as easily done that by doing "depth+1" for left node and "depth+1" for right node.
-This would result in a tree with numbers corresponding to the actual depth of
-each node.
-
-We are only visiting each node once (including "E") so this run-time would be O(M)
-where M = # of edges. This is "linear" time for a graph.
-To compare this to an iterative setting, O(M) is literally the fastest this could
-perform. There is no faster traversal.
-There would be time to pop off the list of trees, but we can assume this is done
-in constant or O(1) time assuming Haskell is using an efficient data structure
-behind the "data Tree".
-
-TODO: Regular BFS runtime is O(M+N), is that the case here? I only see
-processing O(M) as edges will dominate nodes anyways.
-
---bfnum tree = bfHelper tree 1 0
-
--- First int is counter, second int is depth
---bfHelper :: Tree a -> Int -> Int -> Tree Int
---bfHelper (E) counter depth = E -- I guess E is empty
---bfHelper (T a t1 t2) counter depth = T counter child1 child2
---  where child1 = bfHelper t1 (counter + 1 + depth) (depth + 1)
---        child2 = bfHelper t2 (counter + 2 + depth) (depth + 2)
-
-{-}
-bfHelper :: Tree a -> Int -> Tree Int
-bfHelper E count = E
-bfHelper (T a t1 E) count =
-bfHelper (T a E t2) count =
-bfHelper (T a t1 t2) count =
--}
-
-{-bfHelper :: Tree a -> Tree Int
-bfHelper tree = treeInt tree
-
--- We don't care about the values that come with our tree, just eliminate them
--- to simplify type checking and my sanity
-treeInt :: Tree a -> Tree Int
-treeInt (E) = E
-treeInt (T a t1 t2) = T 1 (treeInt t1) (treeInt t2)
-
-
-
-getChildren :: Tree Int -> [Tree Int]
-getChildren (E) = []
-getChildren (T a t1 E) = [t1 (a + 1)]
-getChildren (T a E t2) = [t2 (a + 1)]
-getChildren (T a t1 t2) = [t1 (a + 1), t2 (a + 2)]
--}
-
-\begin{code}
-
-bfnum :: Tree a -> Tree Int
-bfnum = undefined
-
 
 -- At the beginning of the semester we were given code for an efficient Queue
 -- in Haskell.
@@ -103,7 +42,99 @@ q = ([1,2,3,4,5], [])
 
 bfs :: Queue (Tree a) -> Int -> Queue (Tree Int)
 bfs q i =
-  | null q == False = push (pop q)
+  | null q == False = push (parent i )
+
+  where parent = (pop q)
+
+
+
+{-}
+bfHelper :: Tree a -> Int -> Tree Int
+bfHelper E count = E
+bfHelper (T a t1 E) count =
+bfHelper (T a E t2) count =
+bfHelper (T a t1 t2) count =
+-}
+
+{-bfHelper :: Tree a -> Tree Int
+bfHelper tree = treeInt tree
+
+getChildren :: Tree Int -> [Tree Int]
+getChildren (E) = [E]
+getChildren (T a t1 E) = [t1 (a + 1), E]
+getChildren (T a E t2) = [E, t2 (a + 1)]
+getChildren (T a t1 t2) = [t1 (a + 1), t2 (a + 2)]
+
+-- We don't care about the values that come with our tree, just eliminate them
+-- to simplify type checking and my sanity
+treeInt :: Tree a -> Tree Int
+treeInt (E) = E
+treeInt (T a t1 t2) = T 1 (treeInt t1) (treeInt t2)
+
+
+
+
+-}
+
+\begin{code}
+
+bfnum :: Tree a -> Tree Int
+bfnum = undefined
+
+--bfnum tree = bfHelper tree 1 0
+
+-- First int is counter, second int is depth
+--bfHelper :: Tree a -> Int -> Int -> Tree Int
+--bfHelper (E) counter depth = E -- I guess E is empty
+--bfHelper (T a t1 t2) counter depth = T counter child1 child2
+--  where child1 = bfHelper t1 (counter + 1 + depth) (depth + 1)
+--        child2 = bfHelper t2 (counter + 2 + depth) (depth + 1)
+
+
+
+
+-- DFS depth assignment
+assignDepth :: Tree a -> Int -> Tree (Int, Int)
+assignDepth (E) depth = E
+assignDepth (T a t1 t2) depth = T (1, depth) child1 child2
+  where child1 = assignDepth t1 (depth + 1)
+        child2 = assignDepth t2 (depth + 1)
+
+-- Traverse tree to find max depth, this will determine how we do levels
+depth :: Tree a -> Int
+depth (E) = 0
+depth (T a t1 t2) = max (1 + depth t1) (1 + depth t2)
+
+
+-- Traverse the tree each time we want to count a particular level
+bfsNumber :: Tree (Int, Int) -> Int -> Int -> Tree (Int, Int)
+bfsNumber (E) targetDepth count = E
+bfsNumber (T (a, d) t1 t2) targetDepth count
+  | d < targetDepth = T (a, d) child1a child1b
+  | d == targetDepth = T (count, d) child1a child2a
+  | otherwise = T (a, d) child1b child2b
+    where child1a = bfsNumber t1 targetDepth (count + 1)
+          child2a = bfsNumber t2 targetDepth (count + 1)
+          child1b = bfsNumber t1 targetDepth count
+          child2b = bfsNumber t2 targetDepth count
+
+dropDepth :: Tree (Int, Int) -> Tree Int
+dropDepth (E) = E
+dropDepth (T (a, d) t1 t2) = T a child1 child2
+  where child1 = dropDepth t1
+        child2 = dropDepth t2
+
+-- TODO: Doing static 3 level tree for now... I'll figure out the compose/church
+-- fanciness later
+foo :: Tree a -> Tree Int
+foo t = dropDepth (bfsNumber (bfsNumber (bfsNumber treeWithLvls 1 1) 2 1) 3 1)
+  where maxDepth = depth t
+        treeWithLvls = assignDepth t 0
+
+
+
+church :: Int -> (c -> c) -> c -> c
+church n = (\f -> foldr (.) id (replicate n f))
 
 
 
