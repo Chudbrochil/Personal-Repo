@@ -1,3 +1,6 @@
+Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+CS357 Homework 5
+
 \begin{code}
 import Data.List
 
