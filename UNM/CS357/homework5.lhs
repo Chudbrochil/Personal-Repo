@@ -1,5 +1,4 @@
 \begin{code}
-{-# LANGUAGE BangPatterns #-}
 import Data.List
 
 --5.1 Trees
@@ -74,32 +73,6 @@ treeInt (T a t1 t2) = T 1 (treeInt t1) (treeInt t2)
 
 
 
--}
-
-\begin{code}
-
-bfnum :: Tree a -> Tree Int
-bfnum = undefined
-
---bfnum tree = bfHelper tree 1 0
-
--- First int is counter, second int is depth
---bfHelper :: Tree a -> Int -> Int -> Tree Int
---bfHelper (E) counter depth = E -- I guess E is empty
---bfHelper (T a t1 t2) counter depth = T counter child1 child2
---  where child1 = bfHelper t1 (counter + 1 + depth) (depth + 1)
---        child2 = bfHelper t2 (counter + 2 + depth) (depth + 1)
-
-
-
-
--- DFS depth assignment
-assignDepth :: Tree a -> Int -> Tree (Int, Int)
-assignDepth (E) depth = E
-assignDepth (T a t1 t2) depth = T (1, depth) child1 child2
-  where child1 = assignDepth t1 (depth + 1)
-        child2 = assignDepth t2 (depth + 1)
-
 -- Traverse tree to find max depth, this will determine how we do levels
 depth :: Tree a -> Int
 depth (E) = 0
@@ -118,6 +91,19 @@ bfsNumber (T (a, d) t1 t2) targetDepth count
           child1b = bfsNumber t1 targetDepth count
           child2b = bfsNumber t2 targetDepth count
 
+bfs2 :: Tree (Int, Int) -> Int -> Int -> (Tree (Int, Int), Int)
+bfs2 (E) targetDepth count = (E, count)
+bfs2 (T (c, d) lt rt) targetDepth count
+	| d < targetDepth =
+		let (lt', ln) = bfs2 lt targetDepth (count + 1)
+		    (rt', rn) = bfs2 rt targetDepth ln
+		in (T (c, d) lt' rt', rn)
+	| d == targetDepth = (T (count, d) child1 child2, count + 1)
+	| otherwise = (T (c, d) child1 child2, count)
+		where child1 = fst (bfs2 lt targetDepth count)
+		      child2 = fst (bfs2 rt targetDepth count)
+
+
 dropDepth :: Tree (Int, Int) -> Tree Int
 dropDepth (E) = E
 dropDepth (T (a, d) t1 t2) = T a child1 child2
@@ -131,12 +117,96 @@ foo t = dropDepth (bfsNumber (bfsNumber (bfsNumber treeWithLvls 1 1) 2 1) 3 1)
   where maxDepth = depth t
         treeWithLvls = assignDepth t 0
 
+foo2 :: Tree a -> Tree Int
+foo2 t = dropDepth (fst ((bfs2 (fst ((bfs2 (fst (bfs2 treeWithLvls 1 1)) 2 1))) 3 1)))
+  where maxDepth = depth t
+        treeWithLvls = assignDepth t 0
+
+
+
+foo3 :: Tree a -> Tree Int
+foo3 t = dropDepth (fst ((bfs2 (fst (bfs2 treeWithLvls 1 1)) 2 1)))
+  where maxDepth = depth t
+        treeWithLvls = assignDepth t 0
+
+
 
 
 church :: Int -> (c -> c) -> c -> c
 church n = (\f -> foldr (.) id (replicate n f))
 
 
+bfs :: Tree a -> Int -> (Tree Int, Int)
+bfs E n = (E, n)
+bfs (T x lt rt) n =
+	let (lt', ln) = bfs lt (n + 1)
+	    (rt', rn) = bfs rt (n + 2)
+	in (T n lt' rt', rn)
+	
+bfnum :: Tree a -> Tree Int
+bfnum t = fst (dfs t 1)
+
+
+-- First int is counter, second int is depth
+--bfHelper :: Tree a -> Int -> Int -> Tree Int
+--bfHelper (E) counter depth = E -- I guess E is empty
+--bfHelper (T a t1 t2) counter depth = T counter child1 child2
+--  where child1 = bfHelper t1 (counter + 1 + depth) (depth + 1)
+--        child2 = bfHelper t2 (counter + 2 + depth) (depth + 1)
+
+
+
+
+-- DFS depth assignment
+assignDepth :: Tree a -> Int -> Tree (Int, Int)
+assignDepth (E) depth = E
+assignDepth (T a t1 t2) depth = T (1, depth) child1 child2
+  where child1 = assignDepth t1 (depth + 1)
+        child2 = assignDepth t2 (depth + 1)
+
+-}
+
+\begin{code}
+
+
+bfnum :: Tree a -> Tree Int
+bfnum t = fst (bfsWithDfs t (getBFSNums t))
+
+
+-- Distance for DFS solution
+distance :: Tree a -> Int -> [Int]
+distance (E) depth = []
+distance (T a t1 t2) depth = [depth] ++ (distance t1 (depth + 1)) ++ (distance t2 (depth + 1))
+
+-- Counting your predecesors <= num to left and < num to right.
+-- This will ultimately give a list of the BFS numbering for a DFS traversal
+countPredecessors :: [Int] -> [Int] -> [Int]
+countPredecessors _ [] = []
+countPredecessors fullList (x:xs) = (addNumsBefore left right x) : countPredecessors fullList xs
+	where (left, right) = splitAt (length(fullList) - length(x:xs)) fullList
+
+
+addNumsBefore :: [Int] -> [Int] -> Int -> Int
+addNumsBefore [] [] num = 1
+addNumsBefore [] (y:ys) num
+	| y < num = 1 + addNumsBefore [] ys num
+	| otherwise = addNumsBefore [] ys num
+addNumsBefore (x:xs) (y:ys) num
+	| x <= num = 1 + addNumsBefore xs (y:ys) num
+	| otherwise = addNumsBefore xs (y:ys) num
+
+
+getBFSNums :: Tree a -> [Int]
+getBFSNums t = countPredecessors (distance t 0) (distance t 0)
+
+
+-- This method traverses a tree in DFS order with a list of BFS numbers
+bfsWithDfs :: Tree a -> [Int] -> (Tree Int, [Int])
+bfsWithDfs (E) xs = (E, xs)
+bfsWithDfs (T a lt rt) (x:xs) =
+	let (lt', ln) = bfsWithDfs lt xs
+	    (rt', rn) = bfsWithDfs rt ln
+	in (T x lt' rt', rn)
 
 
 tree1 :: Tree Char
