@@ -150,33 +150,80 @@ void trans64(int M, int N, int A[N][M], int B[M][N])
   }
 }
 
+/*
+Below is a graveyard for my attempt at trying to do 8x8 blocking with 4x4
+nested inside. This was suggested by Sheng, but I could never get it to
+work.
+*/
+
+/*
+  int blockSize = 8;
+  int blockSize2 = 4;
+  //int i, j, k, l, m, n;
+  int globalRow, globalCol;
+  int block1Row, block1Col;
+  int block2Row, block2Col;
+
+
+
+  //int diagElement;
+  //int diagIndex;
+
+  printf("TEST\n");
+
+  // Outer loop for gathering each block. 4x4 for 64 matrix
+  for(globalCol = 0; globalCol < M; globalCol += blockSize)
+  {
+    for(globalRow = 0; globalRow < N; globalRow += blockSize)
+    {
+
+      // Inner loop for the transpose
+      for(block1Row = globalRow; block1Row < globalRow + blockSize; block1Row =+ blockSize2)
+      {
+        for(block1Col = globalCol; block1Col < globalCol + blockSize; block1Col += blockSize2)
+        {
+          for(block2Col = block1Col; block2Col < block1Col + blockSize2; ++block2Col)
+          {
+            for(block2Row = block1Row; block2Row < block1Row + blockSize2; ++block2Row)
+            {
+              printf("%d %d %d %d %d %d\n", globalRow, globalCol, block1Row, block1Col, block2Row, block2Col);
+              B[block2Col][block2Row] = A[block2Row][block2Col];
+            }
+          }
+        }
+
+
+      }
+    }
+  }
+}
+*/
 
 
 char trans67_desc[] = "Transpose for 61x67 matrix.";
 void trans67(int M, int N, int A[N][M], int B[M][N])
 {
 
-  int blockSize = 4;
+  int blockSize = 16;
   int i, j, k, l;
 
   int diagElement;
   int diagIndex;
 
-  int optimizedBound = 60;
-
-  // Outer loop for gathering each block. 4x4 upto 60x60 for the 61x67 matrix
-  for(i = 0; i < optimizedBound; i += blockSize)
+  // We are making blocks that actually exist outside the bounds of the 61x67
+  // This is okay because we will check to make sure we don't go outside the
+  // bounds of M and N
+  for(i = 0; i < M; i += blockSize)
   {
-    for(j = 0; j < optimizedBound; j += blockSize)
+    for(j = 0; j < N; j += blockSize)
     {
-
-      // Inner loop for the transpose
-      for(k = j; k < j + blockSize; ++k)
+      // We are making sure we won't go outside the bounds of the block, but
+      // if we are on the fringe (i.e. we are processing 48x64-64x64) we can't
+      // go outside the bounds of N and M.
+      for(k = j; k < j + blockSize && k < N  ; ++k)
       {
-        for(l = i; l < i + blockSize; ++l)
+        for(l = i; l < i + blockSize && l < M; ++l)
         {
-          //B[l][k] = A[k][l];
-          
           if(k != l)
           {
             B[l][k] = A[k][l];
@@ -195,24 +242,6 @@ void trans67(int M, int N, int A[N][M], int B[M][N])
           B[diagIndex][diagIndex] = diagElement;
         }
       }
-    }
-  }
-
-  // This part is totally un-optimized, I'm just finishing the transpose
-  // Getting the right most ones we left out
-  for(i = optimizedBound; i < N; ++i)
-  {
-    for(j = 0; j < M; ++j)
-    {
-      A[i][j] = B[j][i];
-    }
-  }
-  // Getting the bottom most ones we left out
-  for(i = 0; i < optimizedBound; ++i)
-  {
-    for(j = optimizedBound; j < M; ++j)
-    {
-      A[i][j] = B[j][i];
     }
   }
 
