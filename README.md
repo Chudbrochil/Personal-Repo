@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------------------------
 
-I have made efforts to hide "sensitive code" such as Google FooBar, UNM projects still being used in classes, and Project Euler. This code is available by request if you ask to be a collaborator. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
+I have made efforts to hide "sensitive code" such as Google FooBar, UNM projects still being used in classes, and Project Euler. This code is available by request if you ask to be a collaborator on the private version of this repo. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
 
 ----------------------------------------------------------------------------------------------------
 
