@@ -1,8 +1,10 @@
-PLEASE NOTE:
+----------------------------------------------------------------------------------------------------
 
 This is a large repo (~1.5GB). I have made efforts to reduce the size of the code, but it is an always on-going project. Pulling down the whole repo may not be reasonable.
 
 I have also made efforts to hide "sensitive code" such as Google FooBar, UNM projects still be used in classes, Project Euler. This code is available by request if you ask to be a collaborator. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
+
+----------------------------------------------------------------------------------------------------
 
 Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico. I have worked as an intern at Sandia National Labs since September 2015. I was previously an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
