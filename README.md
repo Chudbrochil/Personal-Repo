@@ -1,16 +1,16 @@
 Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico. I have worked as an intern at Sandia National Labs since September 2015. I was previously an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
-Spring 2018 UNM Schedule:
+Fall 2018 UNM Schedule:
 
-MATH 311 - Vector Analysis
+MATH 401 - Advanced Calculus I
 
-CS 341 - Computer Architecture & Organization (C & Assembly)
+MATH 464 - Applied Matrix Theory
 
-CS 357 - Declarative Programming (Haskell)
+CS/MATH 375 - Intro to Numerical Computing
 
-CS 362 - Data Structures & Algorithms II
+CS 481 - Computer Operating Systems
 
-CS 527 - Intro to AI Machines (Python)
+CS 529 - Machine Learning
 
 
 ## CNM ##
@@ -55,7 +55,7 @@ I also took math upto Calculus III at CNM.
 
 
 ## UNM ##
-This directory corresponds to the classes I took at University of New Mexico where I am still attending. I started UNM in Fall of 2016 major'ing in Computer Science. I then found myself drawn towards Mathematics and decided to double major in Math as of Fall 2017. I am planned to graduate UNM with a Bachelor's of Science in Computer Science and Bachelor's of Science in Mathematics with a concentration in Mathematics of Computation in Spring 2019. As of Fall 2017 I have been accepted into the "Shared Credit Program" that allows me to take Graduate level electives while continuing my undergraduate degree. I will be taking my first graduate courses this Spring 2018. I plan to complete my MS in Spring 2020. My current GPA is 4.17.
+This directory corresponds to the classes I took at University of New Mexico where I am still attending. I started UNM in Fall of 2016 major'ing in Computer Science. I then found myself drawn towards Mathematics and decided to double major in Math as of Fall 2017. I am planned to graduate UNM with a Bachelor's of Science in Computer Science and Bachelor's of Science in Applied Mathematics in Spring 2019. As of Fall 2017 I have been accepted into the "Shared Credit Program" that allows me to take Graduate level electives while continuing my undergraduate degree. I will be taking my first graduate courses this Spring 2018. I plan to complete my MS in Spring 2020. My current GPA is 4.10.
 
 Relevant classes taken:
 
@@ -80,6 +80,17 @@ CS 361L - Data Structures and Algorithms
 MATH 316 - Applied Ordinary Differential Equations (MatLab)
 
 STAT 345 - Elements of Math Statistics and Probability Theory (R)
+
+MATH 311 - Vector Analysis
+
+CS 341 - Computer Architecture & Organization (C & Assembly)
+
+CS 357 - Declarative Programming (Haskell)
+
+CS 362 - Data Structures & Algorithms II
+
+CS 527 - Intro to AI Machines (Python)
+
 
 ## MISC ##
 I competed with a group I led at the "RSI Hack-A-Thon" in November 2016 where we got 2nd place. We collected $400 prize money for this project. This Android app is in this folder as well other miscellaneous projects that aren't big enough to warrant their own repo.
