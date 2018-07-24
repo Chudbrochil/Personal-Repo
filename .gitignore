@@ -12,6 +12,7 @@ Temp/
 *.sdf
 *.VC.db
 *.suo
+Executables/
 
 # ASP.NET
 bin/
