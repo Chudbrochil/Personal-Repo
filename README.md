@@ -91,7 +91,7 @@ MATH 311 - Vector Analysis
 
 CS 341 - Computer Architecture & Organization (C & Assembly)
 
-CS 357 - Declarative Programming (Haskell)
+CS 357 - Declarative Programming (Haskell) <b> IN PRIVATE REPO </b>
 
 CS 362 - Data Structures & Algorithms II
 
