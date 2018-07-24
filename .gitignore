@@ -7,3 +7,7 @@ Library/
 obj/
 Temp/
 *.csproj
+
+# Visual Studio
+*.sdf
+*.VC.db
