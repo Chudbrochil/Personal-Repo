@@ -1,2 +1,9 @@
+# Intellij
 .idea/
 out/
+
+# Unity
+Library/
+obj/
+Temp/
+*.csproj
