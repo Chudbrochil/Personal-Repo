@@ -1,2 +1,20 @@
+# Intellij
 .idea/
 out/
+
+# Unity
+Library/
+obj/
+Temp/
+*.csproj
+
+# Visual Studio
+*.sdf
+*.VC.db
+*.suo
+
+# ASP.NET
+bin/
+#obj/
+*.csproj.user
+
