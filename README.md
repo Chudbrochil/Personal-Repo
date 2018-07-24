@@ -1,8 +1,6 @@
 ----------------------------------------------------------------------------------------------------
 
-This is a large repo (~1.5GB). I have made efforts to reduce the size of the code, but it is an always on-going project. Pulling down the whole repo may not be reasonable.
-
-I have also made efforts to hide "sensitive code" such as Google FooBar, UNM projects still being used in classes, Project Euler. This code is available by request if you ask to be a collaborator. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
+I have made efforts to hide "sensitive code" such as Google FooBar, UNM projects still being used in classes, and Project Euler. This code is available by request if you ask to be a collaborator. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
 
 ----------------------------------------------------------------------------------------------------
 
