@@ -18,4 +18,4 @@ Executables/
 bin/
 #obj/
 *.csproj.user
-
+packages/
