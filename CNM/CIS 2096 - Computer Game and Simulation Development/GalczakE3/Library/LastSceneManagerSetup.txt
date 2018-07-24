@@ -1,4 +1,0 @@
-sceneSetups:
-- path: C:/Users/Anthony/Documents/~Docs/Unity/GalczakP4/Assets/Tutorial.unity
-  isLoaded: 1
-  isActive: 1
