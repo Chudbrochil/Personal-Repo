@@ -11,3 +11,4 @@ Temp/
 # Visual Studio
 *.sdf
 *.VC.db
+*.suo
