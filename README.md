@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------------------------
 
-I have made efforts to hide "sensitive code": specifically CS357(UNM), Google FooBar, Project Euler. This code is available by request if you ask to be a collaborator on the private version of this repo. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
+I have made efforts to hide "sensitive code": specifically CS357(UNM), Google FooBar, Project Euler, and my currently enrolled classes. This code is available by request if you ask to be a collaborator on the private version of this repo. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
 
 ----------------------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ MATH 401 - Advanced Calculus I
 
 MATH 464 - Applied Matrix Theory
 
-CS/MATH 375 - Intro to Numerical Computing
+CS 591 - Advanced Neural Networks
 
 CS 481 - Computer Operating Systems
 
