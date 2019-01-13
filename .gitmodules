@@ -1,3 +1,6 @@
 [submodule "UNM/CS351/PublicAuction"]
 	path = UNM/CS351/PublicAuction
 	url = git@github.com:Chudbrochil/PublicAuction.git
+[submodule "UNM/CS529/primate-gene-decision-trees"]
+	path = UNM/CS529/primate-gene-decision-trees
+	url = git@github.com:Chudbrochil/primate-gene-decision-trees.git
