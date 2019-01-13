@@ -1,6 +1,15 @@
 [submodule "UNM/CS351/PublicAuction"]
 	path = UNM/CS351/PublicAuction
 	url = git@github.com:Chudbrochil/PublicAuction.git
-[submodule "UNM/CS529/primate-gene-decision-trees"]
+[submodule "human_protein_atlas_image_classify"]
+	path = UNM/CS529/human_protein_atlas_image_classify
+	url = git@github.com:Chudbrochil/human_protein_atlas_image_classify.git
+[submodule "primate-gene-decision-trees"]
 	path = UNM/CS529/primate-gene-decision-trees
 	url = git@github.com:Chudbrochil/primate-gene-decision-trees.git
+[submodule "Newsgroups-NB-LG"]
+	path = UNM/CS529/Newsgroups-NB-LG
+	url = git@github.com:Chudbrochil/Newsgroups-NB-LG.git
+[submodule "music_classification_ann_cnn"]
+	path = UNM/CS529/music_classification_ann_cnn
+	url = git@github.com:Chudbrochil/music_classification_ann_cnn.git
