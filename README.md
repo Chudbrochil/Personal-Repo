@@ -4,20 +4,19 @@ I have made efforts to hide "sensitive code": specifically CS357(UNM), Google Fo
 
 ----------------------------------------------------------------------------------------------------
 
-Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico. I have worked as an intern at Sandia National Labs since September 2015. I was previously an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
+Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico graduating in Spring 2019. I have worked as an intern at Sandia National Labs since September 2015. I was previously an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
-Fall 2018 UNM Schedule:
+Spring 2019 UNM Schedule:
 
-MATH 401 - Advanced Calculus I
+CS 375 - Introduction to Numerical Computing
 
-MATH 464 - Applied Matrix Theory
+CS 460 - Software Engineering
 
-CS 591 - Advanced Neural Networks
+MATH 312 - Partial Differential Equations
 
-CS 481 - Computer Operating Systems
+MATH 313 - Complex Variables
 
-CS 529 - Machine Learning
-
+MATH 317 - Elementary Combinatorics
 
 ## CNM ##
 This directory corresponds to the classes I took at Central New Mexico College where I obtained an AAS in Computer Information Systems with a concentration in Computer Programming. I also acquired a multitude of other degrees and certificates at CNM, but the CIS degree is most relevant to my career and git repo. I formally graduated from CNM in Fall 2016 with honors (3.9 GPA).
@@ -96,6 +95,14 @@ CS 357 - Declarative Programming (Haskell) <b> IN PRIVATE REPO </b>
 CS 362 - Data Structures & Algorithms II
 
 CS 527 - Intro to AI Machines (Python)
+
+CS 481 - Computer Operating Systems (C)
+
+CS 529 - Introduction to Machine Learning (Python)
+
+CS 591 - Advanced Neural Networks (Python)
+
+MATH 464 - Applied Matrix Theory (Matlab)
 
 
 ## MISC ##
