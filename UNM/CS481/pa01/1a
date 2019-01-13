@@ -1,0 +1,34 @@
+execve("./code", ["./code", "1"], [/* 46 vars */]) = 0
+brk(NULL)                               = 0x1a96000
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f52b1d6f000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=84548, ...}) = 0
+mmap(NULL, 84548, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f52b1d5a000
+close(3)                                = 0
+open("/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\340$\2\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=2151832, ...}) = 0
+mmap(NULL, 3981792, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f52b1782000
+mprotect(0x7f52b1945000, 2093056, PROT_NONE) = 0
+mmap(0x7f52b1b44000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c2000) = 0x7f52b1b44000
+mmap(0x7f52b1b4a000, 16864, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f52b1b4a000
+close(3)                                = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f52b1d59000
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f52b1d57000
+arch_prctl(ARCH_SET_FS, 0x7f52b1d57740) = 0
+mprotect(0x7f52b1b44000, 16384, PROT_READ) = 0
+mprotect(0x600000, 4096, PROT_READ)     = 0
+mprotect(0x7f52b1d70000, 4096, PROT_READ) = 0
+munmap(0x7f52b1d5a000, 84548)           = 0
+brk(NULL)                               = 0x1a96000
+brk(0x1ab7000)                          = 0x1ab7000
+brk(NULL)                               = 0x1ab7000
+open("myTstFile", O_RDWR)               = -1 ENOENT (No such file or directory)
+fstat(1, {st_mode=S_IFREG|0664, st_size=1751, ...}) = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f52b1d6e000
+write(1, "\n Program Failed, figure out why"..., 36
+ Program Failed, figure out why...
+) = 36
+exit_group(36)                          = ?
++++ exited with 36 +++

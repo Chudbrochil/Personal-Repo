@@ -1,0 +1,57 @@
+Anthony Galczak - agalczak@unm.edu - WGalczak@gmail.com
+PA01
+CS481 - Operating Systems
+Professor Dr. Xiang Sun
+
+I have output files for problems 1(a,b,c), 2, and 3(strace,ltrace) included
+with the submission.
+
+1a) First five most frequently invoked system calls:
+mmap (8), brk (4), mprotect (4), mprotect (4), open (3)
+
+Source: http://man7.org/linux/man-pages/man2/syscalls.2.html
+
+open("myTstFile", O_RDWR)  = -1 ENOENT (No such file or directory) is the
+offending line that caused the program to fail.
+The system call that caused the program to fail is open().
+
+1b) The system call "write()" is called 199  times in a 240 line output.
+write() is the most frequently invoked system call.
+
+1c) fopen is not a system call. fopen is primarily correlated with the open() system call.
+Source: http://man7.org/linux/man-pages/man3/fopen.3.html
+
+1d) printf is not a system call. printf is primarily correlated with the write() system call.
+Source: http://man7.org/linux/man-pages/man3/printf.3.html
+
+
+2) After running "strace --c cal" the top 3 system calls by system time consumption are:
+read(), write(), and open().
+
+"read() attempts to read up to count bytes from file descriptor fd into the buffer starting at buf"
+read() is a system call that reads some data from a file into a buffer.
+http://man7.org/linux/man-pages/man2/read.2.html
+
+"write() writes up to count bytes from the buffer starting at buf to the file referred to by the file descriptor fd"
+write() is a system call that writes some data from a buffer to a file.
+http://man7.org/linux/man-pages/man2/write.2.html
+
+"The open() system call opens the file specified by pathname."
+open() opens a given file. If the file doesn't exist and an option is specified, open() can create the file.
+http://man7.org/linux/man-pages/man2/open.2.html
+
+
+3) Note: I had to install ltrace onto my Red Hat 7 machine, it was not pre-installed.
+
+a) openat() opens the given directory
+via line 102:
+openat(AT_FDCWD, ".", O_RDONLY|O_NONBLOCK|O_DIRECTORY|O_CLOEXEC) = 3
+
+b) getdents() reads a directory's contents out.
+via line 103-104:
+getdents(3, /* 9 entries */, 32768)     = 248
+getdents(3, /* 0 entries */, 32768)     = 0
+
+c) write() writes to stdout or whatever output you've specified
+via line 108:
+write(1, "1a\n1b\n2\n3ltrace\n3strace\ncode.c\nP"..., 421a

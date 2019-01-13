@@ -1,0 +1,36 @@
+hw4_num1.m output
+
+U =
+   -0.7071         0   -0.7071
+         0    1.0000         0
+   -0.7071         0    0.7071
+S =
+    1.4142         0
+         0    1.0000
+         0         0
+V =
+    -1     0
+     0     1
+Sigma 1 =  1.414214
+
+hw4_num2.m output (Not including the plot of image and sigma1u1, sigma2u2)
+
+U =
+   -0.7071   -0.7071
+   -0.7071    0.7071
+S =
+   14.1421         0
+         0    7.0711
+V =
+    0.6000   -0.8000
+   -0.8000   -0.6000
+area =
+  314.1593
+
+hw4_num4.m output
+
+Rank of A: 4
+Norm of A: 2.475229e+00
+Distance from A to Rank 1 matrix: 1.509874
+Distance from A to Rank 1 matrix: 1.342936
+Distance from A to Rank 1 matrix: 1.247713
