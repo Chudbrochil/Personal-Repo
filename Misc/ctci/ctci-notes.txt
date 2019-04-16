@@ -1,0 +1,15 @@
+Ch1. Arrays and Strings
+
+When adding strings together, use a StringBuffer. (Think StringBuilder, but for adding strings not chars).
+This avoid having to create new immutable strings everytime.
+
+Remember: A hash collision creates a linked list at that hash.
+
+Q1:
+If we are given ASCII characters, we can just make an array of size 256
+instead of using a hashmap.
+Ask whether or not chars are ascii or unicode...
+
+Q2:
+Iterative string reversal is easy.
+Practice recursive string reversal again.

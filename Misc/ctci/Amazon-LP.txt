@@ -1,0 +1,54 @@
+Amazon Leadership Principles
+
+TODO: Go over these and come up with answers to potential questions.
+
+Customer Obsession
+Consider and care about the customer. "Maximizing profit" mustn't get in the
+way of giving a good customer experience.
+
+Ownership
+Own a problem. Don't throw it over the wall to another group.
+
+Invent and Simplify
+Think outside of the box. Look for ways to optimize and innovate.
+If a meeting isn't useful, cancel it.
+
+Are Right, A Lot
+Every perspective and opinion needs to be valued. Just because someone is
+junior doesn't mean they're wrong.
+
+Learn and Be Curious
+Be willing to learn new things and adapt. Don't be married to a language.
+
+Hire and Develop the Best
+Recognize top talent and focus on them. Help grow those that are willing to
+learn and work hard.
+
+Insist on the Highest Standards
+Care about fixing the root cause of an issue. Not just getting it accepted
+by the team.
+
+Think Big
+Go big about your ideas. Consider wild alternatives when thinking about a
+solution to a problem.
+
+Bias for Action
+Making a decision now is better than making no decision. Be agile. Fail fast.
+
+Frugality
+Think of ways to do more with less. Perhaps 2 engineers can complete a project,
+instead of 5.
+
+Earn Trust
+Be self-critical. Own your mistakes and grow from them.
+
+Dive Deep
+Be willing to get deep into an issue. Fix the true root cause.
+
+Have Backbone; Disagree and Commit
+Be willing to fight authority. Engage in "data-based" disagreements. In other
+words, present a prototype to prove a capability.
+
+Deliver Results
+The deadline is important. If some things need to be cut, so be it.
+It must ship.
