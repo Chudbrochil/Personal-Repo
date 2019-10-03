@@ -3,9 +3,13 @@ Hello, my name is Anthony Galczak. I am a Master's student at Stanford Universit
 Previously, I studied Computer Science and Mathematics at University of New Mexico. I obtained a Bachelor's of Science in Computer Science and a Bachelor's of Science in Applied Mathematics on May 2019. I spent Summer 2019 intern'ing at Amazon AWS AI Labs doing R&D in the field of record linkage (NLP). The 4 years previous to that I spent at Sandia National Labs. Before starting university, I was an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
 Autumn 2019 Stanford Schedule:
+
 CS230 - Deep Learning
+
 CS238 - Decision Making under Uncertainty
+
 TA'ing CS103
+
 
 ## CNM ##
 This directory corresponds to the classes I took at Central New Mexico College where I obtained an AAS in Computer Information Systems with a concentration in Computer Programming. I also acquired a multitude of other degrees and certificates at CNM, but the CIS degree is most relevant to my career and git repo. I formally graduated from CNM in Fall 2016 with honors (3.9 GPA).
