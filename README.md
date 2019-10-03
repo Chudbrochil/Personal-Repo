@@ -1,22 +1,11 @@
-----------------------------------------------------------------------------------------------------
+Hello, my name is Anthony Galczak. I am a Master's student at Stanford University studying Computer Science. My expected graduation is June 2021.
 
-I have made efforts to hide "sensitive code": specifically CS357(UNM), Google FooBar, Project Euler, and my currently enrolled classes. This code is available by request if you ask to be a collaborator on the private version of this repo. Additionally, if you see code you prefer not to be shared here, feel free to contact me at WGalczak [at] gmail [dot] com
+Previously, I studied Computer Science and Mathematics at University of New Mexico. I obtained a Bachelor's of Science in Computer Science and a Bachelor's of Science in Applied Mathematics on May 2019. I spent Summer 2019 intern'ing at Amazon AWS AI Labs doing R&D in the field of record linkage (NLP). The 4 years previous to that I spent at Sandia National Labs. Before starting university, I was an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
-----------------------------------------------------------------------------------------------------
-
-Hello, my name is Anthony Galczak. I am a Computer Science and Mathematics student at the University of New Mexico graduating in Spring 2019. I have worked as an intern at Sandia National Labs since September 2015. I was previously an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
-
-Spring 2019 UNM Schedule:
-
-CS 375 - Introduction to Numerical Computing
-
-CS 460 - Software Engineering
-
-MATH 312 - Partial Differential Equations
-
-MATH 313 - Complex Variables
-
-MATH 317 - Elementary Combinatorics
+Autumn 2019 Stanford Schedule:
+CS230 - Deep Learning
+CS238 - Decision Making under Uncertainty
+TA'ing CS103
 
 ## CNM ##
 This directory corresponds to the classes I took at Central New Mexico College where I obtained an AAS in Computer Information Systems with a concentration in Computer Programming. I also acquired a multitude of other degrees and certificates at CNM, but the CIS degree is most relevant to my career and git repo. I formally graduated from CNM in Fall 2016 with honors (3.9 GPA).
@@ -82,17 +71,27 @@ CS 351L - Design of Large Programs (Java)
 
 CS 361L - Data Structures and Algorithms
 
+CS 460 - Software Engineering (Javascript / React)
+
 MATH 316 - Applied Ordinary Differential Equations (MatLab)
 
 STAT 345 - Elements of Math Statistics and Probability Theory (R)
 
 MATH 311 - Vector Analysis
 
+MATH 312 - Partial Differential Equations
+
+MATH 313 - Complex Variables
+
+MATH 317 - Elementary Combinatorics
+
 CS 341 - Computer Architecture & Organization (C & Assembly)
 
 CS 357 - Declarative Programming (Haskell) <b> IN PRIVATE REPO </b>
 
 CS 362 - Data Structures & Algorithms II
+
+CS 375 - Introduction to Numerical Computing (Matlab)
 
 CS 527 - Intro to AI Machines (Python)
 
