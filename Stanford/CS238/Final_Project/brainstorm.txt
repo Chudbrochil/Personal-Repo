@@ -1,0 +1,39 @@
+Step 1
+Point cloud transofmration to make a flattened vector from LIDAR and RGB.
+
+Step 2
+Slice car along x-y plane around 3-4 feet above ground.
+
+Step 3
+Narrow search space using yolo on RGB images.
+This will give approximate location of vehicle and it's approximate
+type: van, car, semi, motorcycle?
+No idea on rotation of the vehicle at this point.
+
+Step 4
+Use iterative closest point to gather a rotation on the vehicle. This
+will help us create our 3D bounding box.
+
+Step 5
+First frame is a "guess", following frames can be a mix of interpolation
+between last frame and the new "guess" from the yolo/deep learning network.
+
+
+Notes
+"238 part" is using previous frames to do an interpolation
+while frames are moving. This can allow us to detect objects that
+go behind walls, as well as smoothing out the bounding box that is
+drawn from the neural network.
+
+
+Deep learning model removes the accumulation of errors in the
+interpolation. "Dead reckoning"
+
+
+Libraries
+Yolo for RGB images.
+PCL for matrix transformations
+Keras/Tensorflow for the deep learning
+We need to write/implement the "uncertainty model"
+
+
