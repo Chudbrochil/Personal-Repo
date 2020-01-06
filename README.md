@@ -4,7 +4,7 @@ Previously, I studied Computer Science and Mathematics at University of New Mexi
 
 Winter 2020 Stanford Schedule:
 
-CS239  - Sequential Decision Making
+CS239  - Advanced Topics in Sequential Decision Making
 
 CS254 - Computational Complexity
 
