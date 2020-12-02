@@ -16,3 +16,6 @@
 [submodule "Stanford/CS238/Final_Project/vehicle-detection"]
 	path = Stanford/CS238/Final_Project/vehicle-detection
 	url = https://github.com/Chudbrochil/vehicle-detection.git
+[submodule "Stanford/CS224U/WallStreetBetsClassifier"]
+	path = Stanford/CS224U/WallStreetBetsClassifier
+	url = https://github.com/Chudbrochil/WallStreetBetsClassifier.git
