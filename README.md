@@ -2,15 +2,7 @@ Hello, my name is Anthony Galczak. I am a Master's student at Stanford Universit
 
 Previously, I studied Computer Science and Mathematics at University of New Mexico. I obtained a Bachelor's of Science in Computer Science and a Bachelor's of Science in Applied Mathematics on May 2019. I spent Summer 2019 intern'ing at Amazon AWS AI Labs doing R&D in the field of record linkage (NLP). The 4 years previous to that I spent at Sandia National Labs. Before starting university, I was an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
 
-Winter 2020 Stanford Schedule:
-
-CS239  - Advanced Topics in Sequential Decision Making
-
-CS254 - Computational Complexity
-
-CS224N - Natural Language Processing with Deep Learning
-
-TA'ing CS103
+Winter 2021 Schedule coming soon! I will be a Course Assistant for CS103
 
 ## Stanford ##
 
