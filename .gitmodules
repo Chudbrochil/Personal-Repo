@@ -13,3 +13,6 @@
 [submodule "music_classification_ann_cnn"]
 	path = UNM/CS529/music_classification_ann_cnn
 	url = git@github.com:Chudbrochil/music_classification_ann_cnn.git
+[submodule "Stanford/CS238/Final_Project/vehicle-detection"]
+	path = Stanford/CS238/Final_Project/vehicle-detection
+	url = https://github.com/Chudbrochil/vehicle-detection.git
