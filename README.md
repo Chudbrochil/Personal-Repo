@@ -1,14 +1,16 @@
 Hello, my name is Anthony Galczak. I am a Master's student at Stanford University studying Computer Science. My expected graduation is June 2021.
 
-Previously, I studied Computer Science and Mathematics at University of New Mexico. I obtained a Bachelor's of Science in Computer Science and a Bachelor's of Science in Applied Mathematics on May 2019. 
+## Previously ##
+
+I studied Computer Science and Mathematics at University of New Mexico. I obtained a Bachelor's of Science in Computer Science and a Bachelor's of Science in Applied Mathematics on May 2019. 
 
 Worked on AWS AutoML framework AutoGluon over Autumn 2020. I implemented an API change bringing a new model (TabTransformer) and semi-supervised learning capability. This work can be viewed at [PR](https://github.com/awslabs/autogluon/pull/723). 
 
-Worked as a PySpark developer at Akuna Capital over Summer 2020. I spent Summer 2019 intern'ing at Amazon AWS AI Labs doing R&D in the field of record linkage (NLP). The 4 years previous to that I spent at Sandia National Labs. Before starting university, I was an IT consultant for Mintz Infotech as well as technical support at T-Mobile and Charter Communications.
-
-Winter 2021 Schedule coming soon! I will be a Course Assistant for CS103
+Worked as a PySpark developer at Akuna Capital over Summer 2020. I spent Summer 2019 intern'ing at Amazon AWS AI Labs doing R&D in the field of record linkage (NLP). The 4 years previous to that I spent at Sandia National Labs. Before starting university, I was an IT consultant for Mintz Infotech.
 
 ## Stanford ##
+
+Winter 2021 Schedule coming soon! I will be a Course Assistant for CS103
 
 CS230 - Deep Learning (Python)
 
