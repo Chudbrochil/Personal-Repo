@@ -16,9 +16,9 @@ CS254 - Computational Complexity
 
 CS529 - Robotics and Autonomous Systems Seminar
 
-CS224U - Natural Language Understanding
+CS224U - Natural Language Understanding (Python)
 
-CS231N - Convolutional Neural Networks for Visual Recognition
+CS231N - Convolutional Neural Networks for Visual Recognition (Python)
 
 ## UNM ##
 This directory corresponds to the classes I took at University of New Mexico where I am still attending. I started UNM in Fall of 2016 major'ing in Computer Science. I then found myself drawn towards Mathematics and decided to double major in Math as of Fall 2017. I am planned to graduate UNM with a Bachelor's of Science in Computer Science and Bachelor's of Science in Applied Mathematics in Spring 2019. As of Fall 2017 I have been accepted into the "Shared Credit Program" that allows me to take Graduate level electives while continuing my undergraduate degree. I will be taking my first graduate courses this Spring 2018. I plan to complete my MS in Spring 2020. My current GPA is 4.10.
